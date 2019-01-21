@@ -14,6 +14,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
         <!--setter/getter-->
         <dependency>
             <groupId>org.projectlombok</groupId>

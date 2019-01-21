@@ -1,6 +1,5 @@
 package group.zealot.king.core.mybatis;
 
-
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import org.apache.ibatis.session.RowBounds;
@@ -17,7 +16,7 @@ import java.util.List;
  * @param <E> 表对应实体
  * @param <P> 表主键
  */
-public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSupport {
+public abstract class AbsBaseDao<E, P extends Serializable> extends SqlSessionDaoSupport {
 
     @Autowired
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
@@ -64,8 +63,8 @@ public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSu
         return getSqlSession().selectList(getMapperNamesapce() + ".getList", entity);
     }
 
-    public Page<E> pageQuery(PageRequest<E> pageRequest) {
-        return pageQuery(".getList", ".getListCount", pageRequest);
+    public Page<E> getPageList(PageRequest<E> pageRequest) {
+        return getPageList(".getList", ".getListCount", pageRequest);
     }
 
     public int getListCount(E entity) {
@@ -77,15 +76,9 @@ public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSu
     }
 
     /**
-     * rapid分页查询
-     *
-     * @param statementName
-     * @param countStatementName
-     * @param pageRequest
-     * @return
+     * RowBounds分页查询
      */
-    protected Page<E> pageQuery(String statementName, String countStatementName,
-            PageRequest<E> pageRequest) {
+    protected Page<E> getPageList(String statementName, String countStatementName,PageRequest<E> pageRequest) {
         int totalCount = getSqlSession().selectOne(getMapperNamesapce() + countStatementName, pageRequest.getFilters());
         if (totalCount <= 0) {
             return new Page<>(pageRequest, 0);

@@ -15,6 +15,7 @@
     <modules>
         <module>king-core-mybatis</module>
         <module>king-core-shiro</module>
+        <module>king-core-jms</module>
     </modules>
 
     <dependencies>
