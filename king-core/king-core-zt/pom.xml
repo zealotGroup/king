@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>king-core-mybatis</artifactId>
+    <artifactId>king-core-zt</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
@@ -26,6 +26,11 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.0.1</version>
         </dependency>
     </dependencies>
 

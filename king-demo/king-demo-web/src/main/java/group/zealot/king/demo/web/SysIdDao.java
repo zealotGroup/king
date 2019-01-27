@@ -1,6 +1,6 @@
 package group.zealot.king.demo.web;
 
-import group.zealot.king.core.mybatis.BaseDao;
+import group.zealot.king.core.zt.mybatis.BaseDao;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,4 +1,4 @@
-package group.zealot.king.core.mybatis;
+package group.zealot.king.core.zt.mybatis;
 
 
 import group.zealot.king.base.page.Page;

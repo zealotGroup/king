@@ -13,7 +13,7 @@
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <modules>
-        <module>king-core-mybatis</module>
+        <module>king-core-zt</module>
         <module>king-core-shiro</module>
     </modules>
 

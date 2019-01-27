@@ -1,4 +1,4 @@
-package group.zealot.king.core.mybatis;
+package group.zealot.king.core.zt.mybatis;
 
 
 import group.zealot.king.base.page.Page;
@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * 内置CURD操作，和分页查询
  *
  * @param <E> 表对应实体
  * @param <P> 表主键
  */
-public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSupport {
+public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSupport implements BaseMapper<E, P> {
 
     @Autowired
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
@@ -84,8 +85,7 @@ public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSu
      * @param pageRequest
      * @return
      */
-    protected Page<E> pageQuery(String statementName, String countStatementName,
-            PageRequest<E> pageRequest) {
+    public Page<E> pageQuery(String statementName, String countStatementName, PageRequest<E> pageRequest) {
         int totalCount = getSqlSession().selectOne(getMapperNamesapce() + countStatementName, pageRequest.getFilters());
         if (totalCount <= 0) {
             return new Page<>(pageRequest, 0);
