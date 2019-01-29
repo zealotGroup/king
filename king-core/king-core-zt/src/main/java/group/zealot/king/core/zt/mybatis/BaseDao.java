@@ -1,4 +1,5 @@
-package group.zealot.king.core.mybatis;
+package group.zealot.king.core.zt.mybatis;
+
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
@@ -10,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * 内置CURD操作，和分页查询
  *
  * @param <E> 表对应实体
  * @param <P> 表主键
  */
-public abstract class AbsBaseDao<E, P extends Serializable> extends SqlSessionDaoSupport {
+public abstract class BaseDao<E, P extends Serializable> extends SqlSessionDaoSupport implements BaseMapper<E, P> {
 
     @Autowired
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
@@ -63,8 +65,8 @@ public abstract class AbsBaseDao<E, P extends Serializable> extends SqlSessionDa
         return getSqlSession().selectList(getMapperNamesapce() + ".getList", entity);
     }
 
-    public Page<E> getPageList(PageRequest<E> pageRequest) {
-        return getPageList(".getList", ".getListCount", pageRequest);
+    public Page<E> pageQuery(PageRequest<E> pageRequest) {
+        return pageQuery(".getList", ".getListCount", pageRequest);
     }
 
     public int getListCount(E entity) {
@@ -76,9 +78,14 @@ public abstract class AbsBaseDao<E, P extends Serializable> extends SqlSessionDa
     }
 
     /**
-     * RowBounds分页查询
+     * rapid分页查询
+     *
+     * @param statementName
+     * @param countStatementName
+     * @param pageRequest
+     * @return
      */
-    protected Page<E> getPageList(String statementName, String countStatementName,PageRequest<E> pageRequest) {
+    public Page<E> pageQuery(String statementName, String countStatementName, PageRequest<E> pageRequest) {
         int totalCount = getSqlSession().selectOne(getMapperNamesapce() + countStatementName, pageRequest.getFilters());
         if (totalCount <= 0) {
             return new Page<>(pageRequest, 0);
