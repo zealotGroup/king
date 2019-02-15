@@ -1,4 +1,4 @@
-package group.zealot.king.demo.web;
+package group.zealot.king.core.zt.mybatis.entity;
 
 import lombok.Getter;
 import lombok.Setter;

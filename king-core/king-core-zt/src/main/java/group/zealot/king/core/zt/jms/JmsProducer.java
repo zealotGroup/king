@@ -1,4 +1,4 @@
-package group.zealot.king.core.jms;
+package group.zealot.king.core.zt.jms;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

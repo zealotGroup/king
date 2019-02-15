@@ -15,7 +15,6 @@
     <modules>
         <module>king-core-zt</module>
         <module>king-core-shiro</module>
-        <module>king-core-jms</module>
     </modules>
 
     <dependencies>

@@ -1,4 +1,4 @@
-package group.zealot.king.core.jms;
+package group.zealot.king.core.zt.jms;
 
 
 import org.slf4j.Logger;

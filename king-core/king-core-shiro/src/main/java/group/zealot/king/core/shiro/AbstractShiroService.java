@@ -57,10 +57,20 @@ public abstract class AbstractShiroService {
         return EncodeUtil.encodeHex(hashPassword);
     }
 
+    /**
+     * entryptPassword加密的类型sha-1
+     *
+     * @return
+     */
     protected String getHashAlgorithmName() {
         return "SHA-1";
     }
 
+    /**
+     * entryptPassword加密的hash迭代次数
+     *
+     * @return
+     */
     protected int getHashIterations() {
         return 1024;
     }

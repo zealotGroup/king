@@ -1,4 +1,4 @@
-package group.zealot.king.core.jms;
+package group.zealot.king.core.zt.jms;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
