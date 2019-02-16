@@ -16,6 +16,7 @@
         <mysql.version>8.0.11</mysql.version>
         <shiro.version>1.4.0</shiro.version>
         <mybatis-plus.version>3.0.1</mybatis-plus.version>
+        <mybatis-jsr310.version>1.0.2</mybatis-jsr310.version>
     </properties>
 
     <groupId>group.zealot</groupId>
@@ -55,6 +56,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--mybatis 时间类型适配jsr310-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-typehandlers-jsr310</artifactId>
+                <version>${mybatis-jsr310.version}</version>
+            </dependency>
+
             <!--io-->
             <dependency>
                 <groupId>commons-io</groupId>

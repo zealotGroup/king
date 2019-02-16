@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.mybatis;
+package group.zealot.king.core.zt.mybatis.base;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
@@ -11,17 +11,17 @@ public interface BaseMapper<E, P extends Serializable> {
 
     E get(E e);
 
-    void delete(P primaryKey);
+    int deleteById(P primaryKey);
 
-    void delete(E entity);
+    int delete(E entity);
 
-    void save(E entity);
+    int insert(E entity);
 
-    void saveBatchInn(List<E> list);
+    int insertBatchInn(List<E> list);
 
-    void saveBatch(List<E> list);
+    int insertBatch(List<E> list);
 
-    void update(E entity);
+    int update(E entity);
 
     List<E> getList(E entity);
 

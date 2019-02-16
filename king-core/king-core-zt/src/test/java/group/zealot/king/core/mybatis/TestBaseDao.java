@@ -1,7 +1,7 @@
 package group.zealot.king.core.mybatis;
 
-import group.zealot.king.core.zt.mybatis.BaseDao;
-import group.zealot.king.core.zt.mybatis.mapper.SysIdMapper;
+import group.zealot.king.core.zt.mybatis.base.BaseDao;
+import group.zealot.king.core.zt.mybatis.dao.SysIdDao;
 import org.junit.Test;
 
 
@@ -9,7 +9,7 @@ public class TestBaseDao extends BaseDao<Object, Integer> {
 
     @Override
     protected String getMapperNamesapce() {
-        return SysIdMapper.class.getName();
+        return SysIdDao.class.getName();
     }
 
     /**

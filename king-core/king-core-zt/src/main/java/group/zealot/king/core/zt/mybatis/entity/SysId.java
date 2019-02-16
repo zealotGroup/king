@@ -3,11 +3,11 @@ package group.zealot.king.core.zt.mybatis.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
 public class SysId {
     private Integer id;
-    private Date insertTime;
+    private LocalDateTime insertTime;
 }
