@@ -1,8 +1,8 @@
-package group.zealot.king.core.zt.mybatis.service.impl;
+package group.zealot.king.core.zt.mybatis.system.service.impl;
 
-import group.zealot.king.core.zt.mybatis.dao.SysIdDao;
-import group.zealot.king.core.zt.mybatis.entity.SysId;
-import group.zealot.king.core.zt.mybatis.service.SysIdService;
+import group.zealot.king.core.zt.mybatis.system.dao.SysIdDao;
+import group.zealot.king.core.zt.mybatis.system.entity.SysId;
+import group.zealot.king.core.zt.mybatis.system.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

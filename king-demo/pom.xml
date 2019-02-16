@@ -18,6 +18,7 @@
 
     <modules>
         <module>king-demo-web</module>
+        <module>king-demo-api</module>
     </modules>
 
     <build>

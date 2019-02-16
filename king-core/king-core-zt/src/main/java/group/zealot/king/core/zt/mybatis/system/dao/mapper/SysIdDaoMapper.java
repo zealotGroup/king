@@ -1,8 +1,8 @@
-package group.zealot.king.core.zt.mybatis.dao.mapper;
+package group.zealot.king.core.zt.mybatis.system.dao.mapper;
 
 import group.zealot.king.core.zt.mybatis.base.BaseDao;
-import group.zealot.king.core.zt.mybatis.dao.SysIdDao;
-import group.zealot.king.core.zt.mybatis.entity.SysId;
+import group.zealot.king.core.zt.mybatis.system.dao.SysIdDao;
+import group.zealot.king.core.zt.mybatis.system.entity.SysId;
 import org.springframework.stereotype.Repository;
 
 @Repository

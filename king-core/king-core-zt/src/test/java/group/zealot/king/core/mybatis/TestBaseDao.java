@@ -1,7 +1,7 @@
 package group.zealot.king.core.mybatis;
 
 import group.zealot.king.core.zt.mybatis.base.BaseDao;
-import group.zealot.king.core.zt.mybatis.dao.SysIdDao;
+import group.zealot.king.core.zt.mybatis.system.dao.SysIdDao;
 import org.junit.Test;
 
 
