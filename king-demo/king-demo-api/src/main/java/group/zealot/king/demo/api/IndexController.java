@@ -1,20 +1,19 @@
-package group.zealot.king.demo.web;
+package group.zealot.king.demo.api;
 
 import group.zealot.king.core.zt.mybatis.system.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/")
 public class IndexController {
 
     @Autowired
     private SysIdService sysIdService;
 
-    @RequestMapping(value = "/")
-    public String index(Model model) {
-        model.addAttribute("id", sysIdService.getId());
-        return "index";
+    @RequestMapping
+    public String index() {
+        return "id:123";// + sysIdService.getId();
     }
 }

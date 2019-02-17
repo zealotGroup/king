@@ -35,8 +35,14 @@ spring:
         # 最大活跃连接数，负数为不限制
         max-active: -1
 
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+      add-mappings: false
 server:
   port: 8080
+
 
 mybatis:
   typeAliasesPackage: group.zealot.king
