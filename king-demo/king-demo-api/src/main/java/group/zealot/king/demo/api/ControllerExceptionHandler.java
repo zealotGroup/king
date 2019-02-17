@@ -1,10 +1,10 @@
-package group.zealot.king.demo.api.config;
+package group.zealot.king.demo.api;
 
-import com.alibaba.fastjson.JSONObject;
+
+import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,19 +23,16 @@ public class ControllerExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public JSONObject exceptionHandler(Exception e) {
+    public String exceptionHandler(Exception e) {
+        ResultJson resultJson = ResultJsonFactory.create();
         if (e instanceof NoHandlerFoundException) {
             logger.error("NoHandlerFoundException " + e.getMessage());
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", HttpStatus.NOT_FOUND.value());
-            jsonObject.put("msg", "not found service , check url");
-            return jsonObject;
+            resultJson.set(ServiceCode.NOT_FOUND);
+            return resultJson.toJSONString();
         } else {
             logger.error("Exception", e);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            jsonObject.put("msg", e.getMessage());
-            return jsonObject;
+            resultJson.set(ServiceCode.EXCEPTION);
+            return resultJson.toJSONString();
         }
     }
 
@@ -44,19 +41,17 @@ public class ControllerExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = BaseRuntimeException.class)
-    public JSONObject baseRuntimeExceptionHandler(RuntimeException e) {
+    public String baseRuntimeExceptionHandler(RuntimeException e) {
+        ResultJson resultJson = ResultJsonFactory.create();
         if (e instanceof BaseRuntimeException) {
             logger.error("BaseRuntimeException" + e.getMessage());
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", HttpStatus.SERVICE_UNAVAILABLE.value());
-            jsonObject.put("msg", e.getMessage());
-            return jsonObject;
+            resultJson.setCode(ServiceCode.EXCEPTION.code());
+            resultJson.setMsg(e.getMessage());
+            return resultJson.toJSONString();
         } else {
             logger.error("RuntimeException", e);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", HttpStatus.SERVICE_UNAVAILABLE.value());
-            jsonObject.put("msg", "RuntimeException , call system admin");
-            return jsonObject;
+            resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
+            return resultJson.toJSONString();
         }
     }
 }

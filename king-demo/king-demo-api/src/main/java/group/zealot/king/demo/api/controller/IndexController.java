@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api;
+package group.zealot.king.demo.api.controller;
 
 import group.zealot.king.core.zt.mybatis.system.service.SysIdService;
 import org.springframework.beans.factory.annotation.Autowired;
