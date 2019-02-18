@@ -5,24 +5,21 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Component
 public class ShiroRedisCache implements Cache<String, String> {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
     private final String hashKey = "shiro:sessionid";
-    private final String keys = "shiro:sessionid:size";
-    private final int expire = 30 * 24 * 60 * 60 * 1000;
-
-    ShiroRedisCache(RedisUtil redisUtil) {
-        logger.debug("创建ShiroRedisCache");
-        this.redisUtil = redisUtil;
-    }
 
     private HashOperations<String, String, String> hashOperations() {
         return redisUtil.hashOperations();
@@ -36,7 +33,7 @@ public class ShiroRedisCache implements Cache<String, String> {
 
     @Override
     public String put(String key, String value) throws CacheException {
-        logger.debug("put shiro缓存key：" + key);
+        logger.debug("put shiro缓存key：" + key + "，value：" + value);
         String old = get(key);
         hashOperations().put(hashKey, key, value);
         return old;

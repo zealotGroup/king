@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 
-public class ResultJson {
+public class ResultJson implements Cloneable {
     private static final Logger logger = LoggerFactory.getLogger(ResultJson.class);
     private JSONObject jsonObject;
 

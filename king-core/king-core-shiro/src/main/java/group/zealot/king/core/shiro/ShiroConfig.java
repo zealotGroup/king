@@ -1,5 +1,7 @@
 package group.zealot.king.core.shiro;
 
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -16,11 +18,16 @@ import javax.servlet.Filter;
 public class ShiroConfig {
     //配置核心安全事务管理器
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm, SessionManager sessionManager, CacheManager cacheManager) {
+    public SecurityManager securityManager(ShiroRealm shiroRealm, SessionManager sessionManager, Cache cache) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(shiroRealm);
         defaultWebSecurityManager.setSessionManager(sessionManager);
-        defaultWebSecurityManager.setCacheManager(cacheManager);
+        defaultWebSecurityManager.setCacheManager(new CacheManager() {
+            @Override
+            public <K, V> Cache<K, V> getCache(String s) throws CacheException {
+                return cache;
+            }
+        });
         return defaultWebSecurityManager;
     }
 
