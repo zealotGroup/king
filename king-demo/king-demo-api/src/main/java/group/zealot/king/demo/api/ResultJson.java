@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 
 public class ResultJson {
-    private static final Logger logger = LoggerFactory.getLogger(ResultJson.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ResultJson.class);
     private JSONObject jsonObject;
 
     ResultJson() {

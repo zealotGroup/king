@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "RequestFilter", urlPatterns = "/*")
 public class RequestFilter implements Filter {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,

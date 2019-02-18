@@ -1,7 +1,8 @@
 package group.zealot.king.core.shiro;
 
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -15,12 +16,11 @@ import javax.servlet.Filter;
 public class ShiroConfig {
     //配置核心安全事务管理器
     @Bean
-    public SecurityManager securityManager(AuthorizingRealm authorizingRealm) {
+    public SecurityManager securityManager(ShiroRealm shiroRealm, SessionManager sessionManager, CacheManager cacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(authorizingRealm);
-        EhCacheManager ehCacheManager = new EhCacheManager();
-        ehCacheManager.setCacheManagerConfigFile("classpath:com/hongguaninfo/pts/clw/ty/collect/mvc/config/shiro-ehcache.xml");
-        defaultWebSecurityManager.setCacheManager(ehCacheManager);
+        defaultWebSecurityManager.setRealm(shiroRealm);
+        defaultWebSecurityManager.setSessionManager(sessionManager);
+        defaultWebSecurityManager.setCacheManager(cacheManager);
         return defaultWebSecurityManager;
     }
 
@@ -45,7 +45,7 @@ public class ShiroConfig {
      */
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager,
-            FormAuthenticationFilter formAuthenticationFilter) {
+                                              FormAuthenticationFilter formAuthenticationFilter) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         LinkedHashMap<String, Filter> filters = new LinkedHashMap<>();
         filters.put("authc", formAuthenticationFilter);
