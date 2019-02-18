@@ -1,20 +1,22 @@
 package group.zealot.king.core.shiro.cache;
 
-import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.HashOperations;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public class ShiroRedisCache implements Cache<String, String> {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RedisUtil redisUtil;
-    private final String keyPrefix = "shiro:sessionid:";
+    private final String hashKey = "shiro:sessionid";
+    private final String keys = "shiro:sessionid:size";
     private final int expire = 30 * 24 * 60 * 60 * 1000;
 
     ShiroRedisCache(RedisUtil redisUtil) {
@@ -22,46 +24,52 @@ public class ShiroRedisCache implements Cache<String, String> {
         this.redisUtil = redisUtil;
     }
 
+    private HashOperations<String, String, String> hashOperations() {
+        return redisUtil.hashOperations();
+    }
+
     @Override
     public String get(String key) throws CacheException {
         logger.debug("get shiro缓存key：" + key);
-        return redisUtil.get(key);
+        return hashOperations().get(hashKey, key);
     }
 
     @Override
     public String put(String key, String value) throws CacheException {
         logger.debug("put shiro缓存key：" + key);
-        String old = redisUtil.get(key);
-        redisUtil.set(key, value);
+        String old = get(key);
+        hashOperations().put(hashKey, key, value);
         return old;
     }
 
     @Override
     public String remove(String key) throws CacheException {
         logger.debug("delete shiro缓存key：" + key);
-        String old = redisUtil.get(key);
-        redisUtil.delete(key);
+        String old = get(key);
+        hashOperations().delete(hashKey, key);
         return old;
     }
 
     @Override
     public void clear() throws CacheException {
-        logger.debug("clear shiro缓存所有key");
-        redisUtil.delete(keyPrefix + "*");
+        Long size = hashOperations().size(hashKey);
+        logger.debug("clear shiro缓存所有key，size：" + size);
+        hashOperations().delete(hashKey);
     }
 
     @Override
     public int size() {
-        return redisUtil.keys(keyPrefix);
+        Long size = hashOperations().size(hashKey);
+        return size == null ? 0 : size.intValue();
     }
 
     @Override
     public Set<String> keys() {
-        return null;
+        return hashOperations().keys(hashKey);
     }
 
     @Override
-    public Collection<String> values() {
-        return null;
+    public List<String> values() {
+        return hashOperations().values(hashKey);
     }
 }

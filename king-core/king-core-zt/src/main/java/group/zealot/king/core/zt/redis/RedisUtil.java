@@ -3,8 +3,10 @@ package group.zealot.king.core.zt.redis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
@@ -18,11 +20,13 @@ public class RedisUtil {
     @Autowired
     private LettuceConnectionFactory connectionFactory;
 
+    private final TimeUnit timeUnit = TimeUnit.SECONDS;
+
     private RedisConnection redisConnection() {
         return connectionFactory.getConnection();
     }
 
-    private <K, V> RedisTemplate<K, V> redisTemplate() {
+    public <K, V> RedisTemplate<K, V> redisTemplate() {
         RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
@@ -30,13 +34,31 @@ public class RedisUtil {
         return template;
     }
 
-    private StringRedisTemplate stringRedisTemplate() {
+    public <K, V> ZSetOperations<K, V> zSetOperations() {
+        RedisTemplate<K, V> redisTemplate = redisTemplate();
+        return redisTemplate.opsForZSet();
+    }
+
+    public <K, HK, HV> HashOperations<K, HK, HV> hashOperations() {
+        RedisTemplate<K, HV> redisTemplate = redisTemplate();
+        return redisTemplate.opsForHash();
+    }
+
+    public StringRedisTemplate stringRedisTemplate() {
         RedisTemplate<String, String> redisTemplate = redisTemplate();
         return (StringRedisTemplate) redisTemplate;
     }
 
     public void set(String key, String value) {
         stringRedisTemplate().opsForValue().set(key, value);
+    }
+
+    public void set(String key, String value, long timeout) {
+        stringRedisTemplate().opsForValue().set(key, value, timeout, timeUnit);
+    }
+
+    public void set(String key, String value, long timeout, TimeUnit timeUnit) {
+        stringRedisTemplate().opsForValue().set(key, value, timeout, timeUnit);
     }
 
     public String get(String key) {
@@ -52,15 +74,11 @@ public class RedisUtil {
     }
 
     public boolean setExpire(String key, long timeout) {
-        return setExpire(key, timeout, TimeUnit.SECONDS);
+        return setExpire(key, timeout, timeUnit);
     }
 
     public boolean setExpire(String key, long timeout, TimeUnit timeUnit) {
         return stringRedisTemplate().expire(key, timeout, timeUnit);
-    }
-
-    public int keys(String key){
-        return stringRedisTemplate().keys(key);
     }
 
     /**
