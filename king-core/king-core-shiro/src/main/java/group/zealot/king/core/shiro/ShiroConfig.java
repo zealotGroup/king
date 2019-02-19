@@ -56,7 +56,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SessionValidationScheduler sessionValidationScheduler(@Lazy SessionManager sessionManager) {
+    public SessionValidationScheduler sessionValidationScheduler(SessionManager sessionManager) {
         ExecutorServiceSessionValidationScheduler sessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
         sessionValidationScheduler.setInterval(30 * 60 * 1000);
         sessionValidationScheduler.setSessionManager((ValidatingSessionManager) sessionManager);
