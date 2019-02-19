@@ -1,8 +1,10 @@
 package group.zealot.king.demo.api.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.core.zt.redis.RedisUtil;
+import group.zealot.king.demo.api.config.ResultFul;
 import group.zealot.king.demo.api.config.ResultJson;
 import group.zealot.king.demo.api.config.ResultJsonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +23,23 @@ public class RequestIdController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @RequestMapping("get")
-    public ResultJson get() {
-        ResultJson resultJson = ResultJsonFactory.create();
-        String requestId;
-        while (true) {
-            requestId = Funcation.createRequestId();
-            Boolean fg = redisUtil.valueOperations().setIfAbsent(REQUEST_ID_KEY_PREFIX + requestId, requestId,
-                    REQUEST_ID_TIMEOUT, TimeUnit.SECONDS);
-            if (fg) {
-                break;
+    @RequestMapping("createAndGet")
+    public JSONObject createAndGet() {
+        return new ResultFul() {
+            @Override
+            protected void dosomething() {
+                String requestId;
+                while (true) {
+                    requestId = Funcation.createRequestId();
+                    Boolean fg = redisUtil.valueOperations().setIfAbsent(REQUEST_ID_KEY_PREFIX + requestId, requestId,
+                            REQUEST_ID_TIMEOUT, TimeUnit.SECONDS);
+                    if (fg) {
+                        break;
+                    }
+                }
+                resultJson.put("requestId", requestId);
+                resultJson.set(ServiceCode.SUCCESS);
             }
-        }
-        resultJson.put("requestId", requestId);
-        resultJson.set(ServiceCode.SUCCESS);
-        return resultJson;
+        }.result();
     }
 }

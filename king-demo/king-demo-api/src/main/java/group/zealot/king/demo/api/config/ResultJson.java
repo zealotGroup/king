@@ -6,7 +6,6 @@ import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class ResultJson implements Cloneable {
@@ -48,7 +47,7 @@ public class ResultJson implements Cloneable {
         return this;
     }
 
-    public JSONObject result() {
+    protected JSONObject result() {
         if (!jsonObject.containsKey("code")) {
             logger.error("异常：返回结果不存在code");
             throw new BaseRuntimeException("异常：返回结果不存在code");

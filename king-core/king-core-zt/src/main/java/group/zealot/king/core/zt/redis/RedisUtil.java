@@ -8,16 +8,10 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-
 @Component
 public class RedisUtil {
     @Autowired
     private LettuceConnectionFactory connectionFactory;
-
-    private final TimeUnit timeUnit = TimeUnit.SECONDS;
 
     private RedisConnection redisConnection() {
         return connectionFactory.getConnection();

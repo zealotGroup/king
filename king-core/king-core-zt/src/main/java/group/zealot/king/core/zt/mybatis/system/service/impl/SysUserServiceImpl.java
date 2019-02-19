@@ -1,5 +1,6 @@
 package group.zealot.king.core.zt.mybatis.system.service.impl;
 
+import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.mybatis.system.dao.SysUserDao;
 import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
 import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
@@ -13,6 +14,9 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserDao sysUserDao;
 
     public SysUser getByUsernameAndPassword(String username,String password){
+        if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
+            return null;
+        }
         SysUser vo = new SysUser();
         vo.setUsername(username);
         vo.setPassword(password);

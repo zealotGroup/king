@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.time.LocalDateTime;
-
 /**
  * 控制器错误处理器，从控制器抛出的异常被它拦截。
  * 可以在此处封装错误信息，以友好的方式返回给前端
@@ -27,16 +25,18 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public JSONObject exceptionHandler(Exception e) {
-        ResultJson resultJson = ResultJsonFactory.create();
-        if (e instanceof NoHandlerFoundException) {
-            logger.error("NoHandlerFoundException " + e.getMessage());
-            resultJson.set(ServiceCode.NOT_FOUND);
-            return resultJson.result();
-        } else {
-            logger.error("Exception", e);
-            resultJson.set(ServiceCode.EXCEPTION);
-            return resultJson.result();
-        }
+        return new ResultFul() {
+            @Override
+            protected void dosomething() {
+                if (e instanceof NoHandlerFoundException) {
+                    logger.error("NoHandlerFoundException " + e.getMessage());
+                    resultJson.set(ServiceCode.NOT_FOUND);
+                } else {
+                    logger.error("Exception", e);
+                    resultJson.set(ServiceCode.EXCEPTION);
+                }
+            }
+        }.result();
     }
 
     /**
@@ -45,16 +45,18 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BaseRuntimeException.class)
     public JSONObject baseRuntimeExceptionHandler(RuntimeException e) {
-        ResultJson resultJson = ResultJsonFactory.create();
-        if (e instanceof BaseRuntimeException) {
-            logger.error("BaseRuntimeException" + e.getMessage());
-            resultJson.setCode(ServiceCode.EXCEPTION.code());
-            resultJson.setMsg(e.getMessage());
-            return resultJson.result();
-        } else {
-            logger.error("RuntimeException", e);
-            resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
-            return resultJson.result();
-        }
+        return new ResultFul() {
+            @Override
+            protected void dosomething() {
+                if (e instanceof BaseRuntimeException) {
+                    logger.error("BaseRuntimeException " + e.getMessage());
+                    resultJson.setCode(ServiceCode.EXCEPTION.code());
+                    resultJson.setMsg(e.getMessage());
+                } else {
+                    logger.error("RuntimeException", e);
+                    resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
+                }
+            }
+        }.result();
     }
 }

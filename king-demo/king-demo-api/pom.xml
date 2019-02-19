@@ -6,6 +6,7 @@
         <groupId>group.zealot</groupId>
         <artifactId>king</artifactId>
         <version>0.0.0</version>
+        <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,12 +47,9 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.1.RELEASE</version>
                 <configuration>
                     <fork>true</fork>
                     <mainClass>group.zealot.king.demo.api.Run</mainClass>
