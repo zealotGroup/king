@@ -12,8 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ShiroService {
+public abstract class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -31,23 +30,13 @@ public class ShiroService {
     /**
      * 根据登录凭证获取shiroUser
      */
-    protected ShiroUser getShiroUser(ShiroToken shiroToken) {
-        ShiroUser shiroUser = new ShiroUser();
-        shiroUser.setUserId(1L);
-        shiroUser.setUsername(shiroToken.getUsername());
-        return shiroUser;
-    }
+    protected abstract ShiroUser getShiroUser(ShiroToken shiroToken);
 
 
     /**
      * 根据登录用户凭证，获取用户角色、权限
      */
-    protected SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser) {
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermission("super");
-        simpleAuthorizationInfo.addRole("super");
-        return simpleAuthorizationInfo;
-    }
+    protected abstract SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser);
 
     /**
      * 设定Password校验的Hash算法与迭代次数.
