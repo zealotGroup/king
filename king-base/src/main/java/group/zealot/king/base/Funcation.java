@@ -2,6 +2,7 @@ package group.zealot.king.base;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Instant;
 
 public class Funcation {
     public static final int CURRENT_METHOD = 0;
@@ -33,5 +34,22 @@ public class Funcation {
 
     public static String getThisMethodName() {
         return getStackTrace()[PREVIOUS_METHOD].getMethodName();
+    }
+
+    /**
+     * 时间+6位随机
+     * 1550563588237
+     */
+    public static String createRequestId() {
+        Instant s = Instant.now();
+        return s.toEpochMilli() + "" + getRandom(6);
+    }
+
+    public static long getRandom(int size) {
+        return ((Double) (Math.random() * Math.pow(10, size))).longValue();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(createRequestId());
     }
 }

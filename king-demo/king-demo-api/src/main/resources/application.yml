@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: dev
-
   datasource:
     url: jdbc:mysql://www.zealot.group:3306/king?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver

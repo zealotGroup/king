@@ -10,7 +10,6 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 public abstract class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());

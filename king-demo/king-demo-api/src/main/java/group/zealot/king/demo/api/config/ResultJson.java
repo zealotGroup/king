@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api;
+package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class ResultJson implements Cloneable {
     private static final Logger logger = LoggerFactory.getLogger(ResultJson.class);
@@ -47,13 +48,13 @@ public class ResultJson implements Cloneable {
         return this;
     }
 
-    public String toJSONString() {
+    public JSONObject result() {
         if (!jsonObject.containsKey("code")) {
             logger.error("异常：返回结果不存在code");
             throw new BaseRuntimeException("异常：返回结果不存在code");
         }
-        jsonObject.putIfAbsent("time", Instant.now());
-        return jsonObject.toJSONString();
+        jsonObject.putIfAbsent("time", LocalDateTime.now().toString());
+        return jsonObject;
     }
 
     public ResultJson clone() {

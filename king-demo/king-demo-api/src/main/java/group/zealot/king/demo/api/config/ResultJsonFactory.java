@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api;
+package group.zealot.king.demo.api.config;
 
 public class ResultJsonFactory {
     private static final ResultJson resultJson = new ResultJson();

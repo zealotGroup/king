@@ -1,6 +1,7 @@
-package group.zealot.king.demo.api;
+package group.zealot.king.demo.api.config;
 
 
+import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.time.LocalDateTime;
 
 /**
  * 控制器错误处理器，从控制器抛出的异常被它拦截。
@@ -23,35 +26,35 @@ public class ControllerExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public String exceptionHandler(Exception e) {
+    public JSONObject exceptionHandler(Exception e) {
         ResultJson resultJson = ResultJsonFactory.create();
         if (e instanceof NoHandlerFoundException) {
             logger.error("NoHandlerFoundException " + e.getMessage());
             resultJson.set(ServiceCode.NOT_FOUND);
-            return resultJson.toJSONString();
+            return resultJson.result();
         } else {
             logger.error("Exception", e);
             resultJson.set(ServiceCode.EXCEPTION);
-            return resultJson.toJSONString();
+            return resultJson.result();
         }
     }
 
     /**
-     * 拦截捕捉自定义异常 MyException.class
+     * 拦截捕捉运行时异常
      */
     @ResponseBody
     @ExceptionHandler(value = BaseRuntimeException.class)
-    public String baseRuntimeExceptionHandler(RuntimeException e) {
+    public JSONObject baseRuntimeExceptionHandler(RuntimeException e) {
         ResultJson resultJson = ResultJsonFactory.create();
         if (e instanceof BaseRuntimeException) {
             logger.error("BaseRuntimeException" + e.getMessage());
             resultJson.setCode(ServiceCode.EXCEPTION.code());
             resultJson.setMsg(e.getMessage());
-            return resultJson.toJSONString();
+            return resultJson.result();
         } else {
             logger.error("RuntimeException", e);
             resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
-            return resultJson.toJSONString();
+            return resultJson.result();
         }
     }
 }
