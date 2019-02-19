@@ -19,17 +19,18 @@ public class RequestFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-            FilterChain filterChain) throws IOException, ServletException {
+                         FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestURI = request.getRequestURI();
         logger.info("请求URI：" + requestURI);
         if (checkRequestId(request.getParameter("requestId"))) {
             filterChain.doFilter(request, servletResponse);
+        } else {
+            ResultJson resultJson = ResultJsonFactory.create();
+            resultJson.setCode(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value());
+            resultJson.setMsg("请求的URI" + request.getRequestURI() + "需要已授权的requestId");
+            servletResponse.getWriter().write(resultJson.toJSONString());
         }
-        ResultJson resultJson = ResultJsonFactory.create();
-        resultJson.setCode(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value());
-        resultJson.setMsg("请求的URI" + request.getRequestURI() + "需要已授权的requestId");
-        servletResponse.getWriter().write(resultJson.toJSONString());
     }
 
     protected boolean checkRequestId(String requestId) {

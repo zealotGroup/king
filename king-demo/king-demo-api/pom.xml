@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>king-core-zt</artifactId>
+            <artifactId>king-core-shiro</artifactId>
             <version>${project.version}</version>
         </dependency>
 

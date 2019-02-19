@@ -1,4 +1,4 @@
-package group.zealot.king.core.shiro;
+package group.zealot.king.core.shiro.realm;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.authc.*;
@@ -21,7 +21,7 @@ public class ShiroRealm extends AuthorizingRealm {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    protected AbstractShiroService shiroService;
+    protected ShiroService shiroService;
 
     /**
      * 认证回调函数, 登录时调用.

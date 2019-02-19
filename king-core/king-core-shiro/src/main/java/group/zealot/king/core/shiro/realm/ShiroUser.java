@@ -1,4 +1,4 @@
-package group.zealot.king.core.shiro;
+package group.zealot.king.core.shiro.realm;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package group.zealot.king.core.shiro;
+package group.zealot.king.core.shiro.exception;
 
 public class ShiroException extends RuntimeException {
 

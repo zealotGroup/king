@@ -1,17 +1,19 @@
-package group.zealot.king.core.shiro;
+package group.zealot.king.core.shiro.realm;
 
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
+import group.zealot.king.core.shiro.exception.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-
-public abstract class AbstractShiroService {
+@Component
+public class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -27,15 +29,25 @@ public abstract class AbstractShiroService {
     }
 
     /**
-     * 根据登录凭证获取shiroUser【后续继承】
+     * 根据登录凭证获取shiroUser
      */
-    protected abstract ShiroUser getShiroUser(ShiroToken shiroToken);
+    protected ShiroUser getShiroUser(ShiroToken shiroToken) {
+        ShiroUser shiroUser = new ShiroUser();
+        shiroUser.setUserId(1L);
+        shiroUser.setUsername(shiroToken.getUsername());
+        return shiroUser;
+    }
 
 
     /**
      * 根据登录用户凭证，获取用户角色、权限
      */
-    protected abstract SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser);
+    protected SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser) {
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        simpleAuthorizationInfo.addStringPermission("super");
+        simpleAuthorizationInfo.addRole("super");
+        return simpleAuthorizationInfo;
+    }
 
     /**
      * 设定Password校验的Hash算法与迭代次数.
