@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group.zealot.king.core.zt.mybatis.system.dao.mapper.SysUserDaoMapper">
+    <sql id="field">
+        su.id id,
+        su.username username,
+        su.password password
+    </sql>
+    <sql id="where">
+        <if test="id != null">
+            and su.id = #{id}
+        </if>
+        <if test="username != null and username.length() > 0">
+            and su.username = #{username}
+        </if>
+        <if test="password != null and password.length() > 0">
+            and su.password = #{password}
+        </if>
+    </sql>
+    <select id="get" parameterType="SysUser" resultType="SysUser">
+        select
+        <include refid="field"></include>
+        from sys_user su
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+</mapper>
