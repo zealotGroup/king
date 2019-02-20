@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ShiroRedisCache implements Cache<Serializable, Session> {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private RedisUtil redisUtil;
     private String hashKey;

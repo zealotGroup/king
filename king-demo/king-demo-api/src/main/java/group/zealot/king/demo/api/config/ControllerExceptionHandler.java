@@ -17,7 +17,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @ControllerAdvice
 public class ControllerExceptionHandler {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 全局异常捕捉处理

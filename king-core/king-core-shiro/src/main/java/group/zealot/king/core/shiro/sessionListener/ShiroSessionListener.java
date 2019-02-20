@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ShiroSessionListener implements SessionListener {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void onStart(Session session) {

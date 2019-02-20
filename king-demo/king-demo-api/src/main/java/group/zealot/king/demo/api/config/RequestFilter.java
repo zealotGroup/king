@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "RequestFilter", urlPatterns = "/*")
 public class RequestFilter implements Filter {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     public static final String REQUEST_ID_NAME = "requestId";
     public static final String TOKEN_NAME = "token";
@@ -79,9 +79,9 @@ public class RequestFilter implements Filter {
     }
 
     private int choose(String requestURI) {
-        if ("/login/login".equals(requestURI) || "/".equals(requestURI)) {
+        if ("/".equals(requestURI) || "/requestId/createAndGet".equals(requestURI)) {
             return NOT_NEED_LOGIN;
-        } else if (requestURI.contains("add") || requestURI.contains("del") || requestURI.contains("update")) {
+        } else if ("/login/login".equals(requestURI) || requestURI.contains("add") || requestURI.contains("del") || requestURI.contains("update")) {
             return NEED_REQUEST_ID;
         } else {
             return NEED_LOGIN;
