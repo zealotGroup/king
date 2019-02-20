@@ -8,12 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ValueOperations;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.Duration;
+
+import static group.zealot.king.demo.api.config.ResultFulSession.SESSIONID_NAME;
+import static group.zealot.king.demo.api.controller.RequestIdController.REDIS_PREFIX_REQUEST_ID;
+import static group.zealot.king.demo.api.controller.RequestIdController.REQUEST_ID_NAME;
 
 /**
  * 过滤器
@@ -24,23 +28,18 @@ import java.io.IOException;
 public class RequestFilter implements Filter {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public static final String REQUEST_ID_NAME = "requestId";
-    public static final String TOKEN_NAME = "token";
-    public static final String REQUEST_ID_KEY_PREFIX = "api:requestId:";
-    public static final String TOKEN_KEY_PREFIX = "api:token:";
-    public static final long REQUEST_ID_TIMEOUT = 30 * 60;//30min
-
     private final int NOT_NEED_LOGIN = 1;
     private final int NEED_LOGIN = 2;
     private final int NEED_REQUEST_ID = 3;
 
-
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private ResultFulSession resultFulSession;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException {
+            FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestURI = request.getRequestURI();
         logger.info("请求URI：" + requestURI);
@@ -49,7 +48,7 @@ public class RequestFilter implements Filter {
                 filterChain.doFilter(request, servletResponse);
                 break;
             case NEED_LOGIN:
-                if (checkToken(request)) {
+                if (checkSession(request)) {
                     filterChain.doFilter(request, servletResponse);
                 } else {
                     ResultJson resultJson = ResultJsonFactory.create();
@@ -81,30 +80,41 @@ public class RequestFilter implements Filter {
     private int choose(String requestURI) {
         if ("/".equals(requestURI) || "/requestId/createAndGet".equals(requestURI)) {
             return NOT_NEED_LOGIN;
-        } else if ("/login/login".equals(requestURI) || requestURI.contains("add") || requestURI.contains("del") || requestURI.contains("update")) {
+        } else if ("/login/login".equals(requestURI) || requestURI.contains("add") || requestURI.contains("del") ||
+                requestURI.contains("update")) {
             return NEED_REQUEST_ID;
         } else {
             return NEED_LOGIN;
         }
     }
 
-    private boolean checkToken(HttpServletRequest request) {
-        String token = request.getHeader(TOKEN_NAME);
-        if (StringUtil.isEmpty(token)) {
+
+    /**
+     * 验证session，成功并续约
+     */
+    private boolean checkSession(HttpServletRequest request) {
+        String sessionId = request.getHeader(SESSIONID_NAME);
+        if (StringUtil.isEmpty(sessionId)) {
             return false;
         } else {
-            ValueOperations<String, String> valueOperations = redisUtil.valueOperations();
-            token = valueOperations.get(TOKEN_KEY_PREFIX + token);
-            if (StringUtil.isEmpty(token)) {
-                return false;
-            } else {
-                return true;
+            boolean fg = resultFulSession.getSessionSysUser(sessionId) != null;
+            if (fg) {
+                //续约
+                try {
+                    resultFulSession.updateSessionSysUserTimeout(sessionId);
+                } catch (Exception e) {
+                    logger.error("sessionId:" + sessionId + "续约异常", e);
+                }
             }
+            return fg;
         }
     }
 
+    /**
+     * 验证requestId ，成功并删除
+     */
     private boolean checkRequestId(String requestId) {
-        return redisUtil.valueOperations().get(REQUEST_ID_KEY_PREFIX + requestId) != null;
+        return redisUtil.valueOperations().setIfAbsent(REDIS_PREFIX_REQUEST_ID + requestId, null, Duration.ZERO);
     }
 
 }

@@ -9,17 +9,25 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-
-import static group.zealot.king.demo.api.config.RequestFilter.TOKEN_NAME;
 
 @Component
 public class ResultFulSession {
-    private final String RESULTFUL_SESSION = "ResultFulSession:";
+    public static final Duration SESSIONID_TIMEOUT = Duration.ofMinutes(30L);
+    /**
+     * 返回给请求端的字段
+     */
+    public static final String SESSIONID_NAME = "sessionId";
+    /**
+     * 存在redis里的key前缀
+     */
+    private static final String REDIS_PREFIX_RESULTFUL_SESSION = "ResultFulSession:";
     @Autowired
     private RedisUtil redisUtil;
 
-    public String createAndGetSessionId() {
+
+    private String createAndGetSessionId() {
         return Funcation.createRequestId();
     }
 
@@ -37,11 +45,16 @@ public class ResultFulSession {
         String sessionId = createAndGetSessionId();
         Boolean fg =
                 valueOperations.setIfAbsent(getKey(sessionId), JSONObject.toJSONString(sessionSysUser),
-                        30 * 60, TimeUnit.SECONDS);
+                        SESSIONID_TIMEOUT);
         if (fg) {
             return sessionId;
         }
         return null;
+    }
+
+    public Boolean updateSessionSysUserTimeout(String sessionId) {
+        Boolean fg = redisUtil.redisTemplate().expire(getKey(sessionId), SESSIONID_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+        return fg;
     }
 
     public Boolean delSessionSysUser(String sessionId) {
@@ -49,23 +62,11 @@ public class ResultFulSession {
         return fg;
     }
 
-    public Boolean notFoundSessionSysUser(String sessionId) {
-        return redisUtil.redisTemplate().opsForValue().get(getKey(sessionId)) == null;
+    public String getSessionIdByRequest(HttpServletRequest request){
+        return request.getHeader(SESSIONID_NAME);
     }
-
     private String getKey(String sessionId) {
-        return RESULTFUL_SESSION + sessionId;
+        return REDIS_PREFIX_RESULTFUL_SESSION + sessionId;
     }
 
-    public String getTokenBySessionId(String sessionId) {
-        return Funcation.getRandom(1) + sessionId;
-    }
-
-    public String getSessionIdByToken(String token) {
-        return token.substring(1);
-    }
-
-    public String getToken(HttpServletRequest request){
-        return request.getHeader(TOKEN_NAME);
-    }
 }

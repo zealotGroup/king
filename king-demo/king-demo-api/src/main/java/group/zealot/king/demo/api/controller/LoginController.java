@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static group.zealot.king.demo.api.config.RequestFilter.TOKEN_NAME;
+import static group.zealot.king.demo.api.config.ResultFulSession.SESSIONID_NAME;
+
 
 @RestController
 @RequestMapping("/login")
@@ -38,7 +39,7 @@ public class LoginController {
                     do {
                         String sessionId = resultFulSession.setSessionSysUser(sysUser);
                         if (sessionId != null) {
-                            resultJson.set(ServiceCode.SUCCESS).put(TOKEN_NAME, resultFulSession.getTokenBySessionId(sessionId));
+                            resultJson.set(ServiceCode.SUCCESS).put(SESSIONID_NAME, sessionId);
                             break;
                         } else {
                             size--;
@@ -57,15 +58,14 @@ public class LoginController {
         return new ResultFul() {
             @Override
             protected void dosomething() {
-                String token = resultFulSession.getToken(request);
-                String sessionId = resultFulSession.getSessionIdByToken(token);
+                String sessionId = resultFulSession.getSessionIdByRequest(request);
                 int size = 5;
                 do {
                     if (resultFulSession.delSessionSysUser(sessionId)) {
                         resultJson.set(ServiceCode.SUCCESS);
                         break;
                     } else {
-                        if (resultFulSession.notFoundSessionSysUser(sessionId)) {
+                        if (resultFulSession.getSessionSysUser(sessionId) == null) {
                             break;
                         }
                         size--;
