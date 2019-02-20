@@ -36,10 +36,9 @@ public class LoginController {
                 } else {
                     int size = 5;
                     do {
-                        String sessionId = resultFulSession.createAndGetSessionId();
-                        sysUser = resultFulSession.setSessionSysUser(sessionId, sysUser);
-                        if (sysUser != null) {
-                            resultJson.set(ServiceCode.SUCCESS).put(TOKEN_NAME, sysUser.getId());
+                        String sessionId = resultFulSession.setSessionSysUser(sysUser);
+                        if (sessionId != null) {
+                            resultJson.set(ServiceCode.SUCCESS).put(TOKEN_NAME, resultFulSession.getTokenBySessionId(sessionId));
                             break;
                         } else {
                             size--;
@@ -58,13 +57,17 @@ public class LoginController {
         return new ResultFul() {
             @Override
             protected void dosomething() {
-                String sessionId = request.getRequestedSessionId();
+                String token = resultFulSession.getToken(request);
+                String sessionId = resultFulSession.getSessionIdByToken(token);
                 int size = 5;
                 do {
                     if (resultFulSession.delSessionSysUser(sessionId)) {
                         resultJson.set(ServiceCode.SUCCESS);
                         break;
                     } else {
+                        if (resultFulSession.notFoundSessionSysUser(sessionId)) {
+                            break;
+                        }
                         size--;
                     }
                 } while (size > 0);

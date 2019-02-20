@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
+
+import static group.zealot.king.demo.api.config.RequestFilter.TOKEN_NAME;
 
 @Component
 public class ResultFulSession {
@@ -29,13 +32,14 @@ public class ResultFulSession {
         return null;
     }
 
-    public SysUser setSessionSysUser(String sessionId, SysUser sessionSysUser) {
+    public String setSessionSysUser(SysUser sessionSysUser) {
         ValueOperations<String, String> valueOperations = redisUtil.valueOperations();
+        String sessionId = createAndGetSessionId();
         Boolean fg =
-                valueOperations.setIfPresent(getKey(sessionId), JSONObject.toJSONString(sessionSysUser),
+                valueOperations.setIfAbsent(getKey(sessionId), JSONObject.toJSONString(sessionSysUser),
                         30 * 60, TimeUnit.SECONDS);
         if (fg) {
-            return sessionSysUser;
+            return sessionId;
         }
         return null;
     }
@@ -45,7 +49,23 @@ public class ResultFulSession {
         return fg;
     }
 
+    public Boolean notFoundSessionSysUser(String sessionId) {
+        return redisUtil.redisTemplate().opsForValue().get(getKey(sessionId)) == null;
+    }
+
     private String getKey(String sessionId) {
         return RESULTFUL_SESSION + sessionId;
+    }
+
+    public String getTokenBySessionId(String sessionId) {
+        return Funcation.getRandom(1) + sessionId;
+    }
+
+    public String getSessionIdByToken(String token) {
+        return token.substring(1);
+    }
+
+    public String getToken(HttpServletRequest request){
+        return request.getHeader(TOKEN_NAME);
     }
 }

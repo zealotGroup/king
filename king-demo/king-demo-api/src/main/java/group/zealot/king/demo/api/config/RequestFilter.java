@@ -98,7 +98,6 @@ public class RequestFilter implements Filter {
             if (StringUtil.isEmpty(token)) {
                 return false;
             } else {
-                request.setAttribute("token", token);
                 return true;
             }
         }
