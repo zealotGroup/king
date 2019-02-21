@@ -79,12 +79,16 @@ public class RequestFilter implements Filter {
     }
 
     private int choose(String requestURI) {
-        if ("/".equals(requestURI) || "/requestId/createAndGet".equals(requestURI)) {
+        if ("/".equals(requestURI)
+                || "/requestId/createAndGet".equals(requestURI)
+                || "/login/login".equals(requestURI)) {
             return NOT_NEED_LOGIN;
-        } else if ("/login/login".equals(requestURI) || requestURI.contains("add") || requestURI.contains("del") ||
+        } /*else if ("/login/login".equals(requestURI)
+                || requestURI.contains("add")
+                || requestURI.contains("del") ||
                 requestURI.contains("update")) {
             return NEED_REQUEST_ID;
-        } else {
+        } */else {
             return NEED_LOGIN;
         }
     }
