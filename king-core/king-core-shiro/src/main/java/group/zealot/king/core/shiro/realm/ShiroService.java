@@ -4,15 +4,23 @@ import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.exception.ShiroException;
+import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
+import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public abstract class ShiroService {
+@Component
+public class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 根据凭证token 获取有效shiro用户【包含参数校验。不包含password验证，密码验证交给shiro】
@@ -27,15 +35,24 @@ public abstract class ShiroService {
     }
 
     /**
-     * 根据登录凭证获取shiroUser
+     * 根据登录凭证获取 正确的shiroUser【比对交给shiro后续去比对】
      */
-    protected abstract ShiroUser getShiroUser(ShiroToken shiroToken);
+    protected ShiroUser getShiroUser(ShiroToken shiroToken) {
+        SysUser sysUser = sysUserService.getByUsername(shiroToken.getUsername());
+        ShiroUser shiroUser = new ShiroUser();
+        shiroUser.setPassword(sysUser.getPassword());
+        shiroUser.setUsername(sysUser.getUsername());
+        return shiroUser;
+    }
 
 
     /**
      * 根据登录用户凭证，获取用户角色、权限
      */
-    protected abstract SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser);
+    protected SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser) {
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        return simpleAuthorizationInfo;
+    }
 
     /**
      * 设定Password校验的Hash算法与迭代次数.

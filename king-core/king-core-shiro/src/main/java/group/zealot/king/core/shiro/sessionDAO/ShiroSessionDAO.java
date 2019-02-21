@@ -2,6 +2,7 @@ package group.zealot.king.core.shiro.sessionDAO;
 
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
 import org.apache.shiro.session.mgt.eis.RandomSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
@@ -28,7 +29,10 @@ public class ShiroSessionDAO extends CachingSessionDAO {
 
     @Override
     protected Serializable doCreate(Session session) {
-        return generateSessionId(session);
+        SimpleSession simpleSession = (SimpleSession) session;
+        Serializable id = generateSessionId(session);
+        simpleSession.setId(id);
+        return id;
     }
 
     @Override

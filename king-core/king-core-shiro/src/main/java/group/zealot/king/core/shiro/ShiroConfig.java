@@ -9,6 +9,7 @@ import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.*;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -21,11 +22,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import javax.servlet.Filter;
 
 @Configuration
 public class ShiroConfig {
+    public static final Duration timeout = Duration.ofMinutes(30L);//30min
+    public static final Long sessionTimeout = timeout.getSeconds();
+    public static final Long sessionInterval = timeout.getSeconds();//检查session过期的调度间隔
+
     @Bean
     public CacheManager cacheManager(RedisUtil redisUtil) {
         return new AbstractCacheManager() {
@@ -43,22 +49,26 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SessionManager sessionManager(@Lazy SessionValidationScheduler sessionValidationScheduler, SessionFactory sessionFactory) {
+    public SessionManager sessionManager(@Lazy SessionValidationScheduler sessionValidationScheduler,
+                                         SessionFactory sessionFactory,
+                                         SessionDAO sessionDAO) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         Cookie cookie = new SimpleCookie("ShiroSessionId");
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(30 * 60 * 1000);//30min 过期 -1关闭浏览器过期
+        cookie.setMaxAge(sessionTimeout.intValue());//30min 过期 -1关闭浏览器过期
         sessionManager.setSessionIdCookie(cookie);
-        sessionManager.setGlobalSessionTimeout(30 * 60 * 1000);//30min 过期
+        sessionManager.setGlobalSessionTimeout(sessionTimeout);//30min 过期
         sessionManager.setSessionValidationScheduler(sessionValidationScheduler);
         sessionManager.setSessionFactory(sessionFactory);
+
+        sessionManager.setSessionDAO(sessionDAO);
         return sessionManager;
     }
 
     @Bean
     public SessionValidationScheduler sessionValidationScheduler(SessionManager sessionManager) {
         ExecutorServiceSessionValidationScheduler sessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
-        sessionValidationScheduler.setInterval(30 * 60 * 1000);
+        sessionValidationScheduler.setInterval(sessionInterval);
         sessionValidationScheduler.setSessionManager((ValidatingSessionManager) sessionManager);
         return sessionValidationScheduler;
     }
@@ -104,9 +114,9 @@ public class ShiroConfig {
 
         //配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/login", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/logout", "logout");
-        filterChainDefinitionMap.put("/", "user");
         filterChainDefinitionMap.put("/**", "user");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
