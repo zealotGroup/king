@@ -26,9 +26,8 @@ public class ResultFulSession {
     @Autowired
     private RedisUtil redisUtil;
 
-
     private String createAndGetSessionId() {
-        return Funcation.createRequestId();
+        return Funcation.createRandom(6) + "" + Funcation.createTime();
     }
 
     public SysUser getSessionSysUser(String sessionId) {
@@ -62,9 +61,10 @@ public class ResultFulSession {
         return fg;
     }
 
-    public String getSessionIdByRequest(HttpServletRequest request){
+    public String getSessionIdByRequest(HttpServletRequest request) {
         return request.getHeader(SESSIONID_NAME);
     }
+
     private String getKey(String sessionId) {
         return REDIS_PREFIX_RESULTFUL_SESSION + sessionId;
     }

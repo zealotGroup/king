@@ -28,6 +28,10 @@ public class ResultJson implements Cloneable {
         return setMsg(msg);
     }
 
+    public ResultJson set(Object data) {
+        return setData(data);
+    }
+
     public ResultJson setCode(int code) {
         jsonObject.put("code", code);
         return this;
@@ -35,6 +39,11 @@ public class ResultJson implements Cloneable {
 
     public ResultJson setMsg(String msg) {
         jsonObject.put("msg", msg);
+        return this;
+    }
+
+    public ResultJson setData(Object data) {
+        jsonObject.put("data", data);
         return this;
     }
 
@@ -60,6 +69,7 @@ public class ResultJson implements Cloneable {
         ResultJson clone = null;
         try {
             clone = (ResultJson) super.clone();
+            clone.jsonObject = (JSONObject) clone.jsonObject.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

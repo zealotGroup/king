@@ -2,6 +2,7 @@ package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
 import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
 import group.zealot.king.demo.api.config.ResultFul;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.concurrent.TimeUnit;
+
 import static group.zealot.king.demo.api.config.ResultFulSession.SESSIONID_NAME;
+import static group.zealot.king.demo.api.config.ResultFulSession.SESSIONID_TIMEOUT;
 
 
 @RestController
@@ -39,6 +43,12 @@ public class LoginController {
                     do {
                         String sessionId = resultFulSession.setSessionSysUser(sysUser);
                         if (sessionId != null) {
+                            JSONObject data = new JSONObject();
+                            data.put(SESSIONID_NAME, sessionId);
+                            data.put("timeout", SESSIONID_TIMEOUT.getSeconds());
+                            data.put("unit", TimeUnit.SECONDS);
+                            data.put("info", "连续请求可续约");
+                            resultJson.set(data);
                             resultJson.set(ServiceCode.SUCCESS).put(SESSIONID_NAME, sessionId);
                             break;
                         } else {
@@ -46,7 +56,7 @@ public class LoginController {
                         }
                     } while (size > 0);
                     if (size <= 0) {
-                        resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
+                        throw new BaseRuntimeException("服务出现异常，请稍候再试");
                     }
                 }
             }
@@ -72,7 +82,7 @@ public class LoginController {
                     }
                 } while (size > 0);
                 if (size <= 0) {
-                    resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
+                    throw new BaseRuntimeException("服务出现异常，请稍候再试");
                 }
 
             }

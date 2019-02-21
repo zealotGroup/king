@@ -50,7 +50,7 @@ public class ControllerExceptionHandler {
             protected void dosomething() {
                 if (e instanceof BaseRuntimeException) {
                     logger.error("BaseRuntimeException " + e.getMessage());
-                    resultJson.setCode(ServiceCode.EXCEPTION.code());
+                    resultJson.setCode(ServiceCode.EXCEPTION_RUNNTIME.code());
                     resultJson.setMsg(e.getMessage());
                 } else {
                     logger.error("RuntimeException", e);

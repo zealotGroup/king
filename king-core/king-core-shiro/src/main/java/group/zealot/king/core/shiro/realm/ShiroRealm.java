@@ -32,7 +32,6 @@ public class ShiroRealm extends AuthorizingRealm {
         ShiroUser shiroUser = shiroService.validateShiroToken(token);
         return new SimpleAuthenticationInfo(shiroUser,
                 shiroUser.getPassword(), ByteSource.Util.bytes(shiroUser.getSalt()), getName());
-
     }
 
     /**

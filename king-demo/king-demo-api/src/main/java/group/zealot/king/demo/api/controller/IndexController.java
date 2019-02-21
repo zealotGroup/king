@@ -14,7 +14,10 @@ public class IndexController {
         return new ResultFul() {
             @Override
             protected void dosomething() {
-                resultJson.set(ServiceCode.REQUEST_ERROR);
+                JSONObject data = new JSONObject();
+                data.put("status", "API服务状态正常");
+                resultJson.set(data);
+                resultJson.set(ServiceCode.SUCCESS);
             }
         }.result();
     }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class ResultFul {
     @Getter
     protected final ResultJson resultJson;
+
     private HttpServletRequest request;
     private HttpServletResponse response;
 

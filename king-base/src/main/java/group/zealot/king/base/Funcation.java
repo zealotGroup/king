@@ -37,19 +37,13 @@ public class Funcation {
     }
 
     /**
-     * 时间+6位随机
-     * 1550563588237
+     * 毫秒级别
      */
-    public static String createRequestId() {
-        Instant s = Instant.now();
-        return s.toEpochMilli() + "" + getRandom(6);
+    public static long createTime() {
+        return Instant.now().toEpochMilli();
     }
 
-    public static long getRandom(int size) {
+    public static long createRandom(int size) {
         return ((Double) (Math.random() * Math.pow(10, size))).longValue();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(createRequestId());
     }
 }

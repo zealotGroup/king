@@ -2,6 +2,7 @@ package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class RequestFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-            FilterChain filterChain) throws IOException, ServletException {
+                         FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestURI = request.getRequestURI();
         logger.info("请求URI：" + requestURI);
@@ -114,7 +115,21 @@ public class RequestFilter implements Filter {
      * 验证requestId ，成功并删除
      */
     private boolean checkRequestId(String requestId) {
-        return redisUtil.valueOperations().setIfAbsent(REDIS_PREFIX_REQUEST_ID + requestId, null, Duration.ZERO);
+        Object value = redisUtil.valueOperations().get(REDIS_PREFIX_REQUEST_ID + requestId);
+        if (value instanceof Boolean) {
+            if ((Boolean) value) {
+                try {
+                    Boolean fg = redisUtil.valueOperations().setIfAbsent(REDIS_PREFIX_REQUEST_ID + requestId, false, Duration.ZERO);
+                    if (!fg) {
+                        throw new BaseRuntimeException("redis setIfAbsent " + REDIS_PREFIX_REQUEST_ID + requestId + " 异常");
+                    }
+                } catch (Exception e) {
+                    logger.error("requestId:" + requestId + "删除异常", e);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
 }
