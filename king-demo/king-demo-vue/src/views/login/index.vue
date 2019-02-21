@@ -37,20 +37,19 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
+      if (value.trim().length <= 0) {
         callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
+      if (value.length <= 0) {
         callback(new Error('密码不能小于5位'))
       } else {
         callback()
@@ -88,12 +87,13 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
-        if (valid) {
+        if (valid && !this.loading) {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
+            console.error('error catch')
             this.loading = false
           })
         } else {
