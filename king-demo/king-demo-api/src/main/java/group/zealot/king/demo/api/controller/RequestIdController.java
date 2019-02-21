@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static group.zealot.king.demo.api.config.ResultFulSession.SESSIONID_TIMEOUT;
-
 @RestController
 @RequestMapping("/requestId")
 public class RequestIdController {

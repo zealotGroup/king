@@ -61,7 +61,7 @@ public class RequestFilter implements Filter {
                 }
                 break;
             case NEED_REQUEST_ID:
-                if (checkRequestId(request.getHeader(REQUEST_ID_NAME))) {
+                if (checkRequestId(request.getParameter(REQUEST_ID_NAME))) {
                     filterChain.doFilter(request, servletResponse);
                 } else {
                     ResultJson resultJson = ResultJsonFactory.create();
