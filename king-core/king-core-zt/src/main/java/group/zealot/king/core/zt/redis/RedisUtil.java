@@ -5,6 +5,8 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +19,23 @@ public class RedisUtil {
         return connectionFactory.getConnection();
     }
 
+    private JdkSerializationRedisSerializer serializer = new JdkSerializationRedisSerializer();
+
     public <K, V> RedisTemplate<K, V> redisTemplate() {
         RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setValueSerializer(serializer);
         template.setConnectionFactory(connectionFactory);
         template.afterPropertiesSet();
         return template;
+    }
+
+    public byte[] serializer(Object object) {
+        return serializer.serialize(object);
+    }
+
+    public Object deserialize(byte[] bytes) {
+        return serializer.deserialize(bytes);
     }
 
     public <K, V> ZSetOperations<K, V> zSetOperations() {
