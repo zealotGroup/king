@@ -40,10 +40,16 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
       add-mappings: false
+
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
 server:
   port: 8080
-
-
+  tomcat:
+    uri-encoding: UTF-8
 mybatis:
   typeAliasesPackage: group.zealot.king
   mapperLocations: classpath*:mapper/**/*.xml

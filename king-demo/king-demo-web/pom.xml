@@ -68,6 +68,7 @@
                 <configuration>
                     <fork>true</fork>
                     <mainClass>group.zealot.king.demo.web.Run</mainClass>
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
                 </configuration>
                 <!--<executions>
                     <execution>

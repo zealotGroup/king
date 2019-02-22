@@ -1,7 +1,9 @@
 package group.zealot.king.core.shiro;
 
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.core.shiro.cache.ShiroRedisCache;
 import group.zealot.king.core.shiro.realm.ShiroRealm;
+import group.zealot.king.core.shiro.sessionManager.ShiroSessionManager;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import org.apache.shiro.cache.AbstractCacheManager;
 import org.apache.shiro.cache.Cache;
@@ -31,6 +33,8 @@ public class ShiroConfig {
     public static final Duration timeout = Duration.ofMinutes(30L);//30min
     public static final Long sessionTimeout = timeout.getSeconds();
     public static final Long sessionInterval = timeout.getSeconds();//检查session过期的调度间隔
+    public static final int cookieTimeout = (int) timeout.getSeconds();
+    public static final String cookieName = "ShiroSessionId";
 
     @Bean
     public CacheManager cacheManager(RedisUtil redisUtil) {
@@ -43,42 +47,48 @@ public class ShiroConfig {
     }
 
     @Bean
+    public Cookie cookie() {
+        SimpleCookie simpleCookie = new SimpleCookie(cookieName);
+        simpleCookie.setMaxAge(cookieTimeout);
+        return simpleCookie;
+    }
+
+    @Bean
     public SessionFactory sessionFactory() {
         SessionFactory sessionFactory = new SimpleSessionFactory();
         return sessionFactory;
     }
 
-    @Bean
-    public SessionManager sessionManager(@Lazy SessionValidationScheduler sessionValidationScheduler,
-                                         SessionFactory sessionFactory,
-                                         SessionDAO sessionDAO) {
+    //    @Bean
+    public SessionManager sessionManager(
+            Cookie cookie,
+            @Lazy SessionValidationScheduler sessionValidationScheduler,
+            SessionFactory sessionFactory,
+            SessionDAO sessionDAO) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        Cookie cookie = new SimpleCookie("ShiroSessionId");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(sessionTimeout.intValue());//30min 过期 -1关闭浏览器过期
         sessionManager.setSessionIdCookie(cookie);
         sessionManager.setGlobalSessionTimeout(sessionTimeout);//30min 过期
         sessionManager.setSessionValidationScheduler(sessionValidationScheduler);
         sessionManager.setSessionFactory(sessionFactory);
-
         sessionManager.setSessionDAO(sessionDAO);
+        sessionManager.setSessionIdUrlRewritingEnabled(false);//可隐藏sessionId后缀
         return sessionManager;
     }
 
     @Bean
-    public SessionValidationScheduler sessionValidationScheduler(SessionManager sessionManager) {
+    public SessionValidationScheduler sessionValidationScheduler(ShiroSessionManager shiroSessionManager) {
         ExecutorServiceSessionValidationScheduler sessionValidationScheduler = new ExecutorServiceSessionValidationScheduler();
         sessionValidationScheduler.setInterval(sessionInterval);
-        sessionValidationScheduler.setSessionManager((ValidatingSessionManager) sessionManager);
+        sessionValidationScheduler.setSessionManager(shiroSessionManager);
         return sessionValidationScheduler;
     }
 
     //配置核心安全事务管理器
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm, SessionManager sessionManager, CacheManager cacheManager) {
+    public SecurityManager securityManager(ShiroRealm shiroRealm, ShiroSessionManager shiroSessionManager, CacheManager cacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(shiroRealm);
-        defaultWebSecurityManager.setSessionManager(sessionManager);
+        defaultWebSecurityManager.setSessionManager(shiroSessionManager);
         defaultWebSecurityManager.setCacheManager(cacheManager);
         return defaultWebSecurityManager;
     }
