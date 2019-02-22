@@ -6,10 +6,13 @@ import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
 import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +30,7 @@ public class ShiroService {
      */
     public ShiroUser validateShiroToken(ShiroToken shiroToken) throws AuthenticationException {
         if (shiroToken == null || StringUtil.isEmpty(shiroToken.getUsername())
-                || StringUtil.isEmpty(String.copyValueOf(shiroToken.getPassword()))
-                || StringUtil.isEmpty(shiroToken.getCaptcha())) {
+                || StringUtil.isEmpty(String.copyValueOf(shiroToken.getPassword()))) {
             throw new ShiroException("shiroToken is illegal ( username null || password null || captcha null)");
         }
         return getShiroUser(shiroToken);
@@ -42,6 +44,7 @@ public class ShiroService {
         ShiroUser shiroUser = new ShiroUser();
         shiroUser.setPassword(sysUser.getPassword());
         shiroUser.setUsername(sysUser.getUsername());
+        shiroUser.setSalt(sysUser.getUsername());
         return shiroUser;
     }
 
@@ -52,6 +55,12 @@ public class ShiroService {
     protected SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         return simpleAuthorizationInfo;
+    }
+
+    public void shiroLogin(String username, String password) throws ShiroException {
+        Subject subject = SecurityUtils.getSubject();
+        // 调用安全认证框架的登录方法
+        subject.login(new ShiroToken(username, password.toCharArray()));
     }
 
     /**

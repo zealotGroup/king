@@ -7,5 +7,6 @@
 </head>
 <body>
 <h3> 欢迎,id: ${id }</h3>
+<h3> sessionId: ${sessionId }</h3>
 </body>
 </html>

@@ -9,6 +9,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 public class ShiroToken extends UsernamePasswordToken {
     private String captcha;
 
+    public ShiroToken(String username, char[] password) {
+        this(username, password, false, null);
+    }
+
     public ShiroToken(String username, char[] password, String captcha) {
         this(username, password, false, captcha);
     }

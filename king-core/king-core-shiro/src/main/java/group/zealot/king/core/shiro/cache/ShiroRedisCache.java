@@ -113,11 +113,19 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         jsonObject.put("timeout", simpleSession.getTimeout());
         jsonObject.put("expired", simpleSession.isExpired());
         jsonObject.put("host", simpleSession.getHost());
-        jsonObject.put("attributes", simpleSession.getAttributes());
+        if (simpleSession.getAttributes() != null) {
+            byte[] bytes = redisUtil.serializer(simpleSession.getAttributes());
+            Object object = redisUtil.deserialize(bytes);
+            jsonObject.put("attributes", new String(bytes));
+        }
         return jsonObject.toJSONString();
     }
 
     private SimpleSession deserialize(String json) {
+        logger.debug("deserialize json:" + json);
+        if (json == null) {
+            return null;
+        }
         JSONObject jsonObject = JSONObject.parseObject(json);
         SimpleSession simpleSession = new SimpleSession();
         simpleSession.setId(jsonObject.getObject("id", Serializable.class));
@@ -127,7 +135,11 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         simpleSession.setTimeout(jsonObject.getLongValue("timeout"));
         simpleSession.setExpired(jsonObject.getBooleanValue("expired"));
         simpleSession.setHost(jsonObject.getString("host"));
-        simpleSession.setAttributes((Map<Object, Object>)jsonObject.get("attributes"));
+        String bytes = jsonObject.getString("attributes");
+        if (bytes != null) {
+            Object attributes = redisUtil.deserialize(bytes.getBytes());
+            simpleSession.setAttributes((Map) attributes);
+        }
         return simpleSession;
     }
 

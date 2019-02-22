@@ -1,6 +1,8 @@
 package group.zealot.king.core.shiro.exception;
 
-public class ShiroException extends RuntimeException {
+import org.apache.shiro.authc.AuthenticationException;
+
+public class ShiroException extends AuthenticationException {
 
     public ShiroException() {
         super();

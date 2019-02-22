@@ -25,4 +25,19 @@
             <include refid="where"></include>
         </where>
     </select>
+
+    <update id="update" parameterType="SysUser">
+        update sys_user
+        <set>
+            <if test="username != null and username.length() > 0">
+                username = #{username},
+            </if>
+            <if test="password != null and password.length() > 0">
+                password = #{password},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>

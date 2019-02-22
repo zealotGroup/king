@@ -1,5 +1,6 @@
 package group.zealot.king.core.zt.mybatis.system.service.impl;
 
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.mybatis.system.dao.SysUserDao;
 import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
@@ -31,4 +32,20 @@ public class SysUserServiceImpl implements SysUserService {
         vo.setUsername(username);
         return sysUserDao.get(vo);
     }
+
+    public void updatePassword(String username, String newPassword) {
+        if (StringUtil.isEmpty(newPassword)) {
+            throw new BaseRuntimeException("newPassword 不能为空");
+        }
+        SysUser sysUser = getByUsername(username);
+        if (sysUser == null) {
+            throw new BaseRuntimeException("username 对应的数据不存在");
+        }
+        SysUser vo = new SysUser();
+        vo.setId(sysUser.getId());
+        vo.setPassword(newPassword);
+        sysUserDao.update(vo);
+    }
+
+
 }

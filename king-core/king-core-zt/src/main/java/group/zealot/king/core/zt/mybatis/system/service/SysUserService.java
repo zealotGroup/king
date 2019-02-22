@@ -6,4 +6,6 @@ public interface SysUserService {
     SysUser getByUsernameAndPassword(String username, String password);
 
     SysUser getByUsername(String username);
+
+    void updatePassword(String username, String newPassword);
 }
