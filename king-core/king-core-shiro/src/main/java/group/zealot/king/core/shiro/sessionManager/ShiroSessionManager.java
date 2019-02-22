@@ -1,8 +1,10 @@
 package group.zealot.king.core.shiro.sessionManager;
 
+import group.zealot.king.core.shiro.sessionListener.ShiroSessionListener;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.session.mgt.SessionKey;
@@ -21,6 +23,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.util.HashSet;
 
 import static group.zealot.king.core.shiro.ShiroConfig.sessionTimeout;
 
@@ -35,13 +38,16 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
 
     @Autowired
     public void setDefault(Cookie cookie, SessionValidationScheduler sessionValidationScheduler,
-                           SessionFactory sessionFactory, SessionDAO sessionDAO) {
+                           SessionFactory sessionFactory, SessionDAO sessionDAO, ShiroSessionListener shiroSessionListener) {
         setSessionIdCookie(cookie);
         setGlobalSessionTimeout(sessionTimeout);//30min 过期
         setSessionValidationScheduler(sessionValidationScheduler);
         setSessionFactory(sessionFactory);
         setSessionDAO(sessionDAO);
         setSessionIdUrlRewritingEnabled(false);//可隐藏sessionId后缀
+        HashSet<SessionListener> sessionListeners = new HashSet<>();
+        sessionListeners.add(shiroSessionListener);
+        setSessionListeners(sessionListeners);
     }
 
     @Override

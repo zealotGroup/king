@@ -31,8 +31,8 @@ import javax.servlet.Filter;
 @Configuration
 public class ShiroConfig {
     public static final Duration timeout = Duration.ofMinutes(30L);//30min
-    public static final Long sessionTimeout = timeout.getSeconds();
-    public static final Long sessionInterval = timeout.getSeconds();//检查session过期的调度间隔
+    public static final Long sessionTimeout = timeout.getSeconds() * 1000;
+    public static final Long sessionInterval = timeout.getSeconds() * 1000;//检查session过期的调度间隔
     public static final int cookieTimeout = (int) timeout.getSeconds();
     public static final String cookieName = "ShiroSessionId";
 
@@ -127,7 +127,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/login", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/logout", "logout");
-        filterChainDefinitionMap.put("/**", "user");
+        filterChainDefinitionMap.put("/**", "anon");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }
