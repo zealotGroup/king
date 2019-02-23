@@ -24,7 +24,7 @@ public class RedisUtil {
     public <K, V> RedisTemplate<K, V> redisTemplate() {
         RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(serializer);
+//        template.setValueSerializer(serializer);
         template.setConnectionFactory(connectionFactory);
         template.afterPropertiesSet();
         return template;

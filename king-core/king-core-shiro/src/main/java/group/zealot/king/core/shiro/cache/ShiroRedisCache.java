@@ -106,17 +106,15 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
 
     private String serializer(SimpleSession simpleSession) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", simpleSession.getId());
-        jsonObject.put("startTimestamp", simpleSession.getStartTimestamp());
-        jsonObject.put("stopTimestamp", simpleSession.getStopTimestamp());
-        jsonObject.put("lastAccessTime", simpleSession.getLastAccessTime());
-        jsonObject.put("timeout", simpleSession.getTimeout());
-        jsonObject.put("expired", simpleSession.isExpired());
-        jsonObject.put("host", simpleSession.getHost());
-        if (simpleSession.getAttributes() != null) {
-            byte[] bytes = redisUtil.serializer(simpleSession.getAttributes());
-            Object object = redisUtil.deserialize(bytes);
-            jsonObject.put("attributes", new String(bytes));
+        if (simpleSession != null) {
+            jsonObject.put("id", simpleSession.getId());
+            jsonObject.put("startTimestamp", simpleSession.getStartTimestamp());
+            jsonObject.put("stopTimestamp", simpleSession.getStopTimestamp());
+            jsonObject.put("lastAccessTime", simpleSession.getLastAccessTime());
+            jsonObject.put("timeout", simpleSession.getTimeout());
+            jsonObject.put("expired", simpleSession.isExpired());
+            jsonObject.put("host", simpleSession.getHost());
+            jsonObject.put("attributes", simpleSession.getAttributes());
         }
         return jsonObject.toJSONString();
     }
@@ -135,11 +133,7 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         simpleSession.setTimeout(jsonObject.getLongValue("timeout"));
         simpleSession.setExpired(jsonObject.getBooleanValue("expired"));
         simpleSession.setHost(jsonObject.getString("host"));
-        String bytes = jsonObject.getString("attributes");
-        if (bytes != null) {
-            Object attributes = redisUtil.deserialize(bytes.getBytes());
-            simpleSession.setAttributes((Map) attributes);
-        }
+        simpleSession.setAttributes((Map) jsonObject.get("attributes"));
         return simpleSession;
     }
 
