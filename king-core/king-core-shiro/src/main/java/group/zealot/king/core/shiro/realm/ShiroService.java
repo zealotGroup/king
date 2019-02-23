@@ -57,6 +57,16 @@ public class ShiroService {
         return simpleAuthorizationInfo;
     }
 
+    public boolean isLogin() throws ShiroException {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.isAuthenticated();
+    }
+
+    public boolean isRemembered() throws ShiroException {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.isRemembered();
+    }
+
     public void shiroLogin(String username, String password) throws ShiroException {
         Subject subject = SecurityUtils.getSubject();
         // 调用安全认证框架的登录方法

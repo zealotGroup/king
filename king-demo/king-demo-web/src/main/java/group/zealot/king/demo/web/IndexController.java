@@ -30,7 +30,9 @@ public class IndexController {
 //        String pass = shiroService.entryptPassword(password.getBytes(), username.getBytes());
 //        sysUserService.updatePassword(username, pass);
         try {
-            shiroService.shiroLogin(username, password);
+            if (!shiroService.isLogin()){
+                shiroService.shiroLogin(username, password);
+            }
             model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
         } catch (ShiroException e) {
             logger.error("登录异常", e);

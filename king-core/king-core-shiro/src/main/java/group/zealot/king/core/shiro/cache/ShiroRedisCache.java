@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static group.zealot.king.core.shiro.ShiroConfig.timeout;
@@ -30,12 +29,12 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         this.keyPrefix = keyPrefix;
     }
 
-    private ValueOperations<Serializable, String> valueOperations() {
+    private ValueOperations<Serializable, SimpleSession> valueOperations() {
         return redisUtil.valueOperations();
 
     }
 
-    private RedisTemplate<Serializable, String> redisTemplate() {
+    private RedisTemplate<Serializable, SimpleSession> redisTemplate() {
         return redisUtil.redisTemplate();
     }
 
@@ -44,17 +43,16 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
     public SimpleSession get(Serializable id) throws CacheException {
         String key = getKey(id);
         logger.debug("get 缓存key：" + key);
-        String value = valueOperations().get(key);
-        return deserialize(value);
+        return valueOperations().get(key);
     }
 
     @Override
     public SimpleSession put(Serializable id, SimpleSession value) throws CacheException {
         String key = getKey(id);
-        String valueJSON = serializer(value);
+        String valueJSON = JSONObject.toJSONString(value);
         logger.debug("put 缓存key：" + key + " value:" + valueJSON + " =》先get缓存");
         SimpleSession old = get(key);
-        valueOperations().set(key, valueJSON, timeout);
+        valueOperations().set(key, value, timeout);
         return old;
     }
 
@@ -92,57 +90,10 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         if (keys.isEmpty()) {
             return new ArrayList<>();
         }
-        List<String> values = redisTemplate().opsForValue().multiGet(keys);
-        if (values != null) {
-            return deserialize(values);
-        } else {
-            return new ArrayList<>();
-        }
+        return redisTemplate().opsForValue().multiGet(keys);
     }
 
     private String getKey(Serializable id) {
         return keyPrefix + ":" + id;
     }
-
-    private String serializer(SimpleSession simpleSession) {
-        JSONObject jsonObject = new JSONObject();
-        if (simpleSession != null) {
-            jsonObject.put("id", simpleSession.getId());
-            jsonObject.put("startTimestamp", simpleSession.getStartTimestamp());
-            jsonObject.put("stopTimestamp", simpleSession.getStopTimestamp());
-            jsonObject.put("lastAccessTime", simpleSession.getLastAccessTime());
-            jsonObject.put("timeout", simpleSession.getTimeout());
-            jsonObject.put("expired", simpleSession.isExpired());
-            jsonObject.put("host", simpleSession.getHost());
-            jsonObject.put("attributes", simpleSession.getAttributes());
-        }
-        return jsonObject.toJSONString();
-    }
-
-    private SimpleSession deserialize(String json) {
-        logger.debug("deserialize json:" + json);
-        if (json == null) {
-            return null;
-        }
-        JSONObject jsonObject = JSONObject.parseObject(json);
-        SimpleSession simpleSession = new SimpleSession();
-        simpleSession.setId(jsonObject.getObject("id", Serializable.class));
-        simpleSession.setStartTimestamp(jsonObject.getDate("startTimestamp"));
-        simpleSession.setStopTimestamp(jsonObject.getDate("stopTimestamp"));
-        simpleSession.setLastAccessTime(jsonObject.getDate("lastAccessTime"));
-        simpleSession.setTimeout(jsonObject.getLongValue("timeout"));
-        simpleSession.setExpired(jsonObject.getBooleanValue("expired"));
-        simpleSession.setHost(jsonObject.getString("host"));
-        simpleSession.setAttributes((Map) jsonObject.get("attributes"));
-        return simpleSession;
-    }
-
-    private List<SimpleSession> deserialize(List<String> list) {
-        List<SimpleSession> values = new ArrayList<>(list.size());
-        for (String json : list) {
-            values.add(deserialize(json));
-        }
-        return values;
-    }
-
 }
