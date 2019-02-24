@@ -1,5 +1,5 @@
-'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_API: '"http://www.zealot.group/king"',
+  ENV_CONFIG: '"prod"',
+  BASE_API: '"https://api-prod"'
 }

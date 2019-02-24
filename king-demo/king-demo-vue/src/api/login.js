@@ -11,16 +11,17 @@ export function login(username, password) {
   })
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get'
-  })
-}
-
 export function logout() {
   return request({
     url: '/login/logout',
     method: 'post'
   })
 }
+
+export function getUserInfo(token) {
+  return request({
+    url: '/user/info',
+    method: 'get'
+  })
+}
+
