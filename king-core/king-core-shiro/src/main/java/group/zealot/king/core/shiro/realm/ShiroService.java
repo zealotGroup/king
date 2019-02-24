@@ -28,6 +28,9 @@ public class ShiroService {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private ShiroRealm shiroRealm;
+
     /**
      * 根据凭证token 获取有效shiro用户【包含参数校验。不包含password验证，密码验证交给shiro】
      */
@@ -55,8 +58,10 @@ public class ShiroService {
     /**
      * 根据登录用户凭证，获取用户角色、权限
      */
-    protected SimpleAuthorizationInfo getAuthorizationInfo(ShiroUser shiroUser) {
+    protected SimpleAuthorizationInfo createAuthorizationInfo(ShiroUser shiroUser) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        simpleAuthorizationInfo.addRole("admin");
+        simpleAuthorizationInfo.addStringPermission("superView");
         return simpleAuthorizationInfo;
     }
 
@@ -92,14 +97,8 @@ public class ShiroService {
         return subject.getSession().getId();
     }
 
-    public Set<String> getRoles() {
-        Subject subject = SecurityUtils.getSubject();
-        return (Set) subject.getSession().getAttribute("");
-    }
-
-    public Set<String> getStringPermissions() {
-        Subject subject = SecurityUtils.getSubject();
-        return (Set) subject.getSession().getAttribute("");
+    public SimpleAuthorizationInfo getSimpleAuthorizationInfo() {
+        return shiroRealm.getSimpleAuthorizationInfo();
     }
 
     /**

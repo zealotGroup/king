@@ -41,7 +41,6 @@ public class LoginController {
                 }
                 JSONObject data = new JSONObject();
                 data.put(SESSION_ID, shiroService.getSessionId());
-                data.put("token", shiroService.getPrincipal());
                 data.put("timeout", sessionTimeout);
                 data.put("unit", TimeUnit.SECONDS);
                 data.put("info", "连续请求可续约");

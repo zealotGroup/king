@@ -1,10 +1,14 @@
 package group.zealot.king.core.shiro.realm;
 
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.exception.BaseRuntimeException;
+import group.zealot.king.core.shiro.exception.ShiroException;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -23,6 +27,11 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     protected ShiroService shiroService;
 
+    @Autowired
+    public ShiroRealm(CacheManager cacheManager){
+        super(cacheManager);
+    }
+
     /**
      * 认证回调函数, 登录时调用.
      */
@@ -40,7 +49,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-        SimpleAuthorizationInfo simpleAuthorizationInfo = shiroService.getAuthorizationInfo(shiroUser);
+        SimpleAuthorizationInfo simpleAuthorizationInfo = shiroService.createAuthorizationInfo(shiroUser);
         logger.info("roles : " + JSONObject.toJSONString(simpleAuthorizationInfo.getRoles()));
         logger.info("permissions : " + JSONObject.toJSONString(simpleAuthorizationInfo.getStringPermissions()));
         return simpleAuthorizationInfo;
@@ -53,5 +62,14 @@ public class ShiroRealm extends AuthorizingRealm {
     public void initCredentialsMatcher() {
         CredentialsMatcher matcher = shiroService.getCredentialsMatcher();
         setCredentialsMatcher(matcher);
+    }
+
+    public SimpleAuthorizationInfo getSimpleAuthorizationInfo() {
+        Object principals = getAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+        if (principals instanceof SimpleAuthorizationInfo) {
+            return (SimpleAuthorizationInfo) principals;
+        } else {
+            throw new ShiroException("shiro 获取 subject 再获取 principals，发现类型异常或为null");
+        }
     }
 }

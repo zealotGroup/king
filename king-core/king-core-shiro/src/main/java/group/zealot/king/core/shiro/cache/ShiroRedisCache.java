@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,7 +17,7 @@ import java.util.Set;
 
 import static group.zealot.king.core.shiro.ShiroConfig.timeout;
 
-public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
+public class ShiroRedisCache implements Cache<Serializable, Object> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private RedisUtil redisUtil;
@@ -29,38 +28,37 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
         this.keyPrefix = keyPrefix;
     }
 
-    private ValueOperations<Serializable, SimpleSession> valueOperations() {
+    private ValueOperations<Serializable, Object> valueOperations() {
         return redisUtil.valueOperations();
-
     }
 
-    private RedisTemplate<Serializable, SimpleSession> redisTemplate() {
+    private RedisTemplate<Serializable, Object> redisTemplate() {
         return redisUtil.redisTemplate();
     }
 
 
     @Override
-    public SimpleSession get(Serializable id) throws CacheException {
+    public Object get(Serializable id) throws CacheException {
         String key = getKey(id);
         logger.debug("get 缓存key：" + key);
         return valueOperations().get(key);
     }
 
     @Override
-    public SimpleSession put(Serializable id, SimpleSession value) throws CacheException {
+    public Object put(Serializable id, Object value) throws CacheException {
         String key = getKey(id);
         String valueJSON = JSONObject.toJSONString(value);
         logger.debug("put 缓存key：" + key + " value:" + valueJSON + " =》先get缓存");
-        SimpleSession old = get(key);
+        Object old = get(key);
         valueOperations().set(key, value, timeout);
         return old;
     }
 
     @Override
-    public SimpleSession remove(Serializable id) throws CacheException {
+    public Object remove(Serializable id) throws CacheException {
         String key = getKey(id);
         logger.debug("delete 缓存key：" + key + " =》先get缓存");
-        SimpleSession old = get(key);
+        Object old = get(key);
         redisTemplate().delete(key);
         return old;
     }
@@ -85,7 +83,7 @@ public class ShiroRedisCache implements Cache<Serializable, SimpleSession> {
     }
 
     @Override
-    public List<SimpleSession> values() {
+    public List<Object> values() {
         Set<Serializable> keys = keys();
         if (keys.isEmpty()) {
             return new ArrayList<>();

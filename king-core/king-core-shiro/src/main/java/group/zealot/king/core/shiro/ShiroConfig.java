@@ -10,6 +10,7 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.*;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import javax.servlet.Filter;
@@ -57,22 +59,6 @@ public class ShiroConfig {
     public SessionFactory sessionFactory() {
         SessionFactory sessionFactory = new SimpleSessionFactory();
         return sessionFactory;
-    }
-
-    //    @Bean
-    public SessionManager sessionManager(
-            Cookie cookie,
-            @Lazy SessionValidationScheduler sessionValidationScheduler,
-            SessionFactory sessionFactory,
-            SessionDAO sessionDAO) {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionIdCookie(cookie);
-        sessionManager.setGlobalSessionTimeout(sessionTimeout);//30min 过期
-        sessionManager.setSessionValidationScheduler(sessionValidationScheduler);
-        sessionManager.setSessionFactory(sessionFactory);
-        sessionManager.setSessionDAO(sessionDAO);
-        sessionManager.setSessionIdUrlRewritingEnabled(false);//可隐藏sessionId后缀
-        return sessionManager;
     }
 
     @Bean
