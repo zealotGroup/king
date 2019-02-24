@@ -4,7 +4,6 @@ export function login(username, password) {
   return request({
     url: '/login/login',
     method: 'post',
-    datatype: 'jsonp',
     data: {
       username,
       password
@@ -15,8 +14,7 @@ export function login(username, password) {
 export function getInfo(token) {
   return request({
     url: '/user/info',
-    method: 'get',
-    params: { token }
+    method: 'get'
   })
 }
 
