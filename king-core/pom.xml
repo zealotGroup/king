@@ -5,13 +5,14 @@
     <parent>
         <groupId>group.zealot</groupId>
         <artifactId>king</artifactId>
-        <version>0.0.0</version>
+        <version>0.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>king-core</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
+
     <modules>
         <module>king-core-zt</module>
         <module>king-core-shiro</module>
