@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
-import group.zealot.king.demo.api.config.ResultFul;
+import group.zealot.king.demo.api.config.ResultTemple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 import static group.zealot.king.core.shiro.ShiroConfig.sessionTimeout;
@@ -28,7 +27,7 @@ public class LoginController {
 
     @RequestMapping("/login")
     public JSONObject login(String username, String password) {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 if (!shiroService.isAuthenticated()) {
@@ -54,7 +53,7 @@ public class LoginController {
 
     @RequestMapping("/logout")
     public JSONObject logout() {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 if (shiroService.isAuthenticated()) {

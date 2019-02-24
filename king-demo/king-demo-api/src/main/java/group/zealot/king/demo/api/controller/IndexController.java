@@ -2,7 +2,7 @@ package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
-import group.zealot.king.demo.api.config.ResultFul;
+import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
     @RequestMapping
     public JSONObject index() {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 JSONObject data = new JSONObject();

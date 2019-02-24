@@ -5,7 +5,7 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.core.zt.redis.RedisUtil;
-import group.zealot.king.demo.api.config.ResultFul;
+import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/requestId")
-@Deprecated
+@Deprecated //取消使用requestId，防重复提交使用前端限制
 public class RequestIdController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class RequestIdController {
 
     @RequestMapping("createAndGet")
     public JSONObject createAndGet() {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 String requestId;

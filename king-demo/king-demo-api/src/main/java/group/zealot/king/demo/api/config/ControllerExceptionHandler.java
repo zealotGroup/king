@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public JSONObject exceptionHandler(Exception e) {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 if (e instanceof NoHandlerFoundException) {
@@ -45,7 +45,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = BaseRuntimeException.class)
     public JSONObject baseRuntimeExceptionHandler(RuntimeException e) {
-        return new ResultFul() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
                 if (e instanceof BaseRuntimeException) {
