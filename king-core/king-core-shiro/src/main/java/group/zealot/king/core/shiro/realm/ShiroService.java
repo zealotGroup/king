@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+import java.util.Set;
+
 @Component
 public class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -57,20 +60,46 @@ public class ShiroService {
         return simpleAuthorizationInfo;
     }
 
-    public boolean isLogin() throws ShiroException {
+    public boolean isAuthenticated() throws ShiroException {
         Subject subject = SecurityUtils.getSubject();
         return subject.isAuthenticated();
     }
 
-    public boolean isRemembered() throws ShiroException {
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+    }
+
+    public boolean isRemembered() {
         Subject subject = SecurityUtils.getSubject();
         return subject.isRemembered();
     }
 
-    public void shiroLogin(String username, String password) throws ShiroException {
+    public void login(String username, String password) throws ShiroException {
         Subject subject = SecurityUtils.getSubject();
         // 调用安全认证框架的登录方法
         subject.login(new ShiroToken(username, password.toCharArray()));
+    }
+
+    public ShiroUser getPrincipal() {
+        Subject subject = SecurityUtils.getSubject();
+        // 调用安全认证框架的登录方法
+        return (ShiroUser) subject.getPrincipal();
+    }
+
+    public Serializable getSessionId() {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.getSession().getId();
+    }
+
+    public Set<String> getRoles() {
+        Subject subject = SecurityUtils.getSubject();
+        return (Set) subject.getSession().getAttribute("");
+    }
+
+    public Set<String> getStringPermissions() {
+        Subject subject = SecurityUtils.getSubject();
+        return (Set) subject.getSession().getAttribute("");
     }
 
     /**

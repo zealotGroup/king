@@ -30,7 +30,7 @@ import static group.zealot.king.core.shiro.ShiroConfig.sessionTimeout;
 @Component
 public class ShiroSessionManager extends DefaultWebSessionManager {
     private final static Logger logger = LoggerFactory.getLogger(ShiroSessionManager.class);
-    public final static String AUTH_TOKEN = "auth-token";
+    public final static String SESSION_ID = "sessionId";
     public static final String HEADER_SESSION_ID_SOURCE = "header";
 
     public ShiroSessionManager() {
@@ -63,7 +63,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
             HttpServletResponse response = WebUtils.getHttpResponse(context);
             Serializable sessionId = session.getId();
             String id = sessionId.toString();
-            response.setHeader(AUTH_TOKEN, id);
+            response.setHeader(SESSION_ID, id);
         }
     }
 
@@ -83,7 +83,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
 
     private void removeSessionHeader(HttpServletResponse response) {
         logger.debug("Removing session ID Header.");
-        response.setHeader(AUTH_TOKEN, "deleteMe");//覆盖
+        response.setHeader(SESSION_ID, "deleteMe");//覆盖
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
         } else {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             // 在request 中 读取 x-auth-token 信息  作为 sessionId
-            return httpRequest.getHeader(AUTH_TOKEN);
+            return httpRequest.getHeader(SESSION_ID);
         }
     }
 }

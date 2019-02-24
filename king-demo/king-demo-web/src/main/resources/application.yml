@@ -9,7 +9,7 @@ spring:
     password: zealot
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      minimum-idle: 10
+      minimum-idle: 5
       maximum-pool-size: 15
       auto-commit: false
       idle-timeout: 30000
@@ -45,10 +45,6 @@ spring:
       force: true
       charset: UTF-8
       enabled: true
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
 mybatis:
   typeAliasesPackage: group.zealot.king
   mapperLocations: classpath*:mapper/**/*.xml

@@ -2,9 +2,7 @@ package group.zealot.king.demo.web;
 
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
-import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
 import group.zealot.king.core.zt.mybatis.system.service.SysIdService;
-import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +19,13 @@ public class IndexController {
     private SysIdService sysIdService;
     @Autowired
     private ShiroService shiroService;
-    @Autowired
-    private SysUserService sysUserService;
 
     @RequestMapping(value = "/")
     public String index(Model model, String username, String password) {
         model.addAttribute("id", sysIdService.getId());
-//        String pass = shiroService.entryptPassword(password.getBytes(), username.getBytes());
-//        sysUserService.updatePassword(username, pass);
         try {
-            if (!shiroService.isLogin()){
-                shiroService.shiroLogin(username, password);
+            if (!shiroService.isAuthenticated()){
+                shiroService.login(username, password);
             }
             model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
         } catch (ShiroException e) {

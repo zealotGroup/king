@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/requestId")
+@Deprecated
 public class RequestIdController {
 
     @Autowired

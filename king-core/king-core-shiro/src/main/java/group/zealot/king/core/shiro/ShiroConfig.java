@@ -127,7 +127,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/login", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login/logout", "logout");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }
