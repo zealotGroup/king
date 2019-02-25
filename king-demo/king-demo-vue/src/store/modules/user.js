@@ -50,8 +50,8 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           const data = response.data
-          commit('SET_TOKEN', data.sessionId)
-          setToken(response.data.sessionId)
+          commit('SET_TOKEN', data) // 缓存本地，非cookies
+          setToken(data) // 储存到cookies
           resolve()
         }).catch(error => {
           reject(error)
