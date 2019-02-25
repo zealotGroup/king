@@ -39,8 +39,9 @@ service.interceptors.response.use(
      * code为非200是抛错 可结合自己业务进行修改
      */
     const res = response.data
-    console.info(res)
+    console.debug(res)
     if (res.code !== 200) {
+      console.error('请求失败' + res.code)
       Message({
         message: res.msg,
         type: 'error',
