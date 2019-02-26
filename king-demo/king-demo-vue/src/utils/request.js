@@ -41,7 +41,7 @@ service.interceptors.response.use(
     const res = response.data
     console.debug(res)
     if (res.code !== 200) {
-      console.error('请求失败' + res.code)
+      console.error('请求失败 code = ' + res.code + ' url = ' + response.config.url)
       Message({
         message: res.msg,
         type: 'error',

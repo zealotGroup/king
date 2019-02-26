@@ -49,6 +49,15 @@ const userInfoMap = {
     name: 'Normal Editor'
   }
 }
+const logoutMap = {
+  success: {
+    code: 200
+  },
+  error: {
+    code: 500,
+    msg: '退出登录出错'
+  }
+}
 
 export default {
   loginByUsername: config => {
@@ -68,6 +77,6 @@ export default {
     }
   },
   logout: () => {
-    return 'success'
+    return logoutMap.success
   }
 }
