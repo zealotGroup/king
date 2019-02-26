@@ -27,12 +27,11 @@ const userInfoMap = {
     data: {
       principals: {
         roles: ['admin']
-      }
+      },
+      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif'
     },
-    roles: ['admin'],
     token: 'admin',
     introduction: '我是超级管理员',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
   editor: {
@@ -40,12 +39,11 @@ const userInfoMap = {
     data: {
       principals: {
         roles: ['editor']
-      }
+      },
+      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif'
     },
-    roles: ['editor'],
     token: 'editor',
     introduction: '我是编辑',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   }
 }
