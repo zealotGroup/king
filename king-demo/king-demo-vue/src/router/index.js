@@ -27,8 +27,8 @@ import Layout from '@/views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true },
-  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
-  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
+  { path: '/404', component: () => import('@/views/system/errorPage/404'), hidden: true },
+  { path: '/401', component: () => import('@/views/system/errorPage/401'), hidden: true },
   {
     path: '',
     component: Layout,
@@ -52,7 +52,7 @@ export const superRouterMap = [
   {
     path: '/funShow',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: '/funShow/components',
     name: 'FunShow',
     meta: {
       title: 'FunShow',
@@ -60,60 +60,61 @@ export const superRouterMap = [
     },
     children: [
       {
-        path: '/components',
+        path: '/funShow/components',
         component: () => import('@/views/Blank'),
-        redirect: 'noredirect',
+        redirect: '/funShow/components/drag-dialog',
         name: 'component-demo',
         meta: {
           title: 'components',
           icon: 'component'
         },
         children: [
-          { path: 'drag-dialog', component: () => import('@/views/components-demo/dragDialog'), name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
-          { path: 'dnd-list', component: () => import('@/views/components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' }},
-          { path: 'drag-kanban', component: () => import('@/views/components-demo/dragKanban'), name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
+          { path: 'drag-dialog', component: () => import('@/views/funShow/components-demo/dragDialog'), name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
+          { path: 'dnd-list', component: () => import('@/views/funShow/components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' }},
+          { path: 'drag-kanban', component: () => import('@/views/funShow/components-demo/dragKanban'), name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
         ]
       },
 
       {
-        path: '/charts',
+        path: '/funShow/charts',
         component: () => import('@/views/Blank'),
-        redirect: 'noredirect',
+        redirect: '/funShow/charts/keyboard',
         name: 'charts',
         meta: {
           title: 'charts',
           icon: 'chart'
         },
         children: [
-          { path: 'keyboard', component: () => import('@/views/charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
-          { path: 'line', component: () => import('@/views/charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
-          { path: 'mixchart', component: () => import('@/views/charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
+          { path: 'keyboard', component: () => import('@/views/funShow/charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
+          { path: 'line', component: () => import('@/views/funShow/charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
+          { path: 'mixchart', component: () => import('@/views/funShow/charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
         ]
       },
 
       {
-        path: '/tab',
+        path: '/funShow/tab',
         component: () => import('@/views/Blank'),
+        redirect: '/funShow/tab/index',
         children: [{
           path: 'index',
-          component: () => import('@/views/tab/index'),
+          component: () => import('@/views/funShow/tab/index'),
           name: 'tab',
           meta: { title: 'tab', icon: 'tab' }
         }]
       },
 
       {
-        path: '/table',
+        path: '/funShow/table',
         component: () => import('@/views/Blank'),
-        redirect: '/table/complex-table',
+        redirect: '/funShow/table/inline-edit-table',
         name: 'table',
         meta: {
           title: 'Table',
           icon: 'table'
         },
         children: [
-          { path: 'inline-edit-table', component: () => import('@/views/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-          { path: 'complex-table', component: () => import('@/views/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
+          { path: 'inline-edit-table', component: () => import('@/views/funShow/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          { path: 'complex-table', component: () => import('@/views/funShow/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
         ]
       }
     ]
@@ -121,7 +122,7 @@ export const superRouterMap = [
   {
     path: '/system',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: '/system/icon',
     name: 'System',
     meta: {
       title: 'System',
@@ -131,9 +132,10 @@ export const superRouterMap = [
       {
         path: '/system/icon',
         component: () => import('@/views/Blank'),
+        redirect: '/system/icon/index',
         children: [{
           path: 'index',
-          component: () => import('@/views/svg-icons/index'),
+          component: () => import('@/views/system/svg-icons/index'),
           name: 'icons',
           meta: { title: 'icons', icon: 'icon', noCache: true }
         }]
@@ -141,27 +143,28 @@ export const superRouterMap = [
       {
         path: '/system/error',
         component: () => import('@/views/Blank'),
-        redirect: 'noredirect',
+        redirect: '/system/error/401',
         name: 'errorPages',
         meta: {
           title: 'errorPages',
           icon: '404'
         },
         children: [
-          { path: '401', component: () => import('@/views/errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
-          { path: '404', component: () => import('@/views/errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
+          { path: '401', component: () => import('@/views/system/errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
+          { path: '404', component: () => import('@/views/system/errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
         ]
       },
       {
         path: '/system/theme',
         component: () => import('@/views/Blank'),
-        redirect: 'noredirect',
-        children: [{ path: 'index', component: () => import('@/views/theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
+        redirect: '/system/theme/index',
+        children: [{ path: 'index', component: () => import('@/views/system/theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
       },
       {
         path: '/system/i18n',
         component: () => import('@/views/Blank'),
-        children: [{ path: 'index', component: () => import('@/views/i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+        redirect: '/system/i18n/index',
+        children: [{ path: 'index', component: () => import('@/views/system/i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
       }
     ]
   },
