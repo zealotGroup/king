@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import screenfull from 'screenfull'
+import screenfull from 'screenfull' // elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT); elem[request]({ navigationUI: "auto" });
 
 export default {
   name: 'screenfull',

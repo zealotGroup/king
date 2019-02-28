@@ -32,14 +32,14 @@ export default {
     bar: 'Bar',
     barProfile: 'Profile',
     barPosts: 'Posts',
-    Table: 'Table',
+    Table: '表格',
     dynamicTable: '动态Table',
     dragTable: '拖拽Table',
     inlineEditTable: 'Table内编辑',
     complexTable: '综合Table',
     treeTable: '树形表格',
     customTreeTable: '自定义树表',
-    tab: 'Tab',
+    tab: 'Tab页',
     form: '表单',
     createArticle: '创建文章',
     editArticle: '编辑文章',
@@ -56,7 +56,9 @@ export default {
     exportZip: 'Export Zip',
     theme: '换肤',
     clipboardDemo: 'Clipboard',
-    i18n: '国际化'
+    i18n: '国际化',
+    System: '系统',
+    FunShow: '功能Show'
   },
   navbar: {
     logOut: '退出登录',
