@@ -58,7 +58,10 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
     System: 'System',
-    FunShow: 'FunShow'
+    FunShow: 'FunShow',
+    Admin: 'manage',
+    role: 'role',
+    user: 'user'
   },
   navbar: {
     logOut: 'Log Out',

@@ -52,6 +52,7 @@ const user = {
           const data = response.data
           commit('SET_TOKEN', data) // 缓存本地，非cookies
           setToken(data) // 储存到cookies
+          console.debug('储存 token 到 cookies完成')
           resolve()
         }).catch(error => {
           reject(error)
@@ -66,6 +67,7 @@ const user = {
           const data = response.data
           if (data.principals.roles && data.principals.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.principals.roles)
+            console.debug('set roles完成')
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
@@ -87,6 +89,7 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          console.debug('移除 token完成')
           resolve()
         }).catch(error => {
           reject(error)

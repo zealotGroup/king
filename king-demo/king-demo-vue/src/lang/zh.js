@@ -58,7 +58,10 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
     System: '系统',
-    FunShow: '功能Show'
+    FunShow: '功能Show',
+    Admin: '管理',
+    role: '角色',
+    user: '用户'
   },
   navbar: {
     logOut: '退出登录',

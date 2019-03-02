@@ -39,6 +39,30 @@ export const constantRouterMap = [
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
     }]
+  },
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/role',
+    name: 'Admin',
+    meta: {
+      title: 'Admin',
+      icon: 'set'
+    },
+    children: [
+      {
+        path: 'role',
+        component: () => import('@/views/admin/role'),
+        name: 'role',
+        meta: { title: 'role', icon: 'theme', noCache: true }
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/admin/user'),
+        name: 'user',
+        meta: { title: 'user', icon: 'peoples', noCache: true }
+      }
+    ]
   }
 ]
 
