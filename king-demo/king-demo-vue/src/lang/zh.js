@@ -108,12 +108,12 @@ export default {
     title: '标题',
     importance: '重要性',
     type: '类型',
-    remark: '点评',
+    remark: '备注',
     search: '搜索',
     add: '添加',
     export: '导出',
     reviewer: '审核人',
-    id: '序号',
+    id: 'ID',
     date: '时间',
     author: '作者',
     readings: '阅读数',
@@ -124,7 +124,20 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+
+    No: '序号',
+    username: '用户名',
+    password: '密码',
+    routeRole: '路由角色',
+    dataRole: '数据角色',
+    loginTimes: '登录次数',
+    level: '等级',
+    createTime: '创建时间',
+    createUser: '创建人',
+    lastUpdateTime: '最后修改时间',
+    lastUpdateUser: '最后修改人',
+    lastLoginTime: '最后登录时间'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -149,5 +162,21 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  svip: '超级会员',
+  vip: '会员',
+  user: '用户',
+  admin: '管理员',
+  super: '超管',
+  able: '启用',
+  disable: '禁用',
+  deleted: '已删除',
+  btn: {
+    delete: '删除',
+    able: '启用',
+    disable: '禁用',
+    edit: '修改',
+    view: '查看',
+    add: '添加'
   }
 }

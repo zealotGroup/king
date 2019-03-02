@@ -124,7 +124,20 @@ export default {
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+
+    No: 'No.',
+    username: 'Username',
+    password: 'Password',
+    routeRole: 'Route-Role',
+    dataRole: 'Data-Role',
+    loginTimes: 'Login Times',
+    level: 'Level',
+    createTime: 'Create Time',
+    createUser: 'Create User',
+    lastUpdateTime: 'Last Update Time',
+    lastUpdateUser: 'Last Update User',
+    lastLoginTime: 'Last Login Time'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -149,5 +162,13 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
-  }
+  },
+  svip: 'svip',
+  vip: 'vip',
+  user: 'user',
+  admin: 'admin',
+  super: 'super',
+  able: 'able',
+  disable: 'disable',
+  deleted: 'delete'
 }

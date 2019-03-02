@@ -22,57 +22,90 @@
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
-      style="width: 100%;min-height:1000px;">
-      <el-table-column align="center" :label="$t('table.id')" width="65">
+      style="width: 100%;min-height:700px;">
+      <el-table-column  min-width="60"align="center" :label="$t('table.No')">
         <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
+          <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="150px" align="center" :label="$t('table.date')">
+      <el-table-column min-width="50px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="150px" :label="$t('table.title')">
+      <el-table-column min-width="100px" :label="$t('table.username')">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
-          <el-tag>{{scope.row.type | typeFilter}}</el-tag>
+          <span>{{scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="110px" align="center" :label="$t('table.author')">
+      <el-table-column min-width="100px" align="center" :label="$t('table.password')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.author}}</span>
+          <span>{{scope.row.password}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="110px" v-if='showReviewer' align="center" :label="$t('table.reviewer')">
+      <el-table-column min-width="95px" align="center" :label="$t('table.status')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <span style='color:red;'>{{scope.row.reviewer}}</span>
+          <el-button :type="typeStatus(scope.row.status)" size="mini" >{{ $t(scope.row.status)}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column width="80px" :label="$t('table.importance')">
+      <el-table-column min-width="95px" class-name="status-col" :label="$t('table.level')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
+          <el-tag :type="typeLevel(scope.row.level)">
+            {{ $t(scope.row.level) }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('table.readings')" width="95">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.lastLoginTime')">
         <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click='handleFetchPv(scope.row.pageviews)'>{{scope.row.pageviews}}</span>
-          <span v-else>0</span>
+          <span>{{ scope.row.lastLoginTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" :label="$t('table.status')" width="100">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.loginTimes')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
+          <span>{{scope.row.loginTimes}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="85px" align="center" :label="$t('table.routeRole')" v-if="checkLevel('super') || checkLevel('admin')">
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.routeRole }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="85px" :label="$t('table.dataRole')" v-if="checkLevel('super') || checkLevel('admin')">
+        <template slot-scope="scope">
+          <el-tag>{{scope.row.dataRole }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.createTime')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.createUser')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.createUser}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.lastUpdateTime')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.lastUpdateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.lastUpdateUser')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.lastUpdateUser}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.remark')">
+        <template slot-scope="scope">
+          <span>{{scope.row.remark}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{$t('table.publish')}}
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('btn.edit')}}</el-button>
+          <el-button v-if="scope.row.status != 'deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('btn.delete')}}
           </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{$t('table.draft')}}
-          </el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
+          <el-button v-if="scope.row.status === 'deleted'" size="mini" type="success" @click="handleModifyStatus(scope.row,'able')">{{$t('btn.able')}}
           </el-button>
         </template>
       </el-table-column>
@@ -136,6 +169,7 @@
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
+import store from '@/store'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -163,7 +197,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -200,14 +234,6 @@ export default {
     }
   },
   filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
     typeFilter(type) {
       return calendarTypeKeyValue[type]
     }
@@ -218,9 +244,9 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
+      fetchList(this.listQuery).then(data => {
+        this.list = data.items
+        this.total = data.total
 
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -328,8 +354,8 @@ export default {
       this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
+      fetchPv(pv).then(data => {
+        this.pvData = data.pvData
         this.dialogPvVisible = true
       })
     },
@@ -355,6 +381,23 @@ export default {
           return v[j]
         }
       }))
+    },
+    typeLevel(level) {
+      if (level === 'vip') return 'danger'
+      if (level === 'svip') return 'warning'
+      if (level === 'admin') return ''
+      if (level === 'super') return 'success'
+      return 'info'
+    },
+    typeStatus(status) {
+      if (status === 'able') return 'success'
+      if (status === 'disable') return 'danger'
+      if (status === 'deleted') return ''
+      return 'warning'
+    },
+    checkLevel(level) {
+      // return store.getters.level === level
+      return true
     }
   }
 }

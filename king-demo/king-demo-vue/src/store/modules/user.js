@@ -13,7 +13,8 @@ const user = {
     roles: [],
     setting: {
       articlePlatform: []
-    }
+    },
+    level: ''
   },
 
   mutations: {
@@ -40,6 +41,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_LEVEL: (state, level) => {
+      state.level = level
     }
   },
 
@@ -48,8 +52,7 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
-          const data = response.data
+        login(username, userInfo.password).then(data => {
           commit('SET_TOKEN', data) // 缓存本地，非cookies
           setToken(data) // 储存到cookies
           console.debug('储存 token 到 cookies完成')
@@ -63,19 +66,15 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo().then(response => {
-          const data = response.data
+        getUserInfo().then(data => {
           if (data.principals.roles && data.principals.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.principals.roles)
-            console.debug('set roles完成')
+            commit('SET_LEVEL', data.level)
+            console.debug('set info完成')
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve(response)
+          resolve(data)
         }).catch(error => {
           reject(error)
         })
@@ -88,6 +87,7 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_LEVEL', '')
           removeToken()
           console.debug('移除 token完成')
           resolve()

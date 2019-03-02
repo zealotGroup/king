@@ -28,11 +28,9 @@ const userInfoMap = {
       principals: {
         roles: ['admin']
       },
-      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif'
-    },
-    token: 'admin',
-    introduction: '我是超级管理员',
-    name: 'Super Admin'
+      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif',
+      level: 'super'
+    }
   },
   editor: {
     code: 200,
@@ -40,11 +38,9 @@ const userInfoMap = {
       principals: {
         roles: ['editor']
       },
-      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif'
-    },
-    token: 'editor',
-    introduction: '我是编辑',
-    name: 'Normal Editor'
+      avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif',
+      level: 'admin'
+    }
   }
 }
 const logoutMap = {

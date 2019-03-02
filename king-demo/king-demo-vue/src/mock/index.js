@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 import loginAPI from './login'
-import articleAPI from './article'
+// import articleAPI from './article'
+import articleAPI from './admin/user'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
