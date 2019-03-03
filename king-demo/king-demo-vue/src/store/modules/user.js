@@ -1,4 +1,4 @@
-import { login, logout, getUserInfo } from '@/api/login'
+import { login, logout, loginInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -66,7 +66,7 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo().then(data => {
+        loginInfo().then(data => {
           if (data.principals.roles && data.principals.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.principals.roles)
             commit('SET_LEVEL', data.level)
@@ -111,7 +111,7 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', role)
         setToken(role)
-        getUserInfo(role).then(response => {
+        loginInfo(role).then(response => {
           const data = response.data
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)

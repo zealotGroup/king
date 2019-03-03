@@ -59,7 +59,7 @@ export default {
     const { username } = obj // username 就是所谓的 登录名
     return loginMap[username]// 输入的是admin 就选择admin对象
   },
-  getUserInfo: config => {
+  loginInfo: config => {
     const token = getToken()
 
     if (token && token.sessionId === loginMap.admin.data.sessionId) {

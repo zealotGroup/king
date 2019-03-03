@@ -126,12 +126,12 @@ export default {
     delete: '删除',
     cancel: '取 消',
     confirm: '确 定',
+    No: '序号',
 
     required: '必填',
     user: {
       id: 'ID',
       status: '状态',
-      No: '序号',
       username: '用户名',
       password: '密码',
       routeRole: '路由角色',
@@ -178,13 +178,24 @@ export default {
   able: '启用',
   disable: '禁用',
   deleted: '已删除',
+  id: 'ID',
   btn: {
     delete: '删除',
     able: '启用',
     disable: '禁用',
     edit: '修改',
+    ok: '确认',
+    cancel: '取消',
     update: '更新',
     view: '查看',
     add: '添加'
+  },
+  role: {
+    dataRole: {
+      name: '数据角色'
+    },
+    routeRole: {
+      name: '路由角色'
+    }
   }
 }
