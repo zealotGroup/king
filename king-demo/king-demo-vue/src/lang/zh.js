@@ -127,6 +127,7 @@ export default {
     cancel: '取 消',
     confirm: '确 定',
 
+    required: '必填',
     user: {
       id: 'ID',
       status: '状态',

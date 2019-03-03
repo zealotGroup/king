@@ -111,23 +111,23 @@
     </div>
 
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('table.user.id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.username')" prop="username">
+        <el-form-item :label="$t('table.user.username')" prop="username" :rules="rules.username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.password')" prop="password">
+        <el-form-item :label="$t('table.user.password')" prop="password" :rules="rules.password">
           <el-input v-model="temp.password"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.status')" prop="status">
+        <el-form-item :label="$t('table.user.status')" prop="status" :rules="rules.status">
           <el-select class="filter-item" v-model="temp.status" :placeholder="$t('table.user.status')">
             <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.user.level')" prop="level">
+        <el-form-item :label="$t('table.user.level')" prop="level" :rules="rules.level">
           <el-select class="filter-item" v-model="temp.level" :placeholder="$t('table.user.level')">
             <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
             </el-option>
@@ -141,7 +141,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button v-if="dialogType=='add'" type="primary" @click="addData">{{$t('table.confirm')}}</el-button>
         <el-button v-else="dialogType=='update'" type="primary" @click="updateData">{{$t('table.confirm')}}</el-button>
-        <el-button @click="handleCleanDialog">{{$t('table.cancel')}}</el-button>
+        <el-button @click="cleanDialog">{{$t('table.cancel')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -183,11 +183,12 @@ export default {
       },
       dialogFormVisible: false,
       dialogType: '',
-      dialogTitle: 'table.',
+      dialogTitle: '',
       rules: {
-        type: [{ required: true, message: 'table.required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'table.required', trigger: 'change' }],
-        title: [{ required: true, message: 'table.required', trigger: 'blur' }]
+        username: [{ required: true, message: this.$t('table.required'), trigger: 'change' }],
+        password: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }],
+        status: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }],
+        level: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }]
       }
     }
   },
