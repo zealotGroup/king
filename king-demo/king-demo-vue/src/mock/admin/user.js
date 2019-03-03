@@ -65,7 +65,7 @@ for (let i = 0; i < count; i++) {
     dataRole: 'super',
     status: '',
     loginTimes: '132',
-    level: 'admin',
+    level: 'user',
     createTime: new Date(),
     createUser: '12',
     lastUpdateTime: new Date(),
@@ -77,18 +77,16 @@ for (let i = 0; i < count; i++) {
 
 export default {
   getList: config => {
-    const { importance, type, title, page = 1, limit = 20, sort } = param2Obj(config.url)
+    const { username, status, level, page, limit } = param2Obj(config.url)
 
-    let mockList = List.filter(item => {
-      if (importance && item.importance !== +importance) return false
-      if (type && item.type !== type) return false
-      if (title && item.title.indexOf(title) < 0) return false
+    console.debug(status)
+    console.debug(level)
+    const mockList = List.filter(item => {
+      if (username && item.username.indexOf(username) === -1) return false
+      if (status && item.status !== status) return false
+      if (level && item.level !== level) return false
       return true
     })
-
-    if (sort === '-id') {
-      mockList = mockList.reverse()
-    }
 
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
@@ -100,21 +98,29 @@ export default {
       }
     }
   },
-  getPv: () => ({
-    pvData: [{ key: 'PC', pv: 1024 }, { key: 'mobile', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
-  }),
-  getArticle: (config) => {
+  get: (config) => {
     const { id } = param2Obj(config.url)
-    for (const article of List) {
-      if (article.id === +id) {
-        return article
+    for (const vo of List) {
+      if (vo.id === +id) {
+        return {
+          code: 200,
+          data: {
+            vo
+          }
+        }
       }
     }
   },
-  createArticle: () => ({
+  add: () => ({
+    code: 200,
     data: 'success'
   }),
-  updateArticle: () => ({
+  update: () => ({
+    code: 200,
+    data: 'success'
+  }),
+  del: () => ({
+    code: 200,
     data: 'success'
   })
 }

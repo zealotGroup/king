@@ -111,6 +111,7 @@ export default {
     remark: '备注',
     search: '搜索',
     add: '添加',
+    update: '修改',
     export: '导出',
     reviewer: '审核人',
     id: 'ID',
@@ -126,18 +127,23 @@ export default {
     cancel: '取 消',
     confirm: '确 定',
 
-    No: '序号',
-    username: '用户名',
-    password: '密码',
-    routeRole: '路由角色',
-    dataRole: '数据角色',
-    loginTimes: '登录次数',
-    level: '等级',
-    createTime: '创建时间',
-    createUser: '创建人',
-    lastUpdateTime: '最后修改时间',
-    lastUpdateUser: '最后修改人',
-    lastLoginTime: '最后登录时间'
+    user: {
+      id: 'ID',
+      status: '状态',
+      No: '序号',
+      username: '用户名',
+      password: '密码',
+      routeRole: '路由角色',
+      dataRole: '数据角色',
+      loginTimes: '登录次数',
+      level: '等级',
+      createTime: '创建时间',
+      createUser: '创建人',
+      lastUpdateTime: '最后修改时间',
+      lastUpdateUser: '最后修改人',
+      lastLoginTime: '最后登录时间',
+      remark: '备注'
+    }
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -176,6 +182,7 @@ export default {
     able: '启用',
     disable: '禁用',
     edit: '修改',
+    update: '更新',
     view: '查看',
     add: '添加'
   }
