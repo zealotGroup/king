@@ -22,13 +22,13 @@ Mock.mock(/\/login\/info\.*/, 'get', loginAPI.loginInfo)
 
 Mock.mock(/\/user\/list/, 'get', userAPI.getList)
 Mock.mock(/\/user\/get/, 'get', userAPI.get)
-Mock.mock(/\/user\/add/, 'get', userAPI.add)
+Mock.mock(/\/user\/add/, 'post', userAPI.add)
 Mock.mock(/\/user\/update/, 'post', userAPI.update)
 Mock.mock(/\/user\/del/, 'get', userAPI.del)
 
 Mock.mock(/\/role\/list/, 'get', roleAPI.getList)
 Mock.mock(/\/role\/get/, 'get', roleAPI.get)
-Mock.mock(/\/role\/add/, 'get', roleAPI.add)
+Mock.mock(/\/role\/add/, 'post', roleAPI.add)
 Mock.mock(/\/role\/update/, 'post', roleAPI.update)
 Mock.mock(/\/role\/del/, 'get', roleAPI.del)
 
