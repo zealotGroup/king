@@ -48,8 +48,10 @@ export default {
     return {
       code: 200,
       data: {
-        total: mockList.length,
-        items: pageList
+        data: {
+          total: mockList.length,
+          items: pageList
+        }
       }
     }
   },
@@ -60,14 +62,23 @@ export default {
     const { id } = param2Obj(config.url)
     for (const article of List) {
       if (article.id === +id) {
-        return article
+        return {
+          code: 200,
+          data: {
+            data: {
+              article
+            }
+          }
+        }
       }
     }
   },
   createArticle: () => ({
+    code: 200,
     data: 'success'
   }),
   updateArticle: () => ({
+    code: 200,
     data: 'success'
   })
 }

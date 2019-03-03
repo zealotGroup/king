@@ -1,5 +1,6 @@
 import Mock from 'mockjs'
 import loginAPI from './login'
+import articleAPI from './article'
 import userAPI from './admin/user'
 import roleAPI from './admin/role'
 import remoteSearchAPI from './remoteSearch'
@@ -8,6 +9,11 @@ import transactionAPI from './transaction'
 Mock.setup({
   timeout: '350-600'
 })
+Mock.mock(/\/article\/list/, 'get', articleAPI.getList)
+Mock.mock(/\/article\/detail/, 'get', articleAPI.getArticle)
+Mock.mock(/\/article\/pv/, 'get', articleAPI.getPv)
+Mock.mock(/\/article\/create/, 'post', articleAPI.createArticle)
+Mock.mock(/\/article\/update/, 'post', articleAPI.updateArticle)
 
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
