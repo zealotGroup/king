@@ -5,7 +5,7 @@
     <breadcrumb class="breadcrumb-container"></breadcrumb>
 
     <div class="right-menu">
-      <error-log class="errLog-container right-menu-item"></error-log>
+      <error-log v-if="checkLevel('super')" class="errLog-container right-menu-item"></error-log>
 
       <el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">
         <screenfull class="screenfull right-menu-item"></screenfull>
@@ -28,7 +28,7 @@
               {{$t('navbar.dashboard')}}
             </el-dropdown-item>
           </router-link>
-          <a target='_blank' href="https://github.com/zealotTL">
+          <a v-if="checkLevel('super')" target='_blank' href="https://github.com/zealotTL">
             <el-dropdown-item>
               {{$t('navbar.github')}}
             </el-dropdown-item>
@@ -50,6 +50,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
+import store from '@/store'
 
 export default {
   components: {
@@ -75,6 +76,11 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
       })
+    },
+    checkLevel(level) {
+      let fg = store.getters.level === level
+      fg = true
+      return fg
     }
   }
 }
