@@ -170,5 +170,42 @@ export default {
   super: 'super',
   able: 'able',
   disable: 'disable',
-  deleted: 'delete'
+  deleted: 'delete',
+  id: 'ID',
+  btn: {
+    delete: '删除',
+    able: '启用',
+    disable: '禁用',
+    edit: '修改',
+    ok: '确认',
+    cancel: '取消',
+    update: '更新',
+    view: '查看',
+    add: '添加'
+  },
+  role: {
+    dataRole: {
+      name: '数据角色'
+    },
+    routeRole: {
+      name: '路由角色'
+    }
+  },
+  name: '姓名',
+  phone: '手机',
+  region: '区域',
+  remarks: '备注',
+  createTime: '创建时间',
+  createUser: '创建人',
+  updateTime: '修改时间',
+  updateUser: '修改人',
+  lastUpdateTime: '最后修改时间',
+  lastUpdateUser: '最后修改人',
+  confirm: '确定',
+  cancel: '取消',
+  update: '修改',
+  add: '添加',
+  required: '必填',
+  supplier: '供应商',
+  supermarket: '超市'
 }

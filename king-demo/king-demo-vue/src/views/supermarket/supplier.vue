@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" :placeholder="$t('table.user.username')">
+      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
       </el-input>
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('table.search')}}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('table.add')}}</el-button>
@@ -168,8 +168,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           add(this.temp).then(() => {
-            this.cleanDialog()
             this.list.unshift(this.temp)
+            this.cleanDialog()
             this.$notify({
               title: '成功',
               message: '创建成功',

@@ -77,7 +77,7 @@ export const constantRouterMap = [
     redirect: '/admin/role',
     name: 'Admin',
     meta: {
-      title: 'Admin',
+      title: 'admin',
       icon: 'set'
     },
     children: [

@@ -59,9 +59,11 @@ export default {
     i18n: '国际化',
     System: '系统',
     FunShow: '功能Show',
-    Admin: '管理',
+    admin: '管理',
     role: '角色',
-    user: '用户'
+    user: '用户',
+    supplier: '供应商',
+    supermarket: '超市'
   },
   navbar: {
     logOut: '退出登录',
@@ -212,5 +214,7 @@ export default {
   update: '修改',
   add: '添加',
   required: '必填',
-  supplier: '供应商'
+  supplier: '供应商',
+  supermarket: '超市'
+
 }
