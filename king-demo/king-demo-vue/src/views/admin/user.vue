@@ -22,7 +22,7 @@
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="50px" align="center" :label="$t('table.user.id')" v-if="checkLevel('super')">
+      <el-table-column min-width="50px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
@@ -168,8 +168,8 @@ export default {
         page: 1,
         limit: 10,
         level: undefined,
-        title: undefined,
-        status: undefined
+        status: undefined,
+        username: undefined
       },
       levelList: ['user', 'vip', 'svip', 'admin', 'super'],
       statusList: ['able', 'disable', 'deleted'],
@@ -250,8 +250,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           add(this.temp).then(() => {
-            this.cleanDialog()
             this.list.unshift(this.temp)
+            this.cleanDialog()
             this.$notify({
               title: '成功',
               message: '创建成功',
@@ -275,7 +275,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           update(this.temp).then(() => {
-            this.cleanDialog()
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -283,6 +282,7 @@ export default {
                 break
               }
             }
+            this.cleanDialog()
             this.$notify({
               title: '成功',
               message: '更新成功',
@@ -299,7 +299,6 @@ export default {
         status: status
       }
       update(vo).then(() => {
-        this.cleanDialog()
         for (const v of this.list) {
           if (v.id === this.temp.id) {
             const index = this.list.indexOf(v)
@@ -307,6 +306,7 @@ export default {
             break
           }
         }
+        this.cleanDialog()
         this.$notify({
           title: '成功',
           message: '更新成功',
@@ -319,6 +319,7 @@ export default {
       del(row.id).then(() => {
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
+        this.cleanDialog()
         this.$notify({
           title: '成功',
           message: '删除成功',

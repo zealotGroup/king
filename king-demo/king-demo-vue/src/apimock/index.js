@@ -5,6 +5,7 @@ import userAPI from './admin/user'
 import roleAPI from './admin/role'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
+import supermarketSupplierAPI from './supermarket/supplier'
 
 Mock.setup({
   timeout: '350-600'
@@ -31,6 +32,12 @@ Mock.mock(/\/role\/get/, 'get', roleAPI.get)
 Mock.mock(/\/role\/add/, 'get', roleAPI.add)
 Mock.mock(/\/role\/update/, 'post', roleAPI.update)
 Mock.mock(/\/role\/del/, 'get', roleAPI.del)
+
+Mock.mock(/\/supermarket\/supplier\/list/, 'get', supermarketSupplierAPI.getList)
+Mock.mock(/\/supermarket\/supplier\/get/, 'get', supermarketSupplierAPI.get)
+Mock.mock(/\/supermarket\/supplier\/add/, 'get', supermarketSupplierAPI.add)
+Mock.mock(/\/supermarket\/supplier\/update/, 'post', supermarketSupplierAPI.update)
+Mock.mock(/\/supermarket\/supplier\/del/, 'get', supermarketSupplierAPI.del)
 
 // 搜索相关
 Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser)
