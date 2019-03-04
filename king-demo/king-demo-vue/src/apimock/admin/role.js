@@ -7,14 +7,14 @@ const count = 100
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     No: '@increment',
-    id: '1-100',
+    id: '@increment',
     name: 'abc',
     createTime: new Date(),
     createUser: '12'
   }))
   List.push(Mock.mock({
     No: '@increment',
-    id: '1-100',
+    id: '@increment',
     name: 'abc',
     createTime: new Date(),
     createUser: '12'

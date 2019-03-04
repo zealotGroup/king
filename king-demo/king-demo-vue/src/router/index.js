@@ -41,6 +41,37 @@ export const constantRouterMap = [
     }]
   },
   {
+    path: '/supermarket',
+    component: Layout,
+    redirect: '/supermarket/supplier',
+    name: 'supermarket',
+    meta: {
+      title: 'supermarket',
+      icon: 'shoppingCard'
+    },
+    children: [{
+      path: 'supplier',
+      component: () => import('@/views/supermarket/supplier'),
+      name: 'supplier',
+      meta: { title: 'supplier', icon: 'shoppingCard', noCache: true }
+    }, {
+      path: 'customer',
+      component: () => import('@/views/supermarket/supplier'),
+      name: 'customer',
+      meta: { title: 'customer', icon: 'customer', noCache: true }
+    }, {
+      path: 'product',
+      component: () => import('@/views/supermarket/supplier'),
+      name: 'product',
+      meta: { title: 'product', icon: 'product', noCache: true }
+    }, {
+      path: 'reportForm',
+      component: () => import('@/views/supermarket/supplier'),
+      name: 'reportForm',
+      meta: { title: 'reportForm', icon: 'reportForm', noCache: true }
+    }]
+  },
+  {
     path: '/admin',
     component: Layout,
     redirect: '/admin/role',

@@ -130,7 +130,6 @@ export default {
 
     required: '必填',
     user: {
-      id: 'ID',
       status: '状态',
       username: '用户名',
       password: '密码',
@@ -197,5 +196,21 @@ export default {
     routeRole: {
       name: '路由角色'
     }
-  }
+  },
+  name: '姓名',
+  phone: '手机',
+  region: '区域',
+  remarks: '备注',
+  createTime: '创建时间',
+  createUser: '创建人',
+  updateTime: '修改时间',
+  updateUser: '修改人',
+  lastUpdateTime: '最后修改时间',
+  lastUpdateUser: '最后修改人',
+  confirm: '确定',
+  cancel: '取消',
+  update: '修改',
+  add: '添加',
+  required: '必填',
+  supplier: '供应商'
 }
