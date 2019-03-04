@@ -8,7 +8,7 @@
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
-      style="width: 100%;min-height:700px;">
+      style="width: 100%;min-height:500px;">
       <el-table-column  min-width="60px"align="center" :label="$t('table.No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>

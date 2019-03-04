@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
 
-    <el-table :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%">
+    <el-table :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%;min-height:500px;">
       <el-table-column  min-width="60px"align="center" :label="$t('table.No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
