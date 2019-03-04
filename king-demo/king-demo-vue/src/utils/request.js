@@ -42,10 +42,11 @@ service.interceptors.response.use(
     console.debug(res)
     if (res.code !== 200) {
       console.error('请求失败 code = ' + res.code + ' url = ' + response.config.url)
+      console.error('res.msg = ' + res.msg)
       Message({
-        message: res.msg,
+        message: '操作失败',
         type: 'error',
-        duration: 5 * 1000
+        duration: 1000
       })
 
       // 202:Token 需要认证;
@@ -64,7 +65,7 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(response)
     } else {
       return response.data.data
     }
@@ -72,9 +73,9 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: error.msg,
+      message: '操作错误',
       type: 'error',
-      duration: 5 * 1000
+      duration: 1000
     })
     return Promise.reject(error)
   }

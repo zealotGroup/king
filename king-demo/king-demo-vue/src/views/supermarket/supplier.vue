@@ -97,6 +97,7 @@ export default {
   },
   data() {
     return {
+      clicking: false,
       tableKey: 0,
       list: null,
       total: null,
@@ -140,16 +141,34 @@ export default {
       this.dialogFormVisible = false
       this.dialogTitle = ''
     },
+    notifyClicking(callBack) {
+      if (this.clicking) {
+        this.$notify({
+          title: '警告',
+          message: '重复操作了',
+          type: 'warning',
+          duration: 1000
+        })
+      } else {
+        this.clicking = !this.clicking
+        callBack()
+      }
+    },
     getList() {
-      this.listLoading = true
-      getList(this.listQuery).then(data => {
-        this.list = data.list
-        this.total = data.total
+      this.notifyClicking(() => {
+        this.listLoading = true
+        getList(this.listQuery).then(data => {
+          this.list = data.list
+          this.total = data.total
 
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 0.5 * 1000)
+          // Just to simulate the time of the request
+          setTimeout(() => {
+            this.listLoading = false
+            this.clicking = !this.clicking
+          }, 0.5 * 1000)
+        }).catch(() => {
+          this.clicking = !this.clicking
+        })
       })
     },
     handleSearch() {
@@ -166,104 +185,141 @@ export default {
       this.getList()
     },
     handleAdd() {
-      this.resetTemp()
-      this.dialogType = 'add'
-      this.dialogFormVisible = true
-      this.dialogTitle = 'add'
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      this.notifyClicking(() => {
+        this.resetTemp()
+        this.dialogType = 'add'
+        this.dialogFormVisible = true
+        this.dialogTitle = 'add'
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+        this.clicking = !this.clicking
       })
     },
     addData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          add(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.cleanDialog()
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
+      this.notifyClicking(() => {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            add(this.temp).then(() => {
+              this.list.unshift(this.temp)
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.cleanDialog()
+              this.$refs['dataForm'].clearValidate()
+              this.clicking = !this.clicking
+            }).catch(() => {
+              this.clicking = !this.clicking
             })
-          })
-        }
+          } else {
+            this.clicking = !this.clicking
+          }
+        })
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogType = 'update'
-      this.dialogFormVisible = true
-      this.dialogTitle = 'update'
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      this.notifyClicking(() => {
+        this.temp = Object.assign({}, row) // copy obj
+        this.dialogType = 'update'
+        this.dialogFormVisible = true
+        this.dialogTitle = 'update'
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+        this.clicking = !this.clicking
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          update(this.temp).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
+      this.notifyClicking(() => {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            update(this.temp).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
               }
-            }
-            this.cleanDialog()
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.cleanDialog()
+              this.$refs['dataForm'].clearValidate()
+              this.clicking = !this.clicking
+            }).catch(() => {
+              this.clicking = !this.clicking
             })
-          })
-        }
+          } else {
+            this.clicking = !this.clicking
+          }
+        })
       })
     },
     handleUpdateStatus(row, status) {
-      const vo = {
-        id: row.id,
-        status: status
-      }
-      update(vo).then(() => {
-        this.cleanDialog()
-        for (const v of this.list) {
-          if (v.id === this.temp.id) {
-            const index = this.list.indexOf(v)
-            this.list.splice(index, 1, this.temp)
-            break
-          }
+      this.notifyClicking(() => {
+        const vo = {
+          id: row.id,
+          status: status
         }
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
+        update(vo).then(() => {
+          for (const v of this.list) {
+            if (v.id === this.temp.id) {
+              const index = this.list.indexOf(v)
+              this.list.splice(index, 1, this.temp)
+              break
+            }
+          }
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.cleanDialog()
+          this.clicking = !this.clicking
+        }).catch(() => {
+          this.clicking = !this.clicking
         })
       })
     },
     handleDel(row, deleted) {
-      del(row.id, deleted).then(() => {
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
-        this.$notify({
-          title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+      this.notifyClicking(() => {
+        del(row.id, deleted).then(() => {
+          const index = this.list.indexOf(row)
+          this.list.splice(index, 1)
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.clicking = !this.clicking
+        }).catch(() => {
+          this.clicking = !this.clicking
         })
       })
     },
     handleReadDel(row) {
-      realDel(row.id).then(() => {
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
-        this.$notify({
-          title: '成功',
-          message: '物理删除成功',
-          type: 'success',
-          duration: 2000
+      this.notifyClicking(() => {
+        realDel(row.id).then(() => {
+          const index = this.list.indexOf(row)
+          this.list.splice(index, 1)
+          this.$notify({
+            title: '成功',
+            message: '物理删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.clicking = !this.clicking
+        }).catch(() => {
+          this.clicking = !this.clicking
         })
       })
     },
