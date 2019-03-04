@@ -101,7 +101,10 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        commit('SET_LEVEL', '')
         removeToken()
+        console.debug('移除 token完成')
         resolve()
       })
     },
