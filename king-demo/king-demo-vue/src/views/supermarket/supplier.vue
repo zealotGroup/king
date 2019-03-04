@@ -39,6 +39,16 @@
           <span>{{scope.row.remarks}}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+          <el-button v-if="!scope.row.deleted" size="mini" type="danger" @click="handleDel(scope.row, scope.row.deleted)">{{$t('del')}}
+          </el-button>
+          <el-button v-else size="mini" type="success" @click="handleDel(scope.row, !scope.row.deleted)">{{$t('able')}}
+          </el-button>
+          <el-button type="info" size="small" @click="handleReadDel(scope.row)">{{$t('readDel')}}</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div class="pagination-container">
@@ -75,7 +85,7 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/supermarket/supplier'
+import { getList, add, update, del, realDel } from '@/api/supermarket/supplier'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import store from '@/store'
@@ -133,7 +143,7 @@ export default {
     getList() {
       this.listLoading = true
       getList(this.listQuery).then(data => {
-        this.list = data.items
+        this.list = data.list
         this.total = data.total
 
         // Just to simulate the time of the request
@@ -233,13 +243,25 @@ export default {
         })
       })
     },
-    handleDel(row) {
-      del(row.id).then(() => {
+    handleDel(row, deleted) {
+      del(row.id, deleted).then(() => {
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
         this.$notify({
           title: '成功',
           message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    handleReadDel(row) {
+      realDel(row.id).then(() => {
+        const index = this.list.indexOf(row)
+        this.list.splice(index, 1)
+        this.$notify({
+          title: '成功',
+          message: '物理删除成功',
           type: 'success',
           duration: 2000
         })

@@ -45,7 +45,7 @@ export default {
       code: 200,
       data: {
         total: mockList.length,
-        items: pageList
+        list: pageList
       }
     }
   },

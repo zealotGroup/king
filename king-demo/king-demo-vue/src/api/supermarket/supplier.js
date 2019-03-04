@@ -35,12 +35,12 @@ export function update(data) {
   })
 }
 
-export function del(id) {
+export function del(id, deleted) {
   return request({
     url: url + '/del',
     method: 'get',
     params: {
-      id
+      id, deleted
     }
   })
 }

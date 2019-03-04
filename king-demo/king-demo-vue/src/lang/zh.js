@@ -215,6 +215,12 @@ export default {
   add: '添加',
   required: '必填',
   supplier: '供应商',
-  supermarket: '超市'
+  supermarket: '超市',
+  actions: '操作',
+  del: '删除',
+  edit: '修改',
+  ok: '确认',
+  view: '查看',
+  readDel: '物理删除'
 
 }
