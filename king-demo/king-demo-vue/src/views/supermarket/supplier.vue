@@ -1,4 +1,4 @@
-<template>
+<template v-loading="clicking">
   <div class="app-container">
     <div class="filter-container">
       <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
@@ -42,11 +42,33 @@
       <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-          <el-button v-if="!scope.row.deleted" size="mini" type="danger" @click="handleDel(scope.row, scope.row.deleted)">{{$t('del')}}
-          </el-button>
-          <el-button v-else size="mini" type="success" @click="handleDel(scope.row, !scope.row.deleted)">{{$t('able')}}
-          </el-button>
-          <el-button type="info" size="small" @click="handleReadDel(scope.row)">{{$t('readDel')}}</el-button>
+
+          <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+            <p>确定要删除么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="scope.row.visible_deleted = !scope.row.visible_deleted">取消</el-button>
+              <el-button type="primary" size="mini" @click="handleDel(scope.row, scope.row.deleted)" >确定</el-button>
+            </div>
+            <el-button slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = !scope.row.visible_deleted">{{$t('del')}}</el-button>
+          </el-popover>
+
+          <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
+            <p>确定要恢复么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="scope.row.visible_recover = !scope.row.visible_recover">取消</el-button>
+              <el-button type="primary" size="mini" @click="handleDel(scope.row, !scope.row.deleted)" >确定</el-button>
+            </div>
+            <el-button slot="reference" size="mini" type="success" @click="scope.row.visible_recover = !scope.row.visible_recover">{{$t('able')}}</el-button>
+          </el-popover>
+
+          <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+            <p>确定要物理删除么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="scope.row.visible_readDel = !scope.row.visible_readDel">取消</el-button>
+              <el-button type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+            </div>
+            <el-button slot="reference" type="info" size="small" @click="scope.row.visible_readDel = !scope.row.visible_readDel">{{$t('readDel')}}</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -98,6 +120,9 @@ export default {
   data() {
     return {
       clicking: false,
+      visible_deleted: false,
+      visible_recover: false,
+      visible_readDel: false,
       tableKey: 0,
       list: null,
       total: null,
@@ -119,7 +144,8 @@ export default {
       dialogTitle: '',
       rules: {
         name: [{ required: true, message: this.$t('required'), trigger: 'change' }]
-      }
+      },
+      fullscreenLoading: false
     }
   },
   created() {
@@ -262,38 +288,18 @@ export default {
         })
       })
     },
-    handleUpdateStatus(row, status) {
-      this.notifyClicking(() => {
-        const vo = {
-          id: row.id,
-          status: status
-        }
-        update(vo).then(() => {
-          for (const v of this.list) {
-            if (v.id === this.temp.id) {
-              const index = this.list.indexOf(v)
-              this.list.splice(index, 1, this.temp)
-              break
-            }
-          }
-          this.$notify({
-            title: '成功',
-            message: '更新成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.cleanDialog()
-          this.clicking = !this.clicking
-        }).catch(() => {
-          this.clicking = !this.clicking
-        })
-      })
-    },
     handleDel(row, deleted) {
       this.notifyClicking(() => {
+        if (!deleted) {
+          row.visible_deleted = !row.visible_deleted
+        } else {
+          row.visible_recover = !row.visible_recover
+        }
         del(row.id, deleted).then(() => {
+          const temp = Object.assign({}, row) // copy obj
           const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          temp.deleted = !deleted
+          this.list.splice(index, 1, temp)
           this.$notify({
             title: '成功',
             message: '删除成功',
@@ -308,6 +314,7 @@ export default {
     },
     handleReadDel(row) {
       this.notifyClicking(() => {
+        row.visible_readDel = !row.visible_readDel
         realDel(row.id).then(() => {
           const index = this.list.indexOf(row)
           this.list.splice(index, 1)
