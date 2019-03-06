@@ -221,6 +221,7 @@ export default {
   edit: '修改',
   ok: '确认',
   view: '查看',
-  readDel: '物理删除'
+  readDel: '物理删除',
+  recover: '恢复'
 
 }
