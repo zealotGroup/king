@@ -25,7 +25,9 @@ Mock.mock(/\/user\/list/, 'get', userAPI.getList)
 Mock.mock(/\/user\/get/, 'get', userAPI.get)
 Mock.mock(/\/user\/add/, 'post', userAPI.add)
 Mock.mock(/\/user\/update/, 'post', userAPI.update)
-Mock.mock(/\/user\/del/, 'get', userAPI.del)
+Mock.mock(/\/user\/del/, 'post', userAPI.del)
+Mock.mock(/\/user\/recover/, 'post', userAPI.recover)
+Mock.mock(/\/user\/realDel/, 'post', userAPI.realDel)
 
 Mock.mock(/\/role\/list/, 'get', roleAPI.getList)
 Mock.mock(/\/role\/get/, 'get', roleAPI.get)
@@ -38,6 +40,7 @@ Mock.mock(/\/supermarket\/supplier\/get/, 'get', supermarketSupplierAPI.get)
 Mock.mock(/\/supermarket\/supplier\/add/, 'post', supermarketSupplierAPI.add)
 Mock.mock(/\/supermarket\/supplier\/update/, 'post', supermarketSupplierAPI.update)
 Mock.mock(/\/supermarket\/supplier\/del/, 'post', supermarketSupplierAPI.del)
+Mock.mock(/\/supermarket\/supplier\/recover/, 'post', supermarketSupplierAPI.recover)
 Mock.mock(/\/supermarket\/supplier\/realDel/, 'post', supermarketSupplierAPI.realDel)
 
 // 搜索相关

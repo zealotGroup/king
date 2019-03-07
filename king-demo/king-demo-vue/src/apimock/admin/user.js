@@ -28,10 +28,10 @@ for (let i = 0; i < count; i++) {
     username: '@cname',
     password: '@word',
     routeRole: 'admin',
-    dataRole: 'super',
+    dataRole: 'user',
     status: 'disable',
     loginTimes: '@integer(0, 1000)',
-    level: 'svip',
+    level: 'vip',
     createTime: '@date("yyyy-MM-dd")',
     createUser: '@cname',
     lastUpdateTime: '@date("yyyy-MM-dd")',
@@ -41,17 +41,22 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
+function myIndexOf(v, input) {
+  return !(input && v && v.indexOf(input) === -1)
+}
+
+function myEq(v, input) {
+  return !(input && v && v !== input)
+}
+
 export default {
   getList: config => {
     const { username, status, level, page, limit } = param2Obj(config.url)
 
-    console.debug(status)
-    console.debug(level)
     const mockList = List.filter(item => {
-      if (username && item.username.indexOf(username) === -1) return false
-      if (status && item.status !== status) return false
-      if (level && item.level !== level) return false
-      return true
+      return (myIndexOf(item.name, username) &&
+        myEq(item.status, status) &&
+        myEq(item.level, level))
     })
 
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
@@ -60,7 +65,7 @@ export default {
       code: 200,
       data: {
         total: mockList.length,
-        items: pageList
+        list: pageList
       }
     }
   },
@@ -86,6 +91,14 @@ export default {
     data: 'success'
   }),
   del: () => ({
+    code: 200,
+    data: 'success'
+  }),
+  recover: () => ({
+    code: 200,
+    data: 'success'
+  }),
+  reaLDel: () => ({
     code: 200,
     data: 'success'
   })

@@ -7,7 +7,7 @@ const count = 100
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     No: '@increment',
-    id: '@id',
+    id: '@string("number", 5)',
     name: '@cname',
     phone: '@email',
     region: '@county',
@@ -15,12 +15,12 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
-function myIndexOf(like, v) {
-  if (like && v && v.indexOf(like) === -1) {
-    return false
-  } else {
-    return true
-  }
+function myIndexOf(v, input) {
+  return !(input && v && v.indexOf(input) === -1)
+}
+
+function myEq(v, input) {
+  return !(input && v && v !== input)
 }
 
 export default {
@@ -29,14 +29,10 @@ export default {
 
     console.debug(like)
     const mockList = List.filter(item => {
-      if (myIndexOf(like, item.name) ||
-        myIndexOf(like, item.phone) ||
-        myIndexOf(like, item.region) ||
-        myIndexOf(like, item.remarks)) {
-        return true
-      } else {
-        return false
-      }
+      return (myIndexOf(item.name, like) ||
+        myIndexOf(item.phone, like) ||
+        myIndexOf(item.region, like) ||
+        myIndexOf(item.remarks, like))
     })
 
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
@@ -71,6 +67,10 @@ export default {
     data: 'success'
   }),
   del: () => ({
+    code: 200,
+    data: 'success'
+  }),
+  recover: () => ({
     code: 200,
     data: 'success'
   }),

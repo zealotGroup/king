@@ -40,7 +40,17 @@ export function del(id, deleted) {
     url: url + '/del',
     method: 'post',
     params: {
-      id, deleted
+      id
+    }
+  })
+}
+
+export function recover(id) {
+  return request({
+    url: url + '/recover',
+    method: 'post',
+    params: {
+      id
     }
   })
 }

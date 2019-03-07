@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { getList, add, update, del, realDel } from '@/api/supermarket/supplier'
+import { getList, add, update, del, recover, realDel } from '@/api/supermarket/supplier'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import store from '@/store'
@@ -292,7 +292,7 @@ export default {
       this.notifyClicking(this.loading_delData, () => {
         this.loading_delData = true
         row.visible_deleted = false
-        del(row.id, true).then(() => {
+        del(row.id).then(() => {
           const temp = Object.assign({}, row) // copy obj
           const index = this.list.indexOf(row)
           temp.deleted = true
@@ -313,7 +313,7 @@ export default {
       this.notifyClicking(this.loading_recoverData, () => {
         this.loading_recoverData = true
         row.visible_recover = false
-        del(row.id, false).then(() => {
+        recover(row.id).then(() => {
           const temp = Object.assign({}, row) // copy obj
           const index = this.list.indexOf(row)
           temp.deleted = false
