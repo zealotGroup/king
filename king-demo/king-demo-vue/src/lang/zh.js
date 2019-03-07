@@ -63,7 +63,10 @@ export default {
     role: '角色',
     user: '用户',
     supplier: '供应商',
-    supermarket: '超市'
+    supermarket: '超市',
+    customer: '客户',
+    product: '产品',
+    reportForm: '报表'
   },
   navbar: {
     logOut: '退出登录',
@@ -128,24 +131,7 @@ export default {
     delete: '删除',
     cancel: '取 消',
     confirm: '确 定',
-    No: '序号',
-
-    required: '必填',
-    user: {
-      status: '状态',
-      username: '用户名',
-      password: '密码',
-      routeRole: '路由角色',
-      dataRole: '数据角色',
-      loginTimes: '登录次数',
-      level: '等级',
-      createTime: '创建时间',
-      createUser: '创建人',
-      lastUpdateTime: '最后修改时间',
-      lastUpdateUser: '最后修改人',
-      lastLoginTime: '最后登录时间',
-      remark: '备注'
-    }
+    required: '必填'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -222,6 +208,15 @@ export default {
   ok: '确认',
   view: '查看',
   readDel: '物理删除',
-  recover: '恢复'
+  recover: '恢复',
+  status: '状态',
+  username: '用户名',
+  password: '密码',
+  routeRole: '路由角色',
+  dataRole: '数据角色',
+  loginTimes: '登录次数',
+  level: '等级',
+  No: '序号',
+  lastLoginTime: '最后登录时间'
 
 }

@@ -225,7 +225,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
-              this.list.unshift(this.temp)
+              this.cacheGet(this.temp, 'add')
               this.$notify({
                 title: '成功',
                 message: '创建成功',
@@ -263,13 +263,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             update(this.temp).then(() => {
-              for (const v of this.list) {
-                if (v.id === this.temp.id) {
-                  const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.temp)
-                  break
-                }
-              }
+              this.cacheGet(this.temp, 'replace')
               this.$notify({
                 title: '成功',
                 message: '更新成功',
@@ -293,10 +287,8 @@ export default {
         this.loading_delData = true
         row.visible_deleted = false
         del(row.id).then(() => {
-          const temp = Object.assign({}, row) // copy obj
-          const index = this.list.indexOf(row)
-          temp.deleted = true
-          this.list.splice(index, 1, temp)
+          row.deleted = true
+          this.cacheGet(row, 'replace')
           this.$notify({
             title: '成功',
             message: '删除成功',
@@ -314,10 +306,8 @@ export default {
         this.loading_recoverData = true
         row.visible_recover = false
         recover(row.id).then(() => {
-          const temp = Object.assign({}, row) // copy obj
-          const index = this.list.indexOf(row)
-          temp.deleted = false
-          this.list.splice(index, 1, temp)
+          row.deleted = false
+          this.cacheGet(row, 'replace')
           this.$notify({
             title: '成功',
             message: '恢复成功',
@@ -335,8 +325,7 @@ export default {
         this.loading_readDelData = true
         row.visible_readDel = false
         realDel(row.id).then(() => {
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.cacheGet(row, 'remove')
           this.$notify({
             title: '成功',
             message: '物理删除成功',
@@ -348,6 +337,21 @@ export default {
           this.loading_readDelData = false
         })
       })
+    },
+    cacheGet(row, action) {
+      for (const v of this.list) {
+        if (v.id === row.id) {
+          const index = this.list.indexOf(v)
+          if (action === 'replace') {
+            this.list.splice(index, 1, row)
+          } else if (action === 'remove') {
+            this.list.splice(index, 1)
+          } else if (action === 'add') {
+            this.list.unshift(row)
+          }
+          break
+        }
+      }
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {

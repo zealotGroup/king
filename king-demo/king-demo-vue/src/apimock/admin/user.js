@@ -37,7 +37,7 @@ for (let i = 0; i < count; i++) {
     lastUpdateTime: '@date("yyyy-MM-dd")',
     lastUpdateUser: '@cname',
     lastLoginTime: '@date("yyyy-MM-dd")',
-    remark: '@ctitle'
+    remarks: '@ctitle'
   }))
 }
 
@@ -98,7 +98,7 @@ export default {
     code: 200,
     data: 'success'
   }),
-  reaLDel: () => ({
+  realDel: () => ({
     code: 200,
     data: 'success'
   })

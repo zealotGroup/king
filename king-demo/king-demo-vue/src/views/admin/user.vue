@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="width: 200px;" class="filter-item" v-model="listQuery.username" :placeholder="$t('table.user.username')">
+      <el-input @keyup.enter.native="handleSearch" style="width: 200px;" class="filter-item" v-model="listQuery.username" :placeholder="$t('username')">
       </el-input>
-      <el-select @change="handleSearch" clearable style="width: 90px" class="filter-item" v-model="listQuery.status" :placeholder="$t('table.user.status')">
+      <el-select @change="handleSearch" clearable style="width: 90px" class="filter-item" v-model="listQuery.status" :placeholder="$t('status')">
         <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
         </el-option>
       </el-select>
-      <el-select @change="handleSearch" clearable class="filter-item" style="width: 130px" v-model="listQuery.level" :placeholder="$t('table.user.level')">
+      <el-select @change="handleSearch" clearable class="filter-item" style="width: 130px" v-model="listQuery.level" :placeholder="$t('level')">
         <el-option v-for="item in  levelList" :key="item" :label="$t(item)" :value="item">
         </el-option>
       </el-select>
@@ -17,90 +17,131 @@
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
       style="width: 100%;min-height:500px;">
-      <el-table-column  min-width="60px"align="center" :label="$t('table.No')">
+      <el-table-column  min-width="60px"align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
+      <el-table-column min-width="130px" align="center" :label="$t('id')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('table.user.username')">
+      <el-table-column min-width="100px" :label="$t('username')">
         <template slot-scope="scope">
           <span>{{scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('table.user.password')" v-if="checkLevel('super')">
+      <el-table-column min-width="100px" align="center" :label="$t('password')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.password}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="95px" align="center" :label="$t('table.user.status')" v-if="checkLevel('super') || checkLevel('admin')">
+      <el-table-column min-width="95px" align="center" :label="$t('status')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <el-button :type="typeStatus(scope.row.status)" size="mini" >{{ $t(scope.row.status)}}</el-button>
+          <el-popover v-if="scope.row.status === 'able'" placement="top" width="160" v-model="scope.row.visible_updateStatus">
+            <p>确定要<b>禁用</b>么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'disable')" >确定</el-button>
+            </div>
+            <el-button round slot="reference" size="mini" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
+          </el-popover>
+
+          <el-popover v-else-if="scope.row.status === 'disable'" placement="top" width="160" v-model="scope.row.visible_updateStatus">
+            <p>确定要<b>启用</b>么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'able')" >确定</el-button>
+            </div>
+            <el-button round slot="reference" size="mini" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
+          </el-popover>
+
+          <el-button v-else round size="mini" :type="typeStatus(scope.row.status)" >{{$t(scope.row.status)}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column min-width="95px" class-name="status-col" :label="$t('table.user.level')" v-if="checkLevel('super') || checkLevel('admin')">
+      <el-table-column min-width="95px" class-name="status-col" :label="$t('level')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
           <el-tag :type="typeLevel(scope.row.level)">
             {{ $t(scope.row.level) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.user.lastLoginTime')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('lastLoginTime')">
         <template slot-scope="scope">
           <span>{{ scope.row.lastLoginTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.user.loginTimes')" v-if="checkLevel('super') || checkLevel('admin')">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('loginTimes')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
           <span>{{scope.row.loginTimes}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="85px" align="center" :label="$t('table.user.routeRole')" v-if="checkLevel('super') || checkLevel('admin')">
+      <el-table-column min-width="85px" align="center" :label="$t('routeRole')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.routeRole }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column min-width="85px" :label="$t('table.user.dataRole')" v-if="checkLevel('super') || checkLevel('admin')">
+      <el-table-column min-width="85px" :label="$t('dataRole')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
           <el-tag>{{scope.row.dataRole }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.user.createTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.user.createUser')" v-if="checkLevel('super')">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.createUser}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('table.user.lastUpdateTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.lastUpdateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.user.lastUpdateUser')" v-if="checkLevel('super')">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.lastUpdateUser}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.user.remark')">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
         <template slot-scope="scope">
-          <span>{{scope.row.remark}}</span>
+          <span>{{scope.row.remarks}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('btn.edit')}}</el-button>
-          <el-button v-if="scope.row.status != 'deleted'" size="mini" type="danger" @click="handleUpdateStatus(scope.row,'deleted')">{{$t('btn.delete')}}
-          </el-button>
-          <el-button v-if="scope.row.status === 'deleted'" size="mini" type="success" @click="handleUpdateStatus(scope.row,'able')">{{$t('btn.able')}}
-          </el-button>
+          <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+
+          <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+            <p>确定要删除么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+            </div>
+            <el-button round slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+          </el-popover>
+
+          <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
+            <p>确定要恢复么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
+            </div>
+            <el-button round slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+          </el-popover>
+
+          <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+            <p>确定要物理删除么？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+            </div>
+            <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -112,35 +153,35 @@
 
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('table.user.id')" prop="id" v-show="true">
+        <el-form-item :label="$t('id')" prop="id" v-show="true">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.username')" prop="username" :rules="rules.username">
+        <el-form-item :label="$t('username')" prop="username" :rules="rules.username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.password')" prop="password" :rules="rules.password">
+        <el-form-item :label="$t('password')" prop="password" :rules="rules.password">
           <el-input v-model="temp.password"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.user.status')" prop="status" :rules="rules.status">
-          <el-select class="filter-item" v-model="temp.status" :placeholder="$t('table.user.status')">
+        <el-form-item :label="$t('status')" prop="status" :rules="rules.status">
+          <el-select class="filter-item" v-model="temp.status" :placeholder="$t('status')">
             <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.user.level')" prop="level" :rules="rules.level">
-          <el-select class="filter-item" v-model="temp.level" :placeholder="$t('table.user.level')">
+        <el-form-item :label="$t('level')" prop="level" :rules="rules.level">
+          <el-select class="filter-item" v-model="temp.level" :placeholder="$t('level')">
             <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.user.remark')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="temp.remark">
+        <el-form-item :label="$t('remarks')">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="temp.remarks">
           </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button v-if="dialogType=='add'" type="primary" @click="addData">{{$t('table.confirm')}}</el-button>
-        <el-button v-else="dialogType=='update'" type="primary" @click="updateData">{{$t('table.confirm')}}</el-button>
+        <el-button v-if="dialogType=='add'" type="primary" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button v-else="dialogType=='update'" type="primary" @click="updateData">{{$t('confirm')}}</el-button>
         <el-button @click="cleanDialog">{{$t('table.cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -169,7 +210,7 @@ export default {
       tableKey: 0,
       list: null,
       total: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 10,
@@ -185,7 +226,7 @@ export default {
         password: '',
         status: '',
         level: '',
-        remark: ''
+        remarks: ''
       },
       dialogFormVisible: false,
       dialogType: '',
@@ -231,7 +272,6 @@ export default {
       }
     },
     getList() {
-      this.listLoading = true
       this.notifyClicking(this.listLoading, () => {
         this.listLoading = true
         getList(this.listQuery).then(data => {
@@ -275,7 +315,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
-              this.list.unshift(this.temp)
+              this.cacheGet(this.temp, 'add')
               this.$notify({
                 title: '成功',
                 message: '创建成功',
@@ -313,13 +353,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             update(this.temp).then(() => {
-              for (const v of this.list) {
-                if (v.id === this.temp.id) {
-                  const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.temp)
-                  break
-                }
-              }
+              this.cacheGet(this.temp, 'replace')
               this.$notify({
                 title: '成功',
                 message: '更新成功',
@@ -338,37 +372,13 @@ export default {
         })
       })
     },
-    handleUpdateStatus(row, status) {
-      const vo = {
-        id: row.id,
-        status: status
-      }
-      update(vo).then(() => {
-        for (const v of this.list) {
-          if (v.id === this.temp.id) {
-            const index = this.list.indexOf(v)
-            this.list.splice(index, 1, this.temp)
-            break
-          }
-        }
-        this.cleanDialog()
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
-    },
     handleDel(row) {
       this.notifyClicking(this.loading_delData, () => {
         this.loading_delData = true
         row.visible_deleted = false
         del(row.id).then(() => {
-          const temp = Object.assign({}, row) // copy obj
-          const index = this.list.indexOf(row)
-          temp.deleted = true
-          this.list.splice(index, 1, temp)
+          row.deleted = true
+          this.cacheGet(row, 'replace')
           this.$notify({
             title: '成功',
             message: '删除成功',
@@ -386,10 +396,8 @@ export default {
         this.loading_recoverData = true
         row.visible_recover = false
         recover(row.id).then(() => {
-          const temp = Object.assign({}, row) // copy obj
-          const index = this.list.indexOf(row)
-          temp.deleted = false
-          this.list.splice(index, 1, temp)
+          row.deleted = false
+          this.cacheGet(row, 'replace')
           this.$notify({
             title: '成功',
             message: '恢复成功',
@@ -407,8 +415,7 @@ export default {
         this.loading_readDelData = true
         row.visible_readDel = false
         realDel(row.id).then(() => {
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.cacheGet(row, 'remove')
           this.$notify({
             title: '成功',
             message: '物理删除成功',
@@ -421,6 +428,21 @@ export default {
         })
       })
     },
+    cacheGet(row, action) {
+      for (const v of this.list) {
+        if (v.id === row.id) {
+          const index = this.list.indexOf(v)
+          if (action === 'replace') {
+            this.list.splice(index, 1, row)
+          } else if (action === 'remove') {
+            this.list.splice(index, 1)
+          } else if (action === 'add') {
+            this.list.unshift(row)
+          }
+          break
+        }
+      }
+    },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
@@ -429,6 +451,36 @@ export default {
           return v[j]
         }
       }))
+    },
+    checkLevel(level) {
+      let fg = store.getters.level === level
+      fg = true
+      return fg
+    },
+    // 个性化定义方法
+    handleUpdateStatus(row, status) {
+      this.notifyClicking(row.loading_updateStatus, () => {
+        row.loading_updateStatus = true
+        row.visible_updateStatus = false
+        const vo = {
+          id: row.id,
+          status: status
+        }
+        update(vo).then(() => {
+          const index = this.list.indexOf(row)
+          row.status = vo.status
+          this.list.splice(index, 1, row)
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
+          row.loading_updateStatus = false
+        }).catch(() => {
+          row.loading_updateStatus = false
+        })
+      })
     },
     typeLevel(level) {
       if (level === 'vip') return 'danger'
@@ -441,11 +493,6 @@ export default {
       if (status === 'able') return 'success'
       if (status === 'disable') return 'danger'
       return 'warning'
-    },
-    checkLevel(level) {
-      let fg = store.getters.level === level
-      fg = true
-      return fg
     }
   }
 }

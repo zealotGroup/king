@@ -19,9 +19,11 @@ function myIndexOf(v, input) {
   return !(input && v && v.indexOf(input) === -1)
 }
 
+/*
 function myEq(v, input) {
   return !(input && v && v !== input)
 }
+*/
 
 export default {
   getList: config => {
