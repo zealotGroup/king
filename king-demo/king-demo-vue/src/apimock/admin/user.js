@@ -7,71 +7,37 @@ const count = 100
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     No: '@increment',
-    id: '@increment',
-    username: 'abc',
-    password: 'def',
+    id: '@string("number", 5)',
+    username: '@cname',
+    password: '@word',
     routeRole: 'admin',
     dataRole: 'super',
     status: 'able',
-    loginTimes: '132',
+    loginTimes: '@integer(0, 1000)',
     level: 'svip',
-    createTime: new Date(),
-    createUser: '12',
-    lastUpdateTime: new Date(),
-    lastUpdateUser: '123',
-    lastLoginTime: new Date(),
-    remark: '1'
+    createTime: '@date("yyyy-MM-dd")',
+    createUser: '@cname',
+    lastUpdateTime: '@date("yyyy-MM-dd")',
+    lastUpdateUser: '@cname',
+    lastLoginTime: '@date("yyyy-MM-dd")',
+    remark: '@ctitle'
   }))
   List.push(Mock.mock({
     No: '@increment',
-    id: '@increment',
-    username: 'abc',
-    password: 'def',
+    id: '@string("number", 5)',
+    username: '@cname',
+    password: '@word',
     routeRole: 'admin',
     dataRole: 'super',
     status: 'disable',
-    loginTimes: '132',
-    level: 'super',
-    createTime: new Date(),
-    createUser: '12',
-    lastUpdateTime: new Date(),
-    lastUpdateUser: '123',
-    lastLoginTime: new Date(),
-    remark: '1'
-  }))
-  List.push(Mock.mock({
-    No: '@increment',
-    id: '@increment',
-    username: 'abc',
-    password: 'def',
-    routeRole: 'admin',
-    dataRole: 'super',
-    status: 'deleted',
-    loginTimes: '132',
-    level: 'admin',
-    createTime: new Date(),
-    createUser: '12',
-    lastUpdateTime: new Date(),
-    lastUpdateUser: '123',
-    lastLoginTime: new Date(),
-    remark: '1'
-  }))
-  List.push(Mock.mock({
-    No: '@increment',
-    id: '@increment',
-    username: 'abc',
-    password: 'def',
-    routeRole: 'admin',
-    dataRole: 'super',
-    status: '',
-    loginTimes: '132',
-    level: 'user',
-    createTime: new Date(),
-    createUser: '12',
-    lastUpdateTime: new Date(),
-    lastUpdateUser: '123',
-    lastLoginTime: new Date(),
-    remark: '1'
+    loginTimes: '@integer(0, 1000)',
+    level: 'svip',
+    createTime: '@date("yyyy-MM-dd")',
+    createUser: '@cname',
+    lastUpdateTime: '@date("yyyy-MM-dd")',
+    lastUpdateUser: '@cname',
+    lastLoginTime: '@date("yyyy-MM-dd")',
+    remark: '@ctitle'
   }))
 }
 

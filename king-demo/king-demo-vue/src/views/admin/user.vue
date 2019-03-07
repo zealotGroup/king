@@ -22,7 +22,7 @@
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="50px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
+      <el-table-column min-width="130px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
@@ -347,7 +347,6 @@ export default {
     typeStatus(status) {
       if (status === 'able') return 'success'
       if (status === 'disable') return 'danger'
-      if (status === 'deleted') return ''
       return 'warning'
     },
     checkLevel(level) {
