@@ -38,7 +38,7 @@ export function update(data) {
 export function del(id, deleted) {
   return request({
     url: url + '/del',
-    method: 'get',
+    method: 'post',
     params: {
       id, deleted
     }
@@ -48,7 +48,7 @@ export function del(id, deleted) {
 export function realDel(id) {
   return request({
     url: url + '/realDelete',
-    method: 'get',
+    method: 'post',
     params: {
       id
     }

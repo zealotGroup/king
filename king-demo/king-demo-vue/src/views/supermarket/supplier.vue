@@ -3,8 +3,8 @@
     <div class="filter-container">
       <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('table.search')}}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('table.add')}}</el-button>
+      <el-button round class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('table.search')}}</el-button>
+      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('table.add')}}</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
@@ -41,33 +41,33 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+          <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
 
           <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
             <p>确定要删除么？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+              <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
             </div>
-            <el-button slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+            <el-button round slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
           </el-popover>
 
           <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
             <p>确定要恢复么？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
+              <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
             </div>
-            <el-button slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+            <el-button round slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
           </el-popover>
 
           <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
             <p>确定要物理删除么？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+              <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
+              <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
             </div>
-            <el-button slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+            <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -98,9 +98,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
-        <el-button v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
-        <el-button @click="cleanDialog">{{$t('cancel')}}</el-button>
+        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
+        <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -119,13 +119,16 @@ export default {
   },
   data() {
     return {
-      clicking: false,
+      loading_add: false,
       loading_addData: false,
       loading_updateData: false,
+      loading_delData: false,
+      loading_recoverData: false,
+      loading_readDelData: false,
       tableKey: 0,
       list: null,
       total: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 10,
@@ -166,8 +169,8 @@ export default {
       this.dialogFormVisible = false
       this.dialogTitle = ''
     },
-    notifyClicking(callBack) {
-      if (this.clicking) {
+    notifyClicking(loading, callBack) {
+      if (loading) {
         this.$notify({
           title: '警告',
           message: '重复操作了',
@@ -175,24 +178,18 @@ export default {
           duration: 1000
         })
       } else {
-        this.clicking = true
         callBack()
       }
     },
     getList() {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.listLoading, () => {
         this.listLoading = true
         getList(this.listQuery).then(data => {
           this.list = data.list
           this.total = data.total
-
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-            this.clicking = false
-          }, 0.5 * 1000)
+          this.listLoading = false
         }).catch(() => {
-          this.clicking = false
+          this.listLoading = false
         })
       })
     },
@@ -210,7 +207,7 @@ export default {
       this.getList()
     },
     handleAdd() {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.loading_add, () => {
         this.loading_add = true
         this.resetTemp()
         this.dialogType = 'add'
@@ -220,14 +217,13 @@ export default {
           this.$refs['dataForm'].clearValidate()
         })
         this.loading_add = false
-        this.clicking = false
       })
     },
     addData() {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.loading_addData, () => {
+        this.loading_addData = true
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.loading_addData = true
             add(this.temp).then(() => {
               this.list.unshift(this.temp)
               this.$notify({
@@ -239,20 +235,18 @@ export default {
               this.cleanDialog()
               this.$refs['dataForm'].clearValidate()
               this.loading_addData = false
-              this.clicking = false
             }).catch(() => {
               this.loading_addData = false
-              this.clicking = false
             })
           } else {
-            this.clicking = false
+            this.loading_addData = false
           }
         })
       })
     },
     handleUpdate(row) {
-      this.notifyClicking(() => {
-        row.update_loading = true
+      this.notifyClicking(this.update_loading, () => {
+        this.update_loading = true
         this.temp = Object.assign({}, row) // copy obj
         this.dialogType = 'update'
         this.dialogFormVisible = true
@@ -260,14 +254,13 @@ export default {
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
-        this.clicking = false
-        row.update_loading = false
+        this.update_loading = false
       })
     },
     updateData() {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.loading_updateData, () => {
+        this.loading_updateData = true
         this.$refs['dataForm'].validate((valid) => {
-          this.loading_updateData = true
           if (valid) {
             update(this.temp).then(() => {
               for (const v of this.list) {
@@ -286,20 +279,18 @@ export default {
               this.cleanDialog()
               this.$refs['dataForm'].clearValidate()
               this.loading_updateData = false
-              this.clicking = false
             }).catch(() => {
               this.loading_updateData = false
-              this.clicking = false
             })
           } else {
             this.loading_updateData = false
-            this.clicking = false
           }
         })
       })
     },
     handleDel(row) {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.loading_delData, () => {
+        this.loading_delData = true
         row.visible_deleted = false
         del(row.id, true).then(() => {
           const temp = Object.assign({}, row) // copy obj
@@ -312,14 +303,15 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.clicking = false
+          this.loading_delData = false
         }).catch(() => {
-          this.clicking = false
+          this.loading_delData = false
         })
       })
     },
     handleRecover(row) {
-      this.notifyClicking(() => {
+      this.notifyClicking(this.loading_recoverData, () => {
+        this.loading_recoverData = true
         row.visible_recover = false
         del(row.id, false).then(() => {
           const temp = Object.assign({}, row) // copy obj
@@ -332,15 +324,16 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.clicking = false
+          this.loading_recoverData = false
         }).catch(() => {
-          this.clicking = false
+          this.loading_recoverData = false
         })
       })
     },
     handleReadDel(row) {
-      this.notifyClicking(() => {
-        row.visible_readDel = !row.visible_readDel
+      this.notifyClicking(this.loading_readDelData, () => {
+        this.loading_readDelData = true
+        row.visible_readDel = false
         realDel(row.id).then(() => {
           const index = this.list.indexOf(row)
           this.list.splice(index, 1)
@@ -350,9 +343,9 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.clicking = false
+          this.loading_readDelData = false
         }).catch(() => {
-          this.clicking = false
+          this.loading_readDelData = false
         })
       })
     },

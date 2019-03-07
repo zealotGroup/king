@@ -73,5 +73,9 @@ export default {
   del: () => ({
     code: 200,
     data: 'success'
+  }),
+  realDel: () => ({
+    code: 200,
+    data: 'success'
   })
 }

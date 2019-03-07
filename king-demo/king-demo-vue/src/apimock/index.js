@@ -37,7 +37,8 @@ Mock.mock(/\/supermarket\/supplier\/list/, 'get', supermarketSupplierAPI.getList
 Mock.mock(/\/supermarket\/supplier\/get/, 'get', supermarketSupplierAPI.get)
 Mock.mock(/\/supermarket\/supplier\/add/, 'post', supermarketSupplierAPI.add)
 Mock.mock(/\/supermarket\/supplier\/update/, 'post', supermarketSupplierAPI.update)
-Mock.mock(/\/supermarket\/supplier\/del/, 'get', supermarketSupplierAPI.del)
+Mock.mock(/\/supermarket\/supplier\/del/, 'post', supermarketSupplierAPI.del)
+Mock.mock(/\/supermarket\/supplier\/realDel/, 'post', supermarketSupplierAPI.realDel)
 
 // 搜索相关
 Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser)
