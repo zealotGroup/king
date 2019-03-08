@@ -61,7 +61,7 @@
       <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
-          <template v-if="scope.row.adding">
+          <template v-if="scope.row.waitingForFlush">
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
@@ -241,7 +241,7 @@ export default {
         this.dialogTitle = 'add'
         this.rules.id[0].required = false
         this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+          this.$refs['dataForm'].clearValidate()
         })
         this.loading_add = false
       })
@@ -252,7 +252,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
-              this.temp.adding = true
+              this.temp.waitingForFlush = true
               this.cacheGet(this.temp, 'add')
               this.$notify({
                 title: '成功',
@@ -262,7 +262,7 @@ export default {
               })
               this.cleanDialog()
               this.$nextTick(() => {
-                this.$refs['dataForm'].resetFields()
+                this.$refs['dataForm'].clearValidate()
               })
               this.loading_addData = false
             }).catch(() => {
@@ -284,7 +284,7 @@ export default {
         this.dialogTitle = 'update'
         this.rules.id[0].required = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+          this.$refs['dataForm'].clearValidate()
         })
         this.update_loading = false
       })
@@ -296,6 +296,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             update(this.temp).then(() => {
+              this.temp.waitingForFlush = true
               this.cacheGet(this.temp, 'replace')
               this.$notify({
                 title: '成功',
@@ -306,7 +307,7 @@ export default {
               row.edit = false
               this.cleanDialog()
               this.$nextTick(() => {
-                this.$refs['dataForm'].resetFields()
+                this.$refs['dataForm'].clearValidate()
               })
               this.loading_updateData = false
             }).catch(() => {
