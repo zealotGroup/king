@@ -9,7 +9,7 @@
       <el-button round class="filter-item" style="margin-left: 10px;" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
-    <el-table :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%;min-height:500px;">
+    <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%;min-height:500px;">
       <el-table-column min-width="60px"align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
@@ -58,39 +58,44 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-
-      <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button round v-if="scope.row.edit" type="success" size="mini" @click="updateData(scope.row)" icon="el-icon-circle-check-outline">{{ $t('ok') }}</el-button>
           <el-button round v-if="scope.row.edit" type="warning" size="mini" @click="cancelUpdate(scope.row)"icon="el-icon-refresh" >{{ $t('cancel') }}</el-button>
           <el-button round v-if="!scope.row.edit" type="primary" size="mini" @click='handleUpdate(scope.row)' icon="el-icon-edit">{{ $t('edit') }}</el-button>
           <!--固定操作功能 start-->
-          <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
-            <p>确定要删除么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-              <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
-            </div>
-            <el-button round slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
-          </el-popover>
+          <template v-if="scope.row.adding">
+            <span>{{ $t('waitingForFlush') }}</span>
+          </template>
+          <template v-else>
+            <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+              <p>确定要删除么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+            </el-popover>
 
-          <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
-            <p>确定要恢复么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-              <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
-            </div>
-            <el-button round slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
-          </el-popover>
+            <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
+              <p>确定要恢复么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+            </el-popover>
 
-          <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
-            <p>确定要物理删除么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-              <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
-            </div>
-            <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
-          </el-popover>
+            <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+              <p>确定要物理删除么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+            </el-popover>
+          </template>
           <!--固定操作功能 end-->
         </template>
       </el-table-column>
@@ -156,10 +161,10 @@ export default {
       /* 固定功能字段 start */
       rules: {
         id: [
-          { required: true, message: this.$t('required'), trigger: 'change' }
+          { required: true, message: this.$t('required'), trigger: 'blur' }
         ],
         name: [
-          { required: true, message: this.$t('required'), trigger: 'change' }
+          { required: true, message: this.$t('required'), trigger: 'blur' }
         ]
       }
     }
@@ -244,6 +249,7 @@ export default {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
+              this.temp.adding = true
               this.cacheGet(this.temp, 'add')
               this.$notify({
                 title: '成功',
@@ -268,6 +274,9 @@ export default {
         this.update_loading = true
         this.editTemp(row, 'handleUpdate')
         row.edit = true
+        this.dialogType = 'update'
+        this.dialogFormVisible = false
+        this.dialogTitle = 'update'
         this.rules.id[0].required = true
         this.$refs['dataForm'].clearValidate()
         this.update_loading = false
