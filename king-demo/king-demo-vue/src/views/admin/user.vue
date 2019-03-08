@@ -158,23 +158,23 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('id')" v-show="false">
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+        <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('username')" prop="username" :rules="rules.username">
+        <el-form-item :label="$t('username')" prop="username">
           <el-input v-model="temp.username"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('password')" prop="password" :rules="rules.password">
+        <el-form-item :label="$t('password')" prop="password">
           <el-input v-model="temp.password"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('status')" prop="status" :rules="rules.status">
+        <el-form-item :label="$t('status')" prop="status">
           <el-select class="filter-item" v-model="temp.status">
             <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('level')" prop="level" :rules="rules.level">
+        <el-form-item :label="$t('level')" prop="level">
           <el-select class="filter-item" v-model="temp.level">
             <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
             </el-option>
@@ -234,10 +234,21 @@ export default {
       levelList: ['user', 'vip', 'svip', 'admin', 'super'],
       statusList: ['able', 'disable', 'deleted'],
       rules: {
-        username: [{ required: true, message: this.$t('table.required'), trigger: 'change' }],
-        password: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }],
-        status: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }],
-        level: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }]
+        id: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
+        username: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
+        password: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
+        status: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
+        level: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ]
       }
     }
   },
@@ -307,6 +318,7 @@ export default {
         this.dialogType = 'add'
         this.dialogFormVisible = true
         this.dialogTitle = 'add'
+        this.rules.id[0].required = false
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -345,6 +357,7 @@ export default {
         this.dialogType = 'update'
         this.dialogFormVisible = true
         this.dialogTitle = 'update'
+        this.rules.id[0].required = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })

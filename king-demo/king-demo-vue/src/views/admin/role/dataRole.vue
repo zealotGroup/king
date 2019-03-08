@@ -103,11 +103,11 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('id')" v-show="false">
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+        <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('name')" :rules="rules.name">
+        <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('remarks')">
@@ -155,7 +155,12 @@ export default {
       dialogTitle: '',
       /* 固定功能字段 start */
       rules: {
-        name: [{ required: true, message: this.$t('required'), trigger: 'change' }]
+        id: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
+        name: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ]
       }
     }
   },
@@ -228,9 +233,8 @@ export default {
         this.dialogType = 'add'
         this.dialogFormVisible = true
         this.dialogTitle = 'add'
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
+        this.rules.id[0].required = false
+        this.$refs['dataForm'].clearValidate()
         this.loading_add = false
       })
     },
@@ -264,6 +268,8 @@ export default {
         this.update_loading = true
         this.editTemp(row, 'handleUpdate')
         row.edit = true
+        this.rules.id[0].required = true
+        this.$refs['dataForm'].clearValidate()
         this.update_loading = false
       })
     },

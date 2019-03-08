@@ -5,7 +5,7 @@
       </el-input>
     </div>
     <div class="filter-container">
-      <el-button round class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
+      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
       <el-button round class="filter-item" style="margin-left: 10px;" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
@@ -105,11 +105,11 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('id')" v-show="false">
-          <el-input v-model="temp.id" :rules="rules.id"></el-input>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+        <el-form-item :label="$t('id')" prop="id" v-show="false">
+          <el-input v-model="temp.id" ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('name')" :rules="rules.name">
+        <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('phone')" >
@@ -135,15 +135,11 @@
 
 <script>
 import { getList, add, update, del, recover, realDel } from '@/api/supermarket/supplier'
-import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
   name: 'supplier',
-  directives: {
-    waves
-  },
   data() {
     return {
       /* 固定功能字段 start */
@@ -168,9 +164,11 @@ export default {
       dialogTitle: '',
       /* 固定功能字段 start */
       rules: {
+        id: [
+          { required: true, message: this.$t('required'), trigger: 'change' }
+        ],
         name: [
-          { required: true, message: this.$t('required'), trigger: 'blur' },
-          { min: 1, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('required'), trigger: 'change' }
         ]
       }
     }
@@ -240,6 +238,7 @@ export default {
         this.dialogType = 'add'
         this.dialogFormVisible = true
         this.dialogTitle = 'add'
+        this.rules.id[0].required = false
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -278,6 +277,7 @@ export default {
         this.dialogType = 'update'
         this.dialogFormVisible = true
         this.dialogTitle = 'update'
+        this.rules.id[0].required = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
