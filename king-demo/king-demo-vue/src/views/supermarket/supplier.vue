@@ -9,12 +9,12 @@
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
       style="width: 100%;min-height:500px;">
-      <el-table-column  min-width="60px"align="center" :label="$t('table.No')">
+      <el-table-column  min-width="60px"align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="50px" align="center" :label="$t('table.id')" v-if="checkLevel('super')">
+      <el-table-column min-width="130px" align="center" :label="$t('id')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
@@ -39,10 +39,32 @@
           <span>{{scope.row.remarks}}</span>
         </template>
       </el-table-column>
+      <!--表数据固定字段信息 start-->
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.createUser}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.lastUpdateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.lastUpdateUser}}</span>
+        </template>
+      </el-table-column>
+      <!--表数据固定字段信息 end-->
       <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <!--固定操作功能 start-->
           <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-
           <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
             <p>确定要删除么？</p>
             <div style="text-align: right; margin: 0">
@@ -69,6 +91,7 @@
             </div>
             <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
           </el-popover>
+          <!--固定操作功能 end-->
         </template>
       </el-table-column>
     </el-table>
@@ -78,6 +101,7 @@
       </el-pagination>
     </div>
 
+    <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" v-show="false">
@@ -103,6 +127,7 @@
         <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
+    <!--固定弹出层 end-->
   </div>
 </template>
 
@@ -119,6 +144,7 @@ export default {
   },
   data() {
     return {
+      /* 固定功能字段 start */
       loading_add: false,
       loading_addData: false,
       loading_updateData: false,
@@ -134,26 +160,22 @@ export default {
         limit: 10,
         like: undefined
       },
-      temp: {
-        id: '',
-        name: '',
-        phone: '',
-        region: '',
-        remarks: ''
-      },
+      temp: undefined,
       dialogFormVisible: false,
       dialogType: '',
       dialogTitle: '',
+      /* 固定功能字段 start */
       rules: {
         name: [{ required: true, message: this.$t('required'), trigger: 'change' }]
-      },
-      fullscreenLoading: false
+      }
     }
   },
   created() {
+    this.resetTemp()
     this.getList()
   },
   methods: {
+    /* 固定功能方法 start */
     resetTemp() {
       this.temp = {
         id: '',
@@ -367,6 +389,7 @@ export default {
       fg = true
       return fg
     }
+    /* 固定功能方法 end */
   }
 }
 </script>

@@ -87,6 +87,11 @@
           <el-tag>{{scope.row.dataRole }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
+        <template slot-scope="scope">
+          <span>{{scope.row.remarks}}</span>
+        </template>
+      </el-table-column>
       <!--表数据固定字段信息 start-->
       <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
@@ -109,12 +114,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
-        <template slot-scope="scope">
-          <span>{{scope.row.remarks}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
@@ -154,9 +154,10 @@
       </el-pagination>
     </div>
 
+    <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('id')" prop="id" v-show="true">
+        <el-form-item :label="$t('id')" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
         <el-form-item :label="$t('username')" prop="username" :rules="rules.username">
@@ -166,28 +167,29 @@
           <el-input v-model="temp.password"></el-input>
         </el-form-item>
         <el-form-item :label="$t('status')" prop="status" :rules="rules.status">
-          <el-select class="filter-item" v-model="temp.status" :placeholder="$t('status')">
+          <el-select class="filter-item" v-model="temp.status">
             <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('level')" prop="level" :rules="rules.level">
-          <el-select class="filter-item" v-model="temp.level" :placeholder="$t('level')">
+          <el-select class="filter-item" v-model="temp.level">
             <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('remarks')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="temp.remarks">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
           </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button v-if="dialogType=='add'" type="primary" @click="addData">{{$t('confirm')}}</el-button>
-        <el-button v-else="dialogType=='update'" type="primary" @click="updateData">{{$t('confirm')}}</el-button>
-        <el-button @click="cleanDialog">{{$t('table.cancel')}}</el-button>
+        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
+        <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
+    <!--固定弹出层 end-->
   </div>
 </template>
 

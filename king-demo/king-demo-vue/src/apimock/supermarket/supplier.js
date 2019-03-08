@@ -11,7 +11,11 @@ for (let i = 0; i < count; i++) {
     name: '@cname',
     phone: '@email',
     region: '@county',
-    remarks: '@ctitle'
+    remarks: '@ctitle',
+    createTime: '@date("yyyy-MM-dd")',
+    createUser: '@cname',
+    lastUpdateTime: '@date("yyyy-MM-dd")',
+    lastUpdateUser: '@cname'
   }))
 }
 
