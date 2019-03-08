@@ -87,6 +87,7 @@
           <el-tag>{{scope.row.dataRole }}</el-tag>
         </template>
       </el-table-column>
+      <!--表数据固定字段信息 start-->
       <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
@@ -107,6 +108,7 @@
           <span>{{scope.row.lastUpdateUser}}</span>
         </template>
       </el-table-column>
+      <!--表数据固定字段信息 end-->
       <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
         <template slot-scope="scope">
           <span>{{scope.row.remarks}}</span>
@@ -114,8 +116,8 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <!--固定操作功能 start-->
           <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-
           <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
             <p>确定要删除么？</p>
             <div style="text-align: right; margin: 0">
@@ -142,6 +144,7 @@
             </div>
             <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
           </el-popover>
+          <!--固定操作功能 end-->
         </template>
       </el-table-column>
     </el-table>
@@ -201,6 +204,7 @@ export default {
   },
   data() {
     return {
+      /* 固定功能字段 start */
       loading_add: false,
       loading_addData: false,
       loading_updateData: false,
@@ -218,19 +222,13 @@ export default {
         status: undefined,
         username: undefined
       },
-      levelList: ['user', 'vip', 'svip', 'admin', 'super'],
-      statusList: ['able', 'disable', 'deleted'],
-      temp: {
-        id: '',
-        username: '',
-        password: '',
-        status: '',
-        level: '',
-        remarks: ''
-      },
+      temp: undefined,
       dialogFormVisible: false,
       dialogType: '',
       dialogTitle: '',
+      /* 固定功能字段 start */
+      levelList: ['user', 'vip', 'svip', 'admin', 'super'],
+      statusList: ['able', 'disable', 'deleted'],
       rules: {
         username: [{ required: true, message: this.$t('table.required'), trigger: 'change' }],
         password: [{ required: true, message: this.$t('table.required'), trigger: 'blur' }],
@@ -240,9 +238,11 @@ export default {
     }
   },
   created() {
+    this.resetTemp()
     this.getList()
   },
   methods: {
+    /* 固定功能方法 start */
     resetTemp() {
       this.temp = {
         id: '',
@@ -457,6 +457,7 @@ export default {
       fg = true
       return fg
     },
+    /* 固定功能方法 end */
     // 个性化定义方法
     handleUpdateStatus(row, status) {
       this.notifyClicking(row.loading_updateStatus, () => {
