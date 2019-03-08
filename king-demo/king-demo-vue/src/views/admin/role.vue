@@ -19,8 +19,8 @@
     data() {
       return {
         tabMapOptions: [
-          { label: 'role.dataRole.name', key: 'dataRole' },
-          { label: 'role.dataRole.name', key: 'routeRole' }
+          { label: 'dataRole', key: 'dataRole' },
+          { label: 'routeRole', key: 'routeRole' }
         ],
         viewName: 'dataRole'
       }

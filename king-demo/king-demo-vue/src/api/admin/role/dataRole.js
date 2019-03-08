@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/role'
+const url = '/role/dataRole'
 export function getList(query) {
   return request({
     url: url + '/list',
@@ -38,7 +38,17 @@ export function update(data) {
 export function del(id) {
   return request({
     url: url + '/del',
-    method: 'get',
+    method: 'post',
+    params: {
+      id
+    }
+  })
+}
+
+export function recover(id) {
+  return request({
+    url: url + '/recover',
+    method: 'post',
     params: {
       id
     }
@@ -48,7 +58,7 @@ export function del(id) {
 export function realDel(id) {
   return request({
     url: url + '/realDelete',
-    method: 'get',
+    method: 'post',
     params: {
       id
     }

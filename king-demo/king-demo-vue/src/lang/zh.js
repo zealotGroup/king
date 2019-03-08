@@ -177,15 +177,7 @@ export default {
     view: '查看',
     add: '添加'
   },
-  role: {
-    dataRole: {
-      name: '数据角色'
-    },
-    routeRole: {
-      name: '路由角色'
-    }
-  },
-  name: '姓名',
+  name: '名称',
   phone: '手机',
   region: '区域',
   remarks: '备注',

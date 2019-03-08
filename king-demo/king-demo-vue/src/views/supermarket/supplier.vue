@@ -107,7 +107,7 @@
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" v-show="false">
-          <el-input v-model="temp.id"></el-input>
+          <el-input v-model="temp.id" :rules="rules.id"></el-input>
         </el-form-item>
         <el-form-item :label="$t('name')" :rules="rules.name">
           <el-input v-model="temp.name"></el-input>
@@ -140,7 +140,7 @@ import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  // name: this.$t('supplier'),
+  name: 'supplier',
   directives: {
     waves
   },
@@ -168,7 +168,10 @@ export default {
       dialogTitle: '',
       /* 固定功能字段 start */
       rules: {
-        name: [{ required: true, message: this.$t('required'), trigger: 'change' }]
+        name: [
+          { required: true, message: this.$t('required'), trigger: 'blur' },
+          { min: 1, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -363,17 +366,19 @@ export default {
       })
     },
     cacheGet(row, action) {
-      for (const v of this.list) {
-        if (v.id === row.id) {
-          const index = this.list.indexOf(v)
-          if (action === 'replace') {
-            this.list.splice(index, 1, row)
-          } else if (action === 'remove') {
-            this.list.splice(index, 1)
-          } else if (action === 'add') {
-            this.list.unshift(row)
+      if (action === 'add') {
+        this.list.unshift(row)
+      } else {
+        for (const v of this.list) {
+          if (v.id === row.id) {
+            const index = this.list.indexOf(v)
+            if (action === 'replace') {
+              this.list.splice(index, 1, row)
+            } else if (action === 'remove') {
+              this.list.splice(index, 1)
+            }
+            break
           }
-          break
         }
       }
     },

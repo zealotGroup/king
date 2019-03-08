@@ -433,17 +433,19 @@ export default {
       })
     },
     cacheGet(row, action) {
-      for (const v of this.list) {
-        if (v.id === row.id) {
-          const index = this.list.indexOf(v)
-          if (action === 'replace') {
-            this.list.splice(index, 1, row)
-          } else if (action === 'remove') {
-            this.list.splice(index, 1)
-          } else if (action === 'add') {
-            this.list.unshift(row)
+      if (action === 'add') {
+        this.list.unshift(row)
+      } else {
+        for (const v of this.list) {
+          if (v.id === row.id) {
+            const index = this.list.indexOf(v)
+            if (action === 'replace') {
+              this.list.splice(index, 1, row)
+            } else if (action === 'remove') {
+              this.list.splice(index, 1)
+            }
+            break
           }
-          break
         }
       }
     },
