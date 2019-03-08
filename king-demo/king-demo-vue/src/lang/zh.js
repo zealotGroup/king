@@ -217,6 +217,7 @@ export default {
   loginTimes: '登录次数',
   level: '等级',
   No: '序号',
-  lastLoginTime: '最后登录时间'
+  lastLoginTime: '最后登录时间',
+  search: '搜索'
 
 }
