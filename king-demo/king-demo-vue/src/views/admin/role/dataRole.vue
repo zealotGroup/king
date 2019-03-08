@@ -60,14 +60,15 @@
       <!--表数据固定字段信息 end-->
       <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button round v-if="scope.row.edit" type="success" size="mini" @click="updateData(scope.row)" icon="el-icon-circle-check-outline">{{ $t('ok') }}</el-button>
-          <el-button round v-if="scope.row.edit" type="warning" size="mini" @click="cancelUpdate(scope.row)"icon="el-icon-refresh" >{{ $t('cancel') }}</el-button>
-          <el-button round v-if="!scope.row.edit" type="primary" size="mini" @click='handleUpdate(scope.row)' icon="el-icon-edit">{{ $t('edit') }}</el-button>
           <!--固定操作功能 start-->
           <template v-if="scope.row.adding">
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
+            <el-button round v-if="scope.row.edit" type="success" size="mini" @click="updateData(scope.row)" icon="el-icon-circle-check-outline">{{ $t('ok') }}</el-button>
+            <el-button round v-if="scope.row.edit" type="warning" size="mini" @click="cancelUpdate(scope.row)"icon="el-icon-refresh" >{{ $t('cancel') }}</el-button>
+            <el-button round v-if="!scope.row.edit" type="primary" size="mini" @click='handleUpdate(scope.row)' icon="el-icon-edit">{{ $t('edit') }}</el-button>
+
             <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
             <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
               <p>确定要删除么？</p>
@@ -239,7 +240,9 @@ export default {
         this.dialogFormVisible = true
         this.dialogTitle = 'add'
         this.rules.id[0].required = false
-        this.$refs['dataForm'].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+        })
         this.loading_add = false
       })
     },
@@ -258,7 +261,9 @@ export default {
                 duration: 2000
               })
               this.cleanDialog()
-              this.$refs['dataForm'].clearValidate()
+              this.$nextTick(() => {
+                this.$refs['dataForm'].resetFields()
+              })
               this.loading_addData = false
             }).catch(() => {
               this.loading_addData = false
@@ -278,7 +283,9 @@ export default {
         this.dialogFormVisible = false
         this.dialogTitle = 'update'
         this.rules.id[0].required = true
-        this.$refs['dataForm'].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+        })
         this.update_loading = false
       })
     },
@@ -298,7 +305,9 @@ export default {
               })
               row.edit = false
               this.cleanDialog()
-              this.$refs['dataForm'].clearValidate()
+              this.$nextTick(() => {
+                this.$refs['dataForm'].resetFields()
+              })
               this.loading_updateData = false
             }).catch(() => {
               this.loading_updateData = false

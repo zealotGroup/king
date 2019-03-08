@@ -245,7 +245,7 @@ export default {
         this.dialogTitle = 'add'
         this.rules.id[0].required = false
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['dataForm'].resetFields()
         })
         this.loading_add = false
       })
@@ -265,7 +265,9 @@ export default {
                 duration: 2000
               })
               this.cleanDialog()
-              this.$refs['dataForm'].clearValidate()
+              this.$nextTick(() => {
+                this.$refs['dataForm'].resetFields()
+              })
               this.loading_addData = false
             }).catch(() => {
               this.loading_addData = false
@@ -285,7 +287,7 @@ export default {
         this.dialogTitle = 'update'
         this.rules.id[0].required = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['dataForm'].resetFields()
         })
         this.update_loading = false
       })
@@ -304,7 +306,9 @@ export default {
                 duration: 2000
               })
               this.cleanDialog()
-              this.$refs['dataForm'].clearValidate()
+              this.$nextTick(() => {
+                this.$refs['dataForm'].resetFields()
+              })
               this.loading_updateData = false
             }).catch(() => {
               this.loading_updateData = false
