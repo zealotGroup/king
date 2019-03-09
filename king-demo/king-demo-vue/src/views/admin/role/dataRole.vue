@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column min-width="100px" align="center" :label="$t('name')">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
+          <template v-if="scope.row.loading_handleUpdate">
             <el-input v-model="scope.row.name_"></el-input>
           </template>
           <span v-else>{{ scope.row.name }}</span>
@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.remarks"></el-input>
+          <template v-if="scope.row.loading_handleUpdate">
+            <el-input v-model="scope.row.remarks_"></el-input>
           </template>
           <span v-else>{{ scope.row.remarks }}</span>
         </template>
@@ -58,25 +58,30 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waitingForFlush">
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <el-button round v-if="scope.row.edit" type="success" size="mini" @click="updateData(scope.row)" icon="el-icon-circle-check-outline">{{ $t('ok') }}</el-button>
-            <el-button round v-if="scope.row.edit" type="warning" size="mini" @click="cancelUpdate(scope.row)"icon="el-icon-refresh" >{{ $t('cancel') }}</el-button>
-            <el-button round v-if="!scope.row.edit" type="primary" size="mini" @click='handleUpdate(scope.row)' icon="el-icon-edit">{{ $t('edit') }}</el-button>
+            <span v-show="scope.row.loading_handleUpdate" >
+              <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
+            </span>
+            <span v-show="scope.row.loading_handleUpdate" >
+              <el-button round type="warning" size="mini" @click="cancelUpdate(scope.row)" >{{ $t('cancel') }}</el-button>
+            </span>
+            <span v-show="!scope.row.loading_handleUpdate" >
+              <el-button round type="primary" size="mini" @click="handleUpdate(scope.row)" >{{ $t('edit') }}</el-button>
+            </span>
 
-            <el-button round type="primary" size="mini" :loading="scope.row.update_loading" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
             <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
                 <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
                 <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" size="mini" type="danger" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+              <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
             </el-popover>
 
             <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
@@ -85,7 +90,7 @@
                 <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
                 <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" size="mini" type="success" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+              <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
             </el-popover>
 
             <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
@@ -94,7 +99,7 @@
                 <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
                 <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -108,8 +113,8 @@
     </div>
 
     <!--固定弹出层 start-->
-    <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+    <el-dialog :title="$t('add')" :visible.sync="dialogFormVisible">
+      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
@@ -122,7 +127,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
         <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -143,9 +148,6 @@ export default {
       loading_add: false,
       loading_addData: false,
       loading_updateData: false,
-      loading_delData: false,
-      loading_recoverData: false,
-      loading_readDelData: false,
       tableKey: 0,
       list: null,
       total: null,
@@ -157,13 +159,8 @@ export default {
       },
       temp: undefined,
       dialogFormVisible: false,
-      dialogType: '',
-      dialogTitle: '',
       /* 固定功能字段 start */
       rules: {
-        id: [
-          { required: true, message: this.$t('required'), trigger: 'blur' }
-        ],
         name: [
           { required: true, message: this.$t('required'), trigger: 'blur' }
         ]
@@ -185,15 +182,18 @@ export default {
         remarks: ''
       }
     },
-    editTemp(row) {
-      row.name_ = row.name
-      row.remarks_ = row.remarks
+    editTemp(row, action) {
+      if (action === 'handleUpdate') {
+        row.name_ = row.name
+        row.remarks_ = row.remarks
+      } else if (action === 'updateData') {
+        row.name = row.name_
+        row.remarks = row.remarks_
+      }
     },
     cleanDialog() {
       this.resetTemp()
-      this.dialogType = ''
       this.dialogFormVisible = false
-      this.dialogTitle = ''
     },
     notifyClicking(loading, callBack) {
       if (loading) {
@@ -211,6 +211,7 @@ export default {
       this.notifyClicking(this.listLoading, () => {
         this.listLoading = true
         getList(this.listQuery).then(data => {
+          this.formaterList(data.list)
           this.list = data.list
           this.total = data.total
           this.listLoading = false
@@ -236,12 +237,9 @@ export default {
       this.notifyClicking(this.loading_add, () => {
         this.loading_add = true
         this.resetTemp()
-        this.dialogType = 'add'
         this.dialogFormVisible = true
-        this.dialogTitle = 'add'
-        this.rules.id[0].required = false
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['dataFormDataRole'].clearValidate()
         })
         this.loading_add = false
       })
@@ -249,7 +247,7 @@ export default {
     addData() {
       this.notifyClicking(this.loading_addData, () => {
         this.loading_addData = true
-        this.$refs['dataForm'].validate((valid) => {
+        this.$refs['dataFormDataRole'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
               this.temp.waitingForFlush = true
@@ -262,7 +260,7 @@ export default {
               })
               this.cleanDialog()
               this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
+                this.$refs['dataFormDataRole'].clearValidate()
               })
               this.loading_addData = false
             }).catch(() => {
@@ -275,53 +273,42 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.notifyClicking(this.update_loading, () => {
-        this.update_loading = true
+      this.notifyClicking(row.loading_handleUpdate, () => {
+        row.loading_handleUpdate = true
         this.editTemp(row, 'handleUpdate')
-        row.edit = true
-        this.dialogType = 'update'
-        this.dialogFormVisible = false
-        this.dialogTitle = 'update'
-        this.rules.id[0].required = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
-        this.update_loading = false
       })
     },
+    cancelUpdate(row) {
+      row.loading_handleUpdate = false
+    },
     updateData(row) {
-      this.notifyClicking(this.loading_updateData, () => {
-        this.loading_updateData = true
-        this.temp = Object.assign({}, row) // copy obj
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            update(this.temp).then(() => {
-              this.temp.waitingForFlush = true
-              this.cacheGet(this.temp, 'replace')
-              this.$notify({
-                title: '成功',
-                message: '更新成功',
-                type: 'success',
-                duration: 2000
-              })
-              row.edit = false
-              this.cleanDialog()
-              this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
-              })
-              this.loading_updateData = false
-            }).catch(() => {
-              this.loading_updateData = false
+      this.notifyClicking(row.loading_updateData, () => {
+        row.loading_updateData = true
+        this.editTemp(row, 'updateData')
+        const valid = true
+        if (valid) {
+          update(row).then(() => {
+            row.waitingForFlush = true
+            this.cacheGet(row, 'replace')
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
             })
-          } else {
-            this.loading_updateData = false
-          }
-        })
+            row.loading_handleUpdate = false
+            row.loading_updateData = false
+          }).catch(() => {
+            row.loading_updateData = false
+          })
+        } else {
+          row.loading_updateData = false
+        }
       })
     },
     handleDel(row) {
-      this.notifyClicking(this.loading_delData, () => {
-        this.loading_delData = true
+      this.notifyClicking(row.loading_handleDel, () => {
+        row.loading_handleDel = true
         row.visible_deleted = false
         del(row.id).then(() => {
           row.deleted = true
@@ -332,15 +319,15 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.loading_delData = false
+          row.loading_handleDel = false
         }).catch(() => {
-          this.loading_delData = false
+          row.loading_handleDel = false
         })
       })
     },
     handleRecover(row) {
-      this.notifyClicking(this.loading_recoverData, () => {
-        this.loading_recoverData = true
+      this.notifyClicking(row.loading_handleRecover, () => {
+        row.loading_handleRecover = true
         row.visible_recover = false
         recover(row.id).then(() => {
           row.deleted = false
@@ -351,15 +338,15 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.loading_recoverData = false
+          row.loading_handleRecover = false
         }).catch(() => {
-          this.loading_recoverData = false
+          row.loading_handleRecover = false
         })
       })
     },
     handleReadDel(row) {
-      this.notifyClicking(this.loading_readDelData, () => {
-        this.loading_readDelData = true
+      this.notifyClicking(row.loading_handleReadDel, () => {
+        row.loading_handleReadDel = true
         row.visible_readDel = false
         realDel(row.id).then(() => {
           this.cacheGet(row, 'remove')
@@ -369,9 +356,9 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.loading_readDelData = false
+          row.loading_handleReadDel = false
         }).catch(() => {
-          this.loading_readDelData = false
+          row.loading_handleReadDel = false
         })
       })
     },
@@ -392,6 +379,21 @@ export default {
         }
       }
     },
+    formaterList(list) {
+      let i = 1
+      for (const v of list) { // 响应
+        v.No = i++
+        v.loading_handleUpdate = false
+        v.loading_updateData = false
+        v.waitingForFlush = false
+        v.loading_handleDel = false
+        v.visible_deleted = false
+        v.loading_handleRecover = false
+        v.visible_recover = false
+        v.loading_handleReadDel = false
+        v.visible_readDel = false
+      }
+    },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
@@ -403,7 +405,7 @@ export default {
     },
     checkLevel(level) {
       let fg = store.getters.level === level
-      fg = true
+      fg = false
       return fg
     }
     /* 固定功能方法 end */
