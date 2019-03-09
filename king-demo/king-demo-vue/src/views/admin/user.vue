@@ -41,25 +41,29 @@
       </el-table-column>
       <el-table-column min-width="95px" align="center" :label="$t('status')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <el-popover v-if="scope.row.status === 'able'" placement="top" width="160" v-model="scope.row.visible_updateStatus">
-            <p>确定要<b>禁用</b>么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
-              <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'disable')" >确定</el-button>
-            </div>
-            <el-button round slot="reference" size="mini" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
-          </el-popover>
-
-          <el-popover v-else-if="scope.row.status === 'disable'" placement="top" width="160" v-model="scope.row.visible_updateStatus">
-            <p>确定要<b>启用</b>么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
-              <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'able')" >确定</el-button>
-            </div>
-            <el-button round slot="reference" size="mini" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
-          </el-popover>
-
-          <el-button v-else round size="mini" :type="typeStatus(scope.row.status)" >{{$t(scope.row.status)}}</el-button>
+          <template v-if="scope.row.status === 'able'">
+            <el-popover placement="top" width="160" v-model="scope.row.visible_updateStatus">
+              <p>确定要<b>禁用</b>么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'disable')" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" :loading="scope.row.loading_updateStatus" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
+            </el-popover>
+          </template>
+          <template v-else-if="scope.row.status === 'disable'">
+            <el-popover placement="top" width="160" v-model="scope.row.visible_updateStatus">
+              <p>确定要<b>启用</b>么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'able')" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" :loading="scope.row.loading_updateStatus" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
+            </el-popover>
+          </template>
+          <template v-else>
+            <el-button round size="mini" :type="typeStatus(scope.row.status)" >{{$t(scope.row.status)}}</el-button>
+          </template>
         </template>
       </el-table-column>
       <el-table-column min-width="95px" class-name="status-col" :label="$t('level')" v-if="checkLevel('super') || checkLevel('admin')">
@@ -116,7 +120,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" fixed="right" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waitingForFlush">
@@ -292,6 +296,7 @@ export default {
       this.notifyClicking(this.listLoading, () => {
         this.listLoading = true
         getList(this.listQuery).then(data => {
+          this.formaterList(data.list)
           this.list = data.list
           this.total = data.total
           this.listLoading = false
@@ -468,6 +473,23 @@ export default {
             break
           }
         }
+      }
+    },
+    formaterList(list) {
+      let i = 1
+      for (const v of list) { // 响应
+        v.No = i++
+        v.loading_handleUpdate = false
+        v.loading_updateData = false
+        v.waitingForFlush = false
+        v.loading_handleDel = false
+        v.visible_deleted = false
+        v.loading_handleRecover = false
+        v.visible_recover = false
+        v.loading_handleReadDel = false
+        v.visible_readDel = false
+        v.loading_updateStatus = false
+        v.visible_updateStatus = false
       }
     },
     formatJson(filterVal, jsonData) {

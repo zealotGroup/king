@@ -5,7 +5,7 @@
       </el-input>
     </div>
     <div class="filter-container">
-      <el-button round class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
+      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
       <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
@@ -212,6 +212,7 @@ export default {
       this.notifyClicking(this.listLoading, () => {
         this.listLoading = true
         getList(this.listQuery).then(data => {
+          this.formaterList(data.list)
           this.list = data.list
           this.total = data.total
           this.listLoading = false
@@ -388,6 +389,21 @@ export default {
             break
           }
         }
+      }
+    },
+    formaterList(list) {
+      let i = 1
+      for (const v of list) { // 响应
+        v.No = i++
+        v.loading_handleUpdate = false
+        v.loading_updateData = false
+        v.waitingForFlush = false
+        v.loading_handleDel = false
+        v.visible_deleted = false
+        v.loading_handleRecover = false
+        v.visible_recover = false
+        v.loading_handleReadDel = false
+        v.visible_readDel = false
       }
     },
     formatJson(filterVal, jsonData) {
