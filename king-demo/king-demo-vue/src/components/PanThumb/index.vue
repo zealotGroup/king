@@ -5,7 +5,7 @@
         <slot></slot>
       </div>
     </div>
-    <img class="pan-thumb" :src="image">
+    <img class="pan-thumb" src="./9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif">
   </div>
 </template>
 
@@ -13,10 +13,6 @@
 export default {
   name: 'PanThumb',
   props: {
-    image: {
-      type: String,
-      required: true
-    },
     zIndex: {
       type: Number,
       default: 1

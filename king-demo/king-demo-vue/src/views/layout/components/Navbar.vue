@@ -78,8 +78,7 @@ export default {
       })
     },
     checkLevel(level) {
-      let fg = store.getters.level === level
-      fg = true
+      const fg = store.getters.level === level
       return fg
     }
   }

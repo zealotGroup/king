@@ -211,6 +211,6 @@ export default {
   No: '序号',
   lastLoginTime: '最后登录时间',
   search: '搜索',
-  waitingForFlush: '待刷新'
-
+  waitingForFlush: '待刷新',
+  error: '错误'
 }

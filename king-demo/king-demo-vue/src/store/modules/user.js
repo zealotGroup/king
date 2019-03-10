@@ -1,49 +1,36 @@
 import { login, logout, loginInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { routerMap } from '@/router'
+
+function dealRouters(routers) {
+  const menus = []
+  for (const v of routers) {
+    for (const vo of routerMap) {
+      if (v === vo.name) {
+        console.info(vo.name)
+        menus.push(vo)
+      }
+    }
+  }
+  return menus
+}
 
 const user = {
   state: {
-    user: '',
-    status: '',
-    code: '',
     token: getToken(),
-    name: '',
-    avatar: '',
-    introduction: '',
-    roles: [],
-    setting: {
-      articlePlatform: []
-    },
+    routers: [],
     level: ''
   },
 
   mutations: {
-    SET_CODE: (state, code) => {
-      state.code = code
-    },
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
-    },
-    SET_STATUS: (state, status) => {
-      state.status = status
-    },
-    SET_NAME: (state, name) => {
-      state.name = name
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
     SET_LEVEL: (state, level) => {
       state.level = level
+    },
+    SET_ROUTERS: (state, routers) => {
+      state.routers = routers
     }
   },
 
@@ -67,14 +54,10 @@ const user = {
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         loginInfo().then(data => {
-          if (data.principals.roles && data.principals.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.principals.roles)
-            commit('SET_LEVEL', data.level)
-            console.debug('set info完成')
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
-          resolve(data)
+          commit('SET_LEVEL', data.level)
+          commit('SET_ROUTERS', dealRouters(data.routers))
+          console.debug('set info完成')
+          resolve()
         }).catch(error => {
           reject(error)
         })
@@ -86,7 +69,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          commit('SET_ROUTERS', [])
           commit('SET_LEVEL', '')
           removeToken()
           console.debug('移除 token完成')
@@ -101,7 +84,7 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        commit('SET_ROUTERS', [])
         commit('SET_LEVEL', '')
         removeToken()
         console.debug('移除 token完成')
@@ -118,8 +101,6 @@ const user = {
           const data = response.data
           commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
           resolve()
         })
       })

@@ -29,11 +29,12 @@ export default {
   methods: {
     generateTitle,
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.name)
-      const first = matched[0]
-      if (first && first.name !== 'dashboard') {
-        matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
-      }
+      const matched = this.$route.matched.filter(item => item.name)
+      console.debug(matched)
+      // const first = matched[0]
+      // if (first && first.name !== 'dashboard') {
+      //   matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
+      // }
       this.levelList = matched
     }
   }

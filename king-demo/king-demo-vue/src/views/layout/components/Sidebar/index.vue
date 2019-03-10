@@ -9,7 +9,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
-      <sidebar-item :routes="permission_routers"></sidebar-item>
+      <sidebar-item :routes="routers"></sidebar-item>
     </el-menu>
   </el-scrollbar>
 </template>
@@ -22,7 +22,7 @@ export default {
   components: { SidebarItem },
   computed: {
     ...mapGetters([
-      'permission_routers',
+      'routers',
       'sidebar'
     ]),
     isCollapse() {

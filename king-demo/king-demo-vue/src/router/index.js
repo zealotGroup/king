@@ -3,12 +3,28 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
+/* 框架视图 */
 import Layout from '@/views/layout/Layout'
-
-/** note: submenu only apppear when children.length>=1
-*   detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
-**/
+import Blank from '@/views/Blank'
+/* views */
+import dashboard_index from '@/views/dashboard/index'
+import supermarket_supplier from '@/views/supermarket/supplier'
+import admin_role from '@/views/admin/role'
+import admin_user from '@/views/admin/user'
+import funShow_components_demo_dragDialog from '@/views/funShow/components-demo/dragDialog'
+import funShow_components_demo_dndList from '@/views/funShow/components-demo/dndList'
+import funShow_components_demo_dragKanban from '@/views/funShow/components-demo/dragKanban'
+import funShow_charts_keyboard from '@/views/funShow/charts/keyboard'
+import funShow_charts_line from '@/views/funShow/charts/line'
+import funShow_charts_mixChart from '@/views/funShow/charts/mixChart'
+import funShow_tab_index from '@/views/funShow/tab/index'
+import funShow_table_inlineEditTable from '@/views/funShow/table/inlineEditTable'
+import funShow_table_complexTable from '@/views/funShow/table/complexTable'
+import system_svg_icons_index from '@/views/system/svg-icons/index'
+import system_errorPage_401 from '@/views/system/errorPage/401'
+import system_errorPage_404 from '@/views/system/errorPage/404'
+import system_theme_index from '@/views/system/theme/index'
+import system_i18n_demo_index from '@/views/system/i18n-demo/index'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -25,21 +41,34 @@ import Layout from '@/views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true },
+  { path: '/login', component: () => import('@/views/login/index'), hidden: true, noCache: true },
+  { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true, noCache: true },
   { path: '/404', component: () => import('@/views/system/errorPage/404'), hidden: true },
   { path: '/401', component: () => import('@/views/system/errorPage/401'), hidden: true },
   {
-    path: '',
+    path: '/',
     component: Layout,
-    redirect: 'dashboard',
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
-    }]
+    redirect: '/dashboard',
+    name: 'index',
+    children: [
+      {
+        path: '/dashboard',
+        component: dashboard_index,
+        name: 'dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      }
+    ]
   },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const routerMap = [
   {
     path: '/supermarket',
     component: Layout,
@@ -51,22 +80,22 @@ export const constantRouterMap = [
     },
     children: [{
       path: 'supplier',
-      component: () => import('@/views/supermarket/supplier'),
+      component: supermarket_supplier,
       name: 'supplier',
-      meta: { title: 'supplier', icon: 'shoppingCard', noCache: true }
+      meta: { title: 'supplier', icon: 'shoppingCard', noCache: false }
     }, {
       path: 'customer',
-      component: () => import('@/views/supermarket/supplier'),
+      component: supermarket_supplier,
       name: 'customer',
       meta: { title: 'customer', icon: 'customer', noCache: true }
     }, {
       path: 'product',
-      component: () => import('@/views/supermarket/supplier'),
+      component: supermarket_supplier,
       name: 'product',
       meta: { title: 'product', icon: 'product', noCache: true }
     }, {
       path: 'reportForm',
-      component: () => import('@/views/supermarket/supplier'),
+      component: supermarket_supplier,
       name: 'reportForm',
       meta: { title: 'reportForm', icon: 'reportForm', noCache: true }
     }]
@@ -83,27 +112,18 @@ export const constantRouterMap = [
     children: [
       {
         path: 'role',
-        component: () => import('@/views/admin/role'),
+        component: admin_role,
         name: 'role',
         meta: { title: 'role', icon: 'theme', noCache: true }
       },
       {
         path: 'user',
-        component: () => import('@/views/admin/user'),
+        component: admin_user,
         name: 'user',
         meta: { title: 'user', icon: 'peoples', noCache: true }
       }
     ]
-  }
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const superRouterMap = [
+  },
   {
     path: '/funShow',
     component: Layout,
@@ -116,7 +136,7 @@ export const superRouterMap = [
     children: [
       {
         path: '/funShow/components',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/funShow/components/drag-dialog',
         name: 'component-demo',
         meta: {
@@ -124,15 +144,15 @@ export const superRouterMap = [
           icon: 'component'
         },
         children: [
-          { path: 'drag-dialog', component: () => import('@/views/funShow/components-demo/dragDialog'), name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
-          { path: 'dnd-list', component: () => import('@/views/funShow/components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' }},
-          { path: 'drag-kanban', component: () => import('@/views/funShow/components-demo/dragKanban'), name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
+          { path: 'drag-dialog', component: funShow_components_demo_dragDialog, name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
+          { path: 'dnd-list', component: funShow_components_demo_dndList, name: 'dndList-demo', meta: { title: 'dndList' }},
+          { path: 'drag-kanban', component: funShow_components_demo_dragKanban, name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
         ]
       },
 
       {
         path: '/funShow/charts',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/funShow/charts/keyboard',
         name: 'charts',
         meta: {
@@ -140,19 +160,19 @@ export const superRouterMap = [
           icon: 'chart'
         },
         children: [
-          { path: 'keyboard', component: () => import('@/views/funShow/charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
-          { path: 'line', component: () => import('@/views/funShow/charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
-          { path: 'mixchart', component: () => import('@/views/funShow/charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
+          { path: 'keyboard', component: funShow_charts_keyboard, name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
+          { path: 'line', component: funShow_charts_line, name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
+          { path: 'mixchart', component: funShow_charts_mixChart, name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
         ]
       },
 
       {
         path: '/funShow/tab',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/funShow/tab/index',
         children: [{
           path: 'index',
-          component: () => import('@/views/funShow/tab/index'),
+          component: funShow_tab_index,
           name: 'tab',
           meta: { title: 'tab', icon: 'tab' }
         }]
@@ -160,7 +180,7 @@ export const superRouterMap = [
 
       {
         path: '/funShow/table',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/funShow/table/inline-edit-table',
         name: 'table',
         meta: {
@@ -168,8 +188,8 @@ export const superRouterMap = [
           icon: 'table'
         },
         children: [
-          { path: 'inline-edit-table', component: () => import('@/views/funShow/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-          { path: 'complex-table', component: () => import('@/views/funShow/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
+          { path: 'inline-edit-table', component: funShow_table_inlineEditTable, name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          { path: 'complex-table', component: funShow_table_complexTable, name: 'complexTable', meta: { title: 'complexTable' }}
         ]
       }
     ]
@@ -186,18 +206,18 @@ export const superRouterMap = [
     children: [
       {
         path: '/system/icon',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/system/icon/index',
         children: [{
           path: 'index',
-          component: () => import('@/views/system/svg-icons/index'),
+          component: system_svg_icons_index,
           name: 'icons',
           meta: { title: 'icons', icon: 'icon', noCache: true }
         }]
       },
       {
         path: '/system/error',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/system/error/401',
         name: 'errorPages',
         meta: {
@@ -205,24 +225,22 @@ export const superRouterMap = [
           icon: '404'
         },
         children: [
-          { path: '401', component: () => import('@/views/system/errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
-          { path: '404', component: () => import('@/views/system/errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
+          { path: '401', component: system_errorPage_401, name: 'page401', meta: { title: 'page401', noCache: true }},
+          { path: '404', component: system_errorPage_404, name: 'page404', meta: { title: 'page404', noCache: true }}
         ]
       },
       {
         path: '/system/theme',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/system/theme/index',
-        children: [{ path: 'index', component: () => import('@/views/system/theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
+        children: [{ path: 'index', component: system_theme_index, name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
       },
       {
         path: '/system/i18n',
-        component: () => import('@/views/Blank'),
+        component: Blank,
         redirect: '/system/i18n/index',
-        children: [{ path: 'index', component: () => import('@/views/system/i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+        children: [{ path: 'index', component: system_i18n_demo_index, name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
       }
     ]
-  },
-
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
