@@ -3,16 +3,25 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { routerMap } from '@/router'
 
 function dealRouters(routers) {
-  const menus = []
-  for (const v of routers) {
-    for (const vo of routerMap) {
-      if (v === vo.name) {
-        console.info(vo.name)
-        menus.push(vo)
+  const menu = dealRouter(routers, routerMap)
+  console.debug(menu)
+  return menu
+}
+
+function dealRouter(vchildren, vochildren) {
+  const children = []
+  for (const v of vchildren) {
+    for (const vo of vochildren) {
+      if (v.name === vo.name) {
+        if (v.children && vo.children && v.children.length > 0 && vo.children.length > 0) {
+          vo.children = dealRouter(v.children, vo.children)
+        }
+        children.push(vo)
+        break
       }
     }
   }
-  return menus
+  return children
 }
 
 const user = {

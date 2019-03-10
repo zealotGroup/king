@@ -1,4 +1,21 @@
-const routers = ['supermarket', 'index']
+const routers = [
+  {
+    name: 'index',
+    children: [
+      {
+        name: 'dashboard'
+      }
+    ]
+  },
+  {
+    name: 'supermarket',
+    children: [
+      {
+        name: 'supplier'
+      }
+    ]
+  }
+]
 
 const loginResult = {
   code: 200,

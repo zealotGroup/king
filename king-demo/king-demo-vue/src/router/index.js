@@ -9,6 +9,9 @@ import Blank from '@/views/Blank'
 /* views */
 import dashboard_index from '@/views/dashboard/index'
 import supermarket_supplier from '@/views/supermarket/supplier'
+import supermarket_supplier1 from '@/views/supermarket/supplier'
+import supermarket_supplier2 from '@/views/supermarket/supplier'
+import supermarket_supplier3 from '@/views/supermarket/supplier'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
 import funShow_components_demo_dragDialog from '@/views/funShow/components-demo/dragDialog'
@@ -70,6 +73,20 @@ export default new Router({
 
 export const routerMap = [
   {
+    path: '',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'index',
+    children: [
+      {
+        path: 'dashboard',
+        component: dashboard_index,
+        name: 'dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/supermarket',
     component: Layout,
     redirect: '/supermarket/supplier',
@@ -85,17 +102,17 @@ export const routerMap = [
       meta: { title: 'supplier', icon: 'shoppingCard', noCache: false }
     }, {
       path: 'customer',
-      component: supermarket_supplier,
+      component: supermarket_supplier1,
       name: 'customer',
       meta: { title: 'customer', icon: 'customer', noCache: true }
     }, {
       path: 'product',
-      component: supermarket_supplier,
+      component: supermarket_supplier2,
       name: 'product',
       meta: { title: 'product', icon: 'product', noCache: true }
     }, {
       path: 'reportForm',
-      component: supermarket_supplier,
+      component: supermarket_supplier3,
       name: 'reportForm',
       meta: { title: 'reportForm', icon: 'reportForm', noCache: true }
     }]

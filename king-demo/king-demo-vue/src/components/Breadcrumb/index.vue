@@ -30,7 +30,7 @@ export default {
     generateTitle,
     getBreadcrumb() {
       const matched = this.$route.matched.filter(item => item.name)
-      console.debug(matched)
+      // console.debug(matched)
       // const first = matched[0]
       // if (first && first.name !== 'dashboard') {
       //   matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
