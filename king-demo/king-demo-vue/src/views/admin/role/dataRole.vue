@@ -75,32 +75,34 @@
               <el-button round type="primary" size="mini" @click="handleUpdate(scope.row)" >{{ $t('edit') }}</el-button>
             </span>
 
-            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
-              <p>确定要删除么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
-            </el-popover>
+            <template v-if="!scope.row.loading_handleUpdate">
+              <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+                <p>确定要删除么？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
+                  <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+                </div>
+                <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+              </el-popover>
 
-            <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
-              <p>确定要恢复么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
-            </el-popover>
+              <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
+                <p>确定要恢复么？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
+                  <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
+                </div>
+                <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+              </el-popover>
 
-            <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
-              <p>确定要物理删除么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
-            </el-popover>
+              <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+                <p>确定要物理删除么？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
+                  <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+                </div>
+                <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+              </el-popover>
+            </template>
           </template>
           <!--固定操作功能 end-->
         </template>
