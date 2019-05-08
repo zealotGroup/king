@@ -22,6 +22,27 @@ const routers = [
     ]
   },
   {
+    name: 'System',
+    children: [
+      {
+        name: 'icons'
+      },
+      {
+        name: 'errorPages',
+        children: [
+          { name: 'page401' },
+          { name: 'page404' }
+        ]
+      },
+      {
+        name: 'theme'
+      },
+      {
+        name: 'i18n'
+      }
+    ]
+  },
+  {
     name: 'FunShow',
     children: [
       {
@@ -50,27 +71,6 @@ const routers = [
           { name: 'inlineEditTable' },
           { name: 'complexTable' }
         ]
-      }
-    ]
-  },
-  {
-    name: 'System',
-    children: [
-      {
-        name: 'icons'
-      },
-      {
-        name: 'errorPages',
-        children: [
-          { name: 'page401' },
-          { name: 'page404' }
-        ]
-      },
-      {
-        name: 'theme'
-      },
-      {
-        name: 'i18n'
       }
     ]
   }
