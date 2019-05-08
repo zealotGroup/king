@@ -2,16 +2,75 @@ const routers = [
   {
     name: 'index',
     children: [
-      {
-        name: 'dashboard'
-      }
+      { name: 'dashboard' }
     ]
   },
   {
     name: 'supermarket',
     children: [
+      { name: 'supplier' },
+      { name: 'customer' },
+      { name: 'product' },
+      { name: 'reportForm' }
+    ]
+  },
+  {
+    name: 'Admin',
+    children: [
+      { name: 'role' },
+      { name: 'user' }
+    ]
+  },
+  {
+    name: 'FunShow',
+    children: [
       {
-        name: 'supplier'
+        name: 'component-demo',
+        children: [
+          { name: 'dragDialog-demo' },
+          { name: 'dndList-demo' },
+          { name: 'dragKanban-demo' }
+        ]
+      },
+      {
+        name: 'charts',
+        children: [
+          { name: 'keyboardChart' },
+          { name: 'lineChart' },
+          { name: 'mixChart' }
+        ]
+      },
+      {
+        name: 'tab'
+      },
+
+      {
+        name: 'table',
+        children: [
+          { name: 'inlineEditTable' },
+          { name: 'complexTable' }
+        ]
+      }
+    ]
+  },
+  {
+    name: 'System',
+    children: [
+      {
+        name: 'icons'
+      },
+      {
+        name: 'errorPages',
+        children: [
+          { name: 'page401' },
+          { name: 'page404' }
+        ]
+      },
+      {
+        name: 'theme'
+      },
+      {
+        name: 'i18n'
       }
     ]
   }

@@ -183,15 +183,10 @@ export const routerMap = [
       },
 
       {
-        path: '/funShow/tab',
-        component: Blank,
-        redirect: '/funShow/tab/index',
-        children: [{
-          path: 'index',
-          component: funShow_tab_index,
-          name: 'tab',
-          meta: { title: 'tab', icon: 'tab' }
-        }]
+        path: 'tab',
+        component: funShow_tab_index,
+        name: 'tab',
+        meta: { title: 'tab', icon: 'tab' }
       },
 
       {
@@ -221,15 +216,10 @@ export const routerMap = [
     },
     children: [
       {
-        path: '/system/icon',
-        component: Blank,
-        redirect: '/system/icon/index',
-        children: [{
-          path: 'index',
-          component: system_svg_icons_index,
-          name: 'icons',
-          meta: { title: 'icons', icon: 'icon', noCache: true }
-        }]
+        path: 'icon',
+        component: system_svg_icons_index,
+        name: 'icons',
+        meta: { title: 'icons', icon: 'icon', noCache: true }
       },
       {
         path: '/system/error',
