@@ -116,7 +116,7 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t('add')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="120px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
@@ -126,6 +126,18 @@
         <el-form-item :label="$t('remarks')">
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
           </el-input>
+        </el-form-item>
+        <el-form-item label="选择权限" prop="menu">
+          <el-tree
+            :props="props"
+            :load="loadNode"
+            :data="treeData"
+            node-key="id"
+            :default-checked-keys="[1]"
+            default-expand-all
+            show-checkbox
+            @check-change="handleCheckChange">
+          </el-tree>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -146,6 +158,23 @@
     name: 'dataRole',
     data() {
       return {
+        props: {
+          label: 'name',
+          children: 'children'
+        },
+        count: 1,
+        treeData: [
+          { id: 1, name: '首页', disabled: true },
+          { name: '超市',
+            children: [
+              { name: '供应商' },
+              { name: '客户' },
+              { name: '产品' },
+              { name: '报表' }
+            ]
+          }
+        ],
+
         /* 固定功能字段 start */
         loading_add: false,
         loading_addData: false,
@@ -165,6 +194,9 @@
         rules: {
           name: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
+          ],
+          menu: [
+            { required: true, message: this.$t('required'), trigger: 'blur' }
           ]
         }
       }
@@ -174,6 +206,16 @@
       this.getList()
     },
     methods: {
+
+      handleCheckChange(data, checked, indeterminate) {
+        console.log(data, checked, indeterminate)
+      },
+      handleNodeClick(data) {
+        console.log(data)
+      },
+      loadNode(node, resolve) {
+        return resolve([{ name: 'region1' }, { name: 'region2' }])
+      },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
