@@ -7,6 +7,7 @@ import routeRoleAPI from './admin/role/routeRole'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 import supplierAPI from './supermarket/supplier'
+import routeAPI from './route/route'
 
 Mock.setup({
   timeout: '350-600'
@@ -29,6 +30,14 @@ Mock.mock(/\/user\/update/, 'post', userAPI.update)
 Mock.mock(/\/user\/del/, 'post', userAPI.del)
 Mock.mock(/\/user\/recover/, 'post', userAPI.recover)
 Mock.mock(/\/user\/realDel/, 'post', userAPI.realDel)
+
+Mock.mock(/\/route\/list/, 'get', routeAPI.getList)
+Mock.mock(/\/route\/get/, 'get', routeAPI.get)
+Mock.mock(/\/route\/add/, 'post', routeAPI.add)
+Mock.mock(/\/route\/update/, 'post', routeAPI.update)
+Mock.mock(/\/route\/del/, 'post', routeAPI.del)
+Mock.mock(/\/route\/recover/, 'post', routeAPI.recover)
+Mock.mock(/\/route\/realDel/, 'post', routeAPI.realDel)
 
 Mock.mock(/\/role\/dataRole\/list/, 'get', dataRoleAPI.getList)
 Mock.mock(/\/role\/dataRole\/get/, 'get', dataRoleAPI.get)

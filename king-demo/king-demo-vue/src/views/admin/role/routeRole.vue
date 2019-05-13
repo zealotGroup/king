@@ -151,6 +151,7 @@
 
 <script>
   import { getList, add, update, del, recover, realDel } from '@/api/admin/role/routeRole'
+  import { getList as getRouteList } from '@/api/route/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
@@ -206,6 +207,13 @@
       this.getList()
     },
     methods: {
+      getRouteList() {
+        getRouteList({ page: -1 }).then(data => {
+          this.treeData = data.list
+        }).catch(() => {
+          this.listLoading = false
+        })
+      },
 
       handleCheckChange(data, checked, indeterminate) {
         console.log(data, checked, indeterminate)
@@ -225,6 +233,7 @@
           region: '',
           remarks: ''
         }
+        this.getRouteList()
       },
       editTemp(row, action) {
         if (action === 'handleUpdate') {
