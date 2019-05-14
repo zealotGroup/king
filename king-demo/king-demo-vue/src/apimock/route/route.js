@@ -2,76 +2,76 @@ import { param2Obj } from '@/utils'
 
 const routers = [
   {
-    name: 'index',
+    id: 1, disabled: true, name: 'index',
     children: [
-      { name: 'dashboard' }
+      { id: 11, disabled: true, name: 'dashboard' }
     ]
   },
   {
-    name: 'supermarket',
+    id: 2, name: 'supermarket',
     children: [
-      { name: 'supplier' },
-      { name: 'customer' },
-      { name: 'product' },
-      { name: 'reportForm' }
+      { id: 21, name: 'supplier' },
+      { id: 22, name: 'customer' },
+      { id: 23, name: 'product' },
+      { id: 24, name: 'reportForm' }
     ]
   },
   {
-    name: 'Admin',
+    id: 3, name: 'Admin',
     children: [
-      { name: 'role' },
-      { name: 'user' }
+      { id: 31, name: 'role' },
+      { id: 32, name: 'user' }
     ]
   },
   {
-    name: 'System',
+    id: 4, name: 'System',
     children: [
       {
-        name: 'icons'
+        id: 41, name: 'icons'
       },
       {
-        name: 'errorPages',
+        id: 42, name: 'errorPages',
         children: [
-          { name: 'page401' },
-          { name: 'page404' }
+          { id: 421, name: 'page401' },
+          { id: 422, name: 'page404' }
         ]
       },
       {
-        name: 'theme'
+        id: 43, name: 'theme'
       },
       {
-        name: 'i18n'
+        id: 44, name: 'i18n'
       }
     ]
   },
   {
-    name: 'FunShow',
+    id: 5, name: 'FunShow',
     children: [
       {
-        name: 'component-demo',
+        id: 51, name: 'component-demo',
         children: [
-          { name: 'dragDialog-demo' },
-          { name: 'dndList-demo' },
-          { name: 'dragKanban-demo' }
+          { id: 511, name: 'dragDialog-demo' },
+          { id: 512, name: 'dndList-demo' },
+          { id: 513, name: 'dragKanban-demo' }
         ]
       },
       {
-        name: 'charts',
+        id: 52, name: 'charts',
         children: [
-          { name: 'keyboardChart' },
-          { name: 'lineChart' },
-          { name: 'mixChart' }
+          { id: 521, name: 'keyboardChart' },
+          { id: 522, name: 'lineChart' },
+          { id: 523, name: 'mixChart' }
         ]
       },
       {
-        name: 'tab'
+        id: 53, name: 'tab'
       },
 
       {
-        name: 'table',
+        id: 54, name: 'table',
         children: [
-          { name: 'inlineEditTable' },
-          { name: 'complexTable' }
+          { id: 541, name: 'inlineEditTable' },
+          { id: 542, name: 'complexTable' }
         ]
       }
     ]

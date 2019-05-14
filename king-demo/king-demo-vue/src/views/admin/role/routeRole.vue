@@ -6,11 +6,12 @@
     </div>
     <div class="filter-container">
       <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
-      <el-button round class="filter-item" style="margin-left: 10px;" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
+      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%;min-height:500px;">
-      <el-table-column min-width="60px"align="center" :label="$t('No')">
+    <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
+              style="width: 100%;min-height:500px;">
+      <el-table-column  min-width="60px"align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
@@ -20,20 +21,24 @@
           <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('name')">
+      <el-table-column min-width="100px" :label="$t('name')">
         <template slot-scope="scope">
-          <template v-if="scope.row.loading_handleUpdate">
-            <el-input v-model="scope.row.name_"></el-input>
-          </template>
-          <span v-else>{{ scope.row.name }}</span>
+          <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
+      <el-table-column min-width="100px" align="center" :label="$t('phone')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <template v-if="scope.row.loading_handleUpdate">
-            <el-input v-model="scope.row.remarks_"></el-input>
-          </template>
-          <span v-else>{{ scope.row.remarks }}</span>
+          <span>{{scope.row.phone}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" align="center" :label="$t('region')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.region}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" align="center" :label="$t('remarks')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.remarks}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -65,44 +70,33 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <span v-show="scope.row.loading_handleUpdate" >
-              <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
-            </span>
-            <span v-show="scope.row.loading_handleUpdate" >
-              <el-button round type="warning" size="mini" @click="cancelUpdate(scope.row)" >{{ $t('cancel') }}</el-button>
-            </span>
-            <span v-show="!scope.row.loading_handleUpdate" >
-              <el-button round type="primary" size="mini" @click="handleUpdate(scope.row)" >{{ $t('edit') }}</el-button>
-            </span>
+            <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+              <p>确定要删除么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
+            </el-popover>
 
-            <template v-if="!scope.row.loading_handleUpdate">
-              <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
-                <p>确定要删除么？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-                  <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
-                </div>
-                <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
-              </el-popover>
+            <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
+              <p>确定要恢复么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
+            </el-popover>
 
-              <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
-                <p>确定要恢复么？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-                  <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
-                </div>
-                <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
-              </el-popover>
-
-              <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
-                <p>确定要物理删除么？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-                  <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
-                </div>
-                <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
-              </el-popover>
-            </template>
+            <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+              <p>确定要物理删除么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+              </div>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+            </el-popover>
           </template>
           <!--固定操作功能 end-->
         </template>
@@ -115,13 +109,19 @@
     </div>
 
     <!--固定弹出层 start-->
-    <el-dialog :title="$t('add')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="120px" style='width: 400px; margin-left:50px;'>
+    <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
-          <el-input v-model="temp.id"></el-input>
+          <el-input v-model="temp.id" ></el-input>
         </el-form-item>
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('phone')" >
+          <el-input v-model="temp.phone"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('region')" >
+          <el-input v-model="temp.region"></el-input>
         </el-form-item>
         <el-form-item :label="$t('remarks')">
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
@@ -133,7 +133,7 @@
             :load="loadNode"
             :data="treeData"
             node-key="id"
-            :default-checked-keys="[1]"
+            :default-checked-keys="[1,11]"
             default-expand-all
             show-checkbox
             @check-change="handleCheckChange">
@@ -141,7 +141,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button round type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
         <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -150,13 +151,13 @@
 </template>
 
 <script>
-  import { getList, add, update, del, recover, realDel } from '@/api/admin/role/routeRole'
+  import { getList, add, update, del, recover, realDel } from '@/api/supermarket/supplier'
   import { getList as getRouteList } from '@/api/route/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
   export default {
-    name: 'dataRole',
+    name: 'supplier',
     data() {
       return {
         props: {
@@ -175,7 +176,6 @@
             ]
           }
         ],
-
         /* 固定功能字段 start */
         loading_add: false,
         loading_addData: false,
@@ -191,12 +191,14 @@
         },
         temp: undefined,
         dialogFormVisible: false,
+        dialogType: '',
+        dialogTitle: '',
         /* 固定功能字段 start */
         rules: {
-          name: [
+          id: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ],
-          menu: [
+          name: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ]
         }
@@ -207,22 +209,13 @@
       this.getList()
     },
     methods: {
+
       getRouteList() {
         getRouteList({ page: -1 }).then(data => {
           this.treeData = data.list
         }).catch(() => {
           this.listLoading = false
         })
-      },
-
-      handleCheckChange(data, checked, indeterminate) {
-        console.log(data, checked, indeterminate)
-      },
-      handleNodeClick(data) {
-        console.log(data)
-      },
-      loadNode(node, resolve) {
-        return resolve([{ name: 'region1' }, { name: 'region2' }])
       },
       /* 固定功能方法 start */
       resetTemp() {
@@ -235,18 +228,11 @@
         }
         this.getRouteList()
       },
-      editTemp(row, action) {
-        if (action === 'handleUpdate') {
-          row.name_ = row.name
-          row.remarks_ = row.remarks
-        } else if (action === 'updateData') {
-          row.name = row.name_
-          row.remarks = row.remarks_
-        }
-      },
       cleanDialog() {
         this.resetTemp()
+        this.dialogType = ''
         this.dialogFormVisible = false
+        this.dialogTitle = ''
       },
       notifyClicking(loading, callBack) {
         if (loading) {
@@ -290,9 +276,12 @@
         this.notifyClicking(this.loading_add, () => {
           this.loading_add = true
           this.resetTemp()
+          this.dialogType = 'add'
           this.dialogFormVisible = true
+          this.dialogTitle = 'add'
+          this.rules.id[0].required = false
           this.$nextTick(() => {
-            this.$refs['dataFormDataRole'].clearValidate()
+            this.$refs['dataForm'].clearValidate()
           })
           this.loading_add = false
         })
@@ -300,7 +289,7 @@
       addData() {
         this.notifyClicking(this.loading_addData, () => {
           this.loading_addData = true
-          this.$refs['dataFormDataRole'].validate((valid) => {
+          this.$refs['dataForm'].validate((valid) => {
             if (valid) {
               add(this.temp).then(() => {
                 this.temp.waitingForFlush = true
@@ -313,7 +302,7 @@
                 })
                 this.cleanDialog()
                 this.$nextTick(() => {
-                  this.$refs['dataFormDataRole'].clearValidate()
+                  this.$refs['dataForm'].clearValidate()
                 })
                 this.loading_addData = false
               }).catch(() => {
@@ -328,35 +317,43 @@
       handleUpdate(row) {
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
-          this.editTemp(row, 'handleUpdate')
+          this.temp = Object.assign({}, row) // copy obj
+          this.dialogType = 'update'
+          this.dialogFormVisible = true
+          this.dialogTitle = 'update'
+          this.rules.id[0].required = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
+          row.loading_handleUpdate = false
         })
       },
-      cancelUpdate(row) {
-        row.loading_handleUpdate = false
-      },
-      updateData(row) {
-        this.notifyClicking(row.loading_updateData, () => {
-          row.loading_updateData = true
-          this.editTemp(row, 'updateData')
-          const valid = true
-          if (valid) {
-            update(row).then(() => {
-              row.waitingForFlush = true
-              this.cacheGet(row, 'replace')
-              this.$notify({
-                title: '成功',
-                message: '更新成功',
-                type: 'success',
-                duration: 2000
+      updateData() {
+        this.notifyClicking(this.loading_updateData, () => {
+          this.loading_updateData = true
+          this.$refs['dataForm'].validate((valid) => {
+            if (valid) {
+              update(this.temp).then(() => {
+                this.temp.waitingForFlush = true
+                this.cacheGet(this.temp, 'replace')
+                this.$notify({
+                  title: '成功',
+                  message: '更新成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.cleanDialog()
+                this.$nextTick(() => {
+                  this.$refs['dataForm'].clearValidate()
+                })
+                this.loading_updateData = false
+              }).catch(() => {
+                this.loading_updateData = false
               })
-              row.loading_handleUpdate = false
-              row.loading_updateData = false
-            }).catch(() => {
-              row.loading_updateData = false
-            })
-          } else {
-            row.loading_updateData = false
-          }
+            } else {
+              this.loading_updateData = false
+            }
+          })
         })
       },
       handleDel(row) {
@@ -458,11 +455,10 @@
       },
       checkLevel(level) {
         let fg = store.getters.level === level
-        fg = false
+        fg = true
         return fg
       }
       /* 固定功能方法 end */
     }
   }
 </script>
-
