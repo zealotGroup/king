@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="alert" value="%yellow(at %class.%method \(%file:%line\)) "/>
-    <property name="log_path" value="./logs/web"/>
+    <property name="log_path" value="./logs/api"/>
     <property name="log_file_pattern" value="%d{HH:mm:ss.SSS} %-6.6level %-6.6thread %-50.50logger{50} Line:%-3.3L - %msg %n"/>
     <property name="log_console_pattern" value="%d{HH:mm:ss.SSS} %highlight(%-6.6level) %-15.15thread %cyan(%-60.60logger{60}) Line:%boldRed(%-3.3L) - %black(%msg) %n"/>
     <property name="log_fileNamePattern" value="log.%d{yyyy-MM-dd}.%i.log"/>
