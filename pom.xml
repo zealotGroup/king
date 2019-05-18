@@ -17,6 +17,7 @@
         <shiro.version>1.4.0</shiro.version>
         <mybatis-plus.version>3.0.1</mybatis-plus.version>
         <mybatis-jsr310.version>1.0.2</mybatis-jsr310.version>
+        <dubbo.version>2.7.1</dubbo.version>
     </properties>
 
     <groupId>group.zealot</groupId>
@@ -107,9 +108,15 @@
             </dependency>
 
             <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-dependencies-zookeeper</artifactId>
+                <version>${dubbo.version}</version>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
