@@ -23,7 +23,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>king-core-zt</artifactId>
+            <artifactId>king-core-db</artifactId>
             <version>${project.version}</version>
         </dependency>
 

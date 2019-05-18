@@ -1,6 +1,5 @@
 package group.zealot.king.core.shiro;
 
-import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.core.shiro.cache.ShiroRedisCache;
 import group.zealot.king.core.shiro.realm.ShiroRealm;
 import group.zealot.king.core.shiro.sessionManager.ShiroSessionManager;
@@ -10,9 +9,7 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.*;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -20,12 +17,9 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import javax.servlet.Filter;

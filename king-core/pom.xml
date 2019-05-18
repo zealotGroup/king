@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>king-core-db</module>
         <module>king-core-zt</module>
         <module>king-core-shiro</module>
     </modules>

@@ -4,11 +4,10 @@ import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.exception.ShiroException;
-import group.zealot.king.core.zt.mybatis.system.entity.SysUser;
-import group.zealot.king.core.zt.mybatis.system.service.SysUserService;
+import group.zealot.king.core.zt.mif.entity.system.SysUser;
+import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Set;
 
 @Component
 public class ShiroService {

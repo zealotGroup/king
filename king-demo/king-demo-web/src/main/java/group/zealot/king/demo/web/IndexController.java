@@ -2,7 +2,7 @@ package group.zealot.king.demo.web;
 
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
-import group.zealot.king.core.zt.mybatis.system.service.SysIdService;
+import group.zealot.king.core.zt.mif.service.system.SysIdService;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
