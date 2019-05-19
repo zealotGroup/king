@@ -47,6 +47,12 @@ spring:
       max-connections: 5
       #空闲的连接过期时间，默认为30秒
       idle-timeout: 30s
+    redeliveryPolicy:
+      useExponentialBackOff: false
+      backOffMultiplier: 1.0
+      maximumRedeliveries: 10
+      maximumRedeliveryDelay: 10000
+      initialRedeliveryDelay: 2000
   task:
     execution:
       threadNamePrefix: task-execution
