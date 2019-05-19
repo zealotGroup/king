@@ -5,8 +5,9 @@ import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.db.mybatis.system.dao.SysUserDao;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.core.zt.mif.service.system.SysUserService;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+//import org.springframework.stereotype.Service;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {

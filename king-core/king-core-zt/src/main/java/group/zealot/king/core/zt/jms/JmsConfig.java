@@ -31,7 +31,7 @@ public class JmsConfig {
         return defaultJmsListenerContainerFactory;
     }
 
-//    @JmsListener(destination = "destination", containerFactory = "defaultJmsListenerContainerFactory", concurrency = "1-2")
+    //    @JmsListener(destination = "destination", containerFactory = "defaultJmsListenerContainerFactory", concurrency = "1-2")
     public void recover(TextMessage message, Session session) {
 
     }
