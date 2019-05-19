@@ -18,7 +18,7 @@ spring:
       connection-test-query: SELECT 1
 
   redis:
-    host: 127.0.0.1
+    host: www.zealot.group
     port: 6379
     password: zealot
     database: 0
@@ -34,23 +34,46 @@ spring:
         max-wait:  -1s
         # 最大活跃连接数，负数为不限制
         max-active: -1
-
-  mvc:
-    throw-exception-if-no-handler-found: true
-  resources:
-      add-mappings: false
-
-  http:
-    encoding:
-      force: true
-      charset: UTF-8
+  activemq:
+    user: zealot
+    password: zealot
+    broker-url: tcp://www.zealot.group:61616
+    in-memory: false
+    #必须使用连接池
+    pool:
+      #启用连接池
       enabled: true
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-  tomcat:
-    uri-encoding: UTF-8
+      #连接池最大连接数
+      max-connections: 5
+      #空闲的连接过期时间，默认为30秒
+      idle-timeout: 30s
+  task:
+    execution:
+      threadNamePrefix: task-execution
+      pool:
+        coreSize: 30
+    scheduling:
+      threadNamePrefix: task-scheduling
+      pool:
+        size: 10
 mybatis:
   typeAliasesPackage: group.zealot.king
   mapperLocations: classpath*:mapper/**/*.xml
+
+dubbo:
+  application:
+    name: service
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    check: false
+  provider:
+    timeout: 2000
+    retries: 0
+    loadbalance: leastactive
+  consumer:
+    check: false
+    async: false
