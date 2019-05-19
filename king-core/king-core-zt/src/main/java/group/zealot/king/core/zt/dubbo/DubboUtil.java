@@ -20,15 +20,15 @@ public class DubboUtil {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ClassScan classScan;
-    @Autowired
+    @Autowired(required = false)
     private ApplicationConfig applicationConfig;
-    @Autowired
+    @Autowired(required = false)
     private RegistryConfig registryConfig;
-    @Autowired
+    @Autowired(required = false)
     private ProtocolConfig protocolConfig;
-    @Autowired
+    @Autowired(required = false)
     private ProviderConfig providerConfig;
-    @Autowired
+    @Autowired(required = false)
     private ConsumerConfig consumerConfig;
 
     @Autowired
