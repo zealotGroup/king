@@ -68,7 +68,7 @@ mybatis:
 
 dubbo:
   application:
-    name: service
+    name: demo.service
   protocol:
     name: dubbo
     port: -1

@@ -23,12 +23,6 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>king-core-db</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>king-core-shiro</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -2,7 +2,6 @@ package group.zealot.king.demo.web;
 
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
-import group.zealot.king.core.zt.mif.service.system.SysIdService;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static group.zealot.king.core.zt.mif.Services.*;
+
 @Controller
 public class IndexController {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private SysIdService sysIdService;
     @Autowired
     private ShiroService shiroService;
 

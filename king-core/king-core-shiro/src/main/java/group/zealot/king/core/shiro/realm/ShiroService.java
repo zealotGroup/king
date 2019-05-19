@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    @Autowired(required = false)
     private SysUserService sysUserService;
 
     @Autowired
@@ -135,5 +135,9 @@ public class ShiroService {
      */
     protected int getHashIterations() {
         return 1024;
+    }
+
+    public void setSysUserService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
     }
 }

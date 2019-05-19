@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 //@Configuration
+@Deprecated
 public class DubboConfig {
     @Autowired
     Environment environment;
@@ -30,9 +31,9 @@ public class DubboConfig {
     @Bean
     public RegistryConfig registryConfig() {
         RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setTimeout(5000);
         registryConfig.setAddress(environment.getProperty("dubbo.registry.address"));
         registryConfig.setProtocol(environment.getProperty("dubbo.registry.protocol"));
-        registryConfig.setClient("curator");
         registryConfig.setCheck(environment.getProperty("dubbo.registry.check", Boolean.class));
         return registryConfig;
     }

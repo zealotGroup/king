@@ -53,6 +53,21 @@ spring:
       max-connections: 5
       #空闲的连接过期时间，默认为30秒
       idle-timeout: 30s
+    redeliveryPolicy:
+      useExponentialBackOff: false
+      backOffMultiplier: 1.0
+      maximumRedeliveries: 10
+      maximumRedeliveryDelay: 10000
+      initialRedeliveryDelay: 2000
+  task:
+    execution:
+      threadNamePrefix: task-execution
+      pool:
+        coreSize: 30
+    scheduling:
+      threadNamePrefix: task-scheduling
+      pool:
+        size: 10
   http:
     encoding:
       force: true
@@ -61,3 +76,20 @@ spring:
 mybatis:
   typeAliasesPackage: group.zealot.king
   mapperLocations: classpath*:mapper/**/*.xml
+dubbo:
+  application:
+    name: demo.web
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    check: false
+  provider:
+    timeout: 2000
+    retries: 0
+    loadbalance: leastactive
+  consumer:
+    check: false
+    async: false
