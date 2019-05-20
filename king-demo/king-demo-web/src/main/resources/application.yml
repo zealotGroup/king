@@ -22,6 +22,7 @@ spring:
     view:
       prefix: /WEB-INF/view/
       suffix: .jsp
+    static-path-pattern: /static/**
 
   redis:
     host: www.zealot.group
