@@ -39,6 +39,10 @@ public class Run {
         return new HttpMessageConverters(converter);
     }
 
+    /**
+     * java -jar api.jar --server.port=8080
+     * @param args
+     */
     public static void main(String[] args) {
         SpringUtil.setApplicationContext(SpringApplication.run(Run.class, args));
         initDubboService(SpringUtil.getApplicationContext());
