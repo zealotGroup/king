@@ -45,7 +45,7 @@ public class DubboUtil {
     }
 
     /**
-     * 注册 服务 到dubbo上
+     * 注册 spring的 @Service 服务 到dubbo上
      */
     public void registService(String basePackages) {
         Class<? extends Annotation> annotationType = Service.class;
@@ -99,7 +99,7 @@ public class DubboUtil {
     }
 
     /**
-     * 获取 服务接口 列表
+     * 获取 @MyDubboService 服务接口 列表
      */
     public Set<String> getServiceBeanNameSet(String basePackages) {
         Class<? extends Annotation> annotationType = MyDubboService.class;
