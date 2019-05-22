@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,11 +24,11 @@ public class Run {
     public static void main(String[] args) {
         logger.info("启动");
         SpringUtil.setApplicationContext(SpringApplication.run(Run.class, args));
-        init();
+        initDubboService(SpringUtil.getApplicationContext());
         logger.info("启动结束");
     }
 
-    public static void init() {
-        SpringUtil.getApplicationContext().getBean(DubboUtil.class).registService();
+    private static void initDubboService(ApplicationContext applicationContext) {
+        applicationContext.getBean(DubboUtil.class).registReference();
     }
 }

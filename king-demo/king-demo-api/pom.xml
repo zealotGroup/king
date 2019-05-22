@@ -55,18 +55,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.1.RELEASE</version>
+                <version>${springboot.version}</version>
                 <configuration>
                     <fork>true</fork>
                     <mainClass>group.zealot.king.demo.api.Run</mainClass>
                 </configuration>
-                <!--<executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
                     </execution>
-                </executions>-->
+                </executions>
             </plugin>
         </plugins>
     </build>
