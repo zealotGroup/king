@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(scanBasePackages = "group.zealot.king")
 @EnableScheduling
 @EnableAsync
-@EnableDubbo
 @EnableJms
 public class Run {
     private static Logger logger = LoggerFactory.getLogger(Run.class);
@@ -29,6 +28,6 @@ public class Run {
     }
 
     private static void initDubboService(ApplicationContext applicationContext) {
-        applicationContext.getBean(DubboUtil.class).registReference();
+        applicationContext.getBean(DubboUtil.class).registService();
     }
 }

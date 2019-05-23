@@ -2,6 +2,7 @@ package group.zealot.king.demo.web;
 
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
+import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +19,14 @@ public class IndexController {
 
     @Autowired
     private ShiroService shiroService;
+    @Autowired
+    private SysUserService sysUserService;
 
     @RequestMapping(value = "/")
     public String index(Model model, String username, String password) {
         model.addAttribute("id", sysIdService.getId());
         try {
-            if (!shiroService.isAuthenticated()){
+            if (!shiroService.isAuthenticated()) {
                 shiroService.login(username, password);
             }
             model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
@@ -32,5 +35,12 @@ public class IndexController {
         }
 
         return "index";
+    }
+
+    @RequestMapping(value = "/username")
+    public String index(Model model) {
+        model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
+        model.addAttribute("username", sysUserService.getByUsername("admin"));
+        return "username";
     }
 }

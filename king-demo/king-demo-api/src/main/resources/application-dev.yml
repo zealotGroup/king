@@ -76,23 +76,26 @@ spring:
       context-path: /api
     tomcat:
       uri-encoding: UTF-8
-  mybatis:
-    typeAliasesPackage: group.zealot.king
-    mapperLocations: classpath*:mapper/**/*.xml
-  dubbo:
-    application:
-      name: demo.api
-    protocol:
-      name: dubbo
-      port: -1
-    registry:
-      address: zookeeper://127.0.0.1:2181
-      protocol: dubbo
-      check: false
-    provider:
-      timeout: 2000
-      retries: 0
-      loadbalance: leastactive
-    consumer:
-      check: false
-      async: false
+mybatis:
+  typeAliasesPackage: group.zealot.king
+  mapperLocations: classpath*:mapper/**/*.xml
+  configuration:
+    cache-enabled: true
+dubbo:
+  application:
+    name: demo.api
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    check: false
+  provider:
+    timeout: 2000
+    retries: 0
+    loadbalance: leastactive
+  consumer:
+    check: false
+    async: false
+    retries: 0

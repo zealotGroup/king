@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 @SpringBootApplication(scanBasePackages = "group.zealot.king")
-@EnableDubbo
 public class Run extends SpringBootServletInitializer implements ApplicationContextAware {
 
     private static Logger logger = LoggerFactory.getLogger(Run.class);

@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-//@Configuration
-@Deprecated
+@Configuration
+//@Deprecated
 public class DubboConfig {
     @Autowired
     Environment environment;
@@ -53,6 +53,7 @@ public class DubboConfig {
         ConsumerConfig consumerConfig = new ConsumerConfig();
         consumerConfig.setCheck(environment.getProperty("dubbo.consumer.check", Boolean.class));
         consumerConfig.setAsync(environment.getProperty("dubbo.consumer.async", Boolean.class));
+        consumerConfig.setRetries(environment.getProperty("dubbo.consumer.retries", Integer.class));
         return consumerConfig;
     }
 

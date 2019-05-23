@@ -1,6 +1,7 @@
 package group.zealot.king.core.zt.dubbo;
 
 import group.zealot.king.base.exception.BaseRuntimeException;
+import group.zealot.king.core.zt.TargetUtil;
 import group.zealot.king.core.zt.mif.Services;
 import group.zealot.king.core.zt.spring.ClassScan;
 import group.zealot.king.core.zt.spring.SpringUtil;
@@ -67,7 +68,7 @@ public class DubboUtil {
         service.setRegistry(registryConfig);
         service.setProvider(providerConfig);
         service.setProtocol(protocolConfig);
-        service.setInterface(bean.getClass().getInterfaces()[0]);
+        service.setInterface(TargetUtil.getTarget(bean).getClass().getInterfaces()[0]);
         service.setRef(bean);
         service.export();
     }
