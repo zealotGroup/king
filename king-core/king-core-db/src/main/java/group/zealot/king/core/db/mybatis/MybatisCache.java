@@ -20,7 +20,7 @@ public class MybatisCache implements Cache {
     /**
      * redis key 前缀
      */
-    public static final String hashKeyPref = "cache:mybatis";
+    private static final String hashKeyPref = "cache:mybatis";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -28,8 +28,7 @@ public class MybatisCache implements Cache {
      * 此实例cache ID
      */
     private final String id;
-    private final HashOperations<String, String, Object> hashOperations;
-    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final ReadWriteLock readWriteLock;
 
     private final String K;
 
@@ -39,8 +38,7 @@ public class MybatisCache implements Cache {
         }
         this.id = id;
         this.K = hashKeyPref + ":" + id;
-        RedisUtil redisUtil = SpringUtil.getApplicationContext().getBean(RedisUtil.class);
-        hashOperations = redisUtil.hashOperations();
+        this.readWriteLock = new ReentrantReadWriteLock();
         logger.info("MybatisCache 初始化");
     }
 
@@ -49,6 +47,11 @@ public class MybatisCache implements Cache {
      */
     private String getK() {
         return K;
+    }
+
+    private HashOperations<String, String, Object> getHashOperations() {
+        RedisUtil redisUtil = SpringUtil.getApplicationContext().getBean(RedisUtil.class);
+        return redisUtil.hashOperations();
     }
 
     @Override
@@ -60,7 +63,7 @@ public class MybatisCache implements Cache {
     public void putObject(Object key, Object value) {
         logger.debug("mybatis cache [putObject] K: " + getK() + " HK: " + key);
         if (key != null) {
-            hashOperations.put(getK(), key.toString(), value);
+            getHashOperations().put(getK(), key.toString(), value);
         } else {
             logger.warn("key is null");
         }
@@ -70,7 +73,7 @@ public class MybatisCache implements Cache {
     public Object getObject(Object key) {
         logger.debug("mybatis cache [getObject] K: " + getK() + " HK: " + key);
         if (key != null) {
-            return hashOperations.get(getK(), key.toString());
+            return getHashOperations().get(getK(), key.toString());
         } else {
             logger.warn("key is null");
         }
@@ -81,7 +84,7 @@ public class MybatisCache implements Cache {
     public Object removeObject(Object key) {
         logger.debug("mybatis cache [removeObject] K: " + getK() + " HK: " + key);
         if (key != null) {
-            hashOperations.delete(getK(), key.toString());
+            getHashOperations().delete(getK(), key.toString());
         } else {
             logger.warn("key is null");
         }
@@ -91,13 +94,13 @@ public class MybatisCache implements Cache {
     @Override
     public void clear() {
         logger.warn("clear cache : " + getK());
-        hashOperations.delete(getK());
+        getHashOperations().delete(getK());
         logger.warn("clear cache : " + getK() + " success");
     }
 
     @Override
     public int getSize() {
-        int size = hashOperations.size(getK()).intValue();
+        int size = getHashOperations().size(getK()).intValue();
         logger.info("cache K : " + getK() + " size : " + size);
         return size;
     }
