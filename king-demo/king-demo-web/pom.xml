@@ -22,11 +22,11 @@
 
     <dependencies>
         <!-- 采用dubbo，则注释-->
-        <!--<dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>king-core-db</artifactId>
             <version>${project.version}</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>king-core-shiro</artifactId>

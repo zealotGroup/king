@@ -26,6 +26,7 @@ import java.util.List;
 @EnableDubbo
 public class Run {
     private static Logger logger = LoggerFactory.getLogger(Run.class);
+
     @Bean
     public HttpMessageConverters httpMessageConverters() {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
@@ -41,14 +42,19 @@ public class Run {
 
     /**
      * java -jar api.jar --server.port=8080
+     *
      * @param args
      */
     public static void main(String[] args) {
         SpringUtil.setApplicationContext(SpringApplication.run(Run.class, args));
-        initDubboService(SpringUtil.getApplicationContext());
+//        initDubboService(SpringUtil.getApplicationContext());
     }
 
+    /**
+     * 分布式 使用dubbo 注册、获取 服务时调用
+     */
     private static void initDubboService(ApplicationContext applicationContext) {
+        logger.info("启动 initDubboService");
         applicationContext.getBean(DubboUtil.class).registReference();
         //重新导入ShiroService 依赖【有依赖是dubbo service】
         applicationContext.getBean(SpringUtil.class).autowireBean(applicationContext.getBean(ShiroService.class));

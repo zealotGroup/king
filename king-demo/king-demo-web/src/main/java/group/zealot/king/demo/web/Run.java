@@ -3,7 +3,6 @@ package group.zealot.king.demo.web;
 import group.zealot.king.core.shiro.realm.ShiroService;
 import group.zealot.king.core.zt.dubbo.DubboUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -31,10 +30,14 @@ public class Run extends SpringBootServletInitializer implements ApplicationCont
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringUtil.setApplicationContext(applicationContext);
-        initDubboService(SpringUtil.getApplicationContext());
+//        initDubboService(SpringUtil.getApplicationContext());
     }
 
+    /**
+     * 分布式 使用dubbo获取服务时调用
+     */
     private void initDubboService(ApplicationContext applicationContext) {
+        logger.info("启动 initDubboService");
         applicationContext.getBean(DubboUtil.class).registReference();
         //重新导入ShiroService 依赖【有依赖是dubbo service】
         applicationContext.getBean(SpringUtil.class).autowireBean(applicationContext.getBean(ShiroService.class));

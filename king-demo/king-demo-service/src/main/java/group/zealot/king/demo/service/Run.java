@@ -2,7 +2,6 @@ package group.zealot.king.demo.service;
 
 import group.zealot.king.core.zt.dubbo.DubboUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

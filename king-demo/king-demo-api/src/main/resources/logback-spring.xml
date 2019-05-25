@@ -67,7 +67,9 @@
         <logger name="org.springframework" level="INFO"/>
         <logger name="org.apache.shiro" level="INFO"/>
         <logger name="org.mybatis" level="INFO"/>
+        <logger name="io.lettuce" level="INFO"/>
         <logger name="org.apache.ibatis" level="INFO"/>
+        <logger name="org.apache.activemq" level="INFO"/>
         <logger name="org.springframework.aop.framework.CglibAopProxy" level="ERROR"/>
         <root level="${log_dev_level}">
             <appender-ref ref="ConsoleAppender"/>
