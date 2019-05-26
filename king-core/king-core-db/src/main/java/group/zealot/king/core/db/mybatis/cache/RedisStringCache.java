@@ -32,7 +32,6 @@ public class RedisStringCache extends CacheAbs {
         this.K = keyPref + ":" + id;
         this.KH = keyPrefH + ":" + id;
         this.timeout = Duration.ofSeconds(60L);
-        logger.info("RedisStringCache 初始化");
     }
 
     private RedisTemplate<String, Object> redisTemplate() {
@@ -61,7 +60,7 @@ public class RedisStringCache extends CacheAbs {
 
     @Override
     protected void doPut(String key, Object value) {
-        logger.debug("mybatis [RedisStringCache] [doPut] " + "key[" + key + "]");
+        logger.debug("mybatis cache [doPut] " + "key[" + key + "]");
         redisTemplate().execute(
                 new SessionCallback<List<Object>>() {
                     @Override
@@ -77,7 +76,7 @@ public class RedisStringCache extends CacheAbs {
 
     @Override
     protected Object doGet(String key) {
-        logger.debug("mybatis [RedisStringCache] [doGet] " + "key[" + key + "]");
+        logger.debug("mybatis cache [doGet] " + "key[" + key + "]");
         if (redisTemplate().hasKey(getKH()) && getHashOperations().hasKey(getKH(), key)) {
             return getValueOperations().get(key);
         }
@@ -86,21 +85,21 @@ public class RedisStringCache extends CacheAbs {
 
     @Override
     protected Object doRemoveObject(String key) {
-        logger.debug("mybatis [RedisStringCache] [doRemoveObject] " + "key[" + key + "] [expire]");
+        logger.debug("mybatis cache [doRemoveObject] " + "key[" + key + "] [expire]");
         redisTemplate().opsForHash().delete(getKH(), key);
         return null;
     }
 
     @Override
     protected Long doClear() {
-        logger.warn("mybatis [RedisStringCache] [doClear] ");
+        logger.warn("mybatis cache [doClear] ");
         redisTemplate().delete(getKH());
         return null;
     }
 
     @Override
     protected Long doGetSize() {
-        logger.info("mybatis [RedisStringCache] [doGetSize] ");
+        logger.info("mybatis cache [doGetSize] ");
         return getHashOperations().size(getKH());
     }
 }

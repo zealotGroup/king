@@ -20,7 +20,6 @@ public class RedisHashCache extends CacheAbs {
     public RedisHashCache(final String id) {
         super(id);
         this.K = keyPref + ":" + id;
-        logger.info("RedisHashCache 初始化");
     }
 
     private HashOperations<String, String, Object> getOperations() {
@@ -42,31 +41,31 @@ public class RedisHashCache extends CacheAbs {
 
     @Override
     protected void doPut(String key, Object value) {
-        logger.debug("mybatis [RedisHashCache] [doPut] hashK[" + getHashKey() + "]" + "key[" + key + "]");
+        logger.debug("mybatis cache [doPut] hashK[" + getHashKey() + "]" + "key[" + key + "]");
         getOperations().put(getHashKey(), key, value);
     }
 
     @Override
     protected Object doGet(String key) {
-        logger.debug("mybatis [RedisHashCache] [doGet] hashK[" + getHashKey() + "]" + "key[" + key + "]");
+        logger.debug("mybatis cache [doGet] hashK[" + getHashKey() + "]" + "key[" + key + "]");
         return getOperations().get(getHashKey(), key);
     }
 
     @Override
     protected Object doRemoveObject(String key) {
-        logger.debug("mybatis [RedisHashCache] [doRemoveObject] hashK[" + getHashKey() + "]" + "key[" + key + "]");
+        logger.debug("mybatis cache [doRemoveObject] hashK[" + getHashKey() + "]" + "key[" + key + "]");
         return getOperations().delete(getHashKey(), key);
     }
 
     @Override
     protected Long doClear() {
-        logger.warn("mybatis [RedisHashCache] [doClear] hashK[" + getHashKey() + "]");
+        logger.warn("mybatis cache [doClear] hashK[" + getHashKey() + "]");
         return getOperations().delete(getHashKey());
     }
 
     @Override
     protected Long doGetSize() {
-        logger.info("mybatis [RedisHashCache] [doGetSize] hashK[" + getHashKey() + "]");
+        logger.info("mybatis cache [doGetSize] hashK[" + getHashKey() + "]");
         return getOperations().size(getHashKey());
     }
 
