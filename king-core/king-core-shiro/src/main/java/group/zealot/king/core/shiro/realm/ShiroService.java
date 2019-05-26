@@ -120,6 +120,16 @@ public class ShiroService {
     }
 
     /**
+     * 获取加密后的密码
+     *
+     * @param shiroUser need password salt
+     * @return 加密后的密码
+     */
+    public String getEntryptPassword(ShiroUser shiroUser) {
+        return entryptPassword(shiroUser.getPassword().getBytes(), shiroUser.getSalt().getBytes());
+    }
+
+    /**
      * entryptPassword加密的类型sha-1
      *
      * @return
