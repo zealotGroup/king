@@ -5,6 +5,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,15 @@ public class RedisUtil {
         RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(serializer);
+        template.setConnectionFactory(connectionFactory);
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    public <K, V> RedisTemplate<K, V> redisTemplate(RedisSerializer keySerializer, RedisSerializer valueSerializer) {
+        RedisTemplate<K, V> template = new RedisTemplate<>();
+        template.setKeySerializer(keySerializer);
+        template.setValueSerializer(valueSerializer);
         template.setConnectionFactory(connectionFactory);
         template.afterPropertiesSet();
         return template;
