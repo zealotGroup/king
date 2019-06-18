@@ -31,6 +31,10 @@ public class ShiroRealm extends AuthorizingRealm {
         super(cacheManager);
     }
 
+    @Override
+    public String getAuthorizationCacheName() {
+        return "shiro:cache:realm:" + super.getAuthorizationCacheName();
+    }
     /**
      * 认证回调函数, 登录时调用.
      */

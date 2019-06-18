@@ -49,7 +49,7 @@ public class ShiroRedisCache implements Cache<Serializable, Object> {
         String key = getKey(id);
         String valueJSON = JSONObject.toJSONString(value);
         logger.debug("put 缓存key：" + key + " value:" + valueJSON + " =》先get缓存");
-        Object old = get(key);
+        Object old = get(id);
         valueOperations().set(key, value, timeout);
         return old;
     }
@@ -58,7 +58,7 @@ public class ShiroRedisCache implements Cache<Serializable, Object> {
     public Object remove(Serializable id) throws CacheException {
         String key = getKey(id);
         logger.debug("delete 缓存key：" + key + " =》先get缓存");
-        Object old = get(key);
+        Object old = get(id);
         redisTemplate().delete(key);
         return old;
     }
