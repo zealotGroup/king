@@ -2,6 +2,7 @@ package group.zealot.king.demo.web;
 
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.shiro.realm.ShiroService;
+import lombok.Delegate;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +20,38 @@ public class IndexController {
     @Autowired
     private ShiroService shiroService;
 
-    @RequestMapping(value = "/")
-    public String index(Model model, String username, String password) {
+    @RequestMapping(value = "/index")
+    public String index(Model model) {
+        model.addAttribute("id", sysIdService.getId());
+        model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
+        return "index";
+    }
+
+    @RequestMapping(value = "/login")
+    public String login(Model model, String username, String password) {
         model.addAttribute("id", sysIdService.getId());
         try {
             if (!shiroService.isAuthenticated()) {
                 shiroService.login(username, password);
             }
+            model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
+        } catch (ShiroException e) {
+            logger.error("登录异常", e);
+        }
+        return "index";
+    }
+
+    /**
+     * shiro 配置了logout，此方法不会进入
+     */
+    @Deprecated
+    @RequestMapping(value = "/logout")
+    public String logout(Model model) {
+        try {
+            if (!shiroService.isAuthenticated()) {
+                shiroService.logout();
+            }
+            model.addAttribute("id", sysIdService.getId());
             model.addAttribute("sessionId", SecurityUtils.getSubject().getSession().getId());
         } catch (ShiroException e) {
             logger.error("登录异常", e);
