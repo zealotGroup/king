@@ -4,6 +4,7 @@ package group.zealot.king.demo.api.config;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
+import group.zealot.king.core.shiro.exception.ShiroException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,14 +37,14 @@ public class ControllerExceptionHandler {
                     resultJson.set(ServiceCode.EXCEPTION);
                 }
             }
-        }.result();
+        }.resultError();
     }
 
     /**
      * 拦截捕捉运行时异常
      */
     @ResponseBody
-    @ExceptionHandler(value = BaseRuntimeException.class)
+    @ExceptionHandler(value = RuntimeException.class)
     public JSONObject baseRuntimeExceptionHandler(RuntimeException e) {
         return new ResultTemple() {
             @Override
@@ -52,11 +53,15 @@ public class ControllerExceptionHandler {
                     logger.error("BaseRuntimeException " + e.getMessage());
                     resultJson.setCode(ServiceCode.EXCEPTION_RUNNTIME.code());
                     resultJson.setMsg(e.getMessage());
+                } else if (e instanceof ShiroException) {
+                    logger.error("ShiroException " + e.getMessage());
+                    resultJson.setCode(ServiceCode.EXCEPTION_RUNNTIME.code());
+                    resultJson.setMsg(e.getMessage());
                 } else {
                     logger.error("RuntimeException", e);
                     resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
                 }
             }
-        }.result();
+        }.resultError();
     }
 }

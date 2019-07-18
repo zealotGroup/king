@@ -1,5 +1,6 @@
 package group.zealot.king.core.shiro.realm;
 
+import com.alibaba.fastjson.JSONArray;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Component
 public class ShiroService {
@@ -37,14 +39,17 @@ public class ShiroService {
                 || StringUtil.isEmpty(String.copyValueOf(shiroToken.getPassword()))) {
             throw new ShiroException("shiroToken is illegal ( username null || password null || captcha null)");
         }
-        return getShiroUser(shiroToken);
+        SysUser sysUser = sysUserService.getByUsername(shiroToken.getUsername());
+        if (sysUser == null) {
+            throw new ShiroException("username is error");
+        }
+        return getShiroUser(sysUser);
     }
 
     /**
      * 根据登录凭证获取 正确的shiroUser【比对交给shiro后续去比对】
      */
-    protected ShiroUser getShiroUser(ShiroToken shiroToken) {
-        SysUser sysUser = sysUserService.getByUsername(shiroToken.getUsername());
+    protected ShiroUser getShiroUser(SysUser sysUser) {
         ShiroUser shiroUser = new ShiroUser();
         shiroUser.setPassword(sysUser.getPassword());
         shiroUser.setUsername(sysUser.getUsername());
@@ -84,10 +89,15 @@ public class ShiroService {
         subject.login(new ShiroToken(username, password.toCharArray()));
     }
 
-    public ShiroUser getPrincipal() {
+    public ShiroUser getShiroUser() {
         Subject subject = SecurityUtils.getSubject();
         // 调用安全认证框架的登录方法
         return (ShiroUser) subject.getPrincipal();
+    }
+
+    public Long getSysUserId() {
+        ShiroUser shiroUser = getShiroUser();
+        return shiroUser.getUserId();
     }
 
     public Serializable getSessionId() {
@@ -95,8 +105,14 @@ public class ShiroService {
         return subject.getSession().getId();
     }
 
-    public SimpleAuthorizationInfo getSimpleAuthorizationInfo() {
-        return shiroRealm.getSimpleAuthorizationInfo();
+    public Set<String> getRoles() {
+        SimpleAuthorizationInfo info = shiroRealm.getSimpleAuthorizationInfo();
+        return info.getRoles();
+    }
+
+    public Set<String> getPermissions() {
+        SimpleAuthorizationInfo info = shiroRealm.getSimpleAuthorizationInfo();
+        return info.getStringPermissions();
     }
 
     /**

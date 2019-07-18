@@ -1,6 +1,7 @@
 package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.ServiceCode;
 import lombok.Getter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,10 @@ public abstract class ResultTemple {
         this(request, null);
     }
 
+    public ResultTemple(HttpServletResponse response) {
+        this(null, response);
+    }
+
     public ResultTemple(HttpServletRequest request, HttpServletResponse response) {
         resultJson = ResultJsonFactory.create();
         this.request = request;
@@ -31,6 +36,16 @@ public abstract class ResultTemple {
 
     public JSONObject result() {
         dosomething();
+        resultJson.set(ServiceCode.SUCCESS);
         return resultJson.result();
+    }
+
+    public JSONObject resultError() {
+        dosomething();
+        return resultJson.result();
+    }
+
+    protected boolean verification() {
+        return true;
     }
 }

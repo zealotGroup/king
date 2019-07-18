@@ -100,7 +100,7 @@ public class ShiroConfig {
         bean.setFilters(filters);
         bean.setSecurityManager(securityManager);
         bean.setLoginUrl("/login");
-        bean.setSuccessUrl("/index");
+        bean.setSuccessUrl("/");
 
         //配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();

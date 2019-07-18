@@ -68,7 +68,7 @@ public class ShiroRealm extends AuthorizingRealm {
         if (principals instanceof SimpleAuthorizationInfo) {
             return (SimpleAuthorizationInfo) principals;
         } else {
-            throw new ShiroException("shiro 获取 subject 再获取 principals，发现类型异常或为null");
+            throw new ShiroException("shiro 获取 subject 再获取 principals，发现类型不为SimpleAuthorizationInfo");
         }
     }
 }
