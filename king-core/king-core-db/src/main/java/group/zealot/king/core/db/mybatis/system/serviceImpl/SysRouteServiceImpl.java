@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
-public class SysUserServiceImpl extends BaseService implements SysUserService {
+public class SysRouteServiceImpl extends BaseService implements SysUserService {
 
     public SysUser getByUsernameAndPassword(String username, String password) {
         if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {

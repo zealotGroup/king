@@ -4,6 +4,8 @@ import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -17,6 +19,7 @@ import java.util.List;
  * @param <P> 表主键
  */
 public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implements BaseMapper<E, P> {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {

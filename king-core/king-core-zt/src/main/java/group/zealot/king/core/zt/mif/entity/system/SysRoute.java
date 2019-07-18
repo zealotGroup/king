@@ -4,10 +4,9 @@ import group.zealot.king.core.zt.mif.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Setter
 @Getter
-public class SysId extends BaseEntity {
-    private LocalDateTime insertTime;
+@Setter
+public class SysRoute extends BaseEntity {
+    private String name;
+    private Long fId;
 }

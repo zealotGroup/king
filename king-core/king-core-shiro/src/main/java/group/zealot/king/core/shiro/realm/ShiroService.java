@@ -1,12 +1,10 @@
 package group.zealot.king.core.shiro.realm;
 
-import com.alibaba.fastjson.JSONArray;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
-import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
@@ -21,12 +19,11 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.Set;
 
+import static group.zealot.king.core.zt.mif.Services.*;
+
 @Component
 public class ShiroService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired(required = false)
-    private SysUserService sysUserService;
 
     @Autowired
     private ShiroRealm shiroRealm;
@@ -161,9 +158,5 @@ public class ShiroService {
      */
     protected int getHashIterations() {
         return 1024;
-    }
-
-    public void setSysUserService(SysUserService sysUserService) {
-        this.sysUserService = sysUserService;
     }
 }

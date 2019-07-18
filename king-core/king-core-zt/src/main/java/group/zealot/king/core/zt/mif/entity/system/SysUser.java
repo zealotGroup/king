@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SysUser extends BaseEntity {
-    private Long id;
     private String username;
     @JSONField(serialize=false)
     private String password;
