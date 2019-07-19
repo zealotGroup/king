@@ -1,88 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="group.zealot.king.core.db.mybatis.system.dao.mapper.SysUserDaoMapper">
+<mapper namespace="group.zealot.king.core.db.mybatis.system.dao.mapper.SysRoleDataDaoMapper">
     <cache type="group.zealot.king.core.db.mybatis.cache.RedisStringCache" />
 
     <sql id="field">
-        su.id id,
-        su.create_time createTime,
-        su.create_user_id createUserId,
-        su.last_update_time lastUpdateTime,
-        su.last_update_user_id lastUpdateUserId,
-        su.remark remark,
-        su.username username,
-        su.password password
+        srd.id id,
+        srd.create_time createTime,
+        srd.create_user_id createUserId,
+        srd.last_update_time lastUpdateTime,
+        srd.last_update_user_id lastUpdateUserId,
+        srd.remark remark,
+        srd.name name
     </sql>
     <sql id="where">
         <if test="id != null">
-            and su.id = #{id}
+            and srd.id = #{id}
         </if>
-        <if test="username != null and username.length() > 0">
-            and su.username = #{username}
+        <if test="name != null">
+            and srd.name = #{name}
         </if>
-        <if test="password != null and password.length() > 0">
-            and su.password = #{password}
+        <if test="fId != null">
+            and srd.f_id = #{fId}
         </if>
     </sql>
 
-    <select id="get" parameterType="SysUser" resultType="SysUser">
+    <select id="get" parameterType="SysRoleData" resultType="SysRoleData">
         select
         <include refid="field"></include>
-        from sys_user su
+        from sys_role_data srd
         <where>
             <include refid="where"></include>
         </where>
     </select>
 
-    <select id="getList" parameterType="SysUser" resultType="SysUser">
+    <select id="getList" parameterType="SysRoleData" resultType="SysRoleData">
         select
         <include refid="field"></include>
-        from sys_user su
+        from sys_role_data srd
         <where>
             <include refid="where"></include>
         </where>
     </select>
 
-    <select id="getListCount" parameterType="SysUser" resultType="int">
+    <select id="getListCount" parameterType="SysRoleData" resultType="int">
         select
         count(*)
-        from sys_user su
+        from sys_role_data srd
         <where>
             <include refid="where"></include>
         </where>
     </select>
 
-    <insert id="insert" parameterType="SysUser">
-        insert into sys_user su
+    <insert id="insert" parameterType="SysRoleData">
+        insert into sys_role_data srd
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                su.id,
+                srd.id,
             </if>
-            <if test="username != null and username.length() > 0">
-                su.username,
-            </if>
-            <if test="password != null and password.length() > 0">
-                su.password,
+            <if test="name != null">
+                srd.name,
             </if>
             <if test="createTime != null">
-                su.create_time,
+                srd.create_time,
             </if>
             <if test="createUserId != null">
-                su.create_user_id,
+                srd.create_user_id,
             </if>
             <if test="remark != null and remark.length() > 0">
-                su.remark,
+                srd.remark,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id},
             </if>
-            <if test="username != null and username.length() > 0">
-                #{username},
-            </if>
-            <if test="password != null and password.length() > 0">
-                #{password},
+            <if test="name != null">
+                #{name},
             </if>
             <if test="createTime != null">
                 #{createTime},
@@ -96,28 +89,28 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="SysUser">
-        update sys_user su
+    <update id="update" parameterType="SysRoleData">
+        update sys_role_data srd
         <set>
-            <if test="password != null and password.length() > 0">
-                su.password = #{password},
+            <if test="name != null">
+                srd.name = #{name},
             </if>
             <if test="lastUpdateTime != null">
-                su.last_update_time = #{lastUpdateTime},
+                srd.last_update_time = #{lastUpdateTime},
             </if>
             <if test="lastUpdateUserId != null">
-                su.last_update_user_id = #{lastUpdateUserId},
+                srd.last_update_user_id = #{lastUpdateUserId},
             </if>
             <if test="remark != null and remark.length() > 0">
-                su.remark = #{remark},
+                srd.remark = #{remark},
             </if>
         </set>
         <where>
-            su.id = #{id}
+            srd.id = #{id}
         </where>
     </update>
 
     <delete id="deleteById" parameterType="long">
-        delete from sys_user sa where su.id = #{_parameter}
+        delete from sys_role_data srd where srd.id = #{_parameter}
     </delete>
 </mapper>
