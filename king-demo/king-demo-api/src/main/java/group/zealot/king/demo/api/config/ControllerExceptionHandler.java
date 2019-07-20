@@ -4,7 +4,6 @@ package group.zealot.king.demo.api.config;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
-import group.zealot.king.core.shiro.exception.ShiroException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +29,7 @@ public class ControllerExceptionHandler {
             @Override
             protected void dosomething() {
                 if (e instanceof NoHandlerFoundException) {
-                    logger.error("NoHandlerFoundException " + e.getMessage());
+                    logger.error("NoHandlerFoundException " + e.getMessage(), e);
                     resultJson.set(ServiceCode.NOT_FOUND);
                 } else {
                     logger.error("Exception", e);
@@ -50,16 +49,13 @@ public class ControllerExceptionHandler {
             @Override
             protected void dosomething() {
                 if (e instanceof BaseRuntimeException) {
-                    logger.error("BaseRuntimeException " + e.getMessage());
-                    resultJson.setCode(ServiceCode.EXCEPTION_RUNNTIME.code());
-                    resultJson.setMsg(e.getMessage());
-                } else if (e instanceof ShiroException) {
-                    logger.error("ShiroException " + e.getMessage());
+                    logger.error("BaseRuntimeException " + e.getMessage(), e);
                     resultJson.setCode(ServiceCode.EXCEPTION_RUNNTIME.code());
                     resultJson.setMsg(e.getMessage());
                 } else {
                     logger.error("RuntimeException", e);
                     resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
+                    resultJson.setMsg(e.getMessage());
                 }
             }
         }.resultError();

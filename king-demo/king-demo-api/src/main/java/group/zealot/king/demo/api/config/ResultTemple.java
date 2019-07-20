@@ -11,8 +11,8 @@ public abstract class ResultTemple {
     @Getter
     protected final ResultJson resultJson;
 
-    private HttpServletRequest request;
-    private HttpServletResponse response;
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
 
     public ResultTemple() {
         this(null, null);
