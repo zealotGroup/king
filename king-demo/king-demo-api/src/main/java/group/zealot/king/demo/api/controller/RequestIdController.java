@@ -20,18 +20,17 @@ public class RequestIdController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                String requestId = RequestIdUtil.getRequestId();
-                if (requestId != null) {
-                    JSONObject data = new JSONObject();
-                    data.put("requestId", requestId);
-                    data.put("timeout", RequestIdUtil.timeout.getSeconds());
-                    data.put("unit", TimeUnit.SECONDS);
-                    data.put("info", "不可续约");
-                    resultJson.set(data);
-                    resultJson.set(ServiceCode.SUCCESS);
-                } else {
-                    throw new BaseRuntimeException(ServiceCode.DO_ERROR);
+                String requestId = null;
+                while (requestId == null) {
+                    requestId = RequestIdUtil.getRequestId();
                 }
+                JSONObject data = new JSONObject();
+                data.put("requestId", requestId);
+                data.put("timeout", RequestIdUtil.timeout.getSeconds());
+                data.put("unit", TimeUnit.SECONDS);
+                data.put("info", "不可续约");
+                resultJson.set(data);
+                resultJson.set(ServiceCode.SUCCESS);
             }
         }.result();
     }
