@@ -43,15 +43,13 @@ public class LoginUtil {
     }
 
     public static void logout() {
-        String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
-        if (!remove(token)) {
+        if (!remove(getToken())) {
             throw new BaseRuntimeException("token已失效或logout异常");
         }
     }
 
     public static SysUser getSysUser() {
-        String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
-        Object value = get(token);
+        Object value = get(getToken());
         if (value instanceof SysUser) {
             return (SysUser) value;
         } else {
@@ -59,31 +57,38 @@ public class LoginUtil {
         }
     }
 
-    public static boolean flushExp() {
+    public static String getToken() {
         String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
-        return expire(token);
+        return token;
+    }
+
+    public static boolean flushExp() {
+        return expire(getToken());
     }
 
     private static boolean remove(String key) {
-        key = prefix + key;
-        logger.info("logout redis remove :" + key);
+        key = getKey(key);
+        logger.info("logout redis remove(setIfPresent timeout 1s) :" + key);
         return redisUtil().valueOperations().setIfPresent(key, null, Duration.ofSeconds(1));
     }
 
     private static boolean put(String key, Object value) {
-        key = prefix + key;
-        logger.info("login redis put :" + key);
-        return redisUtil().valueOperations().setIfAbsent(key, value, timeout);
+        key = getKey(key);
+        return redisUtil().setIfAbsent(key, value, timeout);
     }
 
     private static Object get(String key) {
-        key = prefix + key;
-        return redisUtil().valueOperations().get(key);
+        key = getKey(key);
+        return redisUtil().get(key);
     }
 
     private static boolean expire(String key) {
-        key = prefix + key;
-        return redisUtil().redisTemplate().expire(key, timeout.getSeconds(), TimeUnit.SECONDS);
+        key = getKey(key);
+        return redisUtil().expire(key, timeout);
+    }
+
+    private static String getKey(String key) {
+        return prefix + key;
     }
 
     private static RedisUtil redisUtil() {
