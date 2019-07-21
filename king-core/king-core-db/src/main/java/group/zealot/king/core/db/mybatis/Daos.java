@@ -28,4 +28,24 @@ public class Daos {
     public void setSysUserDao(SysUserDao sysUserDao) {
         Daos.sysUserDao = sysUserDao;
     }
+
+    @Autowired(required = false)
+    public void setSysRoleDataDao(SysRoleDataDao sysRoleDataDao) {
+        Daos.sysRoleDataDao = sysRoleDataDao;
+    }
+
+    @Autowired(required = false)
+    public void setSysRoleRouteDao(SysRoleRouteDao sysRoleRouteDao) {
+        Daos.sysRoleRouteDao = sysRoleRouteDao;
+    }
+
+    @Autowired(required = false)
+    public void setSysRouteDao(SysRouteDao sysRouteDao) {
+        Daos.sysRouteDao = sysRouteDao;
+    }
+
+    @Autowired(required = false)
+    public void setSysDataDao(SysDataDao sysDataDao) {
+        Daos.sysDataDao = sysDataDao;
+    }
 }

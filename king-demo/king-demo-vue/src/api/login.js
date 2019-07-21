@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-const url = '/login'
+const url = ''
 export function login(username, password) {
   return request({
-    url: url + '/login/login',
+    url: url + '/login',
     method: 'post',
     data: {
       username,
@@ -21,7 +21,7 @@ export function logout() {
 
 export function loginInfo(token) {
   return request({
-    url: url + '/info',
+    url: url + '/loginUserInfo',
     method: 'get'
   })
 }

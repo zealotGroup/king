@@ -1,5 +1,6 @@
 package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
+import com.alibaba.fastjson.JSONArray;
 import group.zealot.king.core.db.mybatis.base.BaseService;
 import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysAuthService;
@@ -14,7 +15,7 @@ import static group.zealot.king.core.db.mybatis.Daos.*;
 public class SysAuthServiceImpl extends BaseService implements SysAuthService {
 
     @Override
-    public List<SysRoleData> getRoleData(Long sysUserId) {
+    public List<SysRoleData> getSysRoleData(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
         List<SysAuth> list = sysAuthDao.getList(vo);
@@ -30,7 +31,7 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
     }
 
     @Override
-    public List<SysRoleRoute> getRoleRoute(Long sysUserId) {
+    public List<SysRoleRoute> getSysRoleRoute(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
         List<SysAuth> list = sysAuthDao.getList(vo);
@@ -46,7 +47,7 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
     }
 
     @Override
-    public List<SysRoute> getRoute(Long sysRoleRouteId) {
+    public List<SysRoute> getSysRoute(Long sysRoleRouteId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysRoleRouteId);
         List<SysAuth> list = sysAuthDao.getList(vo);
@@ -62,7 +63,7 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
     }
 
     @Override
-    public List<SysData> getData(Long sysRoleDataId) {
+    public List<SysData> getSysData(Long sysRoleDataId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysRoleDataId);
         List<SysAuth> list = sysAuthDao.getList(vo);
@@ -76,4 +77,20 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
         }
         return sysDataList;
     }
+
+    @Override
+    public JSONArray getRoute(Long sysUserId) {
+        JSONArray jsonArray = new JSONArray();
+        List<SysRoleRoute> sysRoleRouteList = getSysRoleRoute(sysUserId);
+        List<SysRoute> list = new ArrayList<>();
+        for (SysRoleRoute item : sysRoleRouteList) {
+            list.addAll(getSysRoute(item.getId()));
+        }
+
+        for (SysRoute sysRoute : list) {
+
+        }
+        return jsonArray;
+    }
+
 }

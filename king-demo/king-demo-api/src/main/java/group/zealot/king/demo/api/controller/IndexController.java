@@ -3,10 +3,18 @@ package group.zealot.king.demo.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
+import group.zealot.king.core.zt.mif.entity.system.SysRoleRoute;
+import group.zealot.king.core.zt.mif.entity.system.SysRoute;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static group.zealot.king.core.zt.mif.Services.sysAuthService;
+import static group.zealot.king.core.zt.mif.Services.sysRouteService;
 
 
 @RestController
@@ -27,7 +35,7 @@ public class IndexController {
     }
 
     @RequestMapping("login")
-    public JSONObject login(String username, byte[] password, int x) {
+    public JSONObject login(String username, byte[] password) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -49,6 +57,22 @@ public class IndexController {
             @Override
             protected void dosomething() {
                 LoginUtil.logout();
+            }
+        }.result();
+    }
+
+    @RequestMapping("loginUserInfo")
+    public JSONObject loginUserInfo() {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+
+
+
+                JSONObject data = new JSONObject();
+                data.put("level", "super");
+                data.put("routers", routers);
+                resultJson.set(data);
             }
         }.result();
     }

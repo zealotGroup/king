@@ -8,14 +8,14 @@ export function getToken() {
   if (!token) {
     return
   } else {
-    return JSON.parse(token)
+    return token
   }
 }
 
-export function setToken(token) {
-  const timeout = token.timeout / expiresBase
+export function setToken(data) {
+  const timeout = data.timeout / expiresBase
   // expires 单位为天
-  return Cookies.set(TokenKey, JSON.stringify(token), { expires: timeout })
+  return Cookies.set(TokenKey, data.token, { expires: timeout })
 }
 
 export function removeToken() {

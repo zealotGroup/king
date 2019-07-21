@@ -2,7 +2,6 @@ package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
-import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
