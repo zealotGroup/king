@@ -1,8 +1,12 @@
 package group.zealot.king.base;
 
+import group.zealot.king.base.exception.BaseRuntimeException;
+import org.junit.Assert;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Funcation {
     public static final int CURRENT_METHOD = 0;
@@ -43,7 +47,26 @@ public class Funcation {
         return Instant.now().toEpochMilli();
     }
 
+    /**
+     * 创建 size 位的随机数
+     */
     public static long createRandom(int size) {
         return ((Double) (Math.random() * Math.pow(10, size))).longValue();
+    }
+
+    public static void NotNull(Object value, String message) {
+        try {
+            Assert.assertNotNull(message, value);
+        } catch (AssertionError e) {
+            throw new BaseRuntimeException(e.getMessage());
+        }
+    }
+
+    public static void NotNull(Object value, String message, ServiceCode serviceCode) {
+        try {
+            Assert.assertNotNull(message, value);
+        } catch (AssertionError e) {
+            throw new BaseRuntimeException(serviceCode);
+        }
     }
 }

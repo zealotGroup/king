@@ -1,13 +1,13 @@
 package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/")
@@ -27,10 +27,12 @@ public class IndexController {
     }
 
     @RequestMapping("login")
-    public JSONObject login(String username, byte[] password) {
+    public JSONObject login(String username, byte[] password, int x) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
+                Funcation.NotNull(username, "用户名为空");
+                Funcation.NotNull(password, "密码为空");
                 String token = LoginUtil.login(username, password);
                 JSONObject data = new JSONObject();
                 data.put("token", token);

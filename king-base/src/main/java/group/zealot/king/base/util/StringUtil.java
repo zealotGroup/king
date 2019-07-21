@@ -13,10 +13,6 @@ import java.util.StringTokenizer;
  */
 public class StringUtil extends StringUtils {
 
-    private StringUtil() {
-
-    }
-
     /**
      * 验证数据是否包含指定字符串
      * 

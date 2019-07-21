@@ -1,5 +1,8 @@
 package group.zealot.king.demo.api.config;
 
+import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.ServiceCode;
+import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +11,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +78,7 @@ public class ApiFilter implements Filter {
         LoginUtil.threadLocalRequest.set(request);
 
         if (!methods.contains(method)) {
-            response.getWriter().println("不允许的请求类型:" + method);
-            response.setStatus(202);
+            doBaseRuntimeException(ServiceCode.REQUEST_METHOD_NOT_ALLOWED, "不允许的请求类型:" + method, response);
             return false;
         } else {
             if (LoginUtil.getSysUser() != null) {
@@ -82,8 +86,7 @@ public class ApiFilter implements Filter {
                 return true;
             } else {
                 if (!paths.contains(servletPath)) {
-                    response.getWriter().println("未认证用户，不允许访问此路径");
-                    response.setStatus(202);
+                    doBaseRuntimeException(ServiceCode.NEED_LOGIN, "不允许访问此路径:" + servletPath, response);
                     return false;
                 } else {
                     return true;
@@ -91,5 +94,16 @@ public class ApiFilter implements Filter {
 
             }
         }
+    }
+
+    private void doBaseRuntimeException(ServiceCode serviceCode, String message, HttpServletResponse response) throws IOException {
+        response.setStatus(serviceCode.code());
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", serviceCode.code());
+        jsonObject.put("msg", message);
+        jsonObject.putIfAbsent("time", LocalDateTime.now().toString());
+        writer.println(jsonObject.toJSONString());
     }
 }
