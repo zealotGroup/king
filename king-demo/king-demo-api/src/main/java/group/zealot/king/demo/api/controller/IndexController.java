@@ -42,11 +42,11 @@ public class IndexController {
     }
 
     @RequestMapping("logout")
-    public JSONObject logout(HttpServletRequest request) {
-        return new ResultTemple(request) {
+    public JSONObject logout() {
+        return new ResultTemple() {
             @Override
             protected void dosomething() {
-                LoginUtil.logout(request);
+                LoginUtil.logout();
             }
         }.result();
     }

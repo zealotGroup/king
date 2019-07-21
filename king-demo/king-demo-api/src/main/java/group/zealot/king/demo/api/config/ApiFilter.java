@@ -25,6 +25,7 @@ public class ApiFilter implements Filter {
         logger.info("init apiFilter");
         //白名单地址
         paths.add("/");
+        paths.add("/login");
         //允许请求的方法
         methods.add("POST");
         methods.add("GET");
@@ -69,15 +70,15 @@ public class ApiFilter implements Filter {
         String method = request.getMethod();
         String remoteHost = request.getRemoteHost();
         logger.debug("servletPath[" + servletPath + "] method[" + method + "] remoteHost[" + remoteHost + "]");
-
+        LoginUtil.threadLocalRequest.set(request);
 
         if (!methods.contains(method)) {
             response.getWriter().println("不允许的请求类型:" + method);
             response.setStatus(202);
             return false;
         } else {
-            if (LoginUtil.getSysUser(request) != null) {
-                LoginUtil.flushExp(request);
+            if (LoginUtil.getSysUser() != null) {
+                LoginUtil.flushExp();
                 return true;
             } else {
                 if (!paths.contains(servletPath)) {

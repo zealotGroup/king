@@ -18,6 +18,7 @@ import static group.zealot.king.core.zt.mif.Services.*;
 
 public class LoginUtil {
     private static final String prefix = "api:token:";
+    protected static final ThreadLocal<HttpServletRequest> threadLocalRequest = new ThreadLocal<>();
 
     public static Duration timeout = Duration.ofMinutes(30);
 
@@ -41,15 +42,15 @@ public class LoginUtil {
         }
     }
 
-    public static void logout(HttpServletRequest request) {
-        String token = request.getHeader(ApiFilter.token_header);
+    public static void logout() {
+        String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
         if (!remove(token)) {
             throw new BaseRuntimeException("token已失效或logout异常");
         }
     }
 
-    public static SysUser getSysUser(HttpServletRequest request) {
-        String token = request.getHeader(ApiFilter.token_header);
+    public static SysUser getSysUser() {
+        String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
         Object value = get(token);
         if (value instanceof SysUser) {
             return (SysUser) value;
@@ -58,8 +59,8 @@ public class LoginUtil {
         }
     }
 
-    public static boolean flushExp(HttpServletRequest request) {
-        String token = request.getHeader(ApiFilter.token_header);
+    public static boolean flushExp() {
+        String token = threadLocalRequest.get().getHeader(ApiFilter.token_header);
         return expire(token);
     }
 
