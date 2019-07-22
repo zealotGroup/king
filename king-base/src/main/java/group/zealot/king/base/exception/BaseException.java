@@ -1,6 +1,9 @@
 package group.zealot.king.base.exception;
 
+import group.zealot.king.base.ServiceCode;
+
 public class BaseException extends Exception {
+
 
     private String code;
 
@@ -24,6 +27,7 @@ public class BaseException extends Exception {
     public BaseException(String message, Throwable cause) {
         super(message, cause);
     }
+
 
     public String getCode() {
         return code;

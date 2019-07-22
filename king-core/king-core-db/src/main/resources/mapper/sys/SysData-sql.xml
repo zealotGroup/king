@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group.zealot.king.core.db.mybatis.system.dao.mapper.SysDataDaoMapper">
+    <cache type="group.zealot.king.core.db.mybatis.cache.RedisStringCache" />
+
+    <sql id="field">
+        sd.id id,
+        sd.create_time createTime,
+        sd.create_user_id createUserId,
+        sd.last_update_time lastUpdateTime,
+        sd.last_update_user_id lastUpdateUserId,
+        sd.remark remark,
+        sd.name name,
+        sd.f_id fId
+    </sql>
+    <sql id="where">
+        <if test="id != null">
+            and sd.id = #{id}
+        </if>
+        <if test="name != null">
+            and sd.name = #{name}
+        </if>
+        <if test="fId != null">
+            and sd.f_id = #{fId}
+        </if>
+    </sql>
+
+    <select id="get" parameterType="SysData" resultType="SysData">
+        select
+        <include refid="field"></include>
+        from sys_data sd
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="getList" parameterType="SysData" resultType="SysData">
+        select
+        <include refid="field"></include>
+        from sys_data sd
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="getListCount" parameterType="SysData" resultType="int">
+        select
+        count(*)
+        from sys_data sd
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="SysData">
+        insert into sys_data sd
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                sd.id,
+            </if>
+            <if test="name != null">
+                sd.name,
+            </if>
+            <if test="fId != null">
+                sd.f_id,
+            </if>
+            <if test="createTime != null">
+                sd.create_time,
+            </if>
+            <if test="createUserId != null">
+                sd.create_user_id,
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                sd.remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="fId != null">
+                #{fId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId},
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="SysData">
+        update sys_data sd
+        <set>
+            <if test="name != null">
+                sd.name = #{name},
+            </if>
+            <if test="fId != null">
+                sd.f_id = #{fId},
+            </if>
+            <if test="lastUpdateTime != null">
+                sd.last_update_time = #{lastUpdateTime},
+            </if>
+            <if test="lastUpdateUserId != null">
+                sd.last_update_user_id = #{lastUpdateUserId},
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                sd.remark = #{remark},
+            </if>
+        </set>
+        <where>
+            sd.id = #{id}
+        </where>
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        delete from sys_data sd where sd.id = #{_parameter}
+    </delete>
+</mapper>

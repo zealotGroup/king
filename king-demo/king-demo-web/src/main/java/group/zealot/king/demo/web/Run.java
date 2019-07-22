@@ -39,7 +39,7 @@ public class Run extends SpringBootServletInitializer implements ApplicationCont
     private void initDubboService(ApplicationContext applicationContext) {
         logger.info("启动 initDubboService");
         applicationContext.getBean(DubboUtil.class).registReference();
-        //重新导入ShiroService 依赖【有依赖是dubbo service】
-        applicationContext.getBean(SpringUtil.class).autowireBean(applicationContext.getBean(ShiroService.class));
+        //重新导入ShiroService 依赖【有依赖是dubbo service】//也许不用了
+//        applicationContext.getBean(SpringUtil.class).autowireBean(applicationContext.getBean(ShiroService.class));
     }
 }

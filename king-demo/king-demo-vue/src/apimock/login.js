@@ -79,7 +79,7 @@ const routers = [
 const loginResult = {
   code: 200,
   data: {
-    sessionId: '123456789',
+    token: '123456789',
     timeout: '1800',
     unit: 'SECONDS'
   }

@@ -4,5 +4,5 @@ import group.zealot.king.core.zt.dubbo.MyDubboService;
 
 @MyDubboService
 public interface SysIdService {
-    Integer getId();
+    Long getId();
 }

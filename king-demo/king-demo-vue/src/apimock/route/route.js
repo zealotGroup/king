@@ -17,14 +17,14 @@ const routers = [
     ]
   },
   {
-    id: 3, name: 'Admin',
+    id: 3, name: 'admin',
     children: [
       { id: 31, name: 'role' },
       { id: 32, name: 'user' }
     ]
   },
   {
-    id: 4, name: 'System',
+    id: 4, name: 'system',
     children: [
       {
         id: 41, name: 'icons'
@@ -45,7 +45,7 @@ const routers = [
     ]
   },
   {
-    id: 5, name: 'FunShow',
+    id: 5, name: 'funShow',
     children: [
       {
         id: 51, name: 'component-demo',

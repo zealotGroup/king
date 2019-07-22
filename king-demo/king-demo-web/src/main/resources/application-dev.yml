@@ -83,7 +83,7 @@ dubbo:
     name: dubbo
     port: -1
   registry:
-    address: zookeeper://localhost:2181
+    address: zookeeper://www.zealot.group:2181
     protocol: dubbo
     check: false
   provider:

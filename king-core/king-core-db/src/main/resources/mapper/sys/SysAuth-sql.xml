@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group.zealot.king.core.db.mybatis.system.dao.mapper.SysAuthDaoMapper">
+    <cache type="group.zealot.king.core.db.mybatis.cache.RedisStringCache" />
+
+    <sql id="field">
+        sa.id id,
+        sa.create_time createTime,
+        sa.create_user_id createUserId,
+        sa.last_update_time lastUpdateTime,
+        sa.last_update_user_id lastUpdateUserId,
+        sa.remark remark,
+        sa.sys_user_id sysUserId,
+        sa.sys_role_data_id sysRoleDataId,
+        sa.sys_data_id sysDataId,
+        sa.sys_role_route_id sysRoleRouteId,
+        sa.sys_route_id sysRouteId
+    </sql>
+    <sql id="where">
+        <if test="id != null">
+            and sa.id = #{id}
+        </if>
+        <if test="sysUserId != null">
+            and sa.sys_user_id = #{sysUserId}
+        </if>
+        <if test="sysRoleDataId != null">
+            and sa.sys_role_data_id = #{sysRoleDataId}
+        </if>
+        <if test="sysDataId != null">
+            and sa.sys_data_id = #{sysDataId}
+        </if>
+        <if test="sysRoleRouteId != null">
+            and sa.sys_role_route_id = #{sysRoleRouteId}
+        </if>
+        <if test="sysRouteId != null">
+            and sa.sys_route_id = #{sysRouteId}
+        </if>
+    </sql>
+
+    <select id="get" parameterType="SysAuth" resultType="SysAuth">
+        select
+        <include refid="field"></include>
+        from sys_auth sa
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="getList" parameterType="SysAuth" resultType="SysAuth">
+        select
+        <include refid="field"></include>
+        from sys_auth sa
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="getListCount" parameterType="SysAuth" resultType="int">
+        select
+        count(*)
+        from sys_auth sa
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="SysAuth">
+        insert into sys_auth sa
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                sa.id,
+            </if>
+            <if test="sysUserId != null">
+                sa.sys_user_id,
+            </if>
+            <if test="sysRoleDataId != null">
+                sa.sys_role_data_id,
+            </if>
+            <if test="sysDataId != null">
+                sa.sys_data_id,
+            </if>
+            <if test="sysRoleRouteId != null">
+                sa.sys_role_route_id,
+            </if>
+            <if test="sysRouteId != null">
+                sa.sys_route_id,
+            </if>
+            <if test="createTime != null">
+                sa.create_time,
+            </if>
+            <if test="createUserId != null">
+                sa.create_user_id,
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                sa.remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="sysUserId != null">
+                #{sysUserId},
+            </if>
+            <if test="sysRoleDataId != null">
+                #{sysRoleDataId},
+            </if>
+            <if test="sysDataId != null">
+                #{sysDataId},
+            </if>
+            <if test="sysRoleRouteId != null">
+                #{sysRoleRouteId},
+            </if>
+            <if test="sysRouteId != null">
+                #{sysRouteId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId},
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="SysAuth">
+        update sys_auth sa
+        <set>
+            <if test="sysUserId != null">
+                sa.sys_user_id = #{sysUserId},
+            </if>
+            <if test="sysRoleDataId != null">
+                sa.sys_role_data_id = #{sysRoleDataId},
+            </if>
+            <if test="sysDataId != null">
+                sa.sys_data_id = #{sysDataId},
+            </if>
+            <if test="sysRoleRouteId != null">
+                sa.sys_role_route_id = #{sysRoleRouteId},
+            </if>
+            <if test="sysRouteId != null">
+                sa.sys_route_id = #{sysRouteId},
+            </if>
+            <if test="lastUpdateTime != null">
+                sa.last_update_time = #{lastUpdateTime},
+            </if>
+            <if test="lastUpdateUserId != null">
+                sa.last_update_user_id = #{lastUpdateUserId},
+            </if>
+            <if test="remark != null and remark.length() > 0">
+                sa.remark = #{remark},
+            </if>
+        </set>
+        <where>
+            sa.id = #{id}
+        </where>
+    </update>
+    
+    <delete id="deleteById" parameterType="long">
+        delete from sys_auth sa where sa.id = #{_parameter}
+    </delete>
+</mapper>

@@ -3,7 +3,6 @@ package group.zealot.king.demo.api;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import group.zealot.king.core.shiro.realm.ShiroService;
 import group.zealot.king.core.zt.dubbo.DubboUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
@@ -56,7 +55,5 @@ public class Run {
     private static void initDubboService(ApplicationContext applicationContext) {
         logger.info("启动 initDubboService");
         applicationContext.getBean(DubboUtil.class).registReference();
-        //重新导入ShiroService 依赖【有依赖是dubbo service】
-        applicationContext.getBean(SpringUtil.class).autowireBean(applicationContext.getBean(ShiroService.class));
     }
 }
