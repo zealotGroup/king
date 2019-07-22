@@ -1,6 +1,8 @@
 package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.db.mybatis.base.BaseService;
 import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysAuthService;
@@ -83,14 +85,34 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
         JSONArray jsonArray = new JSONArray();
         List<SysRoleRoute> sysRoleRouteList = getSysRoleRoute(sysUserId);
         List<SysRoute> list = new ArrayList<>();
-        for (SysRoleRoute item : sysRoleRouteList) {
-            list.addAll(getSysRoute(item.getId()));
-        }
 
-        for (SysRoute sysRoute : list) {
+        sysRoleRouteList.forEach(sysRoleRoute -> list.addAll(getSysRoute(sysRoleRoute.getId())));
 
-        }
+        list.forEach(sysRoute -> {
+            if (sysRoute.getFId() == null) {
+                JSONObject item = new JSONObject();
+                item.put("name", sysRoute.getName());
+                item.put("id", sysRoute.getId());
+                item.put("children", new JSONArray());
+                jsonArray.add(item);
+            }
+        });
+
+        jsonArray.forEach(item -> setChildren((JSONObject) item, list));
         return jsonArray;
     }
 
+    private void setChildren(JSONObject item, List<SysRoute> list) {
+        list.forEach(sysRoute -> {
+            if (NumberUtil.equals(sysRoute.getFId(), item.getInteger("id"))) {
+                JSONArray children = item.getJSONArray("children");
+                JSONObject child = new JSONObject();
+                child.put("name", sysRoute.getName());
+                child.put("id", sysRoute.getId());
+                child.put("children", new JSONArray());
+                children.add(child);
+                setChildren(child, list);
+            }
+        });
+    }
 }
