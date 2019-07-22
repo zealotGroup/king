@@ -34,6 +34,15 @@
         </where>
     </select>
 
+    <select id="getById" parameterType="long" resultType="SysData">
+        select
+        <include refid="field"></include>
+        from sys_data sd
+        <where>
+            sd.id = #{_parameter}
+        </where>
+    </select>
+
     <select id="getList" parameterType="SysData" resultType="SysData">
         select
         <include refid="field"></include>

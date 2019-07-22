@@ -49,9 +49,9 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(data => {
-          commit('SET_TOKEN', data) // 缓存本地，非cookies
+          commit('SET_TOKEN', data.token) // 缓存本地，非cookies
           setToken(data) // 储存到cookies
-          console.debug('储存 token 到 cookies完成')
+          console.debug('储存 token 到 cookies完成:' + data.token)
           resolve()
         }).catch(error => {
           reject(error)

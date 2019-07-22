@@ -8,7 +8,7 @@ const $qs = qs
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000, // 请求超时时间
+  timeout: 10000, // 请求超时时间
   transformRequest: [function(data) {
     return $qs.stringify({ ...data })
   }],
@@ -20,7 +20,7 @@ const sessionName = 'auth-token'
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
-      config.headers[sessionName] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+      config.headers[sessionName] = getToken().token // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     config.headers['Access-Control-Allow-Origin'] = '*' // 跨域
     return config

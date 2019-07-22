@@ -17,7 +17,7 @@ import java.util.List;
 
 @WebFilter(urlPatterns = "/*", filterName = "apiFilter")
 public class ApiFilter implements Filter {
-    public static final String token_header = "token";
+    public static final String token_header = "auth-token";
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private List<String> paths = new ArrayList<>();
@@ -80,7 +80,7 @@ public class ApiFilter implements Filter {
             doBaseRuntimeException(ServiceCode.REQUEST_METHOD_NOT_ALLOWED, "不允许的请求类型:" + method, response);
             return false;
         } else {
-            if (LoginUtil.getSysUser() != null) {
+            if (LoginUtil.isLogin()) {
                 LoginUtil.flushExp();
                 return true;
             } else {

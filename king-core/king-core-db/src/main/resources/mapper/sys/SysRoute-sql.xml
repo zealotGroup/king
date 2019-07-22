@@ -34,6 +34,15 @@
         </where>
     </select>
 
+    <select id="getById" parameterType="long" resultType="SysRoute">
+        select
+        <include refid="field"></include>
+        from sys_route sr
+        <where>
+            sr.id = #{_parameter}
+        </where>
+    </select>
+
     <select id="getList" parameterType="SysRoute" resultType="SysRoute">
         select
         <include refid="field"></include>

@@ -34,6 +34,15 @@
         </where>
     </select>
 
+    <select id="getById" parameterType="long" resultType="SysUser">
+        select
+        <include refid="field"></include>
+        from sys_user su
+        <where>
+            su.id = #{_parameter}
+        </where>
+    </select>
+
     <select id="getList" parameterType="SysUser" resultType="SysUser">
         select
         <include refid="field"></include>

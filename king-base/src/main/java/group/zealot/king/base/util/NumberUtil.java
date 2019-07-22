@@ -59,10 +59,10 @@ public class NumberUtil {
                     return false;
                 }
             } else {
-                return true;
+                return false;//有且仅有一个为null
             }
-        } else {//有且仅有一个为null
-            return false;
+        } else {//都为null
+            return true;
         }
     }
 

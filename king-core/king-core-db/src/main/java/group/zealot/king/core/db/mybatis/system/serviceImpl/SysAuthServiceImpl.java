@@ -51,11 +51,11 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
     @Override
     public List<SysRoute> getSysRoute(Long sysRoleRouteId) {
         SysAuth vo = new SysAuth();
-        vo.setSysUserId(sysRoleRouteId);
-        List<SysAuth> list = sysAuthDao.getList(vo);
+        vo.setSysRoleRouteId(sysRoleRouteId);
+        List<SysAuth> sysAuthList = sysAuthDao.getList(vo);
 
         List<SysRoute> sysRouteList = new ArrayList<>();
-        for (SysAuth item : list) {
+        for (SysAuth item : sysAuthList) {
             if (item.getSysRouteId() != null) {
                 SysRoute sysRoute = sysRouteDao.getById(item.getSysRouteId());
                 sysRouteList.add(sysRoute);
@@ -67,7 +67,7 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
     @Override
     public List<SysData> getSysData(Long sysRoleDataId) {
         SysAuth vo = new SysAuth();
-        vo.setSysUserId(sysRoleDataId);
+        vo.setSysRoleDataId(sysRoleDataId);
         List<SysAuth> list = sysAuthDao.getList(vo);
 
         List<SysData> sysDataList = new ArrayList<>();

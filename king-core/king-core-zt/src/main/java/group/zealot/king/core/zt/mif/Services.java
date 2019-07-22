@@ -24,4 +24,13 @@ public class Services {
         Services.sysUserService = sysUserService;
     }
 
+    @Autowired(required = false)
+    public void setSysRouteService(SysRouteService sysRouteService) {
+        Services.sysRouteService = sysRouteService;
+    }
+
+    @Autowired(required = false)
+    public void setSysAuthService(SysAuthService sysAuthService) {
+        Services.sysAuthService = sysAuthService;
+    }
 }

@@ -33,6 +33,15 @@
         </where>
     </select>
 
+    <select id="getById" parameterType="long" resultType="SysRoleData">
+        select
+        <include refid="field"></include>
+        from sys_role_data srd
+        <where>
+            srd.id = #{_parameter}
+        </where>
+    </select>
+
     <select id="getList" parameterType="SysRoleData" resultType="SysRoleData">
         select
         <include refid="field"></include>

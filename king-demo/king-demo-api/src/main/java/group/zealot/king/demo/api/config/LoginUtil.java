@@ -48,13 +48,21 @@ public class LoginUtil {
         }
     }
 
+    public static boolean isLogin(){
+        return get(getToken()) != null;
+    }
+
     public static SysUser getSysUser() {
         Object value = get(getToken());
         if (value instanceof SysUser) {
             return (SysUser) value;
         } else {
-            return null;
+            throw new BaseRuntimeException("token已失效或logout异常");
         }
+    }
+
+    public static Long getSysUserId() {
+       return getSysUser().getId();
     }
 
     public static String getToken() {

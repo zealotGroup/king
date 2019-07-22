@@ -15,7 +15,7 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog'// error log
 import './permission' // 菜单权限控制
-import './apimock' // simulation data
+// import './apimock' // simulation data
 
 import * as filters from './filters' // global filters
 

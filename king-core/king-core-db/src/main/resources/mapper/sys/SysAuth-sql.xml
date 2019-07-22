@@ -46,6 +46,15 @@
         </where>
     </select>
 
+    <select id="getById" parameterType="long" resultType="SysAuth">
+        select
+        <include refid="field"></include>
+        from sys_auth sa
+        <where>
+            sa.id = #{_parameter}
+        </where>
+    </select>
+
     <select id="getList" parameterType="SysAuth" resultType="SysAuth">
         select
         <include refid="field"></include>
