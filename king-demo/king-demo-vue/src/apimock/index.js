@@ -19,9 +19,9 @@ Mock.mock(/\/article\/create/, 'post', articleAPI.createArticle)
 Mock.mock(/\/article\/update/, 'post', articleAPI.updateArticle)
 
 // 登录相关
-Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
-Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
-Mock.mock(/\/login\/info\.*/, 'get', loginAPI.loginInfo)
+Mock.mock(/\/login/, 'post', loginAPI.loginByUsername)
+Mock.mock(/\/logout/, 'post', loginAPI.logout)
+Mock.mock(/\/loginUserInfo/, 'get', loginAPI.loginInfo)
 
 Mock.mock(/\/user\/list/, 'get', userAPI.getList)
 Mock.mock(/\/user\/get/, 'get', userAPI.get)

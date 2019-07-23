@@ -120,7 +120,7 @@ export const routerMap = [
     path: '/admin',
     component: Layout,
     redirect: '/admin/role',
-    name: 'Admin',
+    name: 'admin',
     meta: {
       title: 'admin',
       icon: 'set'
@@ -144,9 +144,9 @@ export const routerMap = [
     path: '/funShow',
     component: Layout,
     redirect: '/funShow/components',
-    name: 'FunShow',
+    name: 'funShow',
     meta: {
-      title: 'FunShow',
+      title: 'funShow',
       icon: 'example'
     },
     children: [
@@ -195,7 +195,7 @@ export const routerMap = [
         redirect: '/funShow/table/inline-edit-table',
         name: 'table',
         meta: {
-          title: 'Table',
+          title: 'table',
           icon: 'table'
         },
         children: [
@@ -209,9 +209,9 @@ export const routerMap = [
     path: '/system',
     component: Layout,
     redirect: '/system/icon',
-    name: 'System',
+    name: 'system',
     meta: {
-      title: 'System',
+      title: 'system',
       icon: 'password'
     },
     children: [

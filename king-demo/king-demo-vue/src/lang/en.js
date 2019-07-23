@@ -57,9 +57,9 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
-    System: 'System',
-    FunShow: 'FunShow',
-    Admin: 'manage',
+    system: 'System',
+    funShow: 'FunShow',
+    admin: 'manage',
     role: 'role',
     user: 'user'
   },
