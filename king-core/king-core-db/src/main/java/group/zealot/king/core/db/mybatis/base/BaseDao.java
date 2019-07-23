@@ -89,13 +89,18 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
     public Page<E> pageQuery(String statementName, String countStatementName, PageRequest<E> pageRequest) {
         int totalCount = selectOne(countStatementName, pageRequest.getFilters());
         if (totalCount <= 0) {
-            return new Page<>(pageRequest, 0);
+            return new Page<>();
         }
-        Page<E> page = new Page<>(pageRequest, totalCount);
-        int limit = pageRequest.getIDisplayLength() == -1 ? totalCount : pageRequest.getIDisplayLength();
-        List<E> list = selectList(
-                statementName, pageRequest.getFilters(), new RowBounds(pageRequest.getIDisplayStart(), limit));
-        page.setAaData(list);
+        Page<E> page = new Page<>(totalCount);
+
+        int limit = pageRequest.getLimit() == -1 ? totalCount : pageRequest.getLimit();
+        int offset = (pageRequest.getPage() - 1) * limit + 1;
+
+        if (offset <= totalCount) {
+            List<E> list = selectList(
+                    statementName, pageRequest.getFilters(), new RowBounds(offset, limit));
+            page.setList(list);
+        }
         return page;
     }
 }

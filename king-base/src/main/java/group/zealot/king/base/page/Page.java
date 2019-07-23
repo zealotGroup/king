@@ -9,19 +9,25 @@ import java.util.List;
 @Setter
 @Getter
 public class Page<E> {
-    public Page(PageRequest<E> pageRequest, int iTotalRecords) {
-        this(new ArrayList<E>(0), iTotalRecords, pageRequest.getSEcho(), iTotalRecords);
+    public Page() {
+        this(new ArrayList<>(0), 0);
     }
 
-    public Page(List<E> aaData, int iTotalRecords, int sEcho, int iTotalDisplayRecords) {
-        this.aaData = aaData;
-        this.iTotalRecords = iTotalRecords;
-        this.sEcho = sEcho;
-        this.iTotalDisplayRecords = iTotalDisplayRecords;
+    public Page(int count) {
+        this(new ArrayList<>(0), count);
     }
 
-    private List<E> aaData;
-    private int iTotalRecords;
-    private int sEcho;
-    private int iTotalDisplayRecords;
+    public Page(List<E> list, int count) {
+        this.list = list;
+        this.count = count;
+    }
+
+    /**
+     * 查询接口集
+     */
+    private List<E> list;
+    /**
+     * 满足筛选条件的总记录数
+     */
+    private int count;
 }
