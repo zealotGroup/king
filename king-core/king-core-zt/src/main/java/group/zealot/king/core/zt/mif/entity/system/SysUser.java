@@ -11,4 +11,5 @@ public class SysUser extends BaseEntity {
     private String username;
     @JSONField(serialize=false)
     private String password;
+    private String level;
 }

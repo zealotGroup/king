@@ -11,7 +11,8 @@
         su.last_update_user_id lastUpdateUserId,
         su.remark remark,
         su.username username,
-        su.password password
+        su.password password,
+        su.level level
     </sql>
     <sql id="where">
         <if test="id != null">
@@ -22,6 +23,9 @@
         </if>
         <if test="password != null and password.length() > 0">
             and su.password = #{password}
+        </if>
+        <if test="level != null and level.length() > 0">
+            and su.level = #{level}
         </if>
     </sql>
 
@@ -73,6 +77,9 @@
             <if test="password != null and password.length() > 0">
                 su.password,
             </if>
+            <if test="level != null and level.length() > 0">
+                su.level,
+            </if>
             <if test="createTime != null">
                 su.create_time,
             </if>
@@ -93,6 +100,9 @@
             <if test="password != null and password.length() > 0">
                 #{password},
             </if>
+            <if test="level != null and level.length() > 0">
+                #{level},
+            </if>
             <if test="createTime != null">
                 #{createTime},
             </if>
@@ -110,6 +120,9 @@
         <set>
             <if test="password != null and password.length() > 0">
                 su.password = #{password},
+            </if>
+            <if test="level != null and level.length() > 0">
+                su.level = #{level},
             </if>
             <if test="lastUpdateTime != null">
                 su.last_update_time = #{lastUpdateTime},

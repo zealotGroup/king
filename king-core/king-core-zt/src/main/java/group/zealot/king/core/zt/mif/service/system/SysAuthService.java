@@ -2,15 +2,13 @@ package group.zealot.king.core.zt.mif.service.system;
 
 import com.alibaba.fastjson.JSONArray;
 import group.zealot.king.core.zt.dubbo.MyDubboService;
-import group.zealot.king.core.zt.mif.entity.system.SysData;
-import group.zealot.king.core.zt.mif.entity.system.SysRoleData;
-import group.zealot.king.core.zt.mif.entity.system.SysRoleRoute;
-import group.zealot.king.core.zt.mif.entity.system.SysRoute;
+import group.zealot.king.core.zt.mif.entity.system.*;
+import group.zealot.king.core.zt.mif.service.BaseService;
 
 import java.util.List;
 
 @MyDubboService
-public interface SysAuthService {
+public interface SysAuthService extends BaseService<SysAuth, Long> {
 
     /**
      * 根据 用户ID 获取 所有的 数据角色

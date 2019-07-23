@@ -1,5 +1,6 @@
 package group.zealot.king.base.page;
 
+import com.alibaba.fastjson.JSONArray;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,4 +31,10 @@ public class Page<E> {
      * 满足筛选条件的总记录数
      */
     private int count;
+
+    public JSONArray toJSONArray(){
+        JSONArray jsonArray = new JSONArray(list.size());
+        jsonArray.addAll(list);
+        return jsonArray;
+    }
 }

@@ -3,7 +3,8 @@ package group.zealot.king.core.db.mybatis.system.serviceImpl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.db.mybatis.base.BaseService;
+import group.zealot.king.core.db.mybatis.base.BaseMapper;
+import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
 import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysAuthService;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
-public class SysAuthServiceImpl extends BaseService implements SysAuthService {
+public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
 
     @Override
     public List<SysRoleData> getSysRoleData(Long sysUserId) {
@@ -114,5 +115,10 @@ public class SysAuthServiceImpl extends BaseService implements SysAuthService {
                 setChildren(child, list);
             }
         });
+    }
+
+    @Override
+    public BaseMapper<SysAuth, Long> getBaseMapper() {
+        return sysAuthDao;
     }
 }

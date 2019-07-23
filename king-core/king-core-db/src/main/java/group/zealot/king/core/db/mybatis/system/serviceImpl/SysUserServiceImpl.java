@@ -2,7 +2,8 @@ package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.StringUtil;
-import group.zealot.king.core.db.mybatis.base.BaseService;
+import group.zealot.king.core.db.mybatis.base.BaseMapper;
+import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
-public class SysUserServiceImpl extends BaseService implements SysUserService {
+public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implements SysUserService {
 
     public SysUser getByUsernameAndPassword(String username, String password) {
         if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
@@ -46,4 +47,8 @@ public class SysUserServiceImpl extends BaseService implements SysUserService {
     }
 
 
+    @Override
+    protected BaseMapper<SysUser, Long> getBaseMapper() {
+        return sysUserDao;
+    }
 }

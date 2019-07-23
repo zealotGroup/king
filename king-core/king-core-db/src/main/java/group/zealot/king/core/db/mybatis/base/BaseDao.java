@@ -30,8 +30,8 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
         return selectOne("getById", primaryKey);
     }
 
-    public E get(E e) {
-        return selectOne("get", e);
+    public E get(E entity) {
+        return selectOne("get", entity);
     }
 
     public int deleteById(P primaryKey) {
