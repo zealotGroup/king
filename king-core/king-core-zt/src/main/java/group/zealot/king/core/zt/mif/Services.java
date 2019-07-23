@@ -1,9 +1,6 @@
 package group.zealot.king.core.zt.mif;
 
-import group.zealot.king.core.zt.mif.service.system.SysAuthService;
-import group.zealot.king.core.zt.mif.service.system.SysIdService;
-import group.zealot.king.core.zt.mif.service.system.SysRouteService;
-import group.zealot.king.core.zt.mif.service.system.SysUserService;
+import group.zealot.king.core.zt.mif.service.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +10,9 @@ public class Services {
     public static SysUserService sysUserService;
     public static SysRouteService sysRouteService;
     public static SysAuthService sysAuthService;
+    public static SysDataService sysDataService;
+    public static SysRoleDataService sysRoleDataService;
+    public static SysRoleRouteService sysRoleRouteService;
 
     @Autowired(required = false)
     public void setSysIdService(SysIdService sysIdService) {
@@ -32,5 +32,20 @@ public class Services {
     @Autowired(required = false)
     public void setSysAuthService(SysAuthService sysAuthService) {
         Services.sysAuthService = sysAuthService;
+    }
+
+    @Autowired(required = false)
+    public void setSysDataService(SysDataService sysDataService) {
+        Services.sysDataService = sysDataService;
+    }
+
+    @Autowired(required = false)
+    public void setSysRoleDataService(SysRoleDataService sysRoleDataService) {
+        Services.sysRoleDataService = sysRoleDataService;
+    }
+
+    @Autowired(required = false)
+    public void setSysRoleRouteService(SysRoleRouteService sysRoleRouteService) {
+        Services.sysRoleRouteService = sysRoleRouteService;
     }
 }
