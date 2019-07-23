@@ -8,7 +8,7 @@ const $qs = qs
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 10000, // 请求超时时间
+  timeout: 30000, // 请求超时时间
   transformRequest: [function(data) {
     return $qs.stringify({ ...data })
   }],

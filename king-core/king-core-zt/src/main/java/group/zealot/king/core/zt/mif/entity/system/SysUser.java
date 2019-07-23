@@ -5,6 +5,9 @@ import group.zealot.king.core.zt.mif.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+
 @Setter
 @Getter
 public class SysUser extends BaseEntity {
@@ -12,4 +15,5 @@ public class SysUser extends BaseEntity {
     @JSONField(serialize=false)
     private String password;
     private String level;
+    private LocalDateTime lastLoginTime;
 }

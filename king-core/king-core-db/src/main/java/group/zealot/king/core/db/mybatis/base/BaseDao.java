@@ -94,7 +94,7 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
         Page<E> page = new Page<>(totalCount);
 
         int limit = pageRequest.getLimit() == -1 ? totalCount : pageRequest.getLimit();
-        int offset = (pageRequest.getPage() - 1) * limit + 1;
+        int offset = (pageRequest.getPage() - 1) * limit;
 
         if (offset <= totalCount) {
             List<E> list = selectList(
