@@ -56,4 +56,26 @@ public class UserController extends BaseController {
             }
         }.result();
     }
+
+    @RequestMapping("add")
+    public JSONObject add(String username, byte[] password, String status, String level, String remark) {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                Funcation.NotNull(username, "username为空");
+                Funcation.NotNull(password, "password为空");
+                Funcation.NotNull(status, "status为空");
+                Funcation.NotNull(level, "level为空");
+                Funcation.NotNull(remark, "remark为空");
+
+                Funcation.IsNull(sysUserService.getByUsername(username),"该用户名已存在");
+
+
+                SysUser sysUser = sysUserService.getById(id);
+                JSONObject data = new JSONObject();
+                data.put("vo", sysUser);
+                resultJson.set(data);
+            }
+        }.result();
+    }
 }

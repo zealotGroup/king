@@ -54,6 +54,14 @@ public class Funcation {
         return ((Double) (Math.random() * Math.pow(10, size))).longValue();
     }
 
+    public static void IsNull(Object value, String message) {
+        try {
+            Assert.assertNull(message, value);
+        } catch (AssertionError e) {
+            throw new BaseRuntimeException(e.getMessage());
+        }
+    }
+
     public static void NotNull(Object value, String message) {
         try {
             Assert.assertNotNull(message, value);
