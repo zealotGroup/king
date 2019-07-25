@@ -1,8 +1,7 @@
 package group.zealot.king.demo.api.config;
 
+import group.zealot.king.base.Funcation;
 import group.zealot.king.base.exception.BaseRuntimeException;
-import group.zealot.king.base.security.DigestUtils;
-import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static group.zealot.king.core.zt.mif.Services.*;
 
@@ -25,20 +23,13 @@ public class LoginUtil {
     protected static Logger logger = LoggerFactory.getLogger(LoginUtil.class);
 
     public static String login(String username, byte[] password) {
-        //加密密码
-        byte[] hashPassword = DigestUtils.sha1(password, username.getBytes(), 1024);
-        String newPassword = EncodeUtil.encodeHex(hashPassword);
-
-        SysUser sysUser = sysUserService.getByUsernameAndPassword(username, newPassword);
-        if (sysUser == null) {
-            throw new BaseRuntimeException("用户名或密码错误");
+        SysUser sysUser = sysUserService.getByUsernameAndPassword(username, password);
+        Funcation.NotNull(sysUser, "用户名或密码错误");
+        String token = UUID.randomUUID().toString();
+        if (put(token, sysUser)) {
+            return token;
         } else {
-            String token = UUID.randomUUID().toString();
-            if (put(token, sysUser)) {
-                return token;
-            } else {
-                throw new BaseRuntimeException("token创建异常，请稍后重试");
-            }
+            throw new BaseRuntimeException("token创建异常，请稍后重试");
         }
     }
 

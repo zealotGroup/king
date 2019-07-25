@@ -6,6 +6,7 @@ import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.demo.api.config.BaseController;
+import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,13 +69,11 @@ public class UserController extends BaseController {
                 Funcation.NotNull(level, "level为空");
                 Funcation.NotNull(remark, "remark为空");
 
-                Funcation.IsNull(sysUserService.getByUsername(username),"该用户名已存在");
-
-
-                SysUser sysUser = sysUserService.getById(id);
+                Funcation.IsNull(sysUserService.getByUsername(username), "该用户名已存在");
+                SysUser vo = sysUserService.insert(username, password, status, level, remark, LoginUtil.getSysUserId());
                 JSONObject data = new JSONObject();
-                data.put("vo", sysUser);
-                resultJson.set(data);
+                data.put("vo", vo);
+                resultJson.setData(data);
             }
         }.result();
     }
