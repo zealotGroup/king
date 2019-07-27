@@ -18,35 +18,31 @@ import static group.zealot.king.core.db.mybatis.Daos.*;
 public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
 
     @Override
-    public List<SysRoleData> getSysRoleData(Long sysUserId) {
+    public SysRoleData getSysRoleData(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
-        List<SysAuth> list = sysAuthDao.getList(vo);
+        List<SysAuth> authList = sysAuthDao.getList(vo);
 
-        List<SysRoleData> sysRoleDataList = new ArrayList<>();
-        for (SysAuth item : list) {
+        for (SysAuth item : authList) {
             if (item.getSysRoleDataId() != null) {
-                SysRoleData sysRoleData = sysRoleDataDao.getById(item.getSysRoleDataId());
-                sysRoleDataList.add(sysRoleData);
+                return sysRoleDataDao.getById(item.getSysRoleDataId());
             }
         }
-        return sysRoleDataList;
+        return null;
     }
 
     @Override
-    public List<SysRoleRoute> getSysRoleRoute(Long sysUserId) {
+    public SysRoleRoute getSysRoleRoute(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
         List<SysAuth> list = sysAuthDao.getList(vo);
 
-        List<SysRoleRoute> sysRoleRouteList = new ArrayList<>();
         for (SysAuth item : list) {
             if (item.getSysRoleRouteId() != null) {
-                SysRoleRoute sysRoleRoute = sysRoleRouteDao.getById(item.getSysRoleRouteId());
-                sysRoleRouteList.add(sysRoleRoute);
+                return sysRoleRouteDao.getById(item.getSysRoleRouteId());
             }
         }
-        return sysRoleRouteList;
+        return null;
     }
 
     @Override
@@ -54,40 +50,46 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
         SysAuth vo = new SysAuth();
         vo.setSysRoleRouteId(sysRoleRouteId);
         List<SysAuth> sysAuthList = sysAuthDao.getList(vo);
+        List<SysRoute> sysRouteList = sysRouteDao.getList();
 
-        List<SysRoute> sysRouteList = new ArrayList<>();
-        for (SysAuth item : sysAuthList) {
-            if (item.getSysRouteId() != null) {
-                SysRoute sysRoute = sysRouteDao.getById(item.getSysRouteId());
-                sysRouteList.add(sysRoute);
+        List<SysRoute> list = new ArrayList<>();
+        sysAuthList.forEach(sysAuth -> {
+            if (sysAuth.getSysRouteId() != null) {
+                sysRouteList.forEach(sysRoute -> {
+                    if (NumberUtil.equals(sysAuth.getSysRouteId(), sysRoute.getId())) {
+                        list.add(sysRoute);
+                    }
+                });
             }
-        }
-        return sysRouteList;
+        });
+        return list;
     }
 
     @Override
     public List<SysData> getSysData(Long sysRoleDataId) {
         SysAuth vo = new SysAuth();
         vo.setSysRoleDataId(sysRoleDataId);
-        List<SysAuth> list = sysAuthDao.getList(vo);
+        List<SysAuth> sysAuthList = sysAuthDao.getList(vo);
+        List<SysData> sysRouteList = sysDataDao.getList();
 
-        List<SysData> sysDataList = new ArrayList<>();
-        for (SysAuth item : list) {
-            if (item.getSysDataId() != null) {
-                SysData sysData = sysDataDao.getById(item.getSysDataId());
-                sysDataList.add(sysData);
+        List<SysData> list = new ArrayList<>();
+        sysAuthList.forEach(sysAuth -> {
+            if (sysAuth.getSysDataId() != null) {
+                sysRouteList.forEach(sysData -> {
+                    if (NumberUtil.equals(sysAuth.getSysDataId(), sysData.getId())) {
+                        list.add(sysData);
+                    }
+                });
             }
-        }
-        return sysDataList;
+        });
+        return list;
     }
 
     @Override
     public JSONArray getRoute(Long sysUserId) {
         JSONArray jsonArray = new JSONArray();
-        List<SysRoleRoute> sysRoleRouteList = getSysRoleRoute(sysUserId);
-        List<SysRoute> list = new ArrayList<>();
-
-        sysRoleRouteList.forEach(sysRoleRoute -> list.addAll(getSysRoute(sysRoleRoute.getId())));
+        SysRoleRoute sysRoleRoute = getSysRoleRoute(sysUserId);
+        List<SysRoute> list = getSysRoute(sysRoleRoute.getId());
 
         list.forEach(sysRoute -> {
             if (sysRoute.getFId() == null) {

@@ -15,5 +15,11 @@ public class SysUser extends BaseEntity {
     @JSONField(serialize=false)
     private String password;
     private String level;
+    private String status;
     private LocalDateTime lastLoginTime;
+    /**
+     * 非数据库字段
+     */
+    private SysRoleRoute roleRoute;
+    private SysRoleData roleData;
 }

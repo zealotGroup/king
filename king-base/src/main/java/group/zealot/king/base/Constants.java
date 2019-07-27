@@ -12,5 +12,12 @@ public final class Constants {
     public static int NINE = 9;
     public static int TEN = 10;
 
+    public static int DELETE_Y = 1;
+    public static int DELETE_N = 0;
+
+    public static String STATUS_ABLE = "able";
+    public static String STATUS_DISABLE = "disable";
+
+
     public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
 }

@@ -15,7 +15,7 @@ public class StringUtil extends StringUtils {
 
     /**
      * 验证数据是否包含指定字符串
-     * 
+     *
      * @param strs
      * @param str
      * @return
@@ -34,7 +34,7 @@ public class StringUtil extends StringUtils {
 
     /**
      * 验证数组是否包含指定字符串
-     * 
+     *
      * @param strs
      * @param str
      * @return
@@ -60,16 +60,15 @@ public class StringUtil extends StringUtils {
 
     /**
      * Checks if string is null or empty.
-     * 
-     * @param value
-     *            The string to be checked
+     *
+     * @param value The string to be checked
      * @return True if string is null or empty, otherwise false.
      */
-    public static boolean  isEmpty(final String value) {
+    public static boolean isEmpty(String value) {
         return value == null || value.trim().length() == 0;
     }
 
-    public static List<Integer> splitInteger(String strs){
+    public static List<Integer> splitInteger(String strs) {
         List<Integer> list = new ArrayList<>();
         if (!StringUtil.isEmpty(strs)) {
             String[] str = strs.split(",");
@@ -80,6 +79,10 @@ public class StringUtil extends StringUtils {
             }
         }
         return list;
+    }
+
+    public static boolean notEmpty(String value) {
+        return !isEmpty(value);
     }
 
     public static String objToString(final Object obj) {
@@ -102,11 +105,10 @@ public class StringUtil extends StringUtils {
     /**
      * Converts <code>null</code> to empty string, otherwise returns it
      * directly.
-     * 
-     * @param string
-     *            The nullable string
+     *
+     * @param string The nullable string
      * @return empty string if passed in string is null, or original string
-     *         without any change
+     * without any change
      */
     public static String null2String(String string) {
         return string == null ? "" : string;
@@ -114,13 +116,12 @@ public class StringUtil extends StringUtils {
 
     /**
      * Converts string from GB2312 encoding ISO8859-1 (Latin-1) encoding.
-     * 
-     * @param gbString
-     *            The string of GB1212 encoding
+     *
+     * @param gbString The string of GB1212 encoding
      * @return New string of ISO8859-1 encoding
      */
     public static String iso2Gb(String gbString) {
-        if (gbString == null){
+        if (gbString == null) {
             return null;
         }
         String outString = "";
@@ -136,13 +137,12 @@ public class StringUtil extends StringUtils {
 
     /**
      * Converts string from ISO8859-1 encoding to UTF-8 encoding.
-     * 
-     * @param isoString
-     *            String of ISO8859-1 encoding
+     *
+     * @param isoString String of ISO8859-1 encoding
      * @return New converted string of UTF-8 encoding
      */
     public static String iso2Utf(String isoString) {
-        if (isoString == null){
+        if (isoString == null) {
             return null;
         }
         String outString = "";
@@ -158,13 +158,12 @@ public class StringUtil extends StringUtils {
 
     /**
      * Converts string from platform default encoding to GB2312.
-     * 
-     * @param inString
-     *            String in platform default encoding
+     *
+     * @param inString String in platform default encoding
      * @return New string in GB2312 encoding
      */
     public static String str2Gb(String inString) {
-        if (inString == null){
+        if (inString == null) {
             return null;
         }
         String outString = "";
@@ -173,16 +172,15 @@ public class StringUtil extends StringUtils {
             temp = inString.getBytes();
             outString = new String(temp, "GB2312");
         } catch (java.io.UnsupportedEncodingException e) {
-            
+
         }
         return outString;
     }
 
     /**
      * Insert "0" in front of <em>dealCode</em> if its length is less than 3.
-     * 
-     * @param dealCode
-     *            The dealCode to be filled with "0" at the beginning
+     *
+     * @param dealCode The dealCode to be filled with "0" at the beginning
      * @return New string with "0" filled
      */
     public static String fillZero(String dealCode) {
@@ -255,7 +253,7 @@ public class StringUtil extends StringUtils {
      * Encrypt deal Id : 2 bits year,10 bits sequence
      */
     public static String encDealId(String dealid) {
-        if (dealid.length() != 23){
+        if (dealid.length() != 23) {
             return "notval";
         }
         String ny = dealid.substring(5, 7);
@@ -273,9 +271,8 @@ public class StringUtil extends StringUtils {
 
     /**
      * 数字转换为大写字母
-     * 
-     * @param money
-     *            format example: 100.00
+     *
+     * @param money format example: 100.00
      * @return
      */
     public static String[] numToWords(String money) {
@@ -283,39 +280,39 @@ public class StringUtil extends StringUtils {
         String[] str = new String[j];
         for (int i = 0; i < j; i++) {
             switch (money.charAt(i)) {
-            case '0':
-                str[i] = "零";
-                continue;
-            case '1':
-                str[i] = "壹";
-                continue;
-            case '2':
-                str[i] = "贰";
-                continue;
-            case '3':
-                str[i] = "叁";
-                continue;
-            case '4':
-                str[i] = "肆";
-                continue;
-            case '5':
-                str[i] = "伍";
-                continue;
-            case '6':
-                str[i] = "陆";
-                continue;
-            case '7':
-                str[i] = "柒";
-                continue;
-            case '8':
-                str[i] = "捌";
-                continue;
-            case '9':
-                str[i] = "玖";
-                continue;
-            case '.':
-                str[i] = "点";
-                continue;
+                case '0':
+                    str[i] = "零";
+                    continue;
+                case '1':
+                    str[i] = "壹";
+                    continue;
+                case '2':
+                    str[i] = "贰";
+                    continue;
+                case '3':
+                    str[i] = "叁";
+                    continue;
+                case '4':
+                    str[i] = "肆";
+                    continue;
+                case '5':
+                    str[i] = "伍";
+                    continue;
+                case '6':
+                    str[i] = "陆";
+                    continue;
+                case '7':
+                    str[i] = "柒";
+                    continue;
+                case '8':
+                    str[i] = "捌";
+                    continue;
+                case '9':
+                    str[i] = "玖";
+                    continue;
+                case '.':
+                    str[i] = "点";
+                    continue;
             }
         }
         return str;
@@ -323,14 +320,14 @@ public class StringUtil extends StringUtils {
 
     /**
      * 把人民币转换成大写的标准格式
-     * 
+     *
      * @param str
      * @return
      */
     public static String money2BigFormat(String money) {
         String[] bigNumber = numToWords(money);
         int len = bigNumber.length;
-        if (len > 11){
+        if (len > 11) {
             return "数额过高";
         }
         StringBuffer sb = new StringBuffer();
@@ -362,7 +359,7 @@ public class StringUtil extends StringUtils {
 
     /**
      * 货币格式化
-     * 
+     *
      * @param currency
      * @return
      */
@@ -402,9 +399,8 @@ public class StringUtil extends StringUtils {
     /**
      * Splits the provided text into a list, using whitespace as the separator.
      * The separator is not included in the returned String array.
-     * 
-     * @param str
-     *            the string to parse
+     *
+     * @param str the string to parse
      * @return an array of parsed Strings
      */
     public static String[] split(String str) {
@@ -412,10 +408,8 @@ public class StringUtil extends StringUtils {
     }
 
     /**
-     * @param text
-     *            String
-     * @param separator
-     *            String
+     * @param text      String
+     * @param separator String
      * @return String[]
      */
     public static String[] split(String text, String separator) {
@@ -432,15 +426,12 @@ public class StringUtil extends StringUtils {
      * This is useful for quickly splitting a string directly into an array of
      * tokens, instead of an enumeration of tokens (as
      * <code>StringTokenizer</code> does).
-     * 
-     * @param str
-     *            The string to parse.
-     * @param separator
-     *            Characters used as the delimiters. If <code>null</code>,
-     *            splits on whitespace.
-     * @param max
-     *            The maximum number of elements to include in the list. A zero
-     *            or negative value implies no limit.
+     *
+     * @param str       The string to parse.
+     * @param separator Characters used as the delimiters. If <code>null</code>,
+     *                  splits on whitespace.
+     * @param max       The maximum number of elements to include in the list. A zero
+     *                  or negative value implies no limit.
      * @return an array of parsed Strings
      */
     public static String[] split(String str, String separator, int max) {
@@ -482,13 +473,10 @@ public class StringUtil extends StringUtils {
 
     /**
      * Replace all occurances of a string within another string.
-     * 
-     * @param text
-     *            text to search and replace in
-     * @param repl
-     *            String to search for
-     * @param with
-     *            String to replace with
+     *
+     * @param text text to search and replace in
+     * @param repl String to search for
+     * @param with String to replace with
      * @return the text with any replacements processed
      * @see #replace(String text, String repl, String with, int max)
      */
@@ -525,19 +513,14 @@ public class StringUtil extends StringUtils {
      * Replace a string with another string inside a larger string, for the
      * first <code>max</code> values of the search string. A <code>null</code>
      * reference is passed to this method is a no-op.
-     * 
-     * @param text
-     *            text to search and replace in
-     * @param repl
-     *            String to search for
-     * @param with
-     *            String to replace with
-     * @param max
-     *            maximum number of values to replace, or <code>-1</code> if no
-     *            maximum
+     *
+     * @param text text to search and replace in
+     * @param repl String to search for
+     * @param with String to replace with
+     * @param max  maximum number of values to replace, or <code>-1</code> if no
+     *             maximum
      * @return the text with any replacements processed
-     * @throws NullPointerException
-     *             if repl is null
+     * @throws NullPointerException if repl is null
      */
     public static String replace(String text, String repl, String with, int max) {
         if (text == null) {

@@ -19,7 +19,13 @@ public interface BaseService<E, P extends Serializable> {
 
     int update(E entity);
 
+    List<E> getList();
+
     List<E> getList(E entity);
 
     Page<E> pageQuery(PageRequest<E> pageRequest);
+
+    void formater(List<E> list);
+
+    void formater(E e);
 }

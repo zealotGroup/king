@@ -12,7 +12,10 @@
         su.remark remark,
         su.username username,
         su.password password,
-        su.level level
+        su.level level,
+        su.status status,
+        su.is_delete isDelete,
+        su.last_login_time lastLoginTime
     </sql>
     <sql id="where">
         <if test="id != null">
@@ -26,6 +29,12 @@
         </if>
         <if test="level != null and level.length() > 0">
             and su.level = #{level}
+        </if>
+        <if test="status != null and status.length() > 0">
+            and su.status = #{status}
+        </if>
+        <if test="isDelete != null">
+            and su.is_Delete = #{isDelete}
         </if>
     </sql>
 
@@ -80,6 +89,12 @@
             <if test="level != null and level.length() > 0">
                 su.level,
             </if>
+            <if test="status != null and status.length() > 0">
+                su.status,
+            </if>
+            <if test="lastLoginTime != null">
+                su.last_Login_Time,
+            </if>
             <if test="createTime != null">
                 su.create_time,
             </if>
@@ -88,6 +103,9 @@
             </if>
             <if test="remark != null and remark.length() > 0">
                 su.remark,
+            </if>
+            <if test="isDelete != null">
+                su.is_Delete,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -103,6 +121,12 @@
             <if test="level != null and level.length() > 0">
                 #{level},
             </if>
+            <if test="status != null and status.length() > 0">
+                #{status},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime},
+            </if>
             <if test="createTime != null">
                 #{createTime},
             </if>
@@ -111,6 +135,9 @@
             </if>
             <if test="remark != null and remark.length() > 0">
                 #{remark},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete},
             </if>
         </trim>
     </insert>
@@ -124,6 +151,12 @@
             <if test="level != null and level.length() > 0">
                 su.level = #{level},
             </if>
+            <if test="status != null and status.length() > 0">
+                su.status = #{status},
+            </if>
+            <if test="lastLoginTime != null">
+                su.last_Login_Time = #{lastLoginTime},
+            </if>
             <if test="lastUpdateTime != null">
                 su.last_update_time = #{lastUpdateTime},
             </if>
@@ -132,6 +165,9 @@
             </if>
             <if test="remark != null and remark.length() > 0">
                 su.remark = #{remark},
+            </if>
+            <if test="isDelete != null">
+                su.is_Delete = #{isDelete},
             </if>
         </set>
         <where>

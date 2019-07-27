@@ -15,4 +15,12 @@ public class BaseEntity implements Serializable {
     private Long lastUpdateUserId;
     private LocalDateTime lastUpdateTime;
     private String remark;
+
+    private Integer isDelete;//1 已删除 0 未删除
+
+    /**
+     * 非数据库字段
+     */
+    private String createUserName;
+    private String lastUpdateUserName;
 }

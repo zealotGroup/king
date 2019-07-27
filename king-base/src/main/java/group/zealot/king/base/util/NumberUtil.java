@@ -25,6 +25,24 @@ public class NumberUtil {
                     } else {//都不为null 且值相同
                         return true;
                     }
+                } else if (a instanceof Long && b instanceof Long) {
+                    if (a.longValue() != b.longValue()) {//都不为null 且值不同
+                        return false;
+                    } else {//都不为null 且值相同
+                        return true;
+                    }
+                } else if (a instanceof Float && b instanceof Float) {
+                    if (a.floatValue() != b.floatValue()) {//都不为null 且值不同
+                        return false;
+                    } else {//都不为null 且值相同
+                        return true;
+                    }
+                } else if (a instanceof Double && b instanceof Double) {
+                    if (a.doubleValue() != b.doubleValue()) {//都不为null 且值不同
+                        return false;
+                    } else {//都不为null 且值相同
+                        return true;
+                    }
                 } else if (a instanceof Integer && b instanceof Long) {
                     if (a.intValue() != b.intValue()) {//都不为null 且值不同
                         return false;
@@ -33,12 +51,6 @@ public class NumberUtil {
                     }
                 } else if (a instanceof Long && b instanceof Integer) {
                     if (a.intValue() != b.intValue()) {//都不为null 且值不同
-                        return false;
-                    } else {//都不为null 且值相同
-                        return true;
-                    }
-                } else if (a instanceof Float && b instanceof Float) {
-                    if (a.floatValue() != b.floatValue()) {//都不为null 且值不同
                         return false;
                     } else {//都不为null 且值相同
                         return true;

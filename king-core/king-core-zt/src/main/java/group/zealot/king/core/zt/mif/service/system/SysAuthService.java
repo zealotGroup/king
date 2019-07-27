@@ -14,17 +14,17 @@ public interface SysAuthService extends BaseService<SysAuth, Long> {
      * 根据 用户ID 获取 所有的 数据角色
      *
      * @param sysUserId 用户ID
-     * @return List<SysRoleData> 该用户 所包含的 数据角色
+     * @return List<SysRoleData> 该用户 所对应的 数据角色
      */
-    List<SysRoleData> getSysRoleData(Long sysUserId);
+    SysRoleData getSysRoleData(Long sysUserId);
 
     /**
      * 根据 用户ID 获取 所有的 路由角色
      *
      * @param sysUserId 用户ID
-     * @return List<SysRoleRoute> 该用户 所包含的 路由角色
+     * @return List<SysRoleRoute> 该用户 所对应的 路由角色
      */
-    List<SysRoleRoute> getSysRoleRoute(Long sysUserId);
+    SysRoleRoute getSysRoleRoute(Long sysUserId);
 
     /**
      * 根据 路由角色ID 获取 所有的 路由

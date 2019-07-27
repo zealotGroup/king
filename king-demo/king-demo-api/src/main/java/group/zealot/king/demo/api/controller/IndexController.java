@@ -35,8 +35,8 @@ public class IndexController  extends BaseController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                Funcation.NotNull(username, "用户名为空");
-                Funcation.NotNull(password, "密码为空");
+                Funcation.AssertNotNull(username, "用户名为空");
+                Funcation.AssertNotNull(password, "密码为空");
                 String token = LoginUtil.login(username, password);
                 JSONObject data = new JSONObject();
                 data.put("token", token);

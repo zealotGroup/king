@@ -14,4 +14,8 @@ public interface SysUserService extends BaseService<SysUser, Long> {
     void updatePassword(String username, byte[] newPassword);
 
     SysUser insert(String username, byte[] password, String status, String level, String remark, Long userId);
+
+    SysUser update(Long id, byte[] password, String status, String level, String remark, Integer isDelete, Long userId);
+
+    void realDel(Long id);
 }

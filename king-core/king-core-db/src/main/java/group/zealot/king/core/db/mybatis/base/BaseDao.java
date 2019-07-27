@@ -62,6 +62,10 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
         return insert("update", entity);
     }
 
+    public List<E> getList() {
+        return getList(null);
+    }
+
     public List<E> getList(E entity) {
         return selectList("getList", entity);
     }

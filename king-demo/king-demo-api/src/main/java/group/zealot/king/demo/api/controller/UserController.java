@@ -1,9 +1,13 @@
 package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.Constants;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.base.util.NumberUtil;
+import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.LoginUtil;
@@ -23,8 +27,8 @@ public class UserController extends BaseController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                Funcation.NotNull(page, "page为空");
-                Funcation.NotNull(limit, "limit为空");
+                Funcation.AssertNotNull(page, "page为空");
+                Funcation.AssertNotNull(limit, "limit为空");
 
                 PageRequest<SysUser> pageRequest = new PageRequest<>();
                 pageRequest.setPage(page);
@@ -34,6 +38,7 @@ public class UserController extends BaseController {
                 filters.setLevel(level);
                 pageRequest.setFilters(filters);
                 Page<SysUser> page = sysUserService.pageQuery(pageRequest);
+                sysUserService.formater(page.getList());
 
                 JSONObject data = new JSONObject();
                 data.put("total", page.getCount());
@@ -48,7 +53,7 @@ public class UserController extends BaseController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                Funcation.NotNull(id, "id为空");
+                Funcation.AssertNotNull(id, "id为空");
 
                 SysUser sysUser = sysUserService.getById(id);
                 JSONObject data = new JSONObject();
@@ -63,17 +68,71 @@ public class UserController extends BaseController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                Funcation.NotNull(username, "username为空");
-                Funcation.NotNull(password, "password为空");
-                Funcation.NotNull(status, "status为空");
-                Funcation.NotNull(level, "level为空");
-                Funcation.NotNull(remark, "remark为空");
+                Funcation.AssertNotNull(username, "username为空");
+                Funcation.AssertNotNull(password, "password为空");
+                Funcation.AssertNotNull(status, "status为空");
+                Funcation.AssertNotNull(level, "level为空");
+                Funcation.AssertNotNull(remark, "remark为空");
 
-                Funcation.IsNull(sysUserService.getByUsername(username), "该用户名已存在");
+                Funcation.AssertIsNull(sysUserService.getByUsername(username), "该用户名已存在");
                 SysUser vo = sysUserService.insert(username, password, status, level, remark, LoginUtil.getSysUserId());
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
                 resultJson.setData(data);
+            }
+        }.result();
+    }
+
+    @RequestMapping("update")
+    public JSONObject update(Long id, byte[] password, String status, String level, String remark) {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                Funcation.AssertNotNull(id, "id为空");
+
+                if ((password == null || password.length == 0) && StringUtil.isEmpty(status)
+                        && StringUtil.isEmpty(level) && StringUtil.isEmpty(remark)) {
+                    throw new BaseRuntimeException("没有可更新参数");
+                }
+                sysUserService.update(id, password, status, level, remark, null, LoginUtil.getSysUserId());
+            }
+        }.result();
+    }
+
+    @RequestMapping("del")
+    public JSONObject del(Long id) {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                Funcation.AssertNotNull(id, "id为空");
+                sysUserService.update(id, null, null, null, null, Constants.DELETE_Y, LoginUtil.getSysUserId());
+            }
+        }.result();
+    }
+
+    @RequestMapping("recover")
+    public JSONObject recover(Long id) {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                Funcation.AssertNotNull(id, "id为空");
+                SysUser old = sysUserService.getById(id);
+                Funcation.AssertNotNull(old, "此id用户不存在为空");
+                if (NumberUtil.equals(old.getIsDelete(),Constants.DELETE_N)){
+                    throw new BaseRuntimeException("此id用户未删除，不能恢复");
+                }
+                sysUserService.update(id, null, null, null, null, Constants.DELETE_N, LoginUtil.getSysUserId());
+            }
+        }.result();
+    }
+
+    @RequestMapping("realDel")
+    public JSONObject realDel(Long id) {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                Funcation.AssertNotNull(id, "id为空");
+                sysUserService.realDel(id);
             }
         }.result();
     }

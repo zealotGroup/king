@@ -37,6 +37,10 @@ public abstract class BaseServiceImpl<E, P extends Serializable> {
         return getBaseMapper().update(entity);
     }
 
+    public List<E> getList() {
+        return getBaseMapper().getList();
+    }
+
     public List<E> getList(E entity) {
         return getBaseMapper().getList(entity);
     }
@@ -44,4 +48,13 @@ public abstract class BaseServiceImpl<E, P extends Serializable> {
     public Page<E> pageQuery(PageRequest<E> pageRequest) {
         return getBaseMapper().pageQuery(pageRequest);
     }
+
+    public void formater(List<E> list) {
+        list.forEach(entity -> formater(entity));
+    }
+
+    /**
+     * 子类若进行格式化，需覆盖此方法
+     */
+    public void formater(E entity) {}
 }

@@ -167,8 +167,15 @@
             sa.id = #{id}
         </where>
     </update>
-    
+
     <delete id="deleteById" parameterType="long">
         delete from sys_auth sa where sa.id = #{_parameter}
+    </delete>
+
+    <delete id="delete" parameterType="SysAuth">
+        delete from sys_auth sa
+        <where>
+            <include refid="where"></include>
+        </where>
     </delete>
 </mapper>

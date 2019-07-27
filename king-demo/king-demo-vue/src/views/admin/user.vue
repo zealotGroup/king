@@ -34,11 +34,6 @@
           <span>{{scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('password')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.password}}</span>
-        </template>
-      </el-table-column>
       <el-table-column min-width="95px" align="center" :label="$t('status')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
           <template v-if="scope.row.status === 'able'">
@@ -78,27 +73,22 @@
           <span>{{ scope.row.lastLoginTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('loginTimes')" v-if="checkLevel('super') || checkLevel('admin')">
-        <template slot-scope="scope">
-          <span>{{scope.row.loginTimes}}</span>
-        </template>
-      </el-table-column>
       <el-table-column min-width="85px" align="center" :label="$t('routeRole')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.routeRole }}</el-tag>
+          <el-tag>{{ scope.row.roleRoute | formater }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column min-width="85px" :label="$t('dataRole')" v-if="checkLevel('super') || checkLevel('admin')">
         <template slot-scope="scope">
-          <el-tag>{{scope.row.dataRole }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
-        <template slot-scope="scope">
-          <span>{{scope.row.remarks}}</span>
+          <el-tag>{{ scope.row.roleData | formater }}</el-tag>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.remark')">
+        <template slot-scope="scope">
+          <span>{{scope.row.remark}}</span>
+        </template>
+      </el-table-column>
       <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
@@ -106,7 +96,7 @@
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.createUser}}</span>
+          <span>{{scope.row.createUserName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
@@ -116,7 +106,7 @@
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateUser}}</span>
+          <span>{{scope.row.lastUpdateUserName }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -128,7 +118,7 @@
           </template>
           <template v-else>
             <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+            <el-popover v-if="!scope.row.isDelete" placement="top" width="160" v-model="scope.row.visible_deleted">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
                 <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
@@ -215,6 +205,15 @@ export default {
   directives: {
     waves
   },
+  filters: {
+    formater(item) {
+      if (item !== undefined) {
+        return item.name
+      } else {
+        return ''
+      }
+    }
+  },
   data() {
     return {
       /* 固定功能字段 start */
@@ -238,7 +237,7 @@ export default {
       dialogTitle: '',
       /* 固定功能字段 start */
       levelList: ['user', 'vip', 'svip', 'admin', 'super'],
-      statusList: ['able', 'disable', 'deleted'],
+      statusList: ['able', 'disable'],
       rules: {
         id: [
           { required: true, message: this.$t('required'), trigger: 'blur' }
@@ -326,6 +325,7 @@ export default {
         this.dialogFormVisible = true
         this.dialogTitle = 'add'
         this.rules.id[0].required = false
+        this.rules.password[0].required = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -368,6 +368,7 @@ export default {
         this.dialogFormVisible = true
         this.dialogTitle = 'update'
         this.rules.id[0].required = true
+        this.rules.password[0].required = false
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
