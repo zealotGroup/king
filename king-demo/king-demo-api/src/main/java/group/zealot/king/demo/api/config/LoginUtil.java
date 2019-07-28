@@ -31,7 +31,7 @@ public class LoginUtil {
         if (!Constants.STATUS_ABLE.equals(sysUser.getStatus())) {
             throw new BaseRuntimeException("此用户已被禁用");
         }
-        if (NumberUtil.equals(sysUser.getIsDelete(),Constants.DELETE_Y)) {
+        if (NumberUtil.equals(sysUser.getIsDelete(), Constants.DELETE_Y)) {
             throw new BaseRuntimeException("此用户已被删除");
         }
         SysUser vo = new SysUser();

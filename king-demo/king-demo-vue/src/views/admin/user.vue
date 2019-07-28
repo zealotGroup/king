@@ -157,15 +157,15 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="90px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
-          <el-input v-model="temp.id"></el-input>
+          <el-input :disabled="true" v-model="temp.id"></el-input>
         </el-form-item>
         <el-form-item :label="$t('username')" prop="username">
-          <el-input v-model="temp.username"></el-input>
+          <el-input :disabled="temp.disabled_username" v-model="temp.username"></el-input>
         </el-form-item>
         <el-form-item :label="$t('password')" prop="password">
-          <el-input v-model="temp.password"></el-input>
+          <el-input v-model="temp.password" placeholder="修改模式，若修改密码，则输入"></el-input>
         </el-form-item>
         <el-form-item :label="$t('status')" prop="status">
           <el-select class="filter-item" v-model="temp.status">
@@ -176,6 +176,18 @@
         <el-form-item :label="$t('level')" prop="level">
           <el-select class="filter-item" v-model="temp.level">
             <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('roleRoute')" prop="roleRoute">
+          <el-select class="filter-item" v-model="temp.roleRoute">
+            <el-option v-for="item in roleRouteList" :key="item" :label="$t(item)" :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('roleData')" prop="roleData">
+          <el-select class="filter-item" v-model="temp.roleData">
+            <el-option v-for="item in roleDataList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
@@ -195,7 +207,8 @@
 </template>
 
 <script>
-import { getList, add, update, del, recover, realDel } from '@/api/admin/user'
+  import { getList, add, update, del, recover, realDel } from '@/api/admin/user'
+  import { getList } from '@/api/admin/user'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import store from '@/store'
@@ -231,13 +244,17 @@ export default {
         status: undefined,
         username: undefined
       },
-      temp: undefined,
+      temp: {
+        disabled_username: false
+      },
       dialogFormVisible: false,
       dialogType: '',
       dialogTitle: '',
       /* 固定功能字段 start */
       levelList: ['user', 'vip', 'svip', 'admin', 'super'],
       statusList: ['able', 'disable'],
+      roleDataList: '',
+      roleRouteList: '',
       rules: {
         id: [
           { required: true, message: this.$t('required'), trigger: 'blur' }
@@ -253,6 +270,12 @@ export default {
         ],
         level: [
           { required: true, message: this.$t('required'), trigger: 'blur' }
+        ],
+        roleData: [
+          { required: true, message: this.$t('required'), trigger: 'blur' }
+        ],
+        roleRoute: [
+          { required: true, message: this.$t('required'), trigger: 'blur' }
         ]
       }
     }
@@ -260,6 +283,8 @@ export default {
   created() {
     this.resetTemp()
     this.getList()
+    this.getRoleDataList()
+    this.getRoleRouteList()
   },
   methods: {
     /* 固定功能方法 start */
@@ -270,7 +295,8 @@ export default {
         password: '',
         status: '',
         level: '',
-        remark: ''
+        remark: '',
+        disabled_username: false
       }
     },
     cleanDialog() {
@@ -326,6 +352,7 @@ export default {
         this.dialogTitle = 'add'
         this.rules.id[0].required = false
         this.rules.password[0].required = true
+        this.temp.disabled_username = false
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -369,6 +396,7 @@ export default {
         this.dialogTitle = 'update'
         this.rules.id[0].required = true
         this.rules.password[0].required = false
+        this.temp.disabled_username = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -509,6 +537,30 @@ export default {
     },
     /* 固定功能方法 end */
     // 个性化定义方法
+    getRoleDataList() {
+      getRoleDataList().then(data => {
+        this.roleDataList = data.list
+      }).catch(() => {
+        this.$notify({
+          title: '警告',
+          message: '数据角色加载异常',
+          type: 'warning',
+          duration: 2000
+        })
+      })
+    },
+    getRoleRouteList() {
+      getRoleRouteList().then(data => {
+        this.roleRouteList = data.list
+      }).catch(() => {
+        this.$notify({
+          title: '警告',
+          message: '路由角色加载异常',
+          type: 'warning',
+          duration: 2000
+        })
+      })
+    },
     handleUpdateStatus(row, status) {
       this.notifyClicking(row.loading_updateStatus, () => {
         row.loading_updateStatus = true

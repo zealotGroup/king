@@ -80,10 +80,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
             vo.setStatus(status);
         }
         if (StringUtil.notEmpty(level)) {
-            vo.setStatus(level);
+            vo.setLevel(level);
         }
         if (StringUtil.notEmpty(remark)) {
-            vo.setStatus(remark);
+            vo.setRemark(remark);
         }
         if (isDelete != null) {
             vo.setIsDelete(isDelete);

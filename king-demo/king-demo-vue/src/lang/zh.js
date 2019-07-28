@@ -212,5 +212,7 @@ export default {
   lastLoginTime: '最后登录时间',
   search: '搜索',
   waitingForFlush: '待刷新',
-  error: '错误'
+  error: '错误',
+  roleData: '数据角色',
+  roleRoute: '路由角色'
 }
