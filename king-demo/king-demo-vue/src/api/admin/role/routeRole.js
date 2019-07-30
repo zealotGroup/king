@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/role/routeRole'
+const url = 'roleRoute'
 export function getList(query) {
   return request({
     url: url + '/list',

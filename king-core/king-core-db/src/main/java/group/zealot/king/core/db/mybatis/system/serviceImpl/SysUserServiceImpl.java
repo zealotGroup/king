@@ -8,6 +8,8 @@ import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.db.mybatis.base.BaseMapper;
 import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
 import group.zealot.king.core.zt.mif.entity.system.SysAuth;
+import group.zealot.king.core.zt.mif.entity.system.SysRoleData;
+import group.zealot.king.core.zt.mif.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.springframework.stereotype.Service;
@@ -112,8 +114,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 
     @Override
     public void formater(SysUser vo) {
-        vo.setRoleData(sysAuthService.getSysRoleData(vo.getId()));
-        vo.setRoleRoute(sysAuthService.getSysRoleRoute(vo.getId()));
+        SysRoleData roleData = sysAuthService.getSysRoleData(vo.getId());
+        if (roleData != null) {
+            vo.setRoleDataId(roleData.getId());
+            vo.setRoleDataName(roleData.getName());
+        }
+        SysRoleRoute roleRoute = sysAuthService.getSysRoleRoute(vo.getId());
+        if (roleRoute != null) {
+            vo.setRoleRouteId(roleRoute.getId());
+            vo.setRoleRouteName(roleRoute.getName());
+        }
         if (vo.getCreateUserId() != null) {
             vo.setCreateUserName(getById(vo.getCreateUserId()).getUsername());
         }

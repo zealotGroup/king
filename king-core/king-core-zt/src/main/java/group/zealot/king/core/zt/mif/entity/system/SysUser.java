@@ -20,6 +20,8 @@ public class SysUser extends BaseEntity {
     /**
      * 非数据库字段
      */
-    private SysRoleRoute roleRoute;
-    private SysRoleData roleData;
+    private Long roleRouteId;
+    private String roleRouteName;
+    private Long roleDataId;
+    private String roleDataName;
 }

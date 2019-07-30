@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/role/dataRole'
+const url = 'roleData'
 export function getList(query) {
   return request({
     url: url + '/list',

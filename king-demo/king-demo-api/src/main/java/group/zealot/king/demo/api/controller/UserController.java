@@ -56,6 +56,7 @@ public class UserController extends BaseController {
                 Funcation.AssertNotNull(id, "id为空");
 
                 SysUser sysUser = sysUserService.getById(id);
+                sysUserService.formater(sysUser);
                 JSONObject data = new JSONObject();
                 data.put("vo", sysUser);
                 resultJson.set(data);

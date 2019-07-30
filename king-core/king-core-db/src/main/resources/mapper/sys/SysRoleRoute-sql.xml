@@ -19,9 +19,6 @@
         <if test="name != null">
             and srr.name = #{name}
         </if>
-        <if test="fId != null">
-            and srr.f_id = #{fId}
-        </if>
     </sql>
 
     <select id="get" parameterType="SysRoleRoute" resultType="SysRoleRoute">
