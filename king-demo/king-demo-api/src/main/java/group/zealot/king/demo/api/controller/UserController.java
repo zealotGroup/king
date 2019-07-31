@@ -15,6 +15,8 @@ import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 import static group.zealot.king.core.zt.mif.Services.sysUserService;
 
 
@@ -65,7 +67,8 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping("add")
-    public JSONObject add(String username, byte[] password, String status, String level, String remark) {
+    public JSONObject add(String username, byte[] password, String status, String level, String remark,
+                          Long roleDataId, Long roleRouteId) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -74,9 +77,11 @@ public class UserController extends BaseController {
                 Funcation.AssertNotNull(status, "status为空");
                 Funcation.AssertNotNull(level, "level为空");
                 Funcation.AssertNotNull(remark, "remark为空");
+                Funcation.AssertNotNull(roleDataId, "roleDataId为空");
+                Funcation.AssertNotNull(roleRouteId, "roleRouteId为空");
 
                 Funcation.AssertIsNull(sysUserService.getByUsername(username), "该用户名已存在");
-                SysUser vo = sysUserService.insert(username, password, status, level, remark, LoginUtil.getSysUserId());
+                SysUser vo = sysUserService.insert(username, password, status, level, remark, roleDataId, roleRouteId, LoginUtil.getSysUserId());
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
                 resultJson.setData(data);
@@ -85,17 +90,16 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, byte[] password, String status, String level, String remark) {
+    public JSONObject update(Long id, byte[] password, String status, String level, String remark,
+                             Long roleDataId, Long roleRouteId) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
                 Funcation.AssertNotNull(id, "id为空");
+                SysUser oldSysUser = sysUserService.getById(id);
+                Funcation.AssertNotNull(oldSysUser, "该ID用户不存在");
 
-                if ((password == null || password.length == 0) && StringUtil.isEmpty(status)
-                        && StringUtil.isEmpty(level) && StringUtil.isEmpty(remark)) {
-                    throw new BaseRuntimeException("没有可更新参数");
-                }
-                sysUserService.update(id, password, status, level, remark, null, LoginUtil.getSysUserId());
+                sysUserService.update(id, password, status, level, remark, null, roleDataId, roleRouteId, LoginUtil.getSysUserId());
             }
         }.result();
     }
@@ -106,7 +110,11 @@ public class UserController extends BaseController {
             @Override
             protected void dosomething() {
                 Funcation.AssertNotNull(id, "id为空");
-                sysUserService.update(id, null, null, null, null, Constants.DELETE_Y, LoginUtil.getSysUserId());
+                SysUser oldSysUser = sysUserService.getById(id);
+                Funcation.AssertNotNull(oldSysUser, "该ID用户不存在");
+
+                sysUserService.update(id, null, null, null, null, Constants.DELETE_Y, null
+                        , null, LoginUtil.getSysUserId());
             }
         }.result();
     }
@@ -117,12 +125,12 @@ public class UserController extends BaseController {
             @Override
             protected void dosomething() {
                 Funcation.AssertNotNull(id, "id为空");
-                SysUser old = sysUserService.getById(id);
-                Funcation.AssertNotNull(old, "此id用户不存在为空");
-                if (NumberUtil.equals(old.getIsDelete(),Constants.DELETE_N)){
+                SysUser oldSysUser = sysUserService.getById(id);
+                Funcation.AssertNotNull(oldSysUser, "此id用户不存在为空");
+                if (NumberUtil.equals(oldSysUser.getIsDelete(), Constants.DELETE_N)) {
                     throw new BaseRuntimeException("此id用户未删除，不能恢复");
                 }
-                sysUserService.update(id, null, null, null, null, Constants.DELETE_N, LoginUtil.getSysUserId());
+                sysUserService.update(id, null, null, null, null, Constants.DELETE_N, null, null, LoginUtil.getSysUserId());
             }
         }.result();
     }
@@ -133,6 +141,8 @@ public class UserController extends BaseController {
             @Override
             protected void dosomething() {
                 Funcation.AssertNotNull(id, "id为空");
+                SysUser oldSysUser = sysUserService.getById(id);
+                Funcation.AssertNotNull(oldSysUser, "此id用户不存在为空");
                 sysUserService.realDel(id);
             }
         }.result();

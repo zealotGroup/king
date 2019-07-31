@@ -9,6 +9,9 @@ import java.util.List;
 
 @MyDubboService
 public interface SysAuthService extends BaseService<SysAuth, Long> {
+    SysAuth getSysAuthRoleData(Long sysUserId);
+
+    SysAuth getSysAuthRoleRoute(Long sysUserId);
 
     /**
      * 根据 用户ID 获取 所有的 数据角色

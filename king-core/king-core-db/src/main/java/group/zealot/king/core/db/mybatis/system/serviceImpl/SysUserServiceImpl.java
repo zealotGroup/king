@@ -43,7 +43,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
     public void updatePassword(String username, byte[] password) {
         String newPassword = getNewPassword(username, password);
         SysUser sysUser = getByUsername(username);
-        Funcation.AssertNotNull(sysUser, "username 对应的数据不存在");
 
         SysUser vo = new SysUser();
         vo.setId(sysUser.getId());
@@ -52,52 +51,80 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
     }
 
     @Override
-    public SysUser insert(String username, byte[] password, String status, String level, String remark, Long userId) {
+    public SysUser insert(String username, byte[] password, String status, String level, String remark,
+                          Long roleDataId, Long roleRouteId, Long userId) {
 
         Long id = sysIdService.getId();
-        SysUser vo = new SysUser();
-        vo.setCreateTime(LocalDateTime.now());
-        vo.setCreateUserId(userId);
-        vo.setUsername(username);
-        vo.setPassword(getNewPassword(username, password));
-        vo.setId(id);
+        SysUser sysUser = new SysUser();
+        sysUser.setCreateTime(LocalDateTime.now());
+        sysUser.setCreateUserId(userId);
+        sysUser.setUsername(username);
+        sysUser.setPassword(getNewPassword(username, password));
+        sysUser.setId(id);
 
-        insert(vo);
-        return vo;
+        insert(sysUser);
+
+        {
+            SysAuth sysAuth = new SysAuth();
+            sysAuth.setId(sysIdService.getId());
+            sysAuth.setSysRoleDataId(roleDataId);
+            sysAuthService.insert(sysAuth);
+        }
+        {
+            SysAuth sysAuth = new SysAuth();
+            sysAuth.setId(sysIdService.getId());
+            sysAuth.setSysRoleRouteId(roleRouteId);
+            sysAuthService.update(sysAuth);
+        }
+        return sysUser;
     }
 
     @Override
-    public SysUser update(Long id, byte[] password, String status, String level, String remark, Integer isDelete, Long userId) {
-        SysUser old = getById(id);
-        Funcation.AssertNotNull(old, "该ID用户不存在");
+    public SysUser update(Long id, byte[] password, String status, String level, String remark, Integer isDelete,
+                          Long roleDataId, Long roleRouteId, Long userId) {
+        SysUser oldSysUser = getById(id);
 
-        SysUser vo = new SysUser();
-        vo.setId(id);
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
+        SysUser sysUser = new SysUser();
+        sysUser.setId(id);
+        sysUser.setLastUpdateTime(LocalDateTime.now());
+        sysUser.setLastUpdateUserId(userId);
         if (password != null && password.length > 0) {
-            vo.setPassword(getNewPassword(old.getUsername(), password));
+            sysUser.setPassword(getNewPassword(oldSysUser.getUsername(), password));
         }
         if (StringUtil.notEmpty(status)) {
-            vo.setStatus(status);
+            sysUser.setStatus(status);
         }
         if (StringUtil.notEmpty(level)) {
-            vo.setLevel(level);
+            sysUser.setLevel(level);
         }
         if (StringUtil.notEmpty(remark)) {
-            vo.setRemark(remark);
+            sysUser.setRemark(remark);
         }
         if (isDelete != null) {
-            vo.setIsDelete(isDelete);
+            sysUser.setIsDelete(isDelete);
         }
-        update(vo);
-        return vo;
+
+        SysAuth oldSysAuthRoleData = sysAuthService.getSysAuthRoleData(id);
+        Funcation.AssertNotNull(oldSysAuthRoleData, "该ID用户 数据角色不存在");
+        if (roleDataId != null) {
+            SysAuth vo = new SysAuth();
+            vo.setId(oldSysAuthRoleData.getId());
+            vo.setSysRoleDataId(roleDataId);
+            sysAuthService.update(vo);
+        }
+        SysAuth oldSysAuthRoleRoute = sysAuthService.getSysAuthRoleRoute(id);
+        if (roleRouteId != null) {
+            SysAuth vo = new SysAuth();
+            vo.setId(oldSysAuthRoleRoute.getId());
+            vo.setSysRoleRouteId(roleRouteId);
+            sysAuthService.update(vo);
+        }
+        update(sysUser);
+        return sysUser;
     }
 
     @Override
     public void realDel(Long id) {
-        SysUser old = getById(id);
-        Funcation.AssertNotNull(old, "该id用户不存在，无法再物理删除");
         //删除用户
         deleteById(id);
         //删除用户关联的角色

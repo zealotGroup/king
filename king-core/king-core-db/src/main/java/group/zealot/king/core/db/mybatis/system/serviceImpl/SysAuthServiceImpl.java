@@ -16,31 +16,49 @@ import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
 public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
-
     @Override
-    public SysRoleData getSysRoleData(Long sysUserId) {
+    public SysAuth getSysAuthRoleData(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
         List<SysAuth> authList = sysAuthDao.getList(vo);
 
         for (SysAuth item : authList) {
             if (item.getSysRoleDataId() != null) {
-                return sysRoleDataDao.getById(item.getSysRoleDataId());
+                return item;
             }
         }
         return null;
     }
 
     @Override
-    public SysRoleRoute getSysRoleRoute(Long sysUserId) {
+    public SysAuth getSysAuthRoleRoute(Long sysUserId) {
         SysAuth vo = new SysAuth();
         vo.setSysUserId(sysUserId);
         List<SysAuth> list = sysAuthDao.getList(vo);
 
         for (SysAuth item : list) {
             if (item.getSysRoleRouteId() != null) {
-                return sysRoleRouteDao.getById(item.getSysRoleRouteId());
+                return item;
             }
+        }
+        return null;
+    }
+
+    @Override
+    public SysRoleData getSysRoleData(Long sysUserId) {
+        SysAuth sysAuth = getSysAuthRoleData(sysUserId);
+        if (sysAuth.getSysRoleDataId() != null) {
+            return sysRoleDataDao.getById(sysAuth.getSysRoleDataId());
+        }
+        return null;
+    }
+
+    @Override
+    public SysRoleRoute getSysRoleRoute(Long sysUserId) {
+
+        SysAuth sysAuth = getSysAuthRoleData(sysUserId);
+        if (sysAuth.getSysRoleRouteId() != null) {
+            return sysRoleRouteDao.getById(sysAuth.getSysRoleRouteId());
         }
         return null;
     }
