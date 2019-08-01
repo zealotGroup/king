@@ -2,6 +2,7 @@ package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.db.mybatis.base.BaseMapper;
 import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
@@ -27,7 +28,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
                 return item;
             }
         }
-        return null;
+        throw new BaseRuntimeException("数据异常，此用户不存在数据角色");
     }
 
     @Override
@@ -41,26 +42,19 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
                 return item;
             }
         }
-        return null;
+        throw new BaseRuntimeException("数据异常，此用户不存在路由角色");
     }
 
     @Override
     public SysRoleData getSysRoleData(Long sysUserId) {
         SysAuth sysAuth = getSysAuthRoleData(sysUserId);
-        if (sysAuth.getSysRoleDataId() != null) {
-            return sysRoleDataDao.getById(sysAuth.getSysRoleDataId());
-        }
-        return null;
+        return sysRoleDataDao.getById(sysAuth.getSysRoleDataId());
     }
 
     @Override
     public SysRoleRoute getSysRoleRoute(Long sysUserId) {
-
-        SysAuth sysAuth = getSysAuthRoleData(sysUserId);
-        if (sysAuth.getSysRoleRouteId() != null) {
-            return sysRoleRouteDao.getById(sysAuth.getSysRoleRouteId());
-        }
-        return null;
+        SysAuth sysAuth = getSysAuthRoleRoute(sysUserId);
+        return sysRoleRouteDao.getById(sysAuth.getSysRoleRouteId());
     }
 
     @Override
