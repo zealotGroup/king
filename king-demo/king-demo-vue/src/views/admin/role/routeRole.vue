@@ -26,16 +26,6 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('phone')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.phone}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('region')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.region}}</span>
-        </template>
-      </el-table-column>
       <el-table-column min-width="100px" align="center" :label="$t('remarks')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.remarks}}</span>
@@ -49,7 +39,7 @@
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.createUser}}</span>
+          <span>{{scope.row.createUserName}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
@@ -59,7 +49,7 @@
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateUser}}</span>
+          <span>{{scope.row.lastUpdateUserName}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -117,21 +107,14 @@
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('phone')" >
-          <el-input v-model="temp.phone"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('region')" >
-          <el-input v-model="temp.region"></el-input>
-        </el-form-item>
         <el-form-item :label="$t('remarks')">
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
           </el-input>
         </el-form-item>
-        <el-form-item label="选择权限" prop="menu">
+        <el-form-item label="选择权限" prop="route">
           <el-tree
             :props="props"
-            :load="loadNode"
-            :data="treeData"
+            :data="temp.route"
             node-key="id"
             :default-checked-keys="[1,11]"
             default-expand-all
@@ -151,8 +134,8 @@
 </template>
 
 <script>
-  import { getList, add, update, del, recover, realDel } from '@/api/supermarket/supplier'
-  import { getList as getRouteList } from '@/api/route/route'
+  import { getList, add, get, update, del, recover, realDel } from '@/api/admin/role/routeRole'
+  import { getTree } from '@/api/admin/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
@@ -164,18 +147,7 @@
           label: 'name',
           children: 'children'
         },
-        count: 1,
-        treeData: [
-          { id: 1, name: '首页', disabled: true },
-          { name: '超市',
-            children: [
-              { name: '供应商' },
-              { name: '客户' },
-              { name: '产品' },
-              { name: '报表' }
-            ]
-          }
-        ],
+        treeData: undefined,
         /* 固定功能字段 start */
         loading_add: false,
         loading_addData: false,
@@ -209,24 +181,27 @@
       this.getList()
     },
     methods: {
-
-      getRouteList() {
-        getRouteList({ page: -1 }).then(data => {
-          this.treeData = data.list
+      getTreeData() {
+        getTree().then(data => {
+          const tree = data.routers
+          console.error(tree.length)
+          tree.forEach(function(item) {
+            console.error(item.name)
+            // this.formaterTree(item)
+          })
+          this.treeData = tree
         }).catch(() => {
           this.listLoading = false
         })
       },
+      handleCheckChange() { },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
           id: '',
           name: '',
-          phone: '',
-          region: '',
           remarks: ''
         }
-        this.getRouteList()
       },
       cleanDialog() {
         this.resetTemp()
@@ -274,6 +249,7 @@
       },
       handleAdd() {
         this.notifyClicking(this.loading_add, () => {
+          this.getTreeData()
           this.loading_add = true
           this.resetTemp()
           this.dialogType = 'add'
@@ -317,13 +293,24 @@
       handleUpdate(row) {
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
-          this.temp = Object.assign({}, row) // copy obj
-          this.dialogType = 'update'
-          this.dialogFormVisible = true
-          this.dialogTitle = 'update'
-          this.rules.id[0].required = true
-          this.$nextTick(() => {
-            this.$refs['dataForm'].clearValidate()
+          get(row.id).then((data) => {
+            this.temp = Object.assign({}, data.vo)
+            this.dialogType = 'update'
+            this.dialogFormVisible = true
+            this.dialogTitle = 'update'
+            this.rules.id[0].required = true
+            this.$nextTick(() => {
+              this.$refs['dataForm'].clearValidate()
+            })
+            row.loading_handleUpdate = false
+          }).catch(() => {
+            this.$notify({
+              title: '失败',
+              message: '获取信息失败',
+              type: 'error',
+              duration: 2000
+            })
+            row.loading_handleUpdate = false
           })
           row.loading_handleUpdate = false
         })

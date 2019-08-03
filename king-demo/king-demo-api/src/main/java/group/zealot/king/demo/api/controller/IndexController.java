@@ -64,7 +64,7 @@ public class IndexController  extends BaseController {
             protected void dosomething() {
                 JSONObject data = new JSONObject();
                 data.put("level", LoginUtil.getSysUser().getLevel());
-                data.put("routers", sysAuthService.getRoute(LoginUtil.getSysUserId()));
+                data.put("routes", sysAuthService.getRoute(LoginUtil.getSysUserId()));
                 resultJson.set(data);
             }
         }.result();

@@ -18,11 +18,11 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (store.getters.routers.length !== 0) { // 判断当前用户有无路由信息
+      if (store.getters.routes.length !== 0) { // 判断当前用户有无路由信息
         next()//
       } else {
         store.dispatch('GetUserInfo').then(() => { // 拉取user_info（包括路由信息）到缓存
-          router.addRoutes(store.getters.routers) // 添加路由信息
+          router.addRoutes(store.getters.routes) // 添加路由信息
           router.addRoutes([{ path: '*', redirect: '/404', hidden: true }])
           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
         }).catch((err) => {

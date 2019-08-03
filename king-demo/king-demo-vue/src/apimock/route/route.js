@@ -1,6 +1,6 @@
 import { param2Obj } from '@/utils'
 
-const routers = [
+const routes = [
   {
     id: 1, disabled: true, name: 'index',
     children: [
@@ -82,7 +82,7 @@ export default {
   getList: config => {
     const { page, limit } = param2Obj(config.url)
 
-    const mockList = routers
+    const mockList = routes
 
     const pageList = mockList.filter((item, index) => page == -1 || (index < limit * page && index >= limit * (page - 1)))
 
@@ -96,7 +96,7 @@ export default {
   },
   get: (config) => {
     const { id } = param2Obj(config.url)
-    for (const vo of routers) {
+    for (const vo of routes) {
       if (vo.id === +id) {
         return {
           code: 200,

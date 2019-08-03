@@ -171,7 +171,7 @@ export default {
   },
   created() {
     this.resetTemp()
-    this.getList()
+    // this.getList()
   },
   methods: {
     /* 固定功能方法 start */

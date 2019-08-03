@@ -1,4 +1,4 @@
-const routers = [
+const routes = [
   {
     name: 'index',
     children: [
@@ -90,7 +90,7 @@ const userInfoResult = {
   data: {
     // avatar: '/static/9fa5ee6873171273e12d79d0dda20d5e05f9bb60.gif',
     level: 'super',
-    routers: routers
+    routes: routes
   }
 }
 

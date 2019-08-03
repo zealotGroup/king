@@ -1,6 +1,14 @@
 import request from '@/utils/request'
 
 const url = '/route'
+
+export function getTree() {
+  return request({
+    url: url + '/tree',
+    method: 'get'
+  })
+}
+
 export function getList(query) {
   return request({
     url: url + '/list',

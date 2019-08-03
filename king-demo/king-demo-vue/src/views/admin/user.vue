@@ -84,7 +84,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('table.remark')">
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('remark')">
         <template slot-scope="scope">
           <span>{{scope.row.remark}}</span>
         </template>

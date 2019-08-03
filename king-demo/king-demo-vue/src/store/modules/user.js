@@ -2,9 +2,8 @@ import { login, logout, loginInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { routerMap } from '@/router'
 
-function dealRouters(routers) {
-  const menu = dealRouter(routers, routerMap)
-  console.debug(menu)
+function dealRoutes(routes) {
+  const menu = dealRouter(routes, routerMap)
   return menu
 }
 
@@ -27,7 +26,7 @@ function dealRouter(vchildren, vochildren) {
 const user = {
   state: {
     token: getToken(),
-    routers: [],
+    routes: [],
     level: ''
   },
 
@@ -38,8 +37,8 @@ const user = {
     SET_LEVEL: (state, level) => {
       state.level = level
     },
-    SET_ROUTERS: (state, routers) => {
-      state.routers = routers
+    SET_ROUTES: (state, routes) => {
+      state.routes = routes
     }
   },
 
@@ -51,7 +50,6 @@ const user = {
         login(username, userInfo.password).then(data => {
           commit('SET_TOKEN', data.token) // 缓存本地，非cookies
           setToken(data) // 储存到cookies
-          console.debug('储存 token 到 cookies完成:' + data.token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -62,10 +60,9 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        loginInfo().then(data => {
+        loginInfo(state.token).then(data => {
           commit('SET_LEVEL', data.level)
-          commit('SET_ROUTERS', dealRouters(data.routers))
-          console.debug('set info完成')
+          commit('SET_ROUTES', dealRoutes(data.routes))
           resolve()
         }).catch(error => {
           reject(error)
@@ -78,10 +75,9 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROUTERS', [])
+          commit('SET_ROUTES', [])
           commit('SET_LEVEL', '')
           removeToken()
-          console.debug('移除 token完成')
           resolve()
         }).catch(error => {
           reject(error)
@@ -93,10 +89,9 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        commit('SET_ROUTERS', [])
+        commit('SET_ROUTES', [])
         commit('SET_LEVEL', '')
         removeToken()
-        console.debug('移除 token完成')
         resolve()
       })
     },

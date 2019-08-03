@@ -12,7 +12,7 @@ export function login(username, password) {
   })
 }
 
-export function logout() {
+export function logout(token) {
   return request({
     url: url + '/logout',
     method: 'post'
