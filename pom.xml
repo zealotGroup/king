@@ -135,6 +135,7 @@
                         <target>${java.version}</target>
                         <testSource>${java.version}</testSource>
                         <testTarget>${java.version}</testTarget>
+                        <encoding>${project.reporting.outputEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
