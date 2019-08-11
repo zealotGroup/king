@@ -19,7 +19,7 @@
         <mybatis-jsr310.version>1.0.2</mybatis-jsr310.version>
         <dubbo.version>2.7.1</dubbo.version>
 
-        <os-maven-plugin.version>1.6.2</os-maven-plugin.version>
+        <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
         <io.netty.version>4.1.38.Final</io.netty.version>
 
     </properties>
@@ -127,7 +127,7 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport-native-epoll</artifactId>
                 <version>${io.netty.version}</version>
-                <classifier>${os.name}-${os.arch}</classifier>
+                <classifier>${os.detected.name}-${os.detected.arch}</classifier>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
