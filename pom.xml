@@ -18,6 +18,9 @@
         <mybatis-plus.version>3.0.1</mybatis-plus.version>
         <mybatis-jsr310.version>1.0.2</mybatis-jsr310.version>
         <dubbo.version>2.7.1</dubbo.version>
+
+        <os-maven-plugin.version>1.6.2</os-maven-plugin.version>
+        <io.netty.version>4.1.38.Final</io.netty.version>
     </properties>
 
     <groupId>group.zealot</groupId>
@@ -118,9 +121,23 @@
                 <version>${dubbo.version}</version>
                 <type>pom</type>
             </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-epoll</artifactId>
+                <version>${io.netty.version}</version>
+                <classifier>${os.name}-${os.arch}</classifier>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${os-maven-plugin.version}</version>
+            </extension>
+        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>
