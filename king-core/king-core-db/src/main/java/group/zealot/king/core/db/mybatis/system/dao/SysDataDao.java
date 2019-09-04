@@ -1,10 +1,9 @@
 package group.zealot.king.core.db.mybatis.system.dao;
 
 
-import group.zealot.king.core.db.mybatis.base.BaseMapper;
+import group.zealot.king.core.db.mybatis.base.BaseDao;
 import group.zealot.king.core.zt.mif.entity.system.SysData;
-import group.zealot.king.core.zt.mif.entity.system.SysUser;
 
-public interface SysDataDao extends BaseMapper<SysData, Long> {
+public interface SysDataDao extends BaseDao<SysData, Long> {
 
 }

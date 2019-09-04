@@ -22,6 +22,7 @@
         <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
         <io.netty.version>4.1.38.Final</io.netty.version>
 
+        <mail.version>1.4.7</mail.version>
     </properties>
 
     <groupId>group.zealot</groupId>
@@ -121,6 +122,12 @@
                 <artifactId>dubbo-dependencies-zookeeper</artifactId>
                 <version>${dubbo.version}</version>
                 <type>pom</type>
+            </dependency>
+            <!--邮件-->
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
             </dependency>
 
             <dependency>

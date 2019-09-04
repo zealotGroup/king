@@ -19,5 +19,4 @@ public interface SysUserService extends BaseService<SysUser, Long> {
     SysUser update(Long id, byte[] password, String status, String level, String remark, Integer isDelete,
                    Long roleDataId, Long roleRouteId, Long userId);
 
-    void realDel(Long id);
 }

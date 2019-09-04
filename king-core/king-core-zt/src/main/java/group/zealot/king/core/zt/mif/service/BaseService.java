@@ -11,13 +11,11 @@ public interface BaseService<E, P extends Serializable> {
 
     E get(E entity);
 
-    int deleteById(P primaryKey);
+    void del(P primaryKey, Long userId);
 
-    int delete(E entity);
+    void recover(P primaryKey, Long userId);
 
-    int insert(E entity);
-
-    int update(E entity);
+    void realDel(P primaryKey);
 
     List<E> getList();
 

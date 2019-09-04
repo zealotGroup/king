@@ -1,16 +1,12 @@
 package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
-import group.zealot.king.base.Constants;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
-import group.zealot.king.core.db.mybatis.base.BaseMapper;
-import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
-import group.zealot.king.core.zt.mif.entity.system.SysAuth;
-import group.zealot.king.core.zt.mif.entity.system.SysRoleData;
-import group.zealot.king.core.zt.mif.entity.system.SysRoleRoute;
-import group.zealot.king.core.zt.mif.entity.system.SysUser;
+import group.zealot.king.core.db.mybatis.base.BaseDao;
+import group.zealot.king.core.db.mybatis.base.BaseServiceAbs;
+import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +17,7 @@ import static group.zealot.king.core.zt.mif.Services.sysAuthService;
 import static group.zealot.king.core.zt.mif.Services.sysIdService;
 
 @Service
-public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implements SysUserService {
+public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements SysUserService {
 
     @Override
     public SysUser getByUsernameAndPassword(String username, byte[] password) {
@@ -62,19 +58,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
         sysUser.setPassword(getNewPassword(username, password));
         sysUser.setId(id);
 
-        insert(sysUser);
+        sysUserDao.insert(sysUser);
 
         {
             SysAuth sysAuth = new SysAuth();
             sysAuth.setId(sysIdService.getId());
             sysAuth.setSysRoleDataId(roleDataId);
-            sysAuthService.insert(sysAuth);
+            sysAuthDao.insert(sysAuth);
         }
         {
             SysAuth sysAuth = new SysAuth();
             sysAuth.setId(sysIdService.getId());
             sysAuth.setSysRoleRouteId(roleRouteId);
-            sysAuthService.update(sysAuth);
+            sysAuthDao.update(sysAuth);
         }
         return sysUser;
     }
@@ -110,27 +106,27 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
             SysAuth vo = new SysAuth();
             vo.setId(oldSysAuthRoleData.getId());
             vo.setSysRoleDataId(roleDataId);
-            sysAuthService.update(vo);
+            sysAuthDao.update(vo);
         }
         SysAuth oldSysAuthRoleRoute = sysAuthService.getSysAuthRoleRoute(id);
         if (roleRouteId != null) {
             SysAuth vo = new SysAuth();
             vo.setId(oldSysAuthRoleRoute.getId());
             vo.setSysRoleRouteId(roleRouteId);
-            sysAuthService.update(vo);
+            sysAuthDao.update(vo);
         }
-        update(sysUser);
+        sysUserDao.update(sysUser);
         return sysUser;
     }
 
     @Override
     public void realDel(Long id) {
         //删除用户
-        deleteById(id);
+        sysUserDao.deleteById(id);
         //删除用户关联的角色
         SysAuth sysAuth = new SysAuth();
         sysAuth.setSysUserId(id);
-        sysAuthService.delete(sysAuth);
+        sysAuthDao.delete(sysAuth);
     }
 
     public String getNewPassword(String username, byte[] password) {
@@ -161,7 +157,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 
 
     @Override
-    protected BaseMapper<SysUser, Long> getBaseMapper() {
+    protected BaseDao<SysUser, Long> getBaseDao() {
         return sysUserDao;
+    }
+
+    @Override
+    protected SysUser getE(Long primaryKey, Long userId) {
+        SysUser vo = new SysUser();
+        vo.setLastUpdateTime(LocalDateTime.now());
+        vo.setLastUpdateUserId(userId);
+        vo.setId(primaryKey);
+        return vo;
     }
 }

@@ -4,19 +4,20 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.db.mybatis.base.BaseMapper;
-import group.zealot.king.core.db.mybatis.base.BaseServiceImpl;
+import group.zealot.king.core.db.mybatis.base.BaseDao;
+import group.zealot.king.core.db.mybatis.base.BaseServiceAbs;
 import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysAuthService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
-public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
+public class SysAuthServiceImpl extends BaseServiceAbs<SysAuth, Long> implements SysAuthService {
     @Override
     public SysAuth getSysAuthRoleData(Long sysUserId) {
         SysAuth vo = new SysAuth();
@@ -132,7 +133,16 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
     }
 
     @Override
-    public BaseMapper<SysAuth, Long> getBaseMapper() {
+    public BaseDao<SysAuth, Long> getBaseDao() {
         return sysAuthDao;
+    }
+
+    @Override
+    protected SysAuth getE(Long primaryKey, Long userId) {
+        SysAuth vo = new SysAuth();
+        vo.setLastUpdateTime(LocalDateTime.now());
+        vo.setLastUpdateUserId(userId);
+        vo.setId(primaryKey);
+        return vo;
     }
 }
