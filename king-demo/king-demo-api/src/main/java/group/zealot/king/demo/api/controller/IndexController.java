@@ -3,19 +3,16 @@ package group.zealot.king.demo.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
-import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import static group.zealot.king.core.zt.mif.Services.sysAuthService;
-
 
 @RestController
 @RequestMapping("/")
-public class IndexController  extends BaseController {
+public class IndexController {
 
     @RequestMapping
     public JSONObject index() {

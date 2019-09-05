@@ -2,6 +2,7 @@ package group.zealot.king.core.db.mybatis.base;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.zt.mif.entity.BaseEntity;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import java.util.List;
  * @param <E> 表对应实体
  * @param <P> 表主键
  */
-public class BaseDaoImpl<E, P extends Serializable> extends ZtSqlSessionDao implements BaseDao<E, P> {
+public class BaseDaoImpl<E extends BaseEntity, P extends Serializable> extends ZtSqlSessionDao implements BaseDao<E, P> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired

@@ -21,10 +21,8 @@ public class SysRoleDataServiceImpl extends BaseServiceAbs<SysRoleData, Long> im
     }
 
     @Override
-    protected SysRoleData getE(Long primaryKey, Long userId) {
+    protected SysRoleData getE(Long primaryKey ) {
         SysRoleData vo = new SysRoleData();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

@@ -2,14 +2,19 @@ package group.zealot.king.core.zt.mif.service;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.zt.mif.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseService<E, P extends Serializable> {
+public interface BaseService<E extends BaseEntity, P extends Serializable> {
     E getById(P primaryKey);
 
     E get(E entity);
+
+    E add(E e);
+
+    E update(E e);
 
     void del(P primaryKey, Long userId);
 

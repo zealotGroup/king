@@ -6,8 +6,6 @@ import group.zealot.king.core.zt.mif.entity.system.SysRoute;
 import group.zealot.king.core.zt.mif.service.system.SysRouteService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static group.zealot.king.core.db.mybatis.Daos.sysRouteDao;
 
 
@@ -27,10 +25,8 @@ public class SysRouteServiceImpl extends BaseServiceAbs<SysRoute, Long> implemen
     }
 
     @Override
-    protected SysRoute getE(Long primaryKey, Long userId) {
+    protected SysRoute getE(Long primaryKey ) {
         SysRoute vo = new SysRoute();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

@@ -2,7 +2,6 @@ package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
-import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.RequestIdUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/requestId")
-public class RequestIdController  extends BaseController {
+public class RequestIdController {
 
 
     @RequestMapping("/get")

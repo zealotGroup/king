@@ -10,7 +10,6 @@ import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysAuthService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,10 +137,8 @@ public class SysAuthServiceImpl extends BaseServiceAbs<SysAuth, Long> implements
     }
 
     @Override
-    protected SysAuth getE(Long primaryKey, Long userId) {
+    protected SysAuth getE(Long primaryKey) {
         SysAuth vo = new SysAuth();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

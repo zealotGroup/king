@@ -21,10 +21,8 @@ public class SysDataServiceImpl extends BaseServiceAbs<SysData, Long> implements
     }
 
     @Override
-    protected SysData getE(Long primaryKey, Long userId) {
+    protected SysData getE(Long primaryKey ) {
         SysData vo = new SysData();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

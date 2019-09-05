@@ -21,10 +21,8 @@ public class SysRoleRouteServiceImpl extends BaseServiceAbs<SysRoleRoute, Long> 
     }
 
     @Override
-    protected SysRoleRoute getE(Long primaryKey, Long userId) {
+    protected SysRoleRoute getE(Long primaryKey ) {
         SysRoleRoute vo = new SysRoleRoute();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

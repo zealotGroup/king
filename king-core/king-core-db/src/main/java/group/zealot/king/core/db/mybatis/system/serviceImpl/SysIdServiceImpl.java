@@ -30,10 +30,8 @@ public class SysIdServiceImpl extends BaseServiceAbs<SysId, Long> implements Sys
     }
 
     @Override
-    protected SysId getE(Long primaryKey, Long userId) {
+    protected SysId getE(Long primaryKey ) {
         SysId vo = new SysId();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }

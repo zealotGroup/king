@@ -2,11 +2,12 @@ package group.zealot.king.core.db.mybatis.base;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.zt.mif.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseDao<E, P extends Serializable> {
+public interface BaseDao<E extends BaseEntity, P extends Serializable> {
     E getById(P primaryKey);
 
     E get(E e);

@@ -3,6 +3,7 @@ package group.zealot.king.core.db.mybatis.system.serviceImpl;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
+import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.db.mybatis.base.BaseDao;
 import group.zealot.king.core.db.mybatis.base.BaseServiceAbs;
@@ -47,76 +48,62 @@ public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements
     }
 
     @Override
-    public SysUser insert(String username, byte[] password, String status, String level, String remark,
-                          Long roleDataId, Long roleRouteId, Long userId) {
-
+    public SysUser add(SysUser sysUser) {
         Long id = sysIdService.getId();
-        SysUser sysUser = new SysUser();
-        sysUser.setCreateTime(LocalDateTime.now());
-        sysUser.setCreateUserId(userId);
-        sysUser.setUsername(username);
-        sysUser.setPassword(getNewPassword(username, password));
+        sysUser.setPassword(getNewPassword(sysUser.getUsername(), sysUser.getPassword().getBytes()));
         sysUser.setId(id);
-
         sysUserDao.insert(sysUser);
 
         {
             SysAuth sysAuth = new SysAuth();
             sysAuth.setId(sysIdService.getId());
-            sysAuth.setSysRoleDataId(roleDataId);
+            sysAuth.setSysRoleDataId(sysUser.getRoleDataId());
             sysAuthDao.insert(sysAuth);
         }
         {
             SysAuth sysAuth = new SysAuth();
             sysAuth.setId(sysIdService.getId());
-            sysAuth.setSysRoleRouteId(roleRouteId);
+            sysAuth.setSysRoleRouteId(sysUser.getRoleRouteId());
             sysAuthDao.update(sysAuth);
         }
         return sysUser;
     }
 
     @Override
-    public SysUser update(Long id, byte[] password, String status, String level, String remark, Integer isDelete,
-                          Long roleDataId, Long roleRouteId, Long userId) {
-        SysUser oldSysUser = getById(id);
+    public SysUser update(SysUser sysUser) {
+        SysUser oldSysUser = getById(sysUser.getId());
 
-        SysUser sysUser = new SysUser();
-        sysUser.setId(id);
-        sysUser.setLastUpdateTime(LocalDateTime.now());
-        sysUser.setLastUpdateUserId(userId);
-        if (password != null && password.length > 0) {
-            sysUser.setPassword(getNewPassword(oldSysUser.getUsername(), password));
-        }
-        if (StringUtil.notEmpty(status)) {
-            sysUser.setStatus(status);
-        }
-        if (StringUtil.notEmpty(level)) {
-            sysUser.setLevel(level);
-        }
-        if (StringUtil.notEmpty(remark)) {
-            sysUser.setRemark(remark);
-        }
-        if (isDelete != null) {
-            sysUser.setIsDelete(isDelete);
+        SysUser vo = new SysUser();
+        vo.setId(sysUser.getId());
+        vo.setPassword(StringUtil.isNotEmpty(sysUser.getPassword()) ?
+                getNewPassword(oldSysUser.getUsername(), sysUser.getPassword().getBytes())
+                : null);
+        vo.setStatus(StringUtil.notEmpty(sysUser.getStatus()) ? sysUser.getStatus() : null);
+        vo.setLevel(StringUtil.notEmpty(sysUser.getLevel()) ? sysUser.getLevel() : null);
+        vo.setRemark(StringUtil.notEmpty(sysUser.getRemark()) ? sysUser.getRemark() : null);
+
+        if (sysUser.getRoleDataId() != null) {
+            SysAuth oldSysAuthRoleData = sysAuthService.getSysAuthRoleData(sysUser.getRoleDataId());
+            if (!NumberUtil.equals(oldSysAuthRoleData.getSysRoleDataId(), sysUser.getRoleDataId())) {
+                SysAuth sysAuth = new SysAuth();
+                sysAuth.setId(oldSysAuthRoleData.getId());
+                sysAuth.setSysRoleDataId(sysUser.getRoleDataId());
+                sysAuthDao.update(sysAuth);
+            }
         }
 
-        SysAuth oldSysAuthRoleData = sysAuthService.getSysAuthRoleData(id);
-        Funcation.AssertNotNull(oldSysAuthRoleData, "该ID用户 数据角色不存在");
-        if (roleDataId != null) {
-            SysAuth vo = new SysAuth();
-            vo.setId(oldSysAuthRoleData.getId());
-            vo.setSysRoleDataId(roleDataId);
-            sysAuthDao.update(vo);
+        if (sysUser.getRoleRouteId() != null) {
+            SysAuth oldSysAuthRoleRoute = sysAuthService.getSysAuthRoleRoute(sysUser.getRoleRouteId());
+            if (!NumberUtil.equals(oldSysAuthRoleRoute.getSysRoleRouteId(), sysUser.getRoleRouteId())) {
+                SysAuth sysAuth = new SysAuth();
+                sysAuth.setId(oldSysAuthRoleRoute.getId());
+                sysAuth.setSysRoleRouteId(sysUser.getRoleRouteId());
+                sysAuthDao.update(sysAuth);
+            }
+
         }
-        SysAuth oldSysAuthRoleRoute = sysAuthService.getSysAuthRoleRoute(id);
-        if (roleRouteId != null) {
-            SysAuth vo = new SysAuth();
-            vo.setId(oldSysAuthRoleRoute.getId());
-            vo.setSysRoleRouteId(roleRouteId);
-            sysAuthDao.update(vo);
-        }
-        sysUserDao.update(sysUser);
-        return sysUser;
+        sysUserDao.update(vo);
+        return vo;
     }
 
     @Override
@@ -129,6 +116,7 @@ public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements
         sysAuthDao.delete(sysAuth);
     }
 
+    @Override
     public String getNewPassword(String username, byte[] password) {
         //加密密码
         byte[] hashPassword = DigestUtils.sha1(password, username.getBytes(), 1024);
@@ -162,10 +150,8 @@ public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements
     }
 
     @Override
-    protected SysUser getE(Long primaryKey, Long userId) {
+    protected SysUser getE(Long primaryKey) {
         SysUser vo = new SysUser();
-        vo.setLastUpdateTime(LocalDateTime.now());
-        vo.setLastUpdateUserId(userId);
         vo.setId(primaryKey);
         return vo;
     }
