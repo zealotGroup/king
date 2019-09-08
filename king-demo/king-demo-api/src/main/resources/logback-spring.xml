@@ -7,7 +7,6 @@
     <property name="log_fileNamePattern" value="log.%d{yyyy-MM-dd}.%i.log"/>
 
     <property name="log_prod_level" value="WARN"/>
-    <property name="log_test_level" value="DEBUG"/>
     <property name="log_dev_level" value="DEBUG"/>
     <!-- 生产环境 -->
     <springProfile name="prod">
@@ -27,28 +26,6 @@
             </encoder>
         </appender>
         <root level="${log_prod_level}">
-            <appender-ref ref="FileAppender"/>
-        </root>
-    </springProfile>
-
-    <!-- 测试环境 -->
-    <springProfile name="test">
-        <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${log_path}/today.log</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${log_path}/${log_fileNamePattern}</fileNamePattern>
-                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                    <maxFileSize>1MB</maxFileSize>
-                </timeBasedFileNamingAndTriggeringPolicy>
-                <maxHistory>30</maxHistory>
-            </rollingPolicy>
-            <append>true</append>
-            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                <pattern>${log_file_pattern}</pattern>
-                <charset>GBK</charset>
-            </encoder>
-        </appender>
-        <root level="${log_test_level}">
             <appender-ref ref="FileAppender"/>
         </root>
     </springProfile>
