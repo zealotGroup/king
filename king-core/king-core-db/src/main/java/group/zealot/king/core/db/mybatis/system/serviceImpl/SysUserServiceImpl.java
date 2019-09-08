@@ -1,6 +1,5 @@
 package group.zealot.king.core.db.mybatis.system.serviceImpl;
 
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.NumberUtil;
@@ -11,14 +10,12 @@ import group.zealot.king.core.zt.mif.entity.system.*;
 import group.zealot.king.core.zt.mif.service.system.SysUserService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static group.zealot.king.core.db.mybatis.Daos.*;
 import static group.zealot.king.core.zt.mif.Services.sysAuthService;
 import static group.zealot.king.core.zt.mif.Services.sysIdService;
 
 @Service
-public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements SysUserService {
+public class SysUserServiceImpl extends BaseServiceAbs<SysUser> implements SysUserService {
 
     @Override
     public SysUser getByUsernameAndPassword(String username, byte[] password) {
@@ -48,12 +45,13 @@ public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements
     }
 
     @Override
-    public SysUser add(SysUser sysUser) {
-        Long id = sysIdService.getId();
+    public SysUser beforAdd(SysUser sysUser, Long userId) {
         sysUser.setPassword(getNewPassword(sysUser.getUsername(), sysUser.getPassword().getBytes()));
-        sysUser.setId(id);
-        sysUserDao.insert(sysUser);
+        return sysUser;
+    }
 
+    @Override
+    public SysUser afterAdd(SysUser sysUser, Long userId) {
         {
             SysAuth sysAuth = new SysAuth();
             sysAuth.setId(sysIdService.getId());
@@ -70,46 +68,39 @@ public class SysUserServiceImpl extends BaseServiceAbs<SysUser, Long> implements
     }
 
     @Override
-    public SysUser update(SysUser sysUser) {
-        SysUser oldSysUser = getById(sysUser.getId());
+    public SysUser beforUpdate(SysUser sysUser, Long userId) {
+        if (StringUtil.isNotEmpty(sysUser.getPassword())) {
+            sysUser.setPassword(getNewPassword(sysUser.getUsername(), sysUser.getPassword().getBytes()));
+        }
+        return sysUser;
+    }
 
-        SysUser vo = new SysUser();
-        vo.setId(sysUser.getId());
-        vo.setPassword(StringUtil.isNotEmpty(sysUser.getPassword()) ?
-                getNewPassword(oldSysUser.getUsername(), sysUser.getPassword().getBytes())
-                : null);
-        vo.setStatus(StringUtil.notEmpty(sysUser.getStatus()) ? sysUser.getStatus() : null);
-        vo.setLevel(StringUtil.notEmpty(sysUser.getLevel()) ? sysUser.getLevel() : null);
-        vo.setRemark(StringUtil.notEmpty(sysUser.getRemark()) ? sysUser.getRemark() : null);
-
+    @Override
+    public SysUser afterUpdate(SysUser sysUser, Long userId) {
         if (sysUser.getRoleDataId() != null) {
             SysAuth oldSysAuthRoleData = sysAuthService.getSysAuthRoleData(sysUser.getRoleDataId());
             if (!NumberUtil.equals(oldSysAuthRoleData.getSysRoleDataId(), sysUser.getRoleDataId())) {
                 SysAuth sysAuth = new SysAuth();
                 sysAuth.setId(oldSysAuthRoleData.getId());
                 sysAuth.setSysRoleDataId(sysUser.getRoleDataId());
-                sysAuthDao.update(sysAuth);
+                sysAuthService.update(sysAuth, userId);
             }
         }
-
         if (sysUser.getRoleRouteId() != null) {
             SysAuth oldSysAuthRoleRoute = sysAuthService.getSysAuthRoleRoute(sysUser.getRoleRouteId());
             if (!NumberUtil.equals(oldSysAuthRoleRoute.getSysRoleRouteId(), sysUser.getRoleRouteId())) {
                 SysAuth sysAuth = new SysAuth();
                 sysAuth.setId(oldSysAuthRoleRoute.getId());
                 sysAuth.setSysRoleRouteId(sysUser.getRoleRouteId());
-                sysAuthDao.update(sysAuth);
+                sysAuthService.update(sysAuth, userId);
             }
 
         }
-        sysUserDao.update(vo);
-        return vo;
+        return sysUser;
     }
 
     @Override
-    public void realDel(Long id) {
-        //删除用户
-        sysUserDao.deleteById(id);
+    public void afterRealDel(Long id) {
         //删除用户关联的角色
         SysAuth sysAuth = new SysAuth();
         sysAuth.setSysUserId(id);

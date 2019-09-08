@@ -16,7 +16,7 @@ import java.util.List;
 import static group.zealot.king.core.db.mybatis.Daos.*;
 
 @Service
-public class SysAuthServiceImpl extends BaseServiceAbs<SysAuth, Long> implements SysAuthService {
+public class SysAuthServiceImpl extends BaseServiceAbs<SysAuth> implements SysAuthService {
     @Override
     public SysAuth getSysAuthRoleData(Long sysUserId) {
         SysAuth vo = new SysAuth();

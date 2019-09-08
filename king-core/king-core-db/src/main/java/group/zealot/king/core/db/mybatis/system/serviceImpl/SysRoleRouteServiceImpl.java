@@ -13,7 +13,7 @@ import static group.zealot.king.core.db.mybatis.Daos.sysRoleRouteDao;
 
 
 @Service
-public class SysRoleRouteServiceImpl extends BaseServiceAbs<SysRoleRoute, Long> implements SysRoleRouteService {
+public class SysRoleRouteServiceImpl extends BaseServiceAbs<SysRoleRoute> implements SysRoleRouteService {
 
     @Override
     protected BaseDao<SysRoleRoute, Long> getBaseDao() {

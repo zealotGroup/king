@@ -14,7 +14,7 @@ import static group.zealot.king.core.db.mybatis.Daos.*;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 @Service
-public class SysIdServiceImpl extends BaseServiceAbs<SysId, Long> implements SysIdService {
+public class SysIdServiceImpl extends BaseServiceAbs<SysId> implements SysIdService {
 
     @Transactional(propagation = NOT_SUPPORTED)
     public Long getId() {

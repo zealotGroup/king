@@ -5,21 +5,18 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.core.zt.mif.entity.system.SysUser;
 import group.zealot.king.core.zt.mif.service.BaseService;
 import group.zealot.king.demo.api.config.BaseController;
-import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 import static group.zealot.king.core.zt.mif.Services.sysUserService;
 
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController<SysUser, Long> {
+public class UserController extends BaseController<SysUser> {
 
     @Override
-    protected BaseService<SysUser, Long> getBaseService() {
+    protected BaseService<SysUser> getBaseService() {
         return sysUserService;
     }
 
@@ -47,9 +44,7 @@ public class UserController extends BaseController<SysUser, Long> {
                 vo.setRoleDataId(roleDataId);
                 vo.setRoleRouteId(roleRouteId);
 
-                vo.setCreateTime(LocalDateTime.now());
-                vo.setCreateUserId(LoginUtil.getSysUserId());
-                sysUserService.add(vo);
+                sysUserService.add(vo, getLoginUserId());
             }
         }.result();
     }
@@ -73,9 +68,7 @@ public class UserController extends BaseController<SysUser, Long> {
                 vo.setRoleDataId(roleDataId);
                 vo.setRoleRouteId(roleRouteId);
 
-                vo.setLastUpdateTime(LocalDateTime.now());
-                vo.setLastUpdateUserId(LoginUtil.getSysUserId());
-                sysUserService.update(vo);
+                sysUserService.update(vo, getLoginUserId());
             }
         }.result();
     }

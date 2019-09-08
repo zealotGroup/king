@@ -5,6 +5,6 @@ import group.zealot.king.core.zt.mif.entity.system.SysId;
 import group.zealot.king.core.zt.mif.service.BaseService;
 
 @MyDubboService
-public interface SysIdService extends BaseService<SysId, Long> {
+public interface SysIdService extends BaseService<SysId> {
     Long getId();
 }

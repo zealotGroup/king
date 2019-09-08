@@ -8,18 +8,19 @@ import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.zt.mif.entity.BaseEntity;
-import group.zealot.king.core.zt.mif.entity.system.SysRoute;
 import group.zealot.king.core.zt.mif.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.Serializable;
-
-public abstract class BaseController<E extends BaseEntity, P extends Serializable> {
+public abstract class BaseController<E extends BaseEntity> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    abstract protected BaseService<E,P> getBaseService();
+    abstract protected BaseService<E> getBaseService();
+
+    protected Long getLoginUserId(){
+        return LoginUtil.getSysUserId();
+    }
 
     @RequestMapping("list")
     protected JSONObject list(Integer page, Integer limit, E e) {
@@ -46,7 +47,7 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("get")
-    protected JSONObject get(P id) {
+    protected JSONObject get(Long id) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -62,7 +63,7 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("del")
-    protected JSONObject del(P id) {
+    protected JSONObject del(Long id) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -76,7 +77,7 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("recover")
-    protected JSONObject recover(P id) {
+    protected JSONObject recover(Long id) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -92,7 +93,7 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("realDel")
-    protected JSONObject realDel(P id) {
+    protected JSONObject realDel(Long id) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {

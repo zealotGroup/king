@@ -11,10 +11,10 @@ import static group.zealot.king.core.zt.mif.Services.*;
 
 @RestController
 @RequestMapping("/roleData")
-public class RoleDataController extends BaseController<SysRoleData, Long> {
+public class RoleDataController extends BaseController<SysRoleData> {
 
     @Override
-    protected BaseService<SysRoleData, Long> getBaseService() {
+    protected BaseService<SysRoleData> getBaseService() {
         return sysRoleDataService;
     }
 }

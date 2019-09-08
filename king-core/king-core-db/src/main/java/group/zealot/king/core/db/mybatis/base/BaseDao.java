@@ -10,7 +10,7 @@ import java.util.List;
 public interface BaseDao<E extends BaseEntity, P extends Serializable> {
     E getById(P primaryKey);
 
-    E get(E e);
+    E get(E entity);
 
     int deleteById(P primaryKey);
 

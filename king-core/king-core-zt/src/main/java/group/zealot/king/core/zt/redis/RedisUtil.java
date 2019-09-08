@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
     protected Logger logger = LoggerFactory.getLogger(getClass());
+    public static final String LOGIN_UTIL_PREFIX = "api:token:";
     @Autowired
     private LettuceConnectionFactory connectionFactory;
 

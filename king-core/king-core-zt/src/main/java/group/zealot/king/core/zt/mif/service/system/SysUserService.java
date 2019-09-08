@@ -6,7 +6,7 @@ import group.zealot.king.core.zt.mif.service.BaseService;
 
 
 @MyDubboService
-public interface SysUserService extends BaseService<SysUser, Long> {
+public interface SysUserService extends BaseService<SysUser> {
     SysUser getByUsernameAndPassword(String username, byte[] password);
 
     SysUser getByUsername(String username);

@@ -1,4 +1,4 @@
-package group.zealot.king.core.db.mybatis.system.dao.mapper;
+package group.zealot.king.core.db.mybatis.system.dao.impl;
 
 import group.zealot.king.core.db.mybatis.base.BaseDaoImpl;
 import group.zealot.king.core.db.mybatis.system.dao.SysRouteDao;
@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class SysRouteDaoMapper extends BaseDaoImpl<SysRoute, Long> implements SysRouteDao {
+public class SysRouteDaoImpl extends BaseDaoImpl<SysRoute, Long> implements SysRouteDao {
 }

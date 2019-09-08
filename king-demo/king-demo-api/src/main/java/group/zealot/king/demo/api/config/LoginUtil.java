@@ -18,7 +18,6 @@ import java.util.UUID;
 import static group.zealot.king.core.zt.mif.Services.*;
 
 public class LoginUtil {
-    private static final String prefix = "api:token:";
     protected static final ThreadLocal<HttpServletRequest> threadLocalRequest = new ThreadLocal<>();
 
     public static Duration timeout = Duration.ofMinutes(60);
@@ -37,7 +36,7 @@ public class LoginUtil {
         SysUser vo = new SysUser();
         vo.setId(sysUser.getId());
         vo.setLastLoginTime(LocalDateTime.now());
-        sysUserService.update(vo);
+        sysUserService.update(vo, getSysUserId());
 
         String token = UUID.randomUUID().toString();
         if (put(token, sysUser)) {
@@ -100,7 +99,7 @@ public class LoginUtil {
     }
 
     private static String getKey(String key) {
-        return prefix + key;
+        return RedisUtil.LOGIN_UTIL_PREFIX + key;
     }
 
     private static RedisUtil redisUtil() {

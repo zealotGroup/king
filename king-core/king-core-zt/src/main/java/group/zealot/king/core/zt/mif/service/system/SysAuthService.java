@@ -8,7 +8,7 @@ import group.zealot.king.core.zt.mif.service.BaseService;
 import java.util.List;
 
 @MyDubboService
-public interface SysAuthService extends BaseService<SysAuth, Long> {
+public interface SysAuthService extends BaseService<SysAuth> {
     SysAuth getSysAuthRoleData(Long sysUserId);
 
     SysAuth getSysAuthRoleRoute(Long sysUserId);

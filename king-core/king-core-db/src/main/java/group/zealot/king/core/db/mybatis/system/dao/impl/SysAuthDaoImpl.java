@@ -1,4 +1,4 @@
-package group.zealot.king.core.db.mybatis.system.dao.mapper;
+package group.zealot.king.core.db.mybatis.system.dao.impl;
 
 import group.zealot.king.core.db.mybatis.base.BaseDaoImpl;
 import group.zealot.king.core.db.mybatis.system.dao.SysAuthDao;
@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class SysAuthDaoMapper extends BaseDaoImpl<SysAuth, Long> implements SysAuthDao {
+public class SysAuthDaoImpl extends BaseDaoImpl<SysAuth, Long> implements SysAuthDao {
 
 }

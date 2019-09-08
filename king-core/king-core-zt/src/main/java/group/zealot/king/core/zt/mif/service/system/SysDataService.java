@@ -5,5 +5,5 @@ import group.zealot.king.core.zt.mif.entity.system.SysData;
 import group.zealot.king.core.zt.mif.service.BaseService;
 
 @MyDubboService
-public interface SysDataService extends BaseService<SysData, Long> {
+public interface SysDataService extends BaseService<SysData> {
 }
