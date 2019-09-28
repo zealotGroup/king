@@ -88,7 +88,7 @@ public class MailUtil {
         MimeMessage message = new MimeMessage(session);
 
         // 设置自定义发件人昵称
-        message.setFrom(new InternetAddress(MimeUtility.encodeText("车联网服务通知") + "<" + server + ">"));
+        message.setFrom(new InternetAddress(MimeUtility.encodeText(server)));
         InternetAddress[] address = InternetAddress.parse(mailTo);
         message.setRecipients(Message.RecipientType.TO, address);
         message.setSubject(subject);

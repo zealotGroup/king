@@ -36,7 +36,7 @@ public class LoginUtil {
         SysUser vo = new SysUser();
         vo.setId(sysUser.getId());
         vo.setLastLoginTime(LocalDateTime.now());
-        sysUserService.update(vo, getSysUserId());
+//        sysUserService.update(vo, getSysUserId());
 
         String token = UUID.randomUUID().toString();
         if (put(token, sysUser)) {

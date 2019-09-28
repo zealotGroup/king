@@ -14,6 +14,7 @@ import supermarket_supplier2 from '@/views/supermarket/supplier'
 import supermarket_supplier3 from '@/views/supermarket/supplier'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
+import admin_permission from '@/views/admin/permission'
 import funShow_components_demo_dragDialog from '@/views/funShow/components-demo/dragDialog'
 import funShow_components_demo_dndList from '@/views/funShow/components-demo/dndList'
 import funShow_components_demo_dragKanban from '@/views/funShow/components-demo/dragKanban'
@@ -126,6 +127,12 @@ export const routerMap = [
       icon: 'set'
     },
     children: [
+      {
+        path: 'permission',
+        component: admin_permission,
+        name: 'permission',
+        meta: { title: 'permission', icon: 'list', noCache: true }
+      },
       {
         path: 'role',
         component: admin_role,

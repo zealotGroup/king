@@ -58,9 +58,9 @@ const user = {
     },
 
     // 获取用户信息
-    GetUserInfo({ commit, state }) {
+    GetUserInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        loginInfo(state.token).then(data => {
+        loginInfo().then(data => {
           commit('SET_LEVEL', data.level)
           commit('SET_ROUTES', dealRoutes(data.routes))
           resolve()
@@ -71,9 +71,9 @@ const user = {
     },
 
     // 登出
-    LogOut({ commit, state }) {
+    LogOut({ commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout().then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROUTES', [])
           commit('SET_LEVEL', '')

@@ -27,7 +27,7 @@
 
     <groupId>group.zealot</groupId>
     <artifactId>king</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
@@ -171,6 +171,14 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <generateBackupPoms>false</generateBackupPoms>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

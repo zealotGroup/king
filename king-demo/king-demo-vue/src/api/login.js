@@ -12,14 +12,14 @@ export function login(username, password) {
   })
 }
 
-export function logout(token) {
+export function logout() {
   return request({
     url: url + '/logout',
     method: 'post'
   })
 }
 
-export function loginInfo(token) {
+export function loginInfo() {
   return request({
     url: url + '/loginUserInfo',
     method: 'get'

@@ -26,6 +26,16 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="130px" align="center" :label="$t('fid')" v-if="checkLevel('super')">
+        <template slot-scope="scope">
+          <span>{{scope.row.fId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" :label="$t('name')">
+        <template slot-scope="scope">
+          <span>{{scope.row.fName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column min-width="100px" align="center" :label="$t('remarks')" v-if="checkLevel('super')">
         <template slot-scope="scope">
           <span>{{scope.row.remarks}}</span>
@@ -134,7 +144,7 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del, recover, realDel } from '@/api/admin/role/routeRole'
+  import { getList, add, get, update, del, recover, realDel } from '@/api/admin/permission/routePermission'
   import { getTree } from '@/api/admin/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
@@ -187,7 +197,6 @@
           console.error(tree.length)
           tree.forEach(function(item) {
             console.error(item.name)
-            // this.formaterTree(item)
           })
           this.treeData = tree
         }).catch(() => {
