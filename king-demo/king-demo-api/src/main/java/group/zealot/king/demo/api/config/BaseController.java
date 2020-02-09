@@ -1,24 +1,22 @@
 package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Constants;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
-import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.zt.mif.entity.BaseEntity;
-import group.zealot.king.core.zt.mif.service.BaseService;
+import group.zealot.king.core.zt.dbif.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-public abstract class BaseController<E extends BaseEntity> {
+import java.io.Serializable;
+
+public abstract class BaseController<E, P extends Serializable> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    abstract protected BaseService<E> getBaseService();
+    abstract protected BaseService<E, P> getBaseService();
 
-    protected Long getLoginUserId(){
+    protected Long getLoginUserId() {
         return LoginUtil.getSysUserId();
     }
 
@@ -26,10 +24,13 @@ public abstract class BaseController<E extends BaseEntity> {
     protected JSONObject list(Integer page, Integer limit, E e) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(page, "page为空");
                 Funcation.AssertNotNull(limit, "limit为空");
+            }
 
+            @Override
+            protected void dosomething() {
                 PageRequest<E> pageRequest = new PageRequest<>();
                 pageRequest.setPage(page);
                 pageRequest.setLimit(limit);
@@ -47,12 +48,15 @@ public abstract class BaseController<E extends BaseEntity> {
     }
 
     @RequestMapping("get")
-    protected JSONObject get(Long id) {
+    protected JSONObject get(P id) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
+            }
 
+            @Override
+            protected void dosomething() {
                 E vo = getBaseService().getById(id);
                 getBaseService().formater(vo);
                 JSONObject data = new JSONObject();
@@ -63,44 +67,16 @@ public abstract class BaseController<E extends BaseEntity> {
     }
 
     @RequestMapping("del")
-    protected JSONObject del(Long id) {
+    protected JSONObject del(P id) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
-                E old = getBaseService().getById(id);
-                Funcation.AssertNotNull(old, "该ID数据不存在");
-
-                getBaseService().del(id, LoginUtil.getSysUserId());
             }
-        }.result();
-    }
 
-    @RequestMapping("recover")
-    protected JSONObject recover(Long id) {
-        return new ResultTemple() {
             @Override
             protected void dosomething() {
-                Funcation.AssertNotNull(id, "id为空");
-                E old = getBaseService().getById(id);
-                Funcation.AssertNotNull(old, "该ID数据不存在");
-                if (NumberUtil.equals(old.getIsDelete(), Constants.DELETE_N)) {
-                    throw new BaseRuntimeException("此ID数据未删除，不能恢复");
-                }
-                getBaseService().recover(id, LoginUtil.getSysUserId());
-            }
-        }.result();
-    }
-
-    @RequestMapping("realDel")
-    protected JSONObject realDel(Long id) {
-        return new ResultTemple() {
-            @Override
-            protected void dosomething() {
-                Funcation.AssertNotNull(id, "id为空");
-                E old = getBaseService().getById(id);
-                Funcation.AssertNotNull(old, "该ID数据不存在");
-                getBaseService().realDel(id);
+                getBaseService().deleteById(id);
             }
         }.result();
     }

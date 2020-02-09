@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="group.zealot.king.core.db.mybatis.system.dao.impl.SysUserDaoImpl">
-    <cache type="group.zealot.king.core.db.mybatis.cache.RedisStringCache" />
+<mapper namespace="group.zealot.king.core.db.mybatis.system.SysUserDaoMapper">
+    <!--废弃    <cache type="group.zealot.king.core.db.mybatis.core.cache.RedisStringCache"/>-->
 
     <sql id="field">
         su.id id,

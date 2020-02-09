@@ -10,7 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static group.zealot.king.core.zt.mif.Services.*;
+import static group.zealot.king.core.zt.dbif.Services.sysIdService;
+
 
 @Controller
 public class IndexController {

@@ -4,7 +4,7 @@ import group.zealot.king.base.Constants;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.zt.mif.entity.system.SysUser;
+import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
 import org.slf4j.Logger;
@@ -15,9 +15,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static group.zealot.king.core.zt.mif.Services.*;
+import static group.zealot.king.core.zt.dbif.Services.*;
 
 public class LoginUtil {
+    private static final String prefix = "api:token:";
     protected static final ThreadLocal<HttpServletRequest> threadLocalRequest = new ThreadLocal<>();
 
     public static Duration timeout = Duration.ofMinutes(60);
@@ -25,18 +26,16 @@ public class LoginUtil {
     protected static Logger logger = LoggerFactory.getLogger(LoginUtil.class);
 
     public static String login(String username, byte[] password) {
-        SysUser sysUser = sysUserService.getByUsernameAndPassword(username, password);
+        String newPassword = sysUserService.getNewPassword(username, password);
+        SysUser sysUser = new SysUser();
+        sysUser.setUsername(username);
+        sysUser.setPassword(newPassword);
+        sysUser = sysUserService.get(sysUser);
+
         Funcation.AssertNotNull(sysUser, "用户名或密码错误");
         if (!Constants.STATUS_ABLE.equals(sysUser.getStatus())) {
             throw new BaseRuntimeException("此用户已被禁用");
         }
-        if (NumberUtil.equals(sysUser.getIsDelete(), Constants.DELETE_Y)) {
-            throw new BaseRuntimeException("此用户已被删除");
-        }
-        SysUser vo = new SysUser();
-        vo.setId(sysUser.getId());
-        vo.setLastLoginTime(LocalDateTime.now());
-//        sysUserService.update(vo, getSysUserId());
 
         String token = UUID.randomUUID().toString();
         if (put(token, sysUser)) {
@@ -99,7 +98,7 @@ public class LoginUtil {
     }
 
     private static String getKey(String key) {
-        return RedisUtil.LOGIN_UTIL_PREFIX + key;
+        return prefix + key;
     }
 
     private static RedisUtil redisUtil() {

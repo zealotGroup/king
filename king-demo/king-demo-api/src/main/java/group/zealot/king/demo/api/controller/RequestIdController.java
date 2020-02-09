@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 @RestController
 @RequestMapping("/requestId")
 public class RequestIdController {

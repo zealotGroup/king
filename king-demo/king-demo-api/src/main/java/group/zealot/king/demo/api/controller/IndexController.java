@@ -8,7 +8,8 @@ import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.mif.Services.sysAuthService;
+import static group.zealot.king.core.zt.dbif.Services.sysAuthService;
+
 
 @RestController
 @RequestMapping("/")
@@ -31,9 +32,13 @@ public class IndexController {
     public JSONObject login(String username, byte[] password) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(username, "用户名为空");
                 Funcation.AssertNotNull(password, "密码为空");
+            }
+
+            @Override
+            protected void dosomething() {
                 String token = LoginUtil.login(username, password);
                 JSONObject data = new JSONObject();
                 data.put("token", token);

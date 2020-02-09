@@ -35,6 +35,7 @@ public abstract class ResultTemple {
     protected abstract void dosomething();
 
     public JSONObject result() {
+        verification();
         dosomething();
         resultJson.set(ServiceCode.SUCCESS);
         return resultJson.result();
@@ -45,7 +46,7 @@ public abstract class ResultTemple {
         return resultJson.result();
     }
 
-    protected boolean verification() {
-        return true;
+    protected void verification() {
+
     }
 }

@@ -2,73 +2,95 @@ package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.mif.entity.system.SysUser;
-import group.zealot.king.core.zt.mif.service.BaseService;
+import group.zealot.king.core.zt.dbif.service.BaseService;
+import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.mif.Services.sysUserService;
+import static group.zealot.king.core.zt.dbif.Services.*;
+
 
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController<SysUser> {
+public class UserController extends BaseController<SysUser, Long> {
 
     @Override
-    protected BaseService<SysUser> getBaseService() {
+    protected BaseService<SysUser, Long> getBaseService() {
         return sysUserService;
     }
 
+
     @RequestMapping("add")
-    public JSONObject add(String username, String password, String status, String level, String remark,
+    public JSONObject add(String username, byte[] password, String status, String level,
                           Long roleDataId, Long roleRouteId) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(username, "username为空");
                 Funcation.AssertNotNull(password, "password为空");
                 Funcation.AssertNotNull(status, "status为空");
                 Funcation.AssertNotNull(level, "level为空");
-                Funcation.AssertNotNull(remark, "remark为空");
                 Funcation.AssertNotNull(roleDataId, "roleDataId为空");
                 Funcation.AssertNotNull(roleRouteId, "roleRouteId为空");
+            }
 
-                Funcation.AssertIsNull(sysUserService.getByUsername(username), "该用户名已存在");
-                SysUser vo = new SysUser();
-                vo.setUsername(username);
-                vo.setPassword(password);
-                vo.setStatus(status);
-                vo.setLevel(level);
-                vo.setRemark(remark);
-                vo.setRoleDataId(roleDataId);
-                vo.setRoleRouteId(roleRouteId);
-
-                sysUserService.add(vo, getLoginUserId());
+            @Override
+            protected void dosomething() {
+                SysUser vo = sysUserService.insert(username, password, status, level, roleDataId, roleRouteId);
+                JSONObject data = new JSONObject();
+                data.put("vo", vo);
+                resultJson.setData(data);
             }
         }.result();
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String password, String status, String level, String remark,
-                             Long roleDataId, Long roleRouteId) {
+    public JSONObject update(Long id, String status, String level, Long roleDataId, Long roleRouteId) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
-                SysUser oldSysUser = sysUserService.getById(id);
-                Funcation.AssertNotNull(oldSysUser, "该ID用户不存在");
+            }
 
-                SysUser vo = new SysUser();
-                vo.setId(id);
-                vo.setPassword(password);
-                vo.setStatus(status);
-                vo.setLevel(level);
-                vo.setRemark(remark);
-                vo.setRoleDataId(roleDataId);
-                vo.setRoleRouteId(roleRouteId);
+            @Override
+            protected void dosomething() {
+                sysUserService.update(id, status, level, roleDataId, roleRouteId);
+            }
+        }.result();
+    }
 
-                sysUserService.update(vo, getLoginUserId());
+    @RequestMapping("updatePassword")
+    public JSONObject update(Long id, byte[] password) {
+        return new ResultTemple() {
+            @Override
+            protected void verification() {
+                Funcation.AssertNotNull(id, "id为空");
+                Funcation.AssertNotNull(password, "password为空");
+            }
+
+            @Override
+            protected void dosomething() {
+                SysUser sysUser = sysUserService.getById(id);
+                sysUser.setUsername(sysUserService.getNewPassword(sysUser.getUsername(), password));
+                sysUserService.update(sysUser);
+            }
+        }.result();
+    }
+
+    @Override
+    @RequestMapping("del")
+    public JSONObject del(Long id) {
+        return new ResultTemple() {
+            @Override
+            protected void verification() {
+                Funcation.AssertNotNull(id, "id为空");
+            }
+
+            @Override
+            protected void dosomething() {
+                sysUserService.deleteSysUser(id);
             }
         }.result();
     }
