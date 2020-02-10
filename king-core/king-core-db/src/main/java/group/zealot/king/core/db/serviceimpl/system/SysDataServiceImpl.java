@@ -1,4 +1,4 @@
-package group.zealot.king.core.db.serviceimpl.system.serviceImpl;
+package group.zealot.king.core.db.serviceimpl.system;
 
 import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;

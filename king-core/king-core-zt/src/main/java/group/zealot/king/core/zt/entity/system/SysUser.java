@@ -1,6 +1,7 @@
 package group.zealot.king.core.zt.entity.system;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import group.zealot.king.core.zt.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table
-public class SysUser {
+public class SysUser extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: dev
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource

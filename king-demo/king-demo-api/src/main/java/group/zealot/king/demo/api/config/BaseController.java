@@ -5,13 +5,14 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.zt.dbif.service.BaseService;
+import group.zealot.king.core.zt.entity.BaseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.Serializable;
 
-public abstract class BaseController<E, P extends Serializable> {
+public abstract class BaseController<E extends BaseEntity, P extends Serializable> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     abstract protected BaseService<E, P> getBaseService();

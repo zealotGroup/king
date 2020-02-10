@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date 2020/2/7 17:14
  */
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "group.zealot.king.core.db.jpa")
 @EntityScan(basePackages = "group.zealot.king.core.zt.entity")
 public class JpaConfig {
 }

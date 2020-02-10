@@ -1,5 +1,6 @@
 package group.zealot.king.core.zt.entity.system;
 
+import group.zealot.king.core.zt.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table
-public class SysRoleData {
+public class SysRoleData extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

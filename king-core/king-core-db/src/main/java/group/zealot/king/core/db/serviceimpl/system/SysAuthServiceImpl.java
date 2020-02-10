@@ -1,4 +1,4 @@
-package group.zealot.king.core.db.serviceimpl.system.serviceImpl;
+package group.zealot.king.core.db.serviceimpl.system;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -8,6 +8,7 @@ import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.*;
 import group.zealot.king.core.zt.dbif.service.system.SysAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group.zealot.king.core.db.jpa.Repositorys.sysAuthRepository;
-import static group.zealot.king.core.db.mybatis.Mappers.*;
+import static group.zealot.king.core.db.mybatis.Mappers.sysAuthDaoMapper;
 
 @Service
 public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
+    @Autowired
+    private SysRoleDataServiceImpl sysRoleDataServiceImpl;
+    @Autowired
+    private SysRoleRouteServiceImpl sysRoleRouteServiceImpl;
+    @Autowired
+    private SysRouteServiceImpl sysRouteServiceImpl;
+    @Autowired
+    private SysDataServiceImpl sysDataServiceImpl;
+
     @Override
     public BaseMapper<SysAuth, Long> getBaseMapper() {
         return sysAuthDaoMapper;
@@ -28,6 +38,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
     protected JpaRepository<SysAuth, Long> getJpaRepository() {
         return sysAuthRepository;
     }
+
 
     @Override
     public SysAuth getSysAuthRoleData(Long sysUserId) {
@@ -60,13 +71,13 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
     @Override
     public SysRoleData getSysRoleData(Long sysUserId) {
         SysAuth sysAuth = getSysAuthRoleData(sysUserId);
-        return sysRoleDataDaoMapper.getById(sysAuth.getSysRoleDataId());
+        return sysRoleDataServiceImpl.getById(sysAuth.getSysRoleDataId());
     }
 
     @Override
     public SysRoleRoute getSysRoleRoute(Long sysUserId) {
         SysAuth sysAuth = getSysAuthRoleRoute(sysUserId);
-        return sysRoleRouteDaoMapper.getById(sysAuth.getSysRoleRouteId());
+        return sysRoleRouteServiceImpl.getById(sysAuth.getSysRoleRouteId());
     }
 
     @Override
@@ -74,7 +85,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
         SysAuth vo = new SysAuth();
         vo.setSysRoleRouteId(sysRoleRouteId);
         List<SysAuth> sysAuthList = getList(vo);
-        List<SysRoute> sysRouteList = sysRouteDaoMapper.getList();
+        List<SysRoute> sysRouteList = sysRouteServiceImpl.getList();
 
         List<SysRoute> list = new ArrayList<>();
         sysAuthList.forEach(sysAuth -> {
@@ -94,7 +105,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
         SysAuth vo = new SysAuth();
         vo.setSysRoleDataId(sysRoleDataId);
         List<SysAuth> sysAuthList = getList(vo);
-        List<SysData> sysRouteList = sysDataDaoMapper.getList();
+        List<SysData> sysRouteList = sysDataServiceImpl.getList();
 
         List<SysData> list = new ArrayList<>();
         sysAuthList.forEach(sysAuth -> {
@@ -142,5 +153,4 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
             }
         });
     }
-
 }
