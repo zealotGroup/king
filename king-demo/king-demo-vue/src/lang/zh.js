@@ -1,5 +1,6 @@
 export default {
   route: {
+    index: '首页',
     dashboard: '首页',
     introduction: '简述',
     documentation: '文档',
@@ -179,6 +180,7 @@ export default {
   phone: '手机',
   region: '区域',
   remarks: '备注',
+  insertTime: '插入时间',
   createTime: '创建时间',
   createUser: '创建人',
   updateTime: '修改时间',

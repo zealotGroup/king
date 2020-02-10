@@ -160,16 +160,16 @@ export const routerMap = [
       {
         path: '/funShow/components',
         component: Blank,
-        redirect: '/funShow/components/drag-dialog',
-        name: 'component-demo',
+        redirect: '/funShow/components/dragDialog',
+        name: 'components',
         meta: {
           title: 'components',
           icon: 'component'
         },
         children: [
-          { path: 'drag-dialog', component: funShow_components_demo_dragDialog, name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
-          { path: 'dnd-list', component: funShow_components_demo_dndList, name: 'dndList-demo', meta: { title: 'dndList' }},
-          { path: 'drag-kanban', component: funShow_components_demo_dragKanban, name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
+          { path: 'dragDialog', component: funShow_components_demo_dragDialog, name: 'dragDialog', meta: { title: 'dragDialog' }},
+          { path: 'dndList', component: funShow_components_demo_dndList, name: 'dndList', meta: { title: 'dndList' }},
+          { path: 'dragKanban', component: funShow_components_demo_dragKanban, name: 'dragKanban', meta: { title: 'dragKanban' }}
         ]
       },
 

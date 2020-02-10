@@ -35,29 +35,9 @@ export function update(data) {
   })
 }
 
-export function del(id, deleted) {
+export function del(id) {
   return request({
     url: url + '/del',
-    method: 'post',
-    params: {
-      id
-    }
-  })
-}
-
-export function recover(id) {
-  return request({
-    url: url + '/recover',
-    method: 'post',
-    params: {
-      id
-    }
-  })
-}
-
-export function realDel(id) {
-  return request({
-    url: url + '/realDelete',
     method: 'post',
     params: {
       id

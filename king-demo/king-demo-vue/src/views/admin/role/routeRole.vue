@@ -16,7 +16,7 @@
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('id')" v-if="checkLevel('super')">
+      <el-table-column min-width="130px" align="center" :label="$t('id')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
@@ -26,30 +26,10 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('remarks')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.remarks}}</span>
-        </template>
-      </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')">
         <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.createUserName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateUserName}}</span>
+          <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -61,31 +41,14 @@
           </template>
           <template v-else>
             <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
-              <p>确定要删除么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
-            </el-popover>
 
-            <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
-              <p>确定要恢复么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
-            </el-popover>
-
-            <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
+            <el-popover placement="top" width="160" v-model="scope.row.visible_del">
               <p>确定要物理删除么？</p>
               <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
+                <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="delData(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="scope.row.visible_del = true">{{$t('readDel')}}</el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -94,7 +57,7 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
@@ -106,10 +69,6 @@
         </el-form-item>
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('remarks')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
-          </el-input>
         </el-form-item>
         <el-form-item label="选择权限" prop="route">
           <el-tree
@@ -134,7 +93,7 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del, recover, realDel } from '@/api/admin/role/routeRole'
+  import { getList, add, get, update, del } from '@/api/admin/role/routeRole'
   import { getTree } from '@/api/admin/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
@@ -181,15 +140,17 @@
       this.getList()
     },
     methods: {
+      formaterTreeName(item) {
+        if (item.children) {
+          item.name = this.$t('route.' + item.name)
+          item.children.forEach(this.formaterTreeName)
+        }
+      },
       getTreeData() {
         getTree().then(data => {
           const tree = data.routes
-          console.error(tree.length)
-          tree.forEach(function(item) {
-            console.error(item.name)
-            // this.formaterTree(item)
-          })
-          this.treeData = tree
+          tree.forEach(this.formaterTreeName)
+          this.temp.route = tree
         }).catch(() => {
           this.listLoading = false
         })
@@ -200,7 +161,7 @@
         this.temp = {
           id: '',
           name: '',
-          remarks: ''
+          route: undefined
         }
       },
       cleanDialog() {
@@ -294,7 +255,9 @@
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
           get(row.id).then((data) => {
+            this.resetTemp()
             this.temp = Object.assign({}, data.vo)
+            this.getTreeData()
             this.dialogType = 'update'
             this.dialogFormVisible = true
             this.dialogTitle = 'update'
@@ -343,59 +306,21 @@
           })
         })
       },
-      handleDel(row) {
-        this.notifyClicking(row.loading_handleDel, () => {
-          row.loading_handleDel = true
-          row.visible_deleted = false
+      delData(row) {
+        this.notifyClicking(row.loading_del, () => {
+          row.loading_del = true
+          row.visible_del = false
           del(row.id).then(() => {
-            row.deleted = true
-            this.cacheGet(row, 'replace')
+            this.cacheGet(row, 'remove')
             this.$notify({
               title: '成功',
               message: '删除成功',
               type: 'success',
               duration: 2000
             })
-            row.loading_handleDel = false
+            row.loading_del = false
           }).catch(() => {
-            row.loading_handleDel = false
-          })
-        })
-      },
-      handleRecover(row) {
-        this.notifyClicking(row.loading_handleRecover, () => {
-          row.loading_handleRecover = true
-          row.visible_recover = false
-          recover(row.id).then(() => {
-            row.deleted = false
-            this.cacheGet(row, 'replace')
-            this.$notify({
-              title: '成功',
-              message: '恢复成功',
-              type: 'success',
-              duration: 2000
-            })
-            row.loading_handleRecover = false
-          }).catch(() => {
-            row.loading_handleRecover = false
-          })
-        })
-      },
-      handleReadDel(row) {
-        this.notifyClicking(row.loading_handleReadDel, () => {
-          row.loading_handleReadDel = true
-          row.visible_readDel = false
-          realDel(row.id).then(() => {
-            this.cacheGet(row, 'remove')
-            this.$notify({
-              title: '成功',
-              message: '物理删除成功',
-              type: 'success',
-              duration: 2000
-            })
-            row.loading_handleReadDel = false
-          }).catch(() => {
-            row.loading_handleReadDel = false
+            row.loading_del = false
           })
         })
       },
@@ -423,12 +348,8 @@
           v.loading_handleUpdate = false
           v.loading_updateData = false
           v.waitingForFlush = false
-          v.loading_handleDel = false
-          v.visible_deleted = false
-          v.loading_handleRecover = false
-          v.visible_recover = false
-          v.loading_handleReadDel = false
-          v.visible_readDel = false
+          v.loading_del = false
+          v.visible_del = false
         }
       },
       formatJson(filterVal, jsonData) {

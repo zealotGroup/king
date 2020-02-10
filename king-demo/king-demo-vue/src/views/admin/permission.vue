@@ -24,15 +24,6 @@
         ],
         viewName: 'routePermission'
       }
-    },
-    methods: {
-      formaterTree(tree) {
-        console.error(2)
-        tree.name = this.$t('index')
-        tree.children.forEach(function(item) {
-          this.formaterTree(item)
-        })
-      }
     }
   }
 </script>

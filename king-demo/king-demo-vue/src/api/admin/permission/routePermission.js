@@ -44,23 +44,3 @@ export function del(id) {
     }
   })
 }
-
-export function recover(id) {
-  return request({
-    url: url + '/recover',
-    method: 'post',
-    params: {
-      id
-    }
-  })
-}
-
-export function realDel(id) {
-  return request({
-    url: url + '/realDelete',
-    method: 'post',
-    params: {
-      id
-    }
-  })
-}

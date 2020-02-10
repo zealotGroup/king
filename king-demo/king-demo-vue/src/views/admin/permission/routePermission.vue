@@ -1,17 +1,21 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
+      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item"
+                v-model="listQuery.like" placeholder="输入关键词搜索">
       </el-input>
     </div>
     <div class="filter-container">
-      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
-      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
+      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}
+      </el-button>
+      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd"
+                 type="primary" icon="el-icon-edit">{{$t('add')}}
+      </el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
               style="width: 100%;min-height:500px;">
-      <el-table-column  min-width="60px"align="center" :label="$t('No')">
+      <el-table-column min-width="60px" align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
@@ -31,35 +35,10 @@
           <span>{{scope.row.fId }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('name')">
-        <template slot-scope="scope">
-          <span>{{scope.row.fName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" align="center" :label="$t('remarks')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.remarks}}</span>
-        </template>
-      </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.createUserName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('lastUpdateTime')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('lastUpdateUser')" v-if="checkLevel('super')">
-        <template slot-scope="scope">
-          <span>{{scope.row.lastUpdateUserName}}</span>
+          <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -70,32 +49,18 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
-            <el-popover v-if="!scope.row.deleted" placement="top" width="160" v-model="scope.row.visible_deleted">
+            <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate"
+                       @click="handleUpdate(scope.row)">{{$t('edit')}}
+            </el-button>
+            <el-popover placement="top" width="160">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_deleted = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleDel(scope.row)" >确定</el-button>
+                <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
+                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)">确定</el-button>
               </div>
-              <el-button round slot="reference" size="mini" type="danger" :loading="scope.row.loading_handleDel" @click="scope.row.visible_deleted = true">{{$t('del')}}</el-button>
-            </el-popover>
-
-            <el-popover v-else placement="top" width="160" v-model="scope.row.visible_recover">
-              <p>确定要恢复么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_recover = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleRecover(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" type="success" :loading="scope.row.loading_handleRecover" @click="scope.row.visible_recover = true">{{$t('recover')}}</el-button>
-            </el-popover>
-
-            <el-popover placement="top" width="160" v-model="scope.row.visible_readDel">
-              <p>确定要物理删除么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_readDel = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)" >确定</el-button>
-              </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handleReadDel" @click="scope.row.visible_readDel = true">{{$t('readDel')}}</el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handle_del"
+                         @click="scope.row.visible_del = true">{{$t('del')}}
+              </el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -104,38 +69,30 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange"
+                     :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                     layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px"
+               style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
-          <el-input v-model="temp.id" ></el-input>
+          <el-input v-model="temp.id"></el-input>
         </el-form-item>
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('remarks')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" v-model="temp.remarks">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="选择权限" prop="route">
-          <el-tree
-            :props="props"
-            :data="temp.route"
-            node-key="id"
-            :default-checked-keys="[1,11]"
-            default-expand-all
-            show-checkbox
-            @check-change="handleCheckChange">
-          </el-tree>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
-        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
+        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">
+          {{$t('confirm')}}
+        </el-button>
+        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData"
+                   @click="updateData">{{$t('confirm')}}
+        </el-button>
         <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -195,7 +152,7 @@
         getTree().then(data => {
           const tree = data.routes
           console.error(tree.length)
-          tree.forEach(function(item) {
+          tree.forEach(function (item) {
             console.error(item.name)
           })
           this.treeData = tree
@@ -203,7 +160,8 @@
           this.listLoading = false
         })
       },
-      handleCheckChange() { },
+      handleCheckChange() {
+      },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
@@ -391,9 +349,9 @@
         })
       },
       handleReadDel(row) {
-        this.notifyClicking(row.loading_handleReadDel, () => {
-          row.loading_handleReadDel = true
-          row.visible_readDel = false
+        this.notifyClicking(row.loading_handle_del, () => {
+          row.loading_handle_del = true
+          row.visible_del = false
           realDel(row.id).then(() => {
             this.cacheGet(row, 'remove')
             this.$notify({
@@ -402,9 +360,9 @@
               type: 'success',
               duration: 2000
             })
-            row.loading_handleReadDel = false
+            row.loading_handle_del = false
           }).catch(() => {
-            row.loading_handleReadDel = false
+            row.loading_handle_del = false
           })
         })
       },
@@ -436,8 +394,8 @@
           v.visible_deleted = false
           v.loading_handleRecover = false
           v.visible_recover = false
-          v.loading_handleReadDel = false
-          v.visible_readDel = false
+          v.loading_handle_del = false
+          v.visible_del = false
         }
       },
       formatJson(filterVal, jsonData) {

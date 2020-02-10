@@ -1,5 +1,6 @@
 export default {
   route: {
+    index: 'index',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',
@@ -134,6 +135,7 @@ export default {
     loginTimes: 'Login Times',
     level: 'Level',
     createTime: 'Create Time',
+    insertTime: 'Insert Time',
     createUser: 'Create User',
     lastUpdateTime: 'Last Update Time',
     lastUpdateUser: 'Last Update User',
