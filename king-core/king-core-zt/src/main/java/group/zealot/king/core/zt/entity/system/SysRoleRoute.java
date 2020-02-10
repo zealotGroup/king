@@ -15,7 +15,7 @@ public class SysRoleRoute extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 200)
+    @Column(unique = true, length = 200)
     private String name;
     @Column(updatable = false)
     private LocalDateTime insertTime;

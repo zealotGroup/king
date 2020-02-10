@@ -13,7 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class BaseServiceImpl<E, P extends Serializable> implements BaseService<E, P> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -29,8 +28,7 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public E get(E e) {
-        Optional<E> s = getJpaRepository().findOne(getExample(e));
-        return s.get();
+        return getJpaRepository().findOne(getExample(e)).get();
     }
 
     @Override
@@ -62,7 +60,11 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public List<E> getList(E e) {
-        return getJpaRepository().findAll(getExample(e), getSort());
+        return getJpaRepository().findAll(getExample(e));
+    }
+
+    public List<E> getList(Example<E> eExample, Sort sort) {
+        return getJpaRepository().findAll(eExample, sort);
     }
 
     @Override

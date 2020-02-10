@@ -15,8 +15,10 @@ public class SysRoute extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 200)
+    @Column(unique = true, length = 200)
     private String name;
+    @Column(length = 4, columnDefinition = "int default 0")
+    private Integer seq;//数字越小，越靠前（0最小）
     @Column(length = 20)
     private Long fId;
     @Column(updatable = false)
