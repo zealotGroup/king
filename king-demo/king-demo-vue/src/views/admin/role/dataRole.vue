@@ -28,18 +28,10 @@
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('remarks')">
-        <template slot-scope="scope">
-          <template v-if="scope.row.loading_handleUpdate">
-            <el-input v-model="scope.row.remarks_"></el-input>
-          </template>
-          <span v-else>{{ scope.row.remarks }}</span>
-        </template>
-      </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('createTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')" v-if="checkLevel('super')">
         <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" class-name="status-col" :label="$t('createUser')" v-if="checkLevel('super')">

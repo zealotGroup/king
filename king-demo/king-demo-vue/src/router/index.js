@@ -15,9 +15,9 @@ import supermarket_supplier3 from '@/views/supermarket/supplier'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
 import admin_permission from '@/views/admin/permission'
-import funShow_components_demo_dragDialog from '@/views/funShow/components-demo/dragDialog'
-import funShow_components_demo_dndList from '@/views/funShow/components-demo/dndList'
-import funShow_components_demo_dragKanban from '@/views/funShow/components-demo/dragKanban'
+import funShow_components_dragDialog from '@/views/funShow/components/dragDialog'
+import funShow_components_dndList from '@/views/funShow/components/dndList'
+import funShow_components_dragKanban from '@/views/funShow/components/dragKanban'
 import funShow_charts_keyboard from '@/views/funShow/charts/keyboard'
 import funShow_charts_line from '@/views/funShow/charts/line'
 import funShow_charts_mixChart from '@/views/funShow/charts/mixChart'
@@ -167,9 +167,9 @@ export const routerMap = [
           icon: 'component'
         },
         children: [
-          { path: 'dragDialog', component: funShow_components_demo_dragDialog, name: 'dragDialog', meta: { title: 'dragDialog' }},
-          { path: 'dndList', component: funShow_components_demo_dndList, name: 'dndList', meta: { title: 'dndList' }},
-          { path: 'dragKanban', component: funShow_components_demo_dragKanban, name: 'dragKanban', meta: { title: 'dragKanban' }}
+          { path: 'dragDialog', component: funShow_components_dragDialog, name: 'dragDialog', meta: { title: 'dragDialog' }},
+          { path: 'dndList', component: funShow_components_dndList, name: 'dndList', meta: { title: 'dndList' }},
+          { path: 'dragKanban', component: funShow_components_dragKanban, name: 'dragKanban', meta: { title: 'dragKanban' }}
         ]
       },
 

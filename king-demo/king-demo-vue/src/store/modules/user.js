@@ -3,15 +3,21 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { routerMap } from '@/router'
 
 function dealRoutes(routes) {
-  const menu = dealRouter(routes, routerMap)
-  return menu
+  const auth = []
+  const menu = dealRouter(routes, routerMap, auth)
+  console.info(menu)
+  console.info(auth)
+  const route = { menu: menu, auth: auth }
+  return route
 }
 
-function dealRouter(vchildren, vochildren) {
+function dealRouter(vchildren, vochildren, auth) {
   const children = []
   for (const v of vchildren) {
     for (const vo of vochildren) {
-      if (v.name === vo.name) {
+      if (v.type === 1) {
+        auth.push(v.name)
+      } else if (v.name === vo.name && v.type === 0) {
         if (v.children && vo.children && v.children.length > 0 && vo.children.length > 0) {
           vo.children = dealRouter(v.children, vo.children)
         }
@@ -27,6 +33,7 @@ const user = {
   state: {
     token: getToken(),
     routes: [],
+    auth: [],
     level: ''
   },
 
@@ -38,7 +45,8 @@ const user = {
       state.level = level
     },
     SET_ROUTES: (state, routes) => {
-      state.routes = routes
+      state.routes = routes.menu
+      state.auth = routes.auth
     }
   },
 
@@ -75,7 +83,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout().then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROUTES', [])
+          commit('SET_ROUTES', { menu: [], auth: [] })
           commit('SET_LEVEL', '')
           removeToken()
           resolve()
@@ -89,24 +97,10 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        commit('SET_ROUTES', [])
+        commit('SET_ROUTES', { menu: [], auth: [] })
         commit('SET_LEVEL', '')
         removeToken()
         resolve()
-      })
-    },
-
-    // 动态修改权限
-    ChangeRoles({ commit }, role) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        loginInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          resolve()
-        })
       })
     }
   }

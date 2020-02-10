@@ -7,6 +7,7 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   token: state => state.user.token,
   routes: state => state.user.routes,
+  auth: state => state.user.auth,
   level: state => state.user.level
 }
 export default getters
