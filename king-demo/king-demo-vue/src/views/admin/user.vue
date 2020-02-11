@@ -427,10 +427,6 @@
           v.loading_handleUpdate = false
           v.loading_updateData = false
           v.waitingForFlush = false
-          v.loading_handleDel = false
-          v.visible_deleted = false
-          v.loading_handleRecover = false
-          v.visible_recover = false
           v.loading_del = false
           v.visible_del = false
           v.loading_updateStatus = false
