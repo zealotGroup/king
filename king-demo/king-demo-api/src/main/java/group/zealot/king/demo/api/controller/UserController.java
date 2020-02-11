@@ -52,6 +52,10 @@ public class UserController extends BaseController<SysUser, Long> {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
+                Funcation.AssertNotNull(status, "status为空");
+                Funcation.AssertNotNull(level, "level为空");
+                Funcation.AssertNotNull(roleDataId, "roleDataId为空");
+                Funcation.AssertNotNull(roleRouteId, "roleRouteId为空");
             }
 
             @Override

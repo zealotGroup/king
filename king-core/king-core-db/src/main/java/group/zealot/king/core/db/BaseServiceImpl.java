@@ -68,6 +68,9 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public Page<E> pageQuery(PageRequest<E> pageRequest) {
+        if (pageRequest.getLimit() == -1) {
+            pageRequest.setLimit(Integer.MAX_VALUE);
+        }
         org.springframework.data.domain.PageRequest Pageable
                 = org.springframework.data.domain.PageRequest.of(pageRequest.getPage() - 1, pageRequest.getLimit());
         org.springframework.data.domain.Page<E> page = getJpaRepository().findAll(getExample(pageRequest.getFilters()), Pageable);
