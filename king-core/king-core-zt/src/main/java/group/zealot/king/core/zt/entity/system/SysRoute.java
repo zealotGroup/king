@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class SysRoute extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, length = 200)
+    @Column(length = 200)
     private String name;
     @Column(length = 4, columnDefinition = "int default 0")
     private Integer type;//0 表示菜单 1 表示按钮等页面内权限

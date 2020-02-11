@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class SysData extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, length = 200)
+    @Column(length = 200)
     private String name;
     @Column(length = 20)
     private Long fId;

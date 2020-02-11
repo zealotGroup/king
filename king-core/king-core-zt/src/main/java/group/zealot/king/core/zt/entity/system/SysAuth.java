@@ -20,7 +20,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"sysUserId", "sysRoleDataId"}),
+        @UniqueConstraint(columnNames = {"sysUserId", "sysRoleRouteId"}),
+        @UniqueConstraint(columnNames = {"sysRouteId", "sysRoleRouteId"}),
+        @UniqueConstraint(columnNames = {"sysDataId", "sysRoleRouteId"})})
 public class SysAuth extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -52,13 +52,13 @@
             <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate"
                        @click="handleUpdate(scope.row)">{{$t('edit')}}
             </el-button>
-            <el-popover placement="top" width="160">
+            <el-popover placement="top" width="160" v-model="scope.row.visible_del">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
                 <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleReadDel(scope.row)">确定</el-button>
+                <el-button round type="primary" size="mini" @click="delData(scope.row)">确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_handle_del"
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del"
                          @click="scope.row.visible_del = true">{{$t('del')}}
               </el-button>
             </el-popover>
@@ -82,6 +82,16 @@
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
+        <el-form-item :label="$t('fId')" prop="fId">
+          <el-select v-model="temp.fId" placeholder="请选择">
+            <el-option
+              v-for="item in temp.fList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
@@ -101,7 +111,7 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del, recover, realDel } from '@/api/admin/permission/routePermission'
+  import { getList, add, get, update, del, getAllList } from '@/api/admin/permission/routePermission'
   import { getTree } from '@/api/admin/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
@@ -152,7 +162,7 @@
         getTree().then(data => {
           const tree = data.routes
           console.error(tree.length)
-          tree.forEach(function (item) {
+          tree.forEach(function(item) {
             console.error(item.name)
           })
           this.treeData = tree
@@ -167,7 +177,8 @@
         this.temp = {
           id: '',
           name: '',
-          remarks: ''
+          fId: '',
+          fList: []
         }
       },
       cleanDialog() {
@@ -219,14 +230,20 @@
           this.getTreeData()
           this.loading_add = true
           this.resetTemp()
-          this.dialogType = 'add'
-          this.dialogFormVisible = true
-          this.dialogTitle = 'add'
-          this.rules.id[0].required = false
-          this.$nextTick(() => {
-            this.$refs['dataForm'].clearValidate()
+          getAllList().then(data => {
+            this.formaterList(data.list)
+            this.temp.fList = data.list
+            this.dialogType = 'add'
+            this.dialogFormVisible = true
+            this.dialogTitle = 'add'
+            this.rules.id[0].required = false
+            this.$nextTick(() => {
+              this.$refs['dataForm'].clearValidate()
+            })
+            this.loading_add = false
+          }).catch(() => {
+            this.loading_add = false
           })
-          this.loading_add = false
         })
       },
       addData() {
@@ -262,14 +279,20 @@
           row.loading_handleUpdate = true
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
-            this.dialogType = 'update'
-            this.dialogFormVisible = true
-            this.dialogTitle = 'update'
-            this.rules.id[0].required = true
-            this.$nextTick(() => {
-              this.$refs['dataForm'].clearValidate()
+            getAllList().then(data => {
+              this.formaterList(data.list)
+              this.temp.fList = data.list
+              this.dialogType = 'update'
+              this.dialogFormVisible = true
+              this.dialogTitle = 'update'
+              this.rules.id[0].required = true
+              this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+              })
+              row.loading_handleUpdate = false
+            }).catch(() => {
+              row.loading_handleUpdate = false
             })
-            row.loading_handleUpdate = false
           }).catch(() => {
             this.$notify({
               title: '失败',
@@ -310,59 +333,21 @@
           })
         })
       },
-      handleDel(row) {
-        this.notifyClicking(row.loading_handleDel, () => {
-          row.loading_handleDel = true
-          row.visible_deleted = false
+      delData(row) {
+        this.notifyClicking(row.loading_del, () => {
+          row.loading_del = true
+          row.visible_del = false
           del(row.id).then(() => {
-            row.deleted = true
-            this.cacheGet(row, 'replace')
+            this.cacheGet(row, 'remove')
             this.$notify({
               title: '成功',
               message: '删除成功',
               type: 'success',
               duration: 2000
             })
-            row.loading_handleDel = false
+            row.loading_del = false
           }).catch(() => {
-            row.loading_handleDel = false
-          })
-        })
-      },
-      handleRecover(row) {
-        this.notifyClicking(row.loading_handleRecover, () => {
-          row.loading_handleRecover = true
-          row.visible_recover = false
-          recover(row.id).then(() => {
-            row.deleted = false
-            this.cacheGet(row, 'replace')
-            this.$notify({
-              title: '成功',
-              message: '恢复成功',
-              type: 'success',
-              duration: 2000
-            })
-            row.loading_handleRecover = false
-          }).catch(() => {
-            row.loading_handleRecover = false
-          })
-        })
-      },
-      handleReadDel(row) {
-        this.notifyClicking(row.loading_handle_del, () => {
-          row.loading_handle_del = true
-          row.visible_del = false
-          realDel(row.id).then(() => {
-            this.cacheGet(row, 'remove')
-            this.$notify({
-              title: '成功',
-              message: '物理删除成功',
-              type: 'success',
-              duration: 2000
-            })
-            row.loading_handle_del = false
-          }).catch(() => {
-            row.loading_handle_del = false
+            row.loading_del = false
           })
         })
       },
@@ -394,8 +379,9 @@
           v.visible_deleted = false
           v.loading_handleRecover = false
           v.visible_recover = false
-          v.loading_handle_del = false
+          v.loading_del = false
           v.visible_del = false
+          v.name = this.$t('route.' + v.name) + ' [' + v.name + ']'
         }
       },
       formatJson(filterVal, jsonData) {

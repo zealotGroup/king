@@ -22,7 +22,7 @@
           { label: 'dataPermission', key: 'dataPermission' },
           { label: 'routePermission', key: 'routePermission' }
         ],
-        viewName: 'routePermission'
+        viewName: 'dataPermission'
       }
     }
   }

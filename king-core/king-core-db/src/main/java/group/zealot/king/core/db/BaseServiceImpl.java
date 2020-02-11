@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class BaseServiceImpl<E, P extends Serializable> implements BaseService<E, P> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -23,12 +24,12 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public E getById(P p) {
-        return getJpaRepository().findById(p).get();
+        return nullAble(getJpaRepository().findById(p));
     }
 
     @Override
     public E get(E e) {
-        return getJpaRepository().findOne(getExample(e)).get();
+        return nullAble(getJpaRepository().findOne(getExample(e)));
     }
 
     @Override
@@ -73,9 +74,8 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
         Page resultPage = new Page();
         ArrayList<E> list = new ArrayList<>();
         page.forEach(e -> list.add(e));
-
         resultPage.setList(list);
-        resultPage.setCount(list.size());
+        resultPage.setCount(page.getTotalElements());
         return resultPage;
     }
 
@@ -99,4 +99,11 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
         return Sort.by(Sort.Direction.DESC, "id");
     }
 
+    private E nullAble(Optional<E> optional) {
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
+    }
 }

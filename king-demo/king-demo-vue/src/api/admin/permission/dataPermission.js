@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'route'
+const url = 'data'
 export function getList(query) {
   return request({
     url: url + '/list',
@@ -42,12 +42,5 @@ export function del(id) {
     params: {
       id
     }
-  })
-}
-
-export function getAllList() {
-  return request({
-    url: url + '/allList',
-    method: 'get'
   })
 }

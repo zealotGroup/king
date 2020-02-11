@@ -44,9 +44,9 @@ service.interceptors.response.use(
       console.error('请求失败 code = ' + res.code + ' url = ' + response.config.url)
       console.error('res.msg = ' + res.msg)
       Message({
-        message: '操作失败',
+        message: '操作失败' + res.msg,
         type: 'error',
-        duration: 1000
+        duration: 2000
       })
 
       // 202:Token 需要认证;

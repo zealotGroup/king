@@ -6,6 +6,7 @@ import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,6 +68,11 @@ public class ControllerExceptionHandler {
                     logger.error("MethodArgumentTypeMismatchException", e);
                     resultJson.setCode(ServiceCode.REQUEST_ERROR.code());
                     resultJson.setMsg("参数类型错误");
+                } else if (e instanceof DataIntegrityViolationException) {
+
+                    logger.error("DataIntegrityViolationException", e);
+                    resultJson.setCode(ServiceCode.REQUEST_ERROR.code());
+                    resultJson.setMsg("数据完整性错误（主键冲突、必填项数据缺失等）");
                 } else {
                     logger.error("RuntimeException", e);
                     resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);

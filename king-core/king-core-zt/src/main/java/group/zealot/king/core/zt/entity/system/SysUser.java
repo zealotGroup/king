@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class SysUser extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, length = 200)
+    @Column(length = 200)
     private String username;
     @Column(length = 200)
     @JSONField(serialize = false)

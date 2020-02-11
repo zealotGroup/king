@@ -18,7 +18,7 @@ public class Page<E> {
         this(new ArrayList<>(0), count);
     }
 
-    public Page(List<E> list, int count) {
+    public Page(List<E> list, long count) {
         this.list = list;
         this.count = count;
     }
@@ -30,7 +30,7 @@ public class Page<E> {
     /**
      * 满足筛选条件的总记录数
      */
-    private int count;
+    private long count;
 
     public JSONArray toJSONArray(){
         JSONArray jsonArray = new JSONArray(list.size());

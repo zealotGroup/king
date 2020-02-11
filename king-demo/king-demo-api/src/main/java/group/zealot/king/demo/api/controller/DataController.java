@@ -3,22 +3,22 @@ package group.zealot.king.demo.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.core.zt.dbif.service.BaseService;
-import group.zealot.king.core.zt.entity.system.SysRoleData;
+import group.zealot.king.core.zt.entity.system.SysData;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.sysRoleDataService;
+import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/roleData")
-public class RoleDataController extends BaseController<SysRoleData, Long> {
+@RequestMapping("/data")
+public class DataController extends BaseController<SysData, Long> {
 
     @Override
-    protected BaseService<SysRoleData, Long> getBaseService() {
-        return sysRoleDataService;
+    protected BaseService<SysData, Long> getBaseService() {
+        return sysDataService;
     }
 
     @RequestMapping("add")
@@ -31,12 +31,12 @@ public class RoleDataController extends BaseController<SysRoleData, Long> {
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = new SysRoleData();
-                sysRoleData.setName(name);
-                sysRoleData = sysRoleDataService.insert(sysRoleData);
+                SysData vo = new SysData();
+                vo.setName(name);
+                vo = sysDataService.insert(vo);
 
                 JSONObject data = new JSONObject();
-                data.put("vo", sysRoleData);
+                data.put("vo", vo);
                 resultJson.setData(data);
             }
         }.result();
@@ -53,9 +53,9 @@ public class RoleDataController extends BaseController<SysRoleData, Long> {
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = sysRoleDataService.getById(id);
-                sysRoleData.setName(name);
-                sysRoleDataService.update(sysRoleData);
+                SysData vo = sysDataService.getById(id);
+                vo.setName(name);
+                sysDataService.update(vo);
             }
         }.result();
     }

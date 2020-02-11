@@ -261,5 +261,7 @@ export default {
   index: '首页',
   customer: '客户',
   product: '产品',
-  reportForm: '报表'
+  reportForm: '报表',
+  routePermission: '路由权限',
+  dataPermission: '数据权限'
 }
