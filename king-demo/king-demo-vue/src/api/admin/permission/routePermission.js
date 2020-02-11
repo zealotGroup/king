@@ -45,9 +45,3 @@ export function del(id) {
   })
 }
 
-export function getAllList() {
-  return request({
-    url: url + '/allList',
-    method: 'get'
-  })
-}

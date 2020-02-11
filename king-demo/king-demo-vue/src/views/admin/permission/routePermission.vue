@@ -111,7 +111,7 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del, getAllList } from '@/api/admin/permission/routePermission'
+  import { getList, add, get, update, del } from '@/api/admin/permission/routePermission'
   import { getTree } from '@/api/admin/route'
   import { parseTime } from '@/utils'
   import store from '@/store'
@@ -137,6 +137,10 @@
           page: 1,
           limit: 10,
           like: undefined
+        },
+        quareAll: {
+          page: 1,
+          limit: -1
         },
         temp: undefined,
         dialogFormVisible: false,
@@ -230,7 +234,7 @@
           this.getTreeData()
           this.loading_add = true
           this.resetTemp()
-          getAllList().then(data => {
+          getList(this.quareAll).then(data => {
             this.formaterList(data.list)
             this.temp.fList = data.list
             this.dialogType = 'add'
@@ -279,7 +283,7 @@
           row.loading_handleUpdate = true
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
-            getAllList().then(data => {
+            getList(this.quareAll).then(data => {
               this.formaterList(data.list)
               this.temp.fList = data.list
               this.dialogType = 'update'

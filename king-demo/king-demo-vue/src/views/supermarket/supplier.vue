@@ -356,7 +356,7 @@ export default {
         })
       })
     },
-    handleReadDel(row) {
+    delData(row) {
       this.notifyClicking(row.loading_handleReadDel, () => {
         row.loading_handleReadDel = true
         row.visible_readDel = false

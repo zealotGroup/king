@@ -2,6 +2,8 @@ package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.base.page.Page;
+import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.zt.dbif.service.BaseService;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysRoute;
@@ -38,12 +40,16 @@ public class RouteController extends BaseController<SysRoute, Long> {
     public JSONObject add(String name, Long fId) {
         return new ResultTemple() {
             @Override
-            protected void dosomething() {
+            protected void verification() {
                 Funcation.AssertNotNull(name, "name为空");
-                Funcation.AssertNotNull(fId, "fId为空");
-                SysRoute sysRoute = sysRouteService.getById(fId);
-                Funcation.AssertNotNull(sysRoute, "该FID数据不存在");
+                if (fId != null) {
+                    SysRoute sysRoute = sysRouteService.getById(fId);
+                    Funcation.AssertNotNull(sysRoute, "该FID数据不存在");
+                }
+            }
 
+            @Override
+            protected void dosomething() {
                 SysRoute vo = new SysRoute();
                 vo.setName(name);
                 vo.setFId(fId);
@@ -63,12 +69,7 @@ public class RouteController extends BaseController<SysRoute, Long> {
             protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
                 Funcation.AssertNotNull(name, "name为空");
-                Funcation.AssertNotNull(fId, "fId为空");
-                {
-                    SysRoute sysRoute = sysRouteService.getById(id);
-                    Funcation.AssertNotNull(sysRoute, "该ID数据不存在");
-                }
-                {
+                if (fId != null) {
                     SysRoute sysRoute = sysRouteService.getById(fId);
                     Funcation.AssertNotNull(sysRoute, "该FID数据不存在");
                 }
@@ -76,7 +77,7 @@ public class RouteController extends BaseController<SysRoute, Long> {
 
             @Override
             protected void dosomething() {
-                SysRoute vo = new SysRoute();
+                SysRoute vo = sysRouteService.getById(id);
                 vo.setName(name);
                 vo.setFId(fId);
                 sysRouteService.update(vo);
