@@ -10,7 +10,7 @@ const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 30000, // 请求超时时间
   transformRequest: [function(data) {
-    return $qs.stringify({ ...data })
+    return $qs.stringify({ ...data }, { indices: false })
   }],
   datatype: 'jsonp'
 })

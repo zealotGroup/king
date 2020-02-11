@@ -43,12 +43,12 @@
             <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
 
             <el-popover placement="top" width="160" v-model="scope.row.visible_del">
-              <p>确定要物理删除么？</p>
+              <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
                 <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
                 <el-button round type="primary" size="mini" @click="delData(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="scope.row.visible_del = true">{{$t('readDel')}}</el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="scope.row.visible_del = true">{{$t('del')}}</el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -71,12 +71,12 @@
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
         <el-form-item label="选择权限" prop="route">
-          <el-tree
+          <el-tree ref="el-tree"
             :props="props"
-            :data="temp.route"
+            :data="temp.tree.data"
             node-key="id"
-            :default-checked-keys="[1,11]"
-            default-expand-all
+            :default-checked-keys="temp.tree.checked"
+            :default-expanded-keys="temp.tree.checked"
             show-checkbox
             @check-change="handleCheckChange">
           </el-tree>
@@ -140,17 +140,20 @@
       this.getList()
     },
     methods: {
-      formaterTreeName(item) {
+      dealTree(item) {
         if (item.children) {
+          if (item.checked) {
+            this.temp.tree.checked.push(item.id)
+          }
           item.name = this.$t('route.' + item.name)
-          item.children.forEach(this.formaterTreeName)
+          item.children.forEach(this.dealTree)
         }
       },
-      getTreeData() {
-        getTree().then(data => {
-          const tree = data.routes
-          tree.forEach(this.formaterTreeName)
-          this.temp.route = tree
+      getTreeData(id) {
+        getTree(id).then(data => {
+          const tree = data.routeTree
+          tree.forEach(this.dealTree)
+          this.temp.tree.data = tree
         }).catch(() => {
           this.listLoading = false
         })
@@ -161,7 +164,7 @@
         this.temp = {
           id: '',
           name: '',
-          route: undefined
+          tree: { data: [], checked: [] }
         }
       },
       cleanDialog() {
@@ -169,6 +172,9 @@
         this.dialogType = ''
         this.dialogFormVisible = false
         this.dialogTitle = ''
+        this.loading_add = false
+        this.loading_addData = false
+        this.loading_updateData = false
       },
       notifyClicking(loading, callBack) {
         if (loading) {
@@ -210,9 +216,9 @@
       },
       handleAdd() {
         this.notifyClicking(this.loading_add, () => {
-          this.getTreeData()
-          this.loading_add = true
           this.resetTemp()
+          this.getTreeData(-1)
+          this.loading_add = true
           this.dialogType = 'add'
           this.dialogFormVisible = true
           this.dialogTitle = 'add'
@@ -228,6 +234,8 @@
           this.loading_addData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
+              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
+              this.temp.tree = { data: [], checked: [] }
               add(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'add')
@@ -254,10 +262,11 @@
       handleUpdate(row) {
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
+          this.resetTemp()
           get(row.id).then((data) => {
-            this.resetTemp()
-            this.temp = Object.assign({}, data.vo)
-            this.getTreeData()
+            this.temp.id = data.vo.id
+            this.temp.name = data.vo.name
+            this.getTreeData(this.temp.id)
             this.dialogType = 'update'
             this.dialogFormVisible = true
             this.dialogTitle = 'update'
@@ -283,6 +292,8 @@
           this.loading_updateData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
+              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
+              this.temp.tree = { data: [], checked: [] }
               update(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'replace')

@@ -2,10 +2,13 @@ import request from '@/utils/request'
 
 const url = '/route'
 
-export function getTree() {
+export function getTree(id) {
   return request({
     url: url + '/tree',
-    method: 'get'
+    method: 'get',
+    params: {
+      id
+    }
   })
 }
 
