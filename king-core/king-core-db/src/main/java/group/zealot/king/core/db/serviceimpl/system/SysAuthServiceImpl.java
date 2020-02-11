@@ -123,15 +123,14 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
     @Override
     public JSONArray getRoute(Long sysUserId) {
         JSONArray jsonArray = new JSONArray();
+        //获取当前用户 路由角色
         SysRoleRoute sysRoleRoute = getSysRoleRoute(sysUserId);
+        //获取当前用户 路由权限
         List<SysRoute> list = getSysRoute(sysRoleRoute.getId());
 
         list.forEach(sysRoute -> {
             if (sysRoute.getFId() == null) {
-                JSONObject item = new JSONObject();
-                item.put("name", sysRoute.getName());
-                item.put("id", sysRoute.getId());
-                item.put("children", new JSONArray());
+                JSONObject item = of(sysRoute);
                 jsonArray.add(item);
             }
         });
@@ -144,13 +143,19 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
         list.forEach(sysRoute -> {
             if (NumberUtil.equals(sysRoute.getFId(), item.getInteger("id"))) {
                 JSONArray children = item.getJSONArray("children");
-                JSONObject child = new JSONObject();
-                child.put("name", sysRoute.getName());
-                child.put("id", sysRoute.getId());
-                child.put("children", new JSONArray());
+                JSONObject child = of(sysRoute);
                 children.add(child);
                 setChildren(child, list);
             }
         });
+    }
+
+    private JSONObject of(SysRoute sysRoute) {
+        JSONObject item = new JSONObject();
+        item.put("type", sysRoute.getType());
+        item.put("name", sysRoute.getName());
+        item.put("id", sysRoute.getId());
+        item.put("children", new JSONArray());
+        return item;
     }
 }

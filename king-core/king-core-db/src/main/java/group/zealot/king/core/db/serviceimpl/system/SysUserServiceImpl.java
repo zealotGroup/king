@@ -54,7 +54,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
         SysUser sysUser = new SysUser();
         sysUser.setUsername(username);
         sysUser.setPassword(getNewPassword(username, password));
-        insert(sysUser);
+        sysUser = insert(sysUser);
 
         {
             SysAuth sysAuth = new SysAuth();

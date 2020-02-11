@@ -43,14 +43,12 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public E insert(E e) {
-        getJpaRepository().save(e);
-        return e;
+        return getJpaRepository().save(e);
     }
 
     @Override
     public E update(E e) {
-        getJpaRepository().save(e);
-        return e;
+        return getJpaRepository().save(e);
     }
 
     @Override

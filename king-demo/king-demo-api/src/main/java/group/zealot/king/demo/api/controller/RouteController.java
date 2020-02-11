@@ -23,12 +23,12 @@ public class RouteController extends BaseController<SysRoute, Long> {
     }
 
     @RequestMapping("tree")
-    public JSONObject tree() {
+    public JSONObject tree(Long id) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
                 JSONObject data = new JSONObject();
-                data.put("routes", sysAuthService.getRoute(getLoginUserId()));
+                data.put("routeTree", sysRouteService.getRouteTree(id));
                 resultJson.set(data);
             }
         }.result();
