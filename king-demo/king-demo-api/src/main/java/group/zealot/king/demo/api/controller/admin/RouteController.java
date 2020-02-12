@@ -1,11 +1,7 @@
-package group.zealot.king.demo.api.controller;
+package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.base.page.Page;
-import group.zealot.king.base.page.PageRequest;
-import group.zealot.king.core.zt.dbif.service.BaseService;
-import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -16,13 +12,8 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/route")
+@RequestMapping("/admin/route")
 public class RouteController extends BaseController<SysRoute, Long> {
-
-    @Override
-    protected BaseService<SysRoute, Long> getBaseService() {
-        return sysRouteService;
-    }
 
     @RequestMapping("tree")
     public JSONObject tree(Long id) {

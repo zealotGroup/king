@@ -1,8 +1,7 @@
-package group.zealot.king.demo.api.controller;
+package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.dbif.service.BaseService;
 import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -13,15 +12,8 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/admin/user")
 public class UserController extends BaseController<SysUser, Long> {
-
-    @Override
-    protected BaseService<SysUser, Long> getBaseService() {
-        return sysUserService;
-    }
-
-
     @RequestMapping("add")
     public JSONObject add(String username, byte[] password, String status, String level,
                           Long roleDataId, Long roleRouteId) {

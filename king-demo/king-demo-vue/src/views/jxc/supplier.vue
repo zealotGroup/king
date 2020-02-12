@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { getList, add, update, del, recover, realDel } from '@/api/supermarket/supplier'
+import { getList, add, update, del, recover, realDel } from '@/api/jxc/supplier'
 import { parseTime } from '@/utils'
 import store from '@/store'
 

@@ -1,25 +1,19 @@
-package group.zealot.king.demo.api.controller;
+package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.dbif.service.BaseService;
-import group.zealot.king.core.zt.entity.system.SysRoleData;
+import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.sysRoleDataService;
+import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
 
 
 @RestController
-@RequestMapping("/roleData")
-public class RoleDataController extends BaseController<SysRoleData, Long> {
-
-    @Override
-    protected BaseService<SysRoleData, Long> getBaseService() {
-        return sysRoleDataService;
-    }
+@RequestMapping("/jxc/goods")
+public class GoodsController extends BaseController<JxcGoods, Long> {
 
     @RequestMapping("add")
     public JSONObject add(String name) {
@@ -31,12 +25,12 @@ public class RoleDataController extends BaseController<SysRoleData, Long> {
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = new SysRoleData();
-                sysRoleData.setName(name);
-                sysRoleData = sysRoleDataService.insert(sysRoleData);
+                JxcGoods vo = new JxcGoods();
+                vo.setName(name);
+                vo = jxcGoodsService.insert(vo);
 
                 JSONObject data = new JSONObject();
-                data.put("vo", sysRoleData);
+                data.put("vo", vo);
                 resultJson.setData(data);
             }
         }.result();
@@ -53,9 +47,9 @@ public class RoleDataController extends BaseController<SysRoleData, Long> {
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = sysRoleDataService.getById(id);
-                sysRoleData.setName(name);
-                sysRoleDataService.update(sysRoleData);
+                JxcGoods vo = jxcGoodsService.getById(id);
+                vo.setName(name);
+                jxcGoodsService.update(vo);
             }
         }.result();
     }

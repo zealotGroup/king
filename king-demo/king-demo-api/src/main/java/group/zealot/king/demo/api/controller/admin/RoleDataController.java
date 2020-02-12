@@ -1,25 +1,19 @@
-package group.zealot.king.demo.api.controller;
+package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.dbif.service.BaseService;
-import group.zealot.king.core.zt.entity.system.SysData;
+import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.*;
+import static group.zealot.king.core.zt.dbif.Services.sysRoleDataService;
 
 
 @RestController
-@RequestMapping("/data")
-public class DataController extends BaseController<SysData, Long> {
-
-    @Override
-    protected BaseService<SysData, Long> getBaseService() {
-        return sysDataService;
-    }
+@RequestMapping("/admin/roleData")
+public class RoleDataController extends BaseController<SysRoleData, Long> {
 
     @RequestMapping("add")
     public JSONObject add(String name) {
@@ -31,12 +25,12 @@ public class DataController extends BaseController<SysData, Long> {
 
             @Override
             protected void dosomething() {
-                SysData vo = new SysData();
-                vo.setName(name);
-                vo = sysDataService.insert(vo);
+                SysRoleData sysRoleData = new SysRoleData();
+                sysRoleData.setName(name);
+                sysRoleData = sysRoleDataService.insert(sysRoleData);
 
                 JSONObject data = new JSONObject();
-                data.put("vo", vo);
+                data.put("vo", sysRoleData);
                 resultJson.setData(data);
             }
         }.result();
@@ -53,9 +47,9 @@ public class DataController extends BaseController<SysData, Long> {
 
             @Override
             protected void dosomething() {
-                SysData vo = sysDataService.getById(id);
-                vo.setName(name);
-                sysDataService.update(vo);
+                SysRoleData sysRoleData = sysRoleDataService.getById(id);
+                sysRoleData.setName(name);
+                sysRoleDataService.update(sysRoleData);
             }
         }.result();
     }

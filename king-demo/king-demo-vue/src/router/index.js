@@ -8,10 +8,10 @@ import Layout from '@/views/layout/Layout'
 import Blank from '@/views/Blank'
 /* views */
 import dashboard_index from '@/views/dashboard/index'
-import supermarket_supplier from '@/views/supermarket/supplier'
-import supermarket_supplier1 from '@/views/supermarket/supplier'
-import supermarket_supplier2 from '@/views/supermarket/supplier'
-import supermarket_supplier3 from '@/views/supermarket/supplier'
+import jxc_goods from '@/views/jxc/goods'
+import jxc_lable from '@/views/jxc/goods'
+import jxc_stock from '@/views/jxc/goods'
+import jxc_channel from '@/views/jxc/goods'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
 import admin_permission from '@/views/admin/permission'
@@ -52,14 +52,14 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/index',
     name: 'index',
     children: [
       {
-        path: '/dashboard',
+        path: '/index',
         component: dashboard_index,
-        name: 'dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        name: 'index',
+        meta: {title: 'index', icon: 'dashboard', noCache: true}
       }
     ]
   }
@@ -75,46 +75,46 @@ export const routerMap = [
   {
     path: '',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/index',
     name: 'index',
     children: [
       {
-        path: 'dashboard',
+        path: 'index',
         component: dashboard_index,
-        name: 'dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        name: 'index',
+        meta: {title: 'index', icon: 'dashboard', noCache: true}
       }
     ]
   },
   {
-    path: '/supermarket',
+    path: '/jxc',
     component: Layout,
-    redirect: '/supermarket/supplier',
-    name: 'supermarket',
+    redirect: '/jxc/goods',
+    name: 'jxc',
     meta: {
-      title: 'supermarket',
+      title: 'jxc',
       icon: 'shoppingCard'
     },
     children: [{
-      path: 'supplier',
-      component: supermarket_supplier,
-      name: 'supplier',
-      meta: { title: 'supplier', icon: 'shoppingCard', noCache: true }
+      path: 'goods',
+      component: jxc_goods,
+      name: 'goods',
+      meta: {title: 'goods', icon: 'goods', noCache: true}
     }, {
-      path: 'customer',
-      component: supermarket_supplier1,
-      name: 'customer',
-      meta: { title: 'customer', icon: 'customer', noCache: true }
+      path: 'lable',
+      component: jxc_lable,
+      name: 'lable',
+      meta: {title: 'lable', icon: 'lable', noCache: true}
     }, {
-      path: 'product',
-      component: supermarket_supplier2,
-      name: 'product',
-      meta: { title: 'product', icon: 'product', noCache: true }
+      path: 'stock',
+      component: jxc_stock,
+      name: 'stock',
+      meta: {title: 'stock', icon: 'stock', noCache: true}
     }, {
-      path: 'reportForm',
-      component: supermarket_supplier3,
-      name: 'reportForm',
-      meta: { title: 'reportForm', icon: 'reportForm', noCache: true }
+      path: 'channel',
+      component: jxc_channel,
+      name: 'channel',
+      meta: {title: 'channel', icon: 'channel', noCache: true}
     }]
   },
   {

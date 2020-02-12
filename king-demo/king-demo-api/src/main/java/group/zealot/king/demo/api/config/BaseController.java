@@ -8,18 +8,15 @@ import group.zealot.king.core.zt.dbif.service.BaseService;
 import group.zealot.king.core.zt.entity.BaseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.Serializable;
 
 public abstract class BaseController<E extends BaseEntity, P extends Serializable> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
-    abstract protected BaseService<E, P> getBaseService();
-
-    protected Long getLoginUserId() {
-        return LoginUtil.getSysUserId();
-    }
+    @Autowired
+    public BaseService<E, P> baseService;
 
     @RequestMapping("list")
     protected JSONObject list(Integer page, Integer limit, E e) {
@@ -37,8 +34,8 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
                 pageRequest.setLimit(limit);
                 pageRequest.setFilters(e);
 
-                Page<E> page = getBaseService().pageQuery(pageRequest);
-                getBaseService().formater(page.getList());
+                Page<E> page = baseService.pageQuery(pageRequest);
+                baseService.formater(page.getList());
 
                 JSONObject data = new JSONObject();
                 data.put("total", page.getCount());
@@ -58,8 +55,8 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
 
             @Override
             protected void dosomething() {
-                E vo = getBaseService().getById(id);
-                getBaseService().formater(vo);
+                E vo = baseService.getById(id);
+                baseService.formater(vo);
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
                 resultJson.set(data);
@@ -77,7 +74,7 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
 
             @Override
             protected void dosomething() {
-                getBaseService().deleteById(id);
+                baseService.deleteById(id);
             }
         }.result();
     }

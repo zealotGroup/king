@@ -68,7 +68,12 @@ export default {
     customer: '客户',
     product: '产品',
     reportForm: '报表',
-    table: '表格'
+    table: '表格',
+    jxc: '进销存系统',
+    goods: '商品',
+    lable: '标签',
+    channel: '渠道',
+    stock: '库存'
   },
   navbar: {
     logOut: '退出登录',
@@ -263,5 +268,6 @@ export default {
   product: '产品',
   reportForm: '报表',
   routePermission: '路由权限',
-  dataPermission: '数据权限'
+  dataPermission: '数据权限',
+  jxc: '进销存系统'
 }
