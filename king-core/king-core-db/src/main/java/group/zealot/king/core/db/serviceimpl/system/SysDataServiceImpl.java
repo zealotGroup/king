@@ -13,14 +13,4 @@ import static group.zealot.king.core.db.mybatis.Mappers.sysDataMapper;
 
 @Service
 public class SysDataServiceImpl extends BaseServiceImpl<SysData, Long> implements SysDataService {
-
-    @Override
-    protected BaseMapper<SysData, Long> getBaseMapper() {
-        return sysDataMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysData, Long> getJpaRepository() {
-        return sysDataRepository;
-    }
 }

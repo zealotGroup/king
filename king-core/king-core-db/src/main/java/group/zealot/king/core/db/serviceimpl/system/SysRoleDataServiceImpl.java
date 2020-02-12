@@ -13,14 +13,4 @@ import static group.zealot.king.core.db.jpa.Repositorys.*;
 
 @Service
 public class SysRoleDataServiceImpl extends BaseServiceImpl<SysRoleData, Long> implements SysRoleDataService {
-
-    @Override
-    protected BaseMapper<SysRoleData, Long> getBaseMapper() {
-        return sysRoleDataMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysRoleData, Long> getJpaRepository() {
-        return sysRoleDataRepository;
-    }
 }

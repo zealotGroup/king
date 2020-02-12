@@ -23,16 +23,6 @@ public class SysRouteServiceImpl extends BaseServiceImpl<SysRoute, Long> impleme
     private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
-    protected BaseMapper<SysRoute, Long> getBaseMapper() {
-        return sysRouteMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysRoute, Long> getJpaRepository() {
-        return sysRouteRepository;
-    }
-
-    @Override
     public JSONArray getRouteTree(Long sysRoleRouteId) {
         JSONArray jsonArray = new JSONArray();
         //获取当前用户 路由权限

@@ -12,14 +12,4 @@ import static group.zealot.king.core.db.mybatis.Mappers.jxcChannelMapper;
 
 @Service
 public class JxcChannelServiceImpl extends BaseServiceImpl<JxcChannel, Long> implements JxcChannelService {
-
-    @Override
-    protected BaseMapper<JxcChannel, Long> getBaseMapper() {
-        return jxcChannelMapper;
-    }
-
-    @Override
-    protected JpaRepository<JxcChannel, Long> getJpaRepository() {
-        return jxcChannelRepository;
-    }
 }

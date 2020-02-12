@@ -25,16 +25,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
     private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
-    protected BaseMapper<SysUser, Long> getBaseMapper() {
-        return sysUserMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysUser, Long> getJpaRepository() {
-        return sysUserRepository;
-    }
-
-    @Override
     public String getNewPassword(String username, byte[] password) {
         //加密密码
         byte[] hashPassword = DigestUtils.sha1(password, username.getBytes(), 1024);

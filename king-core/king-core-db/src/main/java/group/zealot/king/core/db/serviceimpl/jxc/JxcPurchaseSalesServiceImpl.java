@@ -12,14 +12,4 @@ import static group.zealot.king.core.db.mybatis.Mappers.jxcPurchaseSalesMapper;
 
 @Service
 public class JxcPurchaseSalesServiceImpl extends BaseServiceImpl<JxcPurchaseSales, Long> implements JxcPurchaseSalesService {
-
-    @Override
-    protected BaseMapper<JxcPurchaseSales, Long> getBaseMapper() {
-        return jxcPurchaseSalesMapper;
-    }
-
-    @Override
-    protected JpaRepository<JxcPurchaseSales, Long> getJpaRepository() {
-        return jxcPurchaseSalesRepository;
-    }
 }

@@ -6,6 +6,7 @@ import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.zt.dbif.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,52 +19,54 @@ import java.util.Optional;
 public abstract class BaseServiceImpl<E, P extends Serializable> implements BaseService<E, P> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected abstract BaseMapper<E, P> getBaseMapper();
+    @Autowired
+    public BaseMapper<E, P> baseMapper;
 
-    protected abstract JpaRepository<E, P> getJpaRepository();
+    @Autowired
+    public JpaRepository<E, P> jpaRepository;
 
     @Override
     public E getById(P p) {
-        return nullAble(getJpaRepository().findById(p));
+        return nullAble(jpaRepository.findById(p));
     }
 
     @Override
     public E get(E e) {
-        return nullAble(getJpaRepository().findOne(getExample(e)));
+        return nullAble(jpaRepository.findOne(getExample(e)));
     }
 
     @Override
     public void deleteById(P p) {
-        getJpaRepository().deleteById(p);
+        jpaRepository.deleteById(p);
     }
 
     @Override
     public void delete(E e) {
-        getJpaRepository().delete(e);
+        jpaRepository.delete(e);
     }
 
     @Override
     public E insert(E e) {
-        return getJpaRepository().save(e);
+        return jpaRepository.save(e);
     }
 
     @Override
     public E update(E e) {
-        return getJpaRepository().save(e);
+        return jpaRepository.save(e);
     }
 
     @Override
     public List<E> getList() {
-        return getJpaRepository().findAll();
+        return jpaRepository.findAll();
     }
 
     @Override
     public List<E> getList(E e) {
-        return getJpaRepository().findAll(getExample(e));
+        return jpaRepository.findAll(getExample(e));
     }
 
     public List<E> getList(Example<E> eExample, Sort sort) {
-        return getJpaRepository().findAll(eExample, sort);
+        return jpaRepository.findAll(eExample, sort);
     }
 
     @Override
@@ -73,7 +76,7 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
         }
         org.springframework.data.domain.PageRequest Pageable
                 = org.springframework.data.domain.PageRequest.of(pageRequest.getPage() - 1, pageRequest.getLimit());
-        org.springframework.data.domain.Page<E> page = getJpaRepository().findAll(getExample(pageRequest.getFilters()), Pageable);
+        org.springframework.data.domain.Page<E> page = jpaRepository.findAll(getExample(pageRequest.getFilters()), Pageable);
         Page resultPage = new Page();
         ArrayList<E> list = new ArrayList<>();
         page.forEach(e -> list.add(e));

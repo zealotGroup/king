@@ -12,14 +12,4 @@ import static group.zealot.king.core.db.mybatis.Mappers.jxcLableMapper;
 
 @Service
 public class JxcLableServiceImpl extends BaseServiceImpl<JxcLable, Long> implements JxcLableService {
-
-    @Override
-    protected BaseMapper<JxcLable, Long> getBaseMapper() {
-        return jxcLableMapper;
-    }
-
-    @Override
-    protected JpaRepository<JxcLable, Long> getJpaRepository() {
-        return jxcLableRepository;
-    }
 }

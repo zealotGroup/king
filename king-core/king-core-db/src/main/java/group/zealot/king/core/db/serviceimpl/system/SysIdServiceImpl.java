@@ -22,14 +22,4 @@ public class SysIdServiceImpl extends BaseServiceImpl<SysId, Long> implements Sy
         insert(sysId);
         return sysId.getId();
     }
-
-    @Override
-    protected BaseMapper<SysId, Long> getBaseMapper() {
-        return sysIdMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysId, Long> getJpaRepository() {
-        return sysIdRepository;
-    }
 }

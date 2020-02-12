@@ -22,16 +22,6 @@ public class SysRoleRouteServiceImpl extends BaseServiceImpl<SysRoleRoute, Long>
     private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
-    protected BaseMapper<SysRoleRoute, Long> getBaseMapper() {
-        return sysRoleRouteMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysRoleRoute, Long> getJpaRepository() {
-        return sysRoleRouteRepository;
-    }
-
-    @Override
     public SysRoleRoute insert(String name, List<Long> routeList) {
         SysRoleRoute sysRoleRoute = new SysRoleRoute();
         sysRoleRoute.setName(name);

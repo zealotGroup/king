@@ -29,16 +29,6 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
     @Autowired
     private SysDataServiceImpl sysDataServiceImpl;
 
-    @Override
-    public BaseMapper<SysAuth, Long> getBaseMapper() {
-        return sysAuthMapper;
-    }
-
-    @Override
-    protected JpaRepository<SysAuth, Long> getJpaRepository() {
-        return sysAuthRepository;
-    }
-
 
     @Override
     public SysAuth getSysAuthRoleData(Long sysUserId) {
