@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'data'
+const url = 'admin/data'
 export function getList(query) {
   return request({
     url: url + '/list',

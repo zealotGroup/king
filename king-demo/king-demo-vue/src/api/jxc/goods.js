@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'admin/roleData'
+const url = '/jxc/goods'
 export function getList(query) {
   return request({
     url: url + '/list',
