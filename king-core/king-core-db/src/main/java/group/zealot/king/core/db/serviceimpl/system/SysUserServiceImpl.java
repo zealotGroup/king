@@ -26,7 +26,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 
     @Override
     protected BaseMapper<SysUser, Long> getBaseMapper() {
-        return sysUserDaoMapper;
+        return sysUserMapper;
     }
 
     @Override

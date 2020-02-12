@@ -5,7 +5,7 @@ import group.zealot.king.core.zt.entity.system.SysId;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SysIdDaoMapper extends BaseDao<SysId, Long> {
+public class SysIdMapper extends BaseDao<SysId, Long> {
     public Integer getMax() {
         return selectOne("getMax");
     }

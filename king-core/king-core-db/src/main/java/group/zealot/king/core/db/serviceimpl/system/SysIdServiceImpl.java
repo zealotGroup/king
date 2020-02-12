@@ -25,7 +25,7 @@ public class SysIdServiceImpl extends BaseServiceImpl<SysId, Long> implements Sy
 
     @Override
     protected BaseMapper<SysId, Long> getBaseMapper() {
-        return sysIdDaoMapper;
+        return sysIdMapper;
     }
 
     @Override

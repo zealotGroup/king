@@ -7,7 +7,7 @@ import group.zealot.king.core.zt.dbif.service.system.SysRoleDataService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import static group.zealot.king.core.db.mybatis.Mappers.sysRoleDataDaoMapper;
+import static group.zealot.king.core.db.mybatis.Mappers.sysRoleDataMapper;
 import static group.zealot.king.core.db.jpa.Repositorys.*;
 
 
@@ -16,7 +16,7 @@ public class SysRoleDataServiceImpl extends BaseServiceImpl<SysRoleData, Long> i
 
     @Override
     protected BaseMapper<SysRoleData, Long> getBaseMapper() {
-        return sysRoleDataDaoMapper;
+        return sysRoleDataMapper;
     }
 
     @Override

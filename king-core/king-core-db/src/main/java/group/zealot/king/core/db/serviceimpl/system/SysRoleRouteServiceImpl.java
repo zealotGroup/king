@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static group.zealot.king.core.db.mybatis.Mappers.sysRoleRouteDaoMapper;
+import static group.zealot.king.core.db.mybatis.Mappers.sysRoleRouteMapper;
 import static group.zealot.king.core.db.jpa.Repositorys.*;
 
 
@@ -23,7 +23,7 @@ public class SysRoleRouteServiceImpl extends BaseServiceImpl<SysRoleRoute, Long>
 
     @Override
     protected BaseMapper<SysRoleRoute, Long> getBaseMapper() {
-        return sysRoleRouteDaoMapper;
+        return sysRoleRouteMapper;
     }
 
     @Override

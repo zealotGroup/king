@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group.zealot.king.core.db.jpa.Repositorys.sysAuthRepository;
-import static group.zealot.king.core.db.mybatis.Mappers.sysAuthDaoMapper;
+import static group.zealot.king.core.db.mybatis.Mappers.sysAuthMapper;
 
 @Service
 public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
@@ -31,7 +31,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
 
     @Override
     public BaseMapper<SysAuth, Long> getBaseMapper() {
-        return sysAuthDaoMapper;
+        return sysAuthMapper;
     }
 
     @Override

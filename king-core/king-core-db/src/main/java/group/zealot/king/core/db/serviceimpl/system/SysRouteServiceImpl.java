@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
-import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.core.zt.dbif.service.system.SysRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static group.zealot.king.core.db.mybatis.Mappers.sysRouteDaoMapper;
+import static group.zealot.king.core.db.mybatis.Mappers.sysRouteMapper;
 import static group.zealot.king.core.db.jpa.Repositorys.*;
 
 
@@ -25,7 +24,7 @@ public class SysRouteServiceImpl extends BaseServiceImpl<SysRoute, Long> impleme
 
     @Override
     protected BaseMapper<SysRoute, Long> getBaseMapper() {
-        return sysRouteDaoMapper;
+        return sysRouteMapper;
     }
 
     @Override

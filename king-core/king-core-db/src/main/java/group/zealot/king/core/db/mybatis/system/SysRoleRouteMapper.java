@@ -1,10 +1,10 @@
 package group.zealot.king.core.db.mybatis.system;
 
 import group.zealot.king.core.db.mybatis.core.base.BaseDao;
-import group.zealot.king.core.zt.entity.system.SysData;
+import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SysDataDaoMapper extends BaseDao<SysData, Long> {
+public class SysRoleRouteMapper extends BaseDao<SysRoleRoute, Long> {
 
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import static group.zealot.king.core.db.jpa.Repositorys.sysDataRepository;
-import static group.zealot.king.core.db.mybatis.Mappers.sysDataDaoMapper;
+import static group.zealot.king.core.db.mybatis.Mappers.sysDataMapper;
 
 
 @Service
@@ -16,7 +16,7 @@ public class SysDataServiceImpl extends BaseServiceImpl<SysData, Long> implement
 
     @Override
     protected BaseMapper<SysData, Long> getBaseMapper() {
-        return sysDataDaoMapper;
+        return sysDataMapper;
     }
 
     @Override

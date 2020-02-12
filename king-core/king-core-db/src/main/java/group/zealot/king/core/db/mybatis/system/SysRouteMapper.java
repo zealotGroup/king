@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class SysRouteDaoMapper extends BaseDao<SysRoute, Long> {
+public class SysRouteMapper extends BaseDao<SysRoute, Long> {
 }

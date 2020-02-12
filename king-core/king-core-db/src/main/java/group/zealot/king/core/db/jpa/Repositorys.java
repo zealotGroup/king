@@ -1,5 +1,6 @@
 package group.zealot.king.core.db.jpa;
 
+import group.zealot.king.core.db.jpa.jxc.*;
 import group.zealot.king.core.db.jpa.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,43 @@ public class Repositorys {
     public static SysRoleRouteRepository sysRoleRouteRepository;
     public static SysRouteRepository sysRouteRepository;
     public static SysUserRepository sysUserRepository;
+
+    public static JxcChannelRepository jxcChannelRepository;
+    public static JxcGoodsLableRepository jxcGoodsLableRepository;
+    public static JxcGoodsRepository jxcGoodsRepository;
+    public static JxcLableRepository jxcLableRepository;
+    public static JxcPurchaseSalesRepository jxcPurchaseSalesRepository;
+    public static JxcStockRepository jxcStockRepository;
+
+    @Autowired(required = false)
+    public void setJxcChannelRepository(JxcChannelRepository jxcChannelRepository) {
+        Repositorys.jxcChannelRepository = jxcChannelRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcGoodsLableRepository(JxcGoodsLableRepository jxcGoodsLableRepository) {
+        Repositorys.jxcGoodsLableRepository = jxcGoodsLableRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcGoodsRepository(JxcGoodsRepository jxcGoodsRepository) {
+        Repositorys.jxcGoodsRepository = jxcGoodsRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcLableRepository(JxcLableRepository jxcLableRepository) {
+        Repositorys.jxcLableRepository = jxcLableRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcPurchaseSalesRepository(JxcPurchaseSalesRepository jxcPurchaseSalesRepository) {
+        Repositorys.jxcPurchaseSalesRepository = jxcPurchaseSalesRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcStockRepository(JxcStockRepository jxcStockRepository) {
+        Repositorys.jxcStockRepository = jxcStockRepository;
+    }
 
     @Autowired(required = false)
     public void setSysAuthRepository(SysAuthRepository sysAuthRepository) {
