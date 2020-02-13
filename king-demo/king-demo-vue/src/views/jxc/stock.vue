@@ -1,54 +1,55 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item"
-                v-model="listQuery.like" placeholder="输入关键词搜索">
+      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
       </el-input>
     </div>
     <div class="filter-container">
-      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}
-      </el-button>
-      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd"
-                 type="primary" icon="el-icon-edit">{{$t('add')}}
-      </el-button>
+      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
+      <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
               style="width: 100%;min-height:500px;">
-      <el-table-column min-width="60px" align="center" :label="$t('No')">
+      <el-table-column  min-width="60px"align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('id')" v-if="checkLevel('super')">
+      <el-table-column min-width="130px" align="center" :label="$t('id')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('name')">
+      <el-table-column min-width="100px" :label="$t('goodsName')">
         <template slot-scope="scope">
-          <span>{{scope.row.name }}</span>
+          <span>{{scope.row.goodsName }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('fid')" v-if="checkLevel('super')">
+      <el-table-column min-width="100px" :label="$t('totalSize')">
         <template slot-scope="scope">
-          <span>{{scope.row.fId }}</span>
+          <span>{{scope.row.totalSize }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('type')">
+      <el-table-column min-width="100px" :label="$t('totalSales')">
         <template slot-scope="scope">
-          <span>{{$t(scope.row.type)}}</span>
+          <span>{{scope.row.totalSales }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('seq')">
+      <el-table-column min-width="100px" :label="$t('currentSize')">
         <template slot-scope="scope">
-          <span>{{scope.row.seq }}</span>
+          <span>{{scope.row.currentSize }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" :label="$t('unit')">
+        <template slot-scope="scope">
+          <span>{{scope.row.unit }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')" v-if="checkLevel('super')">
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('updateTime')">
         <template slot-scope="scope">
-          <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -59,18 +60,15 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate"
-                       @click="handleUpdate(scope.row)">{{$t('edit')}}
-            </el-button>
+            <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+
             <el-popover placement="top" width="160" v-model="scope.row.visible_del">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
                 <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="delData(scope.row)">确定</el-button>
+                <el-button round type="primary" size="mini" @click="delData(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del"
-                         @click="scope.row.visible_del = true">{{$t('del')}}
-              </el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="scope.row.visible_del = true">{{$t('del')}}</el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -79,52 +77,38 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange"
-                     :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
-                     layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px"
-               style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
-          <el-input v-model="temp.id"></el-input>
+          <el-input v-model="temp.id" ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('fId')" prop="fId">
-          <el-select v-model="temp.fId" placeholder="请选择">
-            <el-option
-              v-for="item in temp.fList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
+        <el-form-item :label="$t('goodsName')" prop="goodsId">
+          <el-select class="filter-item" v-model="temp.goodsId">
+            <el-option v-for="item in temp.goodsList" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('name')" prop="name">
-          <el-input v-model="temp.name" placeholder="标识code"></el-input>
+        <el-form-item :label="$t('totalSize')" prop="totalSize">
+          <el-input v-model="temp.totalSize"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('type')" prop="type">
-          <el-select class="filter-item" v-model="temp.type">
-            <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
-            </el-option>
-          </el-select>
+        <el-form-item :label="$t('totalSales')" prop="totalSales">
+          <el-input v-model="temp.totalSales"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('seq')" prop="seq">
-          <el-select class="filter-item" v-model="temp.seq">
-            <el-option v-for="item in seqList" :key="item" :label="$t(item)" :value="item">
-            </el-option>
-          </el-select>
+        <el-form-item :label="$t('currentSize')" prop="currentSize">
+          <el-input v-model="temp.currentSize"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('unit')" prop="unit">
+          <el-input v-model="temp.unit"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">
-          {{$t('confirm')}}
-        </el-button>
-        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData"
-                   @click="updateData">{{$t('confirm')}}
-        </el-button>
+        <el-button round v-if="dialogType === 'add'" type="primary" :loading="loading_addData" @click="addData">{{$t('confirm')}}</el-button>
+        <el-button round v-else="dialogType === 'update'" type="primary" :loading="loading_updateData" @click="updateData">{{$t('confirm')}}</el-button>
         <el-button round @click="cleanDialog">{{$t('cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -133,13 +117,13 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del } from '@/api/admin/permission/routePermission'
-  import { getTree } from '@/api/admin/route'
+  import { getList, add, get, update, del } from '@/api/jxc/stock'
+  import { getList as getGoodsList } from '@/api/jxc/goods'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
   export default {
-    name: 'routePermission',
+    name: 'stock',
     data() {
       return {
         props: {
@@ -161,8 +145,6 @@
           like: undefined
         },
         temp: undefined,
-        typeList: ['MENU', 'FUNCATION'],
-        seqList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
         dialogFormVisible: false,
         dialogType: '',
         dialogTitle: '',
@@ -171,13 +153,16 @@
           id: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ],
-          name: [
+          goodsId: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ],
-          type: [
+          totalSize: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ],
-          seq: [
+          totalSales: [
+            { required: true, message: this.$t('required'), trigger: 'blur' }
+          ],
+          currentSize: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ]
         }
@@ -188,27 +173,12 @@
       this.getList()
     },
     methods: {
-      getTreeData() {
-        getTree().then(data => {
-          const tree = data.routes
-          console.error(tree.length)
-          tree.forEach(function(item) {
-            console.error(item.name)
-          })
-          this.treeData = tree
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      handleCheckChange() {
-      },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
           id: '',
           name: '',
-          fId: '',
-          fList: []
+          goodsList: []
         }
       },
       cleanDialog() {
@@ -216,6 +186,9 @@
         this.dialogType = ''
         this.dialogFormVisible = false
         this.dialogTitle = ''
+        this.loading_add = false
+        this.loading_addData = false
+        this.loading_updateData = false
       },
       notifyClicking(loading, callBack) {
         if (loading) {
@@ -257,23 +230,20 @@
       },
       handleAdd() {
         this.notifyClicking(this.loading_add, () => {
-          this.getTreeData()
-          this.loading_add = true
           this.resetTemp()
-          getList({ page: 1, limit: -1 }).then(data => {
-            this.formaterList(data.list)
-            this.temp.fList = data.list
-            this.dialogType = 'add'
-            this.dialogFormVisible = true
-            this.dialogTitle = 'add'
-            this.rules.id[0].required = false
-            this.$nextTick(() => {
-              this.$refs['dataForm'].clearValidate()
-            })
-            this.loading_add = false
+          getGoodsList({ page: 1, limit: -1 }).then(data => {
+            this.temp.goodsList = data.list
           }).catch(() => {
-            this.loading_add = false
           })
+          this.loading_add = true
+          this.dialogType = 'add'
+          this.dialogFormVisible = true
+          this.dialogTitle = 'add'
+          this.rules.id[0].required = false
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
+          this.loading_add = false
         })
       },
       addData() {
@@ -307,11 +277,11 @@
       handleUpdate(row) {
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
+          this.resetTemp()
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
-            getList({ page: 1, limit: -1 }).then(data => {
-              this.formaterList(data.list)
-              this.temp.fList = data.list
+            getGoodsList({ page: 1, limit: -1 }).then(data => {
+              this.temp.goodsList = data.list
               this.dialogType = 'update'
               this.dialogFormVisible = true
               this.dialogTitle = 'update'
@@ -340,6 +310,8 @@
           this.loading_updateData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
+              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
+              this.temp.tree = { data: [], checked: [] }
               update(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'replace')
@@ -407,7 +379,6 @@
           v.waitingForFlush = false
           v.loading_del = false
           v.visible_del = false
-          v.name = this.$t('route.' + v.name) + ' [' + v.name + ']'
         }
       },
       formatJson(filterVal, jsonData) {

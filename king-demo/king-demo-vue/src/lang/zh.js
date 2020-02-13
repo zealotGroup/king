@@ -1,5 +1,7 @@
 export default {
   route: {
+    orderRecord: '订单记录',
+    record: '记录',
     index: '首页',
     dashboard: '首页',
     introduction: '简述',
@@ -179,7 +181,9 @@ export default {
     cancel: '取消',
     update: '更新',
     view: '查看',
-    add: '添加'
+    add: '添加',
+    SALE: '出售',
+    PURCHASE: '进货'
   },
   name: '名称',
   phone: '手机',
@@ -269,5 +273,15 @@ export default {
   reportForm: '报表',
   routePermission: '路由权限',
   dataPermission: '数据权限',
-  jxc: '进销存系统'
+  jxc: '进销存系统',
+  SALE: '出售',
+  PURCHASE: '进货',
+  MENU: '菜单',
+  FUNCATION: '功能',
+  goodsIdName: '',
+  totalSize: '累计总数',
+  totalSales: '累计销售总数',
+  currentSize: '当前总数',
+  unit: '单位',
+  goodsName: '商品名称'
 }

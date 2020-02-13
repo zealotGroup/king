@@ -63,7 +63,7 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="90px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id" ></el-input>
         </el-form-item>
@@ -99,7 +99,7 @@
   import store from '@/store'
 
   export default {
-    name: 'supplier',
+    name: 'routeRole',
     data() {
       return {
         props: {

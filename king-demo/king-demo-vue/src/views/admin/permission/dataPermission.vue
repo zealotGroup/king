@@ -100,7 +100,7 @@ import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'dataRole',
+  name: 'dataPermission',
   data() {
     return {
       /* 固定功能字段 start */

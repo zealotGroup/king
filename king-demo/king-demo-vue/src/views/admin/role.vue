@@ -14,7 +14,7 @@
   import routeRole from './role/routeRole'
 
   export default {
-    name: 'tab',
+    name: 'role',
     components: { 'dataRole': dataRole, 'routeRole': routeRole },
     data() {
       return {

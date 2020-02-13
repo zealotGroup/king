@@ -32,6 +32,12 @@ public class JxcStock extends BaseEntity {
     @Column
     private LocalDateTime updateTime;
 
+    /**
+     * 非数据库字段
+     */
+    @Transient
+    private String goodsName;
+
     @PrePersist
     protected void prePersist() {
         this.updateTime = LocalDateTime.now();

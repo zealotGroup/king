@@ -14,7 +14,7 @@
   import routePermission from './permission/routePermission'
 
   export default {
-    name: 'tab',
+    name: 'permission',
     components: { 'dataPermission': dataPermission, 'routePermission': routePermission },
     data() {
       return {

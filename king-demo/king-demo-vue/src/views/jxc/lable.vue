@@ -95,12 +95,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/jxc/goods'
+import { getList, add, update, del } from '@/api/jxc/lable'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'goods',
+  name: 'lable',
   data() {
     return {
       /* 固定功能字段 start */

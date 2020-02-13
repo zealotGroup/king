@@ -2,6 +2,7 @@ package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.entity.system.RouteTypeEnum;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -28,11 +29,13 @@ public class RouteController extends BaseController<SysRoute, Long> {
     }
 
     @RequestMapping("add")
-    public JSONObject add(String name, Long fId) {
+    public JSONObject add(String name, Long fId, Integer seq, RouteTypeEnum type) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(name, "name 为空");
+                Funcation.AssertNotNull(seq, "seq 为空");
+                Funcation.AssertNotNull(type, "type 为空");
                 if (fId != null) {
                     SysRoute sysRoute = sysRouteService.getById(fId);
                     Funcation.AssertNotNull(sysRoute, "该FID数据不存在");
@@ -54,12 +57,14 @@ public class RouteController extends BaseController<SysRoute, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, Long fId) {
+    public JSONObject update(Long id, String name, Long fId, Integer seq, RouteTypeEnum type) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(id, "id 为空");
+                Funcation.AssertNotNull(name, "name 为空");
+                Funcation.AssertNotNull(seq, "seq 为空");
+                Funcation.AssertNotNull(type, "type 为空");
                 if (fId != null) {
                     SysRoute sysRoute = sysRouteService.getById(fId);
                     Funcation.AssertNotNull(sysRoute, "该FID数据不存在");

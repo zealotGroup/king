@@ -168,7 +168,7 @@
   import store from '@/store'
 
   export default {
-    name: 'complexTable',
+    name: 'user',
     directives: {
       waves
     },

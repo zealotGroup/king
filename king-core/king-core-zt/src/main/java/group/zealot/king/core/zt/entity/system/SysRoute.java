@@ -18,8 +18,8 @@ public class SysRoute extends BaseEntity {
     private Long id;
     @Column(length = 200)
     private String name;
-    @Column(length = 4, columnDefinition = "int default 0")
-    private Integer type;//0 表示菜单 1 表示按钮等页面内权限
+    @Column(length = 2, columnDefinition = "int default 0")
+    private RouteTypeEnum type;//0 表示菜单 1 表示按钮等页面内权限
     @Column(length = 4, columnDefinition = "int default 0")
     private Integer seq;//数字越小，越靠前（0最小）
     @Column(length = 20)
