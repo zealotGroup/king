@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 进销存--库存
@@ -29,24 +28,11 @@ public class JxcStock extends BaseEntity {
     @Column(length = 100)
     private String unit;
 
-    @Column
-    private LocalDateTime updateTime;
-
     /**
      * 非数据库字段
      */
     @Transient
     private String goodsName;
-
-    @PrePersist
-    protected void prePersist() {
-        this.updateTime = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void preUpdate() {
-        this.updateTime = LocalDateTime.now();
-    }
 
     /**
      * 进货调用

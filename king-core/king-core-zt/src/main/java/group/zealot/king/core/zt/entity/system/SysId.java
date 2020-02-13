@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -15,11 +14,4 @@ public class SysId extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
 }

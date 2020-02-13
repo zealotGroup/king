@@ -7,7 +7,6 @@ package group.zealot.king.core.zt.entity.system;
  */
 public enum RouteTypeEnum {
     MENU, FUNCATION;
-
     RouteTypeEnum() {
     }
 }

@@ -7,7 +7,6 @@ package group.zealot.king.core.zt.entity.jxc;
  */
 public enum PurchaseSalesTypeEnum {
     SALE, PURCHASE;
-
     PurchaseSalesTypeEnum() {
     }
 }

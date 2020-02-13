@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 每条数据，仅有两个子段可同时存在
@@ -38,12 +37,4 @@ public class SysAuth extends BaseEntity {
     private Long sysRoleRouteId;
     @Column(length = 20)
     private Long sysRouteId;
-
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
 }

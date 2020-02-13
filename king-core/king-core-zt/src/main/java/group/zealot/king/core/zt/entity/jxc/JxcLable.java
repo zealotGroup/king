@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 进销存--标签
@@ -20,12 +19,4 @@ public class JxcLable extends BaseEntity {
     private Long id;
     @Column(length = 200)
     private String name;
-
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 进销存--商品
@@ -21,11 +21,6 @@ public class JxcGoods extends BaseEntity {
     @Column(length = 200)
     private String name;
 
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
+    @Transient
+    private List<JxcGoodsLable> lableList;
 }

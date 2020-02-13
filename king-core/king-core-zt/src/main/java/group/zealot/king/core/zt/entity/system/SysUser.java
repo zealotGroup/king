@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -25,14 +24,6 @@ public class SysUser extends BaseEntity {
     private String level;
     @Column(length = 200)
     private String status;
-
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
 
     /**
      * 非数据库字段

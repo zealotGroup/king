@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 进销存--进货、售货记录
@@ -28,12 +27,4 @@ public class JxcPurchaseSales extends BaseEntity {
     private PurchaseSalesTypeEnum type;//进货、售货
     @Column(length = 20)
     private Long channelId;//渠道
-
-    @Column(updatable = false)
-    private LocalDateTime insertTime;
-
-    @PrePersist
-    protected void prePersist() {
-        this.insertTime = LocalDateTime.now();
-    }
 }
