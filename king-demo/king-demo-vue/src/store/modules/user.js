@@ -17,7 +17,7 @@ function dealRouter(vchildren, vochildren, auth) {
     for (const vo of vochildren) {
       if (v.type === 1) {
         auth.push(v.name)
-      } else if (v.name === vo.name && v.type === 0) {
+      } else if (v.name === vo.name && v.type === 'MENU') {
         if (v.children && vo.children && v.children.length > 0 && vo.children.length > 0) {
           vo.children = dealRouter(v.children, vo.children)
         }
