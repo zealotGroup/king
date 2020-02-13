@@ -47,6 +47,11 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')" >
+        <template slot-scope="scope">
+          <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column min-width="170px" class-name="status-col" :label="$t('updateTime')">
         <template slot-scope="scope">
           <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>

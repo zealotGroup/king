@@ -1,7 +1,6 @@
 export default {
   route: {
-    orderRecord: '订单记录',
-    record: '记录',
+    purchaseSales: '进销记录',
     index: '首页',
     dashboard: '首页',
     introduction: '简述',

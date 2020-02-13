@@ -28,10 +28,20 @@
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="100px" class-name="status-col" :label="$t('lable')" >
+        <template slot-scope="scope">
+          <span>{{parseLable(scope.row.lableList)}}</span>
+        </template>
+      </el-table-column>
       <!--表数据固定字段信息 start-->
       <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')" >
         <template slot-scope="scope">
           <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="170px" class-name="status-col" :label="$t('updateTime')" >
+        <template slot-scope="scope">
+          <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
@@ -42,6 +52,9 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
+            <span v-show="scope.row.loading_handleUpdate" >
+              <el-button round type="success" size="mini" :loading="scope.row.loading_addLable" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
+            </span>
             <span v-show="scope.row.loading_handleUpdate" >
               <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
             </span>
@@ -131,6 +144,9 @@ export default {
     this.getList()
   },
   methods: {
+    parseLable(lableList) {
+      return lableList
+    },
     /* 固定功能方法 start */
     resetTemp() {
       this.temp = {

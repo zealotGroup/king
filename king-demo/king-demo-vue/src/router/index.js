@@ -12,6 +12,7 @@ import jxc_goods from '@/views/jxc/goods'
 import jxc_lable from '@/views/jxc/lable'
 import jxc_stock from '@/views/jxc/stock'
 import jxc_channel from '@/views/jxc/channel'
+import jxc_purchaseSales from '@/views/jxc/purchaseSales'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
 import admin_permission from '@/views/admin/permission'
@@ -59,7 +60,7 @@ export const constantRouterMap = [
         path: '/index',
         component: dashboard_index,
         name: 'index',
-        meta: {title: 'index', icon: 'dashboard', noCache: true}
+        meta: { title: 'index', icon: 'dashboard', noCache: true }
       }
     ]
   }
@@ -82,7 +83,7 @@ export const routerMap = [
         path: 'index',
         component: dashboard_index,
         name: 'index',
-        meta: {title: 'index', icon: 'dashboard', noCache: true}
+        meta: { title: 'index', icon: 'dashboard', noCache: true }
       }
     ]
   },
@@ -99,22 +100,27 @@ export const routerMap = [
       path: 'goods',
       component: jxc_goods,
       name: 'goods',
-      meta: {title: 'goods', icon: 'goods', noCache: true}
+      meta: { title: 'goods', icon: 'goods', noCache: true }
     }, {
       path: 'lable',
       component: jxc_lable,
       name: 'lable',
-      meta: {title: 'lable', icon: 'lable', noCache: true}
+      meta: { title: 'lable', icon: 'lable', noCache: true }
     }, {
       path: 'stock',
       component: jxc_stock,
       name: 'stock',
-      meta: {title: 'stock', icon: 'stock', noCache: true}
+      meta: { title: 'stock', icon: 'stock', noCache: true }
     }, {
       path: 'channel',
       component: jxc_channel,
       name: 'channel',
-      meta: {title: 'channel', icon: 'channel', noCache: true}
+      meta: { title: 'channel', icon: 'channel', noCache: true }
+    }, {
+      path: 'purchaseSales',
+      component: jxc_purchaseSales,
+      name: 'purchaseSales',
+      meta: { title: 'purchaseSales', icon: 'purchaseSales', noCache: true }
     }]
   },
   {
