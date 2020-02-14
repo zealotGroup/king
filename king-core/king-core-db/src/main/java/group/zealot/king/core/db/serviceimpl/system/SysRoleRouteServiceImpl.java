@@ -1,25 +1,17 @@
 package group.zealot.king.core.db.serviceimpl.system;
 
-import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.SysAuth;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.dbif.service.system.SysRoleRouteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static group.zealot.king.core.db.mybatis.Mappers.sysRoleRouteMapper;
-import static group.zealot.king.core.db.jpa.Repositorys.*;
-
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 
 @Service
 public class SysRoleRouteServiceImpl extends BaseServiceImpl<SysRoleRoute, Long> implements SysRoleRouteService {
-
-    @Autowired
-    private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
     public SysRoleRoute insert(String name, List<Long> routeList) {

@@ -3,24 +3,17 @@ package group.zealot.king.core.db.serviceimpl.system;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.core.zt.dbif.service.system.SysRouteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static group.zealot.king.core.db.mybatis.Mappers.sysRouteMapper;
-import static group.zealot.king.core.db.jpa.Repositorys.*;
-
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 
 @Service
 public class SysRouteServiceImpl extends BaseServiceImpl<SysRoute, Long> implements SysRouteService {
-    @Autowired
-    private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
     public JSONArray getRouteTree(Long sysRoleRouteId) {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group.zealot.king.core.db.mybatis.jxc.JxcGoodsMapper">
+    <select id="getLableList" parameterType="Long" resultType="JxcLable">
+        SELECT
+	        jl.id,jl.name,jl.insert_time insertTime,jl.update_time updateTime
+        FROM
+	        jxc_goods_lable jgl
+	        LEFT JOIN jxc_lable jl ON jgl.lable_id = jl.id
+        WHERE
+	        jgl.goods_id = #{_parameter}
+    </select>
+</mapper>

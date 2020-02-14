@@ -28,9 +28,26 @@
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('lable')" >
+      <el-table-column min-width="200px" class-name="status-col" :label="$t('lable')" >
         <template slot-scope="scope">
-          <span>{{parseLable(scope.row.lableList)}}</span>
+          <el-tag
+            :key="tag.id"
+            v-for="tag in scope.row.lableList"
+            closable
+            :disable-transitions="false"
+            @close="handleCloseTag(scope.row, tag)">
+            {{ tag.name }}
+          </el-tag>
+          <el-input
+            class="input-new-tag"
+            v-if="scope.row.inputTagVisible"
+            v-model="scope.row.inputTagValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="handleInputTagConfirm(scope.row)"
+          >
+          </el-input>
+          <el-button v-else class="button-new-tag" size="small" @click="showInputTag(scope.row)">+</el-button>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -52,9 +69,6 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <span v-show="scope.row.loading_handleUpdate" >
-              <el-button round type="success" size="mini" :loading="scope.row.loading_addLable" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
-            </span>
             <span v-show="scope.row.loading_handleUpdate" >
               <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
             </span>
@@ -106,9 +120,25 @@
     <!--固定弹出层 end-->
   </div>
 </template>
-
+<style>
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
+</style>
 <script>
-import { getList, add, update, del } from '@/api/jxc/goods'
+import { getList, add, update, del, addLable } from '@/api/jxc/goods'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
@@ -144,8 +174,30 @@ export default {
     this.getList()
   },
   methods: {
-    parseLable(lableList) {
-      return lableList
+    handleCloseTag(row, tag) {
+      // 删除 请求后台
+      row.lableList.splice(row.lableList.indexOf(tag), 1)
+    },
+    showInputTag(row) {
+      row.inputTagVisible = true
+      row.inputTagValue = ''
+      // this.$nextTick(() => {
+      //   this.$refs['saveTagInput'].$refs['input'].focus()
+      // })
+    },
+    handleInputTagConfirm(row) {
+      // 新增 请求后台
+      const inputTagValue = row.inputTagValue
+      if (inputTagValue) {
+        addLable({ goodsId: row.id, lableName: inputTagValue }).then(data => {
+          row.lableList.push(data.vo)
+          row.inputTagVisible = false
+          row.inputTagValue = ''
+        }).catch(() => {
+          row.inputTagVisible = false
+          row.inputTagValue = ''
+        })
+      }
     },
     /* 固定功能方法 start */
     resetTemp() {
@@ -320,6 +372,8 @@ export default {
         v.waitingForFlush = false
         v.loading_del = false
         v.visible_del = false
+        v.inputTagVisible = false
+        v.inputTagValue = ''
       }
     },
     formatJson(filterVal, jsonData) {

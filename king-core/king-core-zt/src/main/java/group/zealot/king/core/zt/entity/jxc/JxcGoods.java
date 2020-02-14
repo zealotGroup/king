@@ -22,5 +22,5 @@ public class JxcGoods extends BaseEntity {
     private String name;
 
     @Transient
-    private List<JxcGoodsLable> lableList;
+    private List<JxcLable> lableList;
 }

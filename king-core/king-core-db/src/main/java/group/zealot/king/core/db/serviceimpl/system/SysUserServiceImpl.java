@@ -4,25 +4,18 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
-import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.SysAuth;
 import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.core.zt.dbif.service.system.SysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-
-import static group.zealot.king.core.db.mybatis.Mappers.*;
-import static group.zealot.king.core.db.jpa.Repositorys.*;
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implements SysUserService {
-    @Autowired
-    private SysAuthServiceImpl sysAuthServiceImpl;
 
     @Override
     public String getNewPassword(String username, byte[] password) {

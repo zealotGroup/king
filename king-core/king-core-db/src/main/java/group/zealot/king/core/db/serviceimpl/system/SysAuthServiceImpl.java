@@ -4,30 +4,18 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.db.mybatis.core.base.BaseMapper;
 import group.zealot.king.core.db.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.*;
 import group.zealot.king.core.zt.dbif.service.system.SysAuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static group.zealot.king.core.db.jpa.Repositorys.sysAuthRepository;
-import static group.zealot.king.core.db.mybatis.Mappers.sysAuthMapper;
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 
 @Service
 public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implements SysAuthService {
-    @Autowired
-    private SysRoleDataServiceImpl sysRoleDataServiceImpl;
-    @Autowired
-    private SysRoleRouteServiceImpl sysRoleRouteServiceImpl;
-    @Autowired
-    private SysRouteServiceImpl sysRouteServiceImpl;
-    @Autowired
-    private SysDataServiceImpl sysDataServiceImpl;
 
 
     @Override
