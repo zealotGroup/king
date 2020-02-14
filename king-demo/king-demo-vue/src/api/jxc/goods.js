@@ -44,3 +44,11 @@ export function del(id) {
     }
   })
 }
+
+export function addLable(data) {
+  return request({
+    url: url + '/addLable',
+    method: 'post',
+    data
+  })
+}

@@ -282,5 +282,6 @@ export default {
   totalSales: '累计销售总数',
   currentSize: '当前总数',
   unit: '单位',
-  goodsName: '商品名称'
+  goodsName: '商品名称',
+  lable: '标签'
 }
