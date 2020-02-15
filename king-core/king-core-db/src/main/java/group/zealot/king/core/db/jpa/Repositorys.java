@@ -19,16 +19,34 @@ public class Repositorys {
     public static SysRouteRepository sysRouteRepository;
     public static SysUserRepository sysUserRepository;
 
-    public static JxcChannelRepository jxcChannelRepository;
+    public static JxcCustRepository jxcCustRepository;
     public static JxcGoodsLableRepository jxcGoodsLableRepository;
     public static JxcGoodsRepository jxcGoodsRepository;
     public static JxcLableRepository jxcLableRepository;
-    public static JxcPurchaseSalesRepository jxcPurchaseSalesRepository;
+    public static JxcSalesRepository jxcSalesRepository;
     public static JxcStockRepository jxcStockRepository;
+    public static JxcPurchaseRepository jxcPurchaseRepository;
+    public static JxcSupplierRepository jxcSupplierRepository;
+    public static JxcUnitRepository jxcUnitRepository;
 
     @Autowired(required = false)
-    public void setJxcChannelRepository(JxcChannelRepository jxcChannelRepository) {
-        Repositorys.jxcChannelRepository = jxcChannelRepository;
+    public void setJxcPurchaseRepository(JxcPurchaseRepository jxcPurchaseRepository) {
+        Repositorys.jxcPurchaseRepository = jxcPurchaseRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcSupplierRepository(JxcSupplierRepository jxcSupplierRepository) {
+        Repositorys.jxcSupplierRepository = jxcSupplierRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcUnitRepository(JxcUnitRepository jxcUnitRepository) {
+        Repositorys.jxcUnitRepository = jxcUnitRepository;
+    }
+
+    @Autowired(required = false)
+    public void setJxcChannelRepository(JxcCustRepository jxcCustRepository) {
+        Repositorys.jxcCustRepository = jxcCustRepository;
     }
 
     @Autowired(required = false)
@@ -47,8 +65,8 @@ public class Repositorys {
     }
 
     @Autowired(required = false)
-    public void setJxcPurchaseSalesRepository(JxcPurchaseSalesRepository jxcPurchaseSalesRepository) {
-        Repositorys.jxcPurchaseSalesRepository = jxcPurchaseSalesRepository;
+    public void setJxcPurchaseSalesRepository(JxcSalesRepository jxcSalesRepository) {
+        Repositorys.jxcSalesRepository = jxcSalesRepository;
     }
 
     @Autowired(required = false)

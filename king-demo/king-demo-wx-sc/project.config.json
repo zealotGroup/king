@@ -12,6 +12,8 @@
 	"appid": "wxe981b47b950fb43e",
 	"projectname": "king-demo-wx-sc",
 	"scripts": {},
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

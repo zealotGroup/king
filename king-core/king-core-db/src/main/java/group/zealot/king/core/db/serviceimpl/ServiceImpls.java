@@ -19,11 +19,11 @@ public class ServiceImpls {
     public static SysRouteServiceImpl sysRouteServiceImpl;
     public static SysUserServiceImpl sysUserServiceImpl;
 
-    public static JxcChannelServiceImpl jxcChannelServiceImpl;
+    public static JxcCustServiceImpl jxcChannelServiceImpl;
     public static JxcGoodsLableServiceImpl jxcGoodsLableServiceImpl;
     public static JxcGoodsServiceImpl jxcGoodsServiceImpl;
     public static JxcLableServiceImpl jxcLableServiceImpl;
-    public static JxcPurchaseSalesServiceImpl jxcPurchaseSalesServiceImpl;
+    public static JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl;
     public static JxcStockServiceImpl jxcStockServiceImpl;
 
     @Autowired
@@ -62,7 +62,7 @@ public class ServiceImpls {
     }
 
     @Autowired
-    public void setJxcChannelServiceImpl(JxcChannelServiceImpl jxcChannelServiceImpl) {
+    public void setJxcChannelServiceImpl(JxcCustServiceImpl jxcChannelServiceImpl) {
         ServiceImpls.jxcChannelServiceImpl = jxcChannelServiceImpl;
     }
 
@@ -82,7 +82,7 @@ public class ServiceImpls {
     }
 
     @Autowired
-    public void setJxcPurchaseSalesServiceImpl(JxcPurchaseSalesServiceImpl jxcPurchaseSalesServiceImpl) {
+    public void setJxcPurchaseSalesServiceImpl(JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl) {
         ServiceImpls.jxcPurchaseSalesServiceImpl = jxcPurchaseSalesServiceImpl;
     }
 

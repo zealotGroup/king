@@ -2,7 +2,7 @@ package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.entity.system.RouteTypeEnum;
+import group.zealot.king.core.zt.entity.system.enums.RouteTypeEnum;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;

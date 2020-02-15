@@ -14,16 +14,32 @@ public class Services {
     public static SysDataService sysDataService;
     public static SysRoleDataService sysRoleDataService;
     public static SysRoleRouteService sysRoleRouteService;
-    public static JxcChannelService jxcChannelService;
+    public static JxcCustService jxcCustService;
     public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsService jxcGoodsService;
     public static JxcLableService jxcLableService;
-    public static JxcPurchaseSalesService jxcPurchaseSalesService;
+    public static JxcPurchaseService jxcPurchaseService;
     public static JxcStockService jxcStockService;
+    public static JxcPictureService jxcPictureService;
 
     @Autowired(required = false)
-    public void setJxcChannelService(JxcChannelService jxcChannelService) {
-        Services.jxcChannelService = jxcChannelService;
+    public void setJxcCustService(JxcCustService jxcCustService) {
+        Services.jxcCustService = jxcCustService;
+    }
+
+    @Autowired(required = false)
+    public void setJxcPurchaseService(JxcPurchaseService jxcPurchaseService) {
+        Services.jxcPurchaseService = jxcPurchaseService;
+    }
+
+    @Autowired(required = false)
+    public void setJxcPictureService(JxcPictureService jxcPictureService) {
+        Services.jxcPictureService = jxcPictureService;
+    }
+
+    @Autowired(required = false)
+    public void setJxcChannelService(JxcCustService jxcCustService) {
+        Services.jxcCustService = jxcCustService;
     }
 
     @Autowired(required = false)
@@ -42,8 +58,8 @@ public class Services {
     }
 
     @Autowired(required = false)
-    public void setJxcPurchaseSalesService(JxcPurchaseSalesService jxcPurchaseSalesService) {
-        Services.jxcPurchaseSalesService = jxcPurchaseSalesService;
+    public void setJxcPurchaseSalesService(JxcPurchaseService jxcPurchaseService) {
+        Services.jxcPurchaseService = jxcPurchaseService;
     }
 
     @Autowired(required = false)

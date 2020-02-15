@@ -1,19 +1,20 @@
 package group.zealot.king.core.zt.entity.jxc;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
+import group.zealot.king.core.zt.entity.jxc.enums.PurchaseSalesTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 /**
- * 进销存--进货、售货记录
+ * 进销存--销售记录
  */
 @Getter
 @Setter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
-public class JxcPurchaseSales extends BaseEntity {
+public class JxcSales extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -2,6 +2,7 @@ package group.zealot.king.core.zt.entity.system;
 
 import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.zt.entity.BaseEntity;
+import group.zealot.king.core.zt.entity.system.enums.RouteTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 

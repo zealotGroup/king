@@ -12,15 +12,17 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "type"})})
-public class JxcChannel extends BaseEntity {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+public class JxcPicture extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 200)
     private String name;
-    @Column(nullable = false, length = 2)
-    private PurchaseSalesTypeEnum type;//进货 销货
-    @Column(length = 1000)
-    private String remark;//备注
+    @Column(length = 200)
+    private String path;//图片服务器绝对位置
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(columnDefinition = "BLOB", nullable = false)
+    private byte[] bytes;//图片二进制数据
 }

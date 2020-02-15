@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.entity.jxc;
+package group.zealot.king.core.zt.entity.jxc.rel;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
 import lombok.Getter;
@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"goodsId", "lableId"})})
-public class JxcGoodsLable extends BaseEntity {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"supplierId", "lableId"})})
+public class JxcSupplierLable extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 20)
-    private Long goodsId;
+    private Long supplierId;
     @Column(length = 20)
     private Long lableId;
 }

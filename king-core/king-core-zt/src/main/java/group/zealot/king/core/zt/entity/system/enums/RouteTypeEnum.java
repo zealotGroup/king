@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.entity.system;
+package group.zealot.king.core.zt.entity.system.enums;
 
 
 /**
