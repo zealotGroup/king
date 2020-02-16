@@ -22,7 +22,10 @@
       </el-table-column>
       <el-table-column min-width="100px" align="center" :label="$t('name')">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <template v-if="scope.row.loading_handleUpdate">
+            <el-input v-model="scope.row.name_"></el-input>
+          </template>
+          <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -44,6 +47,15 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
+            <span v-show="scope.row.loading_handleUpdate" >
+              <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
+            </span>
+            <span v-show="scope.row.loading_handleUpdate" >
+              <el-button round type="warning" size="mini" @click="cancelUpdate(scope.row)" >{{ $t('cancel') }}</el-button>
+            </span>
+            <span v-show="!scope.row.loading_handleUpdate" >
+              <el-button round type="primary" size="mini" @click="handleUpdate(scope.row)" >{{ $t('edit') }}</el-button>
+            </span>
 
             <template v-if="!scope.row.loading_handleUpdate">
               <el-popover placement="top" width="160" v-model="scope.row.visible_del">
@@ -88,12 +100,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/jxc/picture'
+import { getList, add, update, del } from '@/api/admin/lable'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'picture',
+  name: 'lable',
   data() {
     return {
       /* 固定功能字段 start */

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/jxc/lable'
+const url = '/admin/unit'
 
 export function getList(query) {
   return request({

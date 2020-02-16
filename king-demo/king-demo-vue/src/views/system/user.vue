@@ -165,9 +165,9 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del } from '@/api/admin/user'
-  import { getList as getRoleRouteList } from '@/api/admin/role/roleRoute'
-  import { getList as getRoleDataList } from '@/api/admin/role/roleData'
+  import { getList, add, get, update, del } from '@/api/system/user'
+  import { getList as getRoleRouteList } from '@/api/system/role/roleRoute'
+  import { getList as getRoleDataList } from '@/api/system/role/roleData'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
   import store from '@/store'

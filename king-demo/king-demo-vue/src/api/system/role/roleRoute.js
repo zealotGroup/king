@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'admin/role/data'
+const url = 'system/role/route'
 export function getList(query) {
   return request({
     url: url + '/list',

@@ -1,6 +1,16 @@
 import request from '@/utils/request'
 
-const url = '/jxc/unit'
+const url = 'system/permission/route'
+
+export function getTree(id) {
+  return request({
+    url: url + '/tree',
+    method: 'get',
+    params: {
+      id
+    }
+  })
+}
 
 export function getList(query) {
   return request({
@@ -45,3 +55,4 @@ export function del(id) {
     }
   })
 }
+

@@ -9,17 +9,25 @@ import Blank from '@/views/Blank'
 /* views */
 import dashboard_index from '@/views/dashboard/index'
 import jxc_goods from '@/views/jxc/goods'
-import jxc_lable from '@/views/jxc/lable'
 import jxc_stock from '@/views/jxc/stock'
 import jxc_cust from '@/views/jxc/cust'
 import jxc_purchase from '@/views/jxc/purchase'
-import jxc_picture from '@/views/jxc/picture'
-import jxc_unit from '@/views/jxc/unit'
 import jxc_supplier from '@/views/jxc/supplier'
 import jxc_sales from '@/views/jxc/sales'
-import admin_role from '@/views/admin/role'
-import admin_user from '@/views/admin/user'
-import admin_permission from '@/views/admin/permission'
+
+import admin_lable from '@/views/admin/lable'
+import admin_picture from '@/views/admin/picture'
+import admin_unit from '@/views/admin/unit'
+
+import system_role from '@/views/system/role'
+import system_user from '@/views/system/user'
+import system_permission from '@/views/system/permission'
+import system_svg_icons_index from '@/views/system/svg-icons/index'
+import system_errorPage_401 from '@/views/system/errorPage/401'
+import system_errorPage_404 from '@/views/system/errorPage/404'
+import system_theme_index from '@/views/system/theme/index'
+import system_i18n_demo_index from '@/views/system/i18n-demo/index'
+
 import funShow_components_dragDialog from '@/views/funShow/components/dragDialog'
 import funShow_components_dndList from '@/views/funShow/components/dndList'
 import funShow_components_dragKanban from '@/views/funShow/components/dragKanban'
@@ -29,11 +37,6 @@ import funShow_charts_mixChart from '@/views/funShow/charts/mixChart'
 import funShow_tab_index from '@/views/funShow/tab/index'
 import funShow_table_inlineEditTable from '@/views/funShow/table/inlineEditTable'
 import funShow_table_complexTable from '@/views/funShow/table/complexTable'
-import system_svg_icons_index from '@/views/system/svg-icons/index'
-import system_errorPage_401 from '@/views/system/errorPage/401'
-import system_errorPage_404 from '@/views/system/errorPage/404'
-import system_theme_index from '@/views/system/theme/index'
-import system_i18n_demo_index from '@/views/system/i18n-demo/index'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -106,11 +109,6 @@ export const routerMap = [
       name: 'goods',
       meta: { title: 'goods', icon: 'goods', noCache: true }
     }, {
-      path: 'lable',
-      component: jxc_lable,
-      name: 'lable',
-      meta: { title: 'lable', icon: 'lable', noCache: true }
-    }, {
       path: 'stock',
       component: jxc_stock,
       name: 'stock',
@@ -131,16 +129,6 @@ export const routerMap = [
       name: 'sales',
       meta: { title: 'sales', icon: 'sales', noCache: true }
     }, {
-      path: 'picture',
-      component: jxc_picture,
-      name: 'picture',
-      meta: { title: 'picture', icon: 'picture', noCache: true }
-    }, {
-      path: 'unit',
-      component: jxc_unit,
-      name: 'unit',
-      meta: { title: 'unit', icon: 'unit', noCache: true }
-    }, {
       path: 'purchase',
       component: jxc_supplier,
       name: 'supplier',
@@ -150,7 +138,7 @@ export const routerMap = [
   {
     path: '/admin',
     component: Layout,
-    redirect: '/admin/role',
+    redirect: '/admin/lable',
     name: 'admin',
     meta: {
       title: 'admin',
@@ -158,22 +146,20 @@ export const routerMap = [
     },
     children: [
       {
-        path: 'permission',
-        component: admin_permission,
-        name: 'permission',
-        meta: { title: 'permission', icon: 'list', noCache: true }
-      },
-      {
-        path: 'role',
-        component: admin_role,
-        name: 'role',
-        meta: { title: 'role', icon: 'theme', noCache: true }
-      },
-      {
-        path: 'user',
-        component: admin_user,
-        name: 'user',
-        meta: { title: 'user', icon: 'peoples', noCache: true }
+        path: 'lable',
+        component: admin_lable,
+        name: 'lable',
+        meta: { title: 'lable', icon: 'lable', noCache: true }
+      }, {
+        path: 'picture',
+        component: admin_picture,
+        name: 'picture',
+        meta: { title: 'picture', icon: 'picture', noCache: true }
+      }, {
+        path: 'unit',
+        component: admin_unit,
+        name: 'unit',
+        meta: { title: 'unit', icon: 'unit', noCache: true }
       }
     ]
   },
@@ -245,13 +231,31 @@ export const routerMap = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/icon',
+    redirect: '/system/user',
     name: 'system',
     meta: {
       title: 'system',
       icon: 'password'
     },
     children: [
+      {
+        path: 'permission',
+        component: system_permission,
+        name: 'permission',
+        meta: { title: 'permission', icon: 'list', noCache: true }
+      },
+      {
+        path: 'role',
+        component: system_role,
+        name: 'role',
+        meta: { title: 'role', icon: 'theme', noCache: true }
+      },
+      {
+        path: 'user',
+        component: system_user,
+        name: 'user',
+        meta: { title: 'user', icon: 'peoples', noCache: true }
+      },
       {
         path: 'icon',
         component: system_svg_icons_index,

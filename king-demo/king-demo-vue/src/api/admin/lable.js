@@ -1,16 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'admin/permission/route'
-
-export function getTree(id) {
-  return request({
-    url: url + '/tree',
-    method: 'get',
-    params: {
-      id
-    }
-  })
-}
+const url = '/admin/lable'
 
 export function getList(query) {
   return request({
@@ -55,4 +45,3 @@ export function del(id) {
     }
   })
 }
-

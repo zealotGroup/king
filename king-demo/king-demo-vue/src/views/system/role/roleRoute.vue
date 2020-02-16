@@ -98,8 +98,8 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del } from '@/api/admin/role/roleRoute'
-  import { getTree } from '@/api/admin/permission/permissionRoute'
+  import { getList, add, get, update, del } from '@/api/system/role/roleRoute'
+  import { getTree } from '@/api/system/permission/permissionRoute'
   import { parseTime } from '@/utils'
   import store from '@/store'
 

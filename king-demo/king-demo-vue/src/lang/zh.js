@@ -78,7 +78,8 @@ export default {
     picture: '图片管理',
     sales: '销售记录',
     unit: '单位管理',
-    purchase: '采购记录'
+    purchase: '采购记录',
+    cust: '客户'
   },
   navbar: {
     logOut: '退出登录',

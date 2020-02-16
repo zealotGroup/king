@@ -22,10 +22,7 @@
       </el-table-column>
       <el-table-column min-width="100px" align="center" :label="$t('name')">
         <template slot-scope="scope">
-          <template v-if="scope.row.loading_handleUpdate">
-            <el-input v-model="scope.row.name_"></el-input>
-          </template>
-          <span v-else>{{ scope.row.name }}</span>
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -47,15 +44,6 @@
             <span>{{ $t('waitingForFlush') }}</span>
           </template>
           <template v-else>
-            <span v-show="scope.row.loading_handleUpdate" >
-              <el-button round type="success" size="mini" :loading="scope.row.loading_updateData" @click="updateData(scope.row)" >{{ $t('ok') }}</el-button>
-            </span>
-            <span v-show="scope.row.loading_handleUpdate" >
-              <el-button round type="warning" size="mini" @click="cancelUpdate(scope.row)" >{{ $t('cancel') }}</el-button>
-            </span>
-            <span v-show="!scope.row.loading_handleUpdate" >
-              <el-button round type="primary" size="mini" @click="handleUpdate(scope.row)" >{{ $t('edit') }}</el-button>
-            </span>
 
             <template v-if="!scope.row.loading_handleUpdate">
               <el-popover placement="top" width="160" v-model="scope.row.visible_del">
@@ -82,7 +70,7 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t('add')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
@@ -100,12 +88,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/admin/permission/permissionData'
+import { getList, add, update, del } from '@/api/admin/unit'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'permissionData',
+  name: 'unit',
   data() {
     return {
       /* 固定功能字段 start */
@@ -198,7 +186,7 @@ export default {
         this.resetTemp()
         this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs['dataFormDataRole'].clearValidate()
+          this.$refs['dataForm'].clearValidate()
         })
         this.loading_add = false
       })
@@ -206,7 +194,7 @@ export default {
     addData() {
       this.notifyClicking(this.loading_addData, () => {
         this.loading_addData = true
-        this.$refs['dataFormDataRole'].validate((valid) => {
+        this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
               this.temp.waitingForFlush = true
@@ -219,7 +207,7 @@ export default {
               })
               this.cleanDialog()
               this.$nextTick(() => {
-                this.$refs['dataFormDataRole'].clearValidate()
+                this.$refs['dataForm'].clearValidate()
               })
               this.loading_addData = false
             }).catch(() => {

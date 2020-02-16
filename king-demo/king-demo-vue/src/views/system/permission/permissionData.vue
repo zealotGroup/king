@@ -82,7 +82,7 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t('add')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataFormDataRole" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
@@ -100,12 +100,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/jxc/lable'
+import { getList, add, update, del } from '@/api/system/permission/permissionData'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'lable',
+  name: 'permissionData',
   data() {
     return {
       /* 固定功能字段 start */
@@ -198,7 +198,7 @@ export default {
         this.resetTemp()
         this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['dataFormDataRole'].clearValidate()
         })
         this.loading_add = false
       })
@@ -206,7 +206,7 @@ export default {
     addData() {
       this.notifyClicking(this.loading_addData, () => {
         this.loading_addData = true
-        this.$refs['dataForm'].validate((valid) => {
+        this.$refs['dataFormDataRole'].validate((valid) => {
           if (valid) {
             add(this.temp).then(() => {
               this.temp.waitingForFlush = true
@@ -219,7 +219,7 @@ export default {
               })
               this.cleanDialog()
               this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
+                this.$refs['dataFormDataRole'].clearValidate()
               })
               this.loading_addData = false
             }).catch(() => {

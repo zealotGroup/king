@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'admin/permission/data'
+const url = '/system/user'
 export function getList(query) {
   return request({
     url: url + '/list',

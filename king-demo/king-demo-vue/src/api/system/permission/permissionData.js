@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/jxc/picture'
-
+const url = 'system/permission/data'
 export function getList(query) {
   return request({
     url: url + '/list',
