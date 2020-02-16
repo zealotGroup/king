@@ -11,8 +11,12 @@ import dashboard_index from '@/views/dashboard/index'
 import jxc_goods from '@/views/jxc/goods'
 import jxc_lable from '@/views/jxc/lable'
 import jxc_stock from '@/views/jxc/stock'
-import jxc_channel from '@/views/jxc/channel'
-import jxc_purchaseSales from '@/views/jxc/purchaseSales'
+import jxc_cust from '@/views/jxc/cust'
+import jxc_purchase from '@/views/jxc/purchase'
+import jxc_picture from '@/views/jxc/picture'
+import jxc_unit from '@/views/jxc/unit'
+import jxc_supplier from '@/views/jxc/supplier'
+import jxc_sales from '@/views/jxc/sales'
 import admin_role from '@/views/admin/role'
 import admin_user from '@/views/admin/user'
 import admin_permission from '@/views/admin/permission'
@@ -112,15 +116,35 @@ export const routerMap = [
       name: 'stock',
       meta: { title: 'stock', icon: 'stock', noCache: true }
     }, {
-      path: 'channel',
-      component: jxc_channel,
-      name: 'channel',
-      meta: { title: 'channel', icon: 'channel', noCache: true }
+      path: 'cust',
+      component: jxc_cust,
+      name: 'cust',
+      meta: { title: 'cust', icon: 'cust', noCache: true }
     }, {
-      path: 'purchaseSales',
-      component: jxc_purchaseSales,
-      name: 'purchaseSales',
-      meta: { title: 'purchaseSales', icon: 'purchaseSales', noCache: true }
+      path: 'purchase',
+      component: jxc_purchase,
+      name: 'purchase',
+      meta: { title: 'purchase', icon: 'purchase', noCache: true }
+    }, {
+      path: 'sales',
+      component: jxc_sales,
+      name: 'sales',
+      meta: { title: 'sales', icon: 'sales', noCache: true }
+    }, {
+      path: 'picture',
+      component: jxc_picture,
+      name: 'picture',
+      meta: { title: 'picture', icon: 'picture', noCache: true }
+    }, {
+      path: 'unit',
+      component: jxc_unit,
+      name: 'unit',
+      meta: { title: 'unit', icon: 'unit', noCache: true }
+    }, {
+      path: 'purchase',
+      component: jxc_supplier,
+      name: 'supplier',
+      meta: { title: 'supplier', icon: 'supplier', noCache: true }
     }]
   },
   {

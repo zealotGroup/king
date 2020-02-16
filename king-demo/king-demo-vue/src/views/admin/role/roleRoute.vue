@@ -1,81 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="width: 200px;" class="filter-item" v-model="listQuery.username" :placeholder="$t('username')">
+      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="listQuery.like" placeholder="输入关键词搜索">
       </el-input>
-      <el-select @change="handleSearch" clearable style="width: 90px" class="filter-item" v-model="listQuery.status" :placeholder="$t('status')">
-        <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
-        </el-option>
-      </el-select>
-      <el-select @change="handleSearch" clearable class="filter-item" style="width: 130px" v-model="listQuery.level" :placeholder="$t('level')">
-        <el-option v-for="item in  levelList" :key="item" :label="$t(item)" :value="item">
-        </el-option>
-      </el-select>
     </div>
     <div class="filter-container">
-      <el-button round class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
+      <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{$t('search')}}</el-button>
       <el-button round class="filter-item" style="margin-left: 10px;" :loading="loading_add" @click="handleAdd" type="primary" icon="el-icon-edit">{{$t('add')}}</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
-      style="width: 100%;min-height:500px;">
-      <el-table-column  min-width="60px"align="center" :label="$t('No')">
+              style="width: 100%;min-height:500px;">
+      <el-table-column min-width="60px" align="center" :label="$t('No')">
         <template slot-scope="scope">
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('id')" >
+      <el-table-column min-width="130px" align="center" :label="$t('id')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('username')">
+      <el-table-column min-width="100px" :label="$t('name')">
         <template slot-scope="scope">
-          <span>{{scope.row.username }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="95px" align="center" :label="$t('status')">
-        <template slot-scope="scope">
-          <template v-if="scope.row.status === 'able'">
-            <el-popover placement="top" width="160" v-model="scope.row.visible_updateStatus">
-              <p>确定要<b>禁用</b>么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'disable')" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" :loading="scope.row.loading_updateStatus" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
-            </el-popover>
-          </template>
-          <template v-else-if="scope.row.status === 'disable'">
-            <el-popover placement="top" width="160" v-model="scope.row.visible_updateStatus">
-              <p>确定要<b>启用</b>么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button round size="mini" type="text" @click="scope.row.visible_updateStatus = false">取消</el-button>
-                <el-button round type="primary" size="mini" @click="handleUpdateStatus(scope.row, 'able')" >确定</el-button>
-              </div>
-              <el-button round slot="reference" size="mini" :loading="scope.row.loading_updateStatus" :type="typeStatus(scope.row.status)" @click="scope.row.visible_updateStatus = true">{{$t(scope.row.status)}}</el-button>
-            </el-popover>
-          </template>
-          <template v-else>
-            <el-button round size="mini" :type="typeStatus(scope.row.status)" >{{$t(scope.row.status)}}</el-button>
-          </template>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="95px" class-name="status-col" :label="$t('level')">
-        <template slot-scope="scope">
-          <el-tag :type="typeLevel(scope.row.level)">
-            {{ $t(scope.row.level) }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="85px" align="center" :label="$t('routeRole')">
-        <template slot-scope="scope">
-          <el-tag>{{ scope.row.roleRouteName }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="85px" :label="$t('dataRole')">
-        <template slot-scope="scope">
-          <el-tag>{{ scope.row.roleDataName }}</el-tag>
+          <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -90,7 +38,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" :label="$t('actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waitingForFlush">
@@ -98,6 +46,7 @@
           </template>
           <template v-else>
             <el-button round type="primary" size="mini" :loading="scope.row.loading_handleUpdate" @click="handleUpdate(scope.row)">{{$t('edit')}}</el-button>
+
             <el-popover placement="top" width="160" v-model="scope.row.visible_del">
               <p>确定要删除么？</p>
               <div style="text-align: right; margin: 0">
@@ -113,7 +62,7 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handlePageChange" :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
@@ -121,37 +70,21 @@
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="90px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
-          <el-input :disabled="true" v-model="temp.id"></el-input>
+          <el-input v-model="temp.id" ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('username')" prop="username">
-          <el-input :disabled="temp.disabled_username" v-model="temp.username"></el-input>
+        <el-form-item :label="$t('name')" prop="name">
+          <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('password')" prop="password">
-          <el-input v-model="temp.password" placeholder="修改模式，若修改密码，则输入"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('status')" prop="status">
-          <el-select class="filter-item" v-model="temp.status">
-            <el-option v-for="item in statusList" :key="item" :label="$t(item)" :value="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('level')" prop="level">
-          <el-select class="filter-item" v-model="temp.level">
-            <el-option v-for="item in levelList" :key="item" :label="$t(item)" :value="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('roleRoute')" prop="roleRouteId">
-          <el-select class="filter-item" v-model="temp.roleRouteId">
-            <el-option v-for="route in roleRouteList" :key="route.id" :label="route.name" :value="route.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('roleData')" prop="roleDataId">
-          <el-select class="filter-item" v-model="temp.roleDataId">
-            <el-option v-for="data in roleDataList" :key="data.id" :label="data.name" :value="data.id">
-            </el-option>
-          </el-select>
+        <el-form-item label="选择权限" prop="route">
+          <el-tree ref="el-tree"
+            :props="props"
+            :data="temp.tree.data"
+            node-key="id"
+            :default-checked-keys="temp.tree.checked"
+            :default-expanded-keys="temp.tree.checked"
+            show-checkbox
+            @check-change="handleCheckChange">
+          </el-tree>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -165,20 +98,20 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del } from '@/api/admin/user'
-  import { getList as getRoleRouteList } from '@/api/admin/role/roleRoute'
-  import { getList as getRoleDataList } from '@/api/admin/role/roleData'
-  import waves from '@/directive/waves' // 水波纹指令
+  import { getList, add, get, update, del } from '@/api/admin/role/roleRoute'
+  import { getTree } from '@/api/admin/permission/permissionRoute'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
   export default {
-    name: 'user',
-    directives: {
-      waves
-    },
+    name: 'roleRoute',
     data() {
       return {
+        props: {
+          label: 'name',
+          children: 'children'
+        },
+        treeData: undefined,
         /* 固定功能字段 start */
         loading_add: false,
         loading_addData: false,
@@ -190,41 +123,18 @@
         listQuery: {
           page: 1,
           limit: 10,
-          level: undefined,
-          status: undefined,
-          username: undefined
+          like: undefined
         },
-        temp: {
-          disabled_username: false
-        },
+        temp: undefined,
         dialogFormVisible: false,
         dialogType: '',
         dialogTitle: '',
         /* 固定功能字段 start */
-        levelList: ['user', 'vip', 'svip', 'admin', 'super'],
-        statusList: ['able', 'disable'],
-        roleDataList: '',
-        roleRouteList: '',
         rules: {
           id: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ],
-          username: [
-            { required: true, message: this.$t('required'), trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: this.$t('required'), trigger: 'blur' }
-          ],
-          status: [
-            { required: true, message: this.$t('required'), trigger: 'blur' }
-          ],
-          level: [
-            { required: true, message: this.$t('required'), trigger: 'blur' }
-          ],
-          roleData: [
-            { required: true, message: this.$t('required'), trigger: 'blur' }
-          ],
-          roleRoute: [
+          name: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
           ]
         }
@@ -233,19 +143,33 @@
     created() {
       this.resetTemp()
       this.getList()
-      this.getRoleDataList()
-      this.getRoleRouteList()
     },
     methods: {
+      dealTree(item) {
+        if (item.children) {
+          if (item.checked) {
+            this.temp.tree.checked.push(item.id)
+          }
+          item.name = this.$t('route.' + item.name)
+          item.children.forEach(this.dealTree)
+        }
+      },
+      getTreeData(id) {
+        getTree(id).then(data => {
+          const tree = data.routeTree
+          tree.forEach(this.dealTree)
+          this.temp.tree.data = tree
+        }).catch(() => {
+          this.listLoading = false
+        })
+      },
+      handleCheckChange() { },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
           id: '',
-          username: '',
-          password: '',
-          status: '',
-          level: '',
-          disabled_username: false
+          name: '',
+          tree: { data: [], checked: [] }
         }
       },
       cleanDialog() {
@@ -253,6 +177,9 @@
         this.dialogType = ''
         this.dialogFormVisible = false
         this.dialogTitle = ''
+        this.loading_add = false
+        this.loading_addData = false
+        this.loading_updateData = false
       },
       notifyClicking(loading, callBack) {
         if (loading) {
@@ -294,14 +221,13 @@
       },
       handleAdd() {
         this.notifyClicking(this.loading_add, () => {
-          this.loading_add = true
           this.resetTemp()
+          this.getTreeData(-1)
+          this.loading_add = true
           this.dialogType = 'add'
           this.dialogFormVisible = true
           this.dialogTitle = 'add'
           this.rules.id[0].required = false
-          this.rules.password[0].required = true
-          this.temp.disabled_username = false
           this.$nextTick(() => {
             this.$refs['dataForm'].clearValidate()
           })
@@ -313,6 +239,8 @@
           this.loading_addData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
+              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
+              this.temp.tree = { data: [], checked: [] }
               add(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'add')
@@ -339,14 +267,15 @@
       handleUpdate(row) {
         this.notifyClicking(row.loading_handleUpdate, () => {
           row.loading_handleUpdate = true
+          this.resetTemp()
           get(row.id).then((data) => {
-            this.temp = Object.assign({}, data.vo)
+            this.temp.id = data.vo.id
+            this.temp.name = data.vo.name
+            this.getTreeData(this.temp.id)
             this.dialogType = 'update'
             this.dialogFormVisible = true
             this.dialogTitle = 'update'
             this.rules.id[0].required = true
-            this.rules.password[0].required = false
-            this.temp.disabled_username = true
             this.$nextTick(() => {
               this.$refs['dataForm'].clearValidate()
             })
@@ -360,6 +289,7 @@
             })
             row.loading_handleUpdate = false
           })
+          row.loading_handleUpdate = false
         })
       },
       updateData() {
@@ -367,6 +297,8 @@
           this.loading_updateData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
+              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
+              this.temp.tree = { data: [], checked: [] }
               update(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'replace')
@@ -434,8 +366,6 @@
           v.waitingForFlush = false
           v.loading_del = false
           v.visible_del = false
-          v.loading_updateStatus = false
-          v.visible_updateStatus = false
         }
       },
       formatJson(filterVal, jsonData) {
@@ -451,77 +381,8 @@
         let fg = store.getters.level === level
         fg = true
         return fg
-      },
-      /* 固定功能方法 end */
-      // 个性化定义方法
-      getRoleDataList() {
-        const pageRequest = {
-          page: 1,
-          limit: -1
-        }
-        getRoleDataList(pageRequest).then(data => {
-          this.roleDataList = data.list
-        }).catch(() => {
-          this.$notify({
-            title: '警告',
-            message: '数据角色加载异常',
-            type: 'warning',
-            duration: 2000
-          })
-        })
-      },
-      getRoleRouteList() {
-        const pageRequest = {
-          page: 1,
-          limit: -1
-        }
-        getRoleRouteList(pageRequest).then(data => {
-          this.roleRouteList = data.list
-        }).catch(() => {
-          this.$notify({
-            title: '警告',
-            message: '路由角色加载异常',
-            type: 'warning',
-            duration: 2000
-          })
-        })
-      },
-      handleUpdateStatus(row, status) {
-        this.notifyClicking(row.loading_updateStatus, () => {
-          row.loading_updateStatus = true
-          row.visible_updateStatus = false
-          const vo = {
-            id: row.id,
-            status: status
-          }
-          update(vo).then(() => {
-            const index = this.list.indexOf(row)
-            row.status = vo.status
-            this.list.splice(index, 1, row)
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-            row.loading_updateStatus = false
-          }).catch(() => {
-            row.loading_updateStatus = false
-          })
-        })
-      },
-      typeLevel(level) {
-        if (level === 'vip') return 'danger'
-        if (level === 'svip') return 'warning'
-        if (level === 'admin') return ''
-        if (level === 'super') return 'success'
-        return 'info'
-      },
-      typeStatus(status) {
-        if (status === 'able') return 'success'
-        if (status === 'disable') return 'danger'
-        return 'warning'
       }
+      /* 固定功能方法 end */
     }
   }
 </script>

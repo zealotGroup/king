@@ -74,7 +74,11 @@ export default {
     goods: '商品',
     lable: '标签',
     channel: '渠道',
-    stock: '库存'
+    stock: '库存',
+    picture: '图片管理',
+    sales: '销售记录',
+    unit: '单位管理',
+    purchase: '采购记录'
   },
   navbar: {
     logOut: '退出登录',
@@ -270,8 +274,8 @@ export default {
   customer: '客户',
   product: '产品',
   reportForm: '报表',
-  routePermission: '路由权限',
-  dataPermission: '数据权限',
+  permissionRoute: '路由权限',
+  permissionData: '数据权限',
   jxc: '进销存系统',
   SALE: '出售',
   PURCHASE: '进货',

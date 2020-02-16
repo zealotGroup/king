@@ -1,16 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/admin/route'
-
-export function getTree(id) {
-  return request({
-    url: url + '/tree',
-    method: 'get',
-    params: {
-      id
-    }
-  })
-}
+const url = '/jxc/picture'
 
 export function getList(query) {
   return request({

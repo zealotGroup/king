@@ -100,12 +100,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/admin/permission/dataPermission'
+import { getList, add, update, del } from '@/api/admin/permission/permissionData'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'dataPermission',
+  name: 'permissionData',
   data() {
     return {
       /* 固定功能字段 start */

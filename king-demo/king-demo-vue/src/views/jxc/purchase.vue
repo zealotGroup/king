@@ -88,12 +88,12 @@
 </template>
 
 <script>
-import { getList, add, update, del } from '@/api/jxc/purchaseSales'
+import { getList, add, update, del } from '@/api/jxc/purchase'
 import { parseTime } from '@/utils'
 import store from '@/store'
 
 export default {
-  name: 'purchaseSales',
+  name: 'purchase',
   data() {
     return {
       /* 固定功能字段 start */

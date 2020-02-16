@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
-const url = 'admin/data'
+const url = '/jxc/sales'
+
 export function getList(query) {
   return request({
     url: url + '/list',

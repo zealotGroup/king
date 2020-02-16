@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/jxc/channel'
+const url = '/jxc/unit'
 
 export function getList(query) {
   return request({

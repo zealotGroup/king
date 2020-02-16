@@ -26,6 +26,16 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="100px" :label="$t('type')">
+        <template slot-scope="scope">
+          <span>{{$t(scope.row.type)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" :label="$t('remark')">
+        <template slot-scope="scope">
+          <span>{{scope.row.remark }}</span>
+        </template>
+      </el-table-column>
       <!--表数据固定字段信息 start-->
       <el-table-column min-width="170px" class-name="status-col" :label="$t('insertTime')">
         <template slot-scope="scope">
@@ -68,23 +78,21 @@
 
     <!--固定弹出层 start-->
     <el-dialog :title="$t(dialogTitle)" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="90px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id" ></el-input>
         </el-form-item>
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item label="选择权限" prop="route">
-          <el-tree ref="el-tree"
-            :props="props"
-            :data="temp.tree.data"
-            node-key="id"
-            :default-checked-keys="temp.tree.checked"
-            :default-expanded-keys="temp.tree.checked"
-            show-checkbox
-            @check-change="handleCheckChange">
-          </el-tree>
+        <el-form-item :label="$t('type')" prop="type">
+          <el-select class="filter-item" v-model="temp.type">
+            <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('remark')" prop="remark">
+          <el-input v-model="temp.remark"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,13 +106,12 @@
 </template>
 
 <script>
-  import { getList, add, get, update, del } from '@/api/admin/role/routeRole'
-  import { getTree } from '@/api/admin/route'
+  import { getList, add, get, update, del } from '@/api/jxc/supplier'
   import { parseTime } from '@/utils'
   import store from '@/store'
 
   export default {
-    name: 'routeRole',
+    name: 'supplier',
     data() {
       return {
         props: {
@@ -126,6 +133,7 @@
           like: undefined
         },
         temp: undefined,
+        typeList: ['SALE', 'PURCHASE'],
         dialogFormVisible: false,
         dialogType: '',
         dialogTitle: '',
@@ -136,6 +144,9 @@
           ],
           name: [
             { required: true, message: this.$t('required'), trigger: 'blur' }
+          ],
+          type: [
+            { required: true, message: this.$t('required'), trigger: 'blur' }
           ]
         }
       }
@@ -145,31 +156,13 @@
       this.getList()
     },
     methods: {
-      dealTree(item) {
-        if (item.children) {
-          if (item.checked) {
-            this.temp.tree.checked.push(item.id)
-          }
-          item.name = this.$t('route.' + item.name)
-          item.children.forEach(this.dealTree)
-        }
-      },
-      getTreeData(id) {
-        getTree(id).then(data => {
-          const tree = data.routeTree
-          tree.forEach(this.dealTree)
-          this.temp.tree.data = tree
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      handleCheckChange() { },
       /* 固定功能方法 start */
       resetTemp() {
         this.temp = {
           id: '',
           name: '',
-          tree: { data: [], checked: [] }
+          type: '',
+          remark: ''
         }
       },
       cleanDialog() {
@@ -222,7 +215,6 @@
       handleAdd() {
         this.notifyClicking(this.loading_add, () => {
           this.resetTemp()
-          this.getTreeData(-1)
           this.loading_add = true
           this.dialogType = 'add'
           this.dialogFormVisible = true
@@ -239,8 +231,6 @@
           this.loading_addData = true
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
-              this.temp.route = this.$refs['el-tree'].getCheckedKeys()
-              this.temp.tree = { data: [], checked: [] }
               add(this.temp).then(() => {
                 this.temp.waitingForFlush = true
                 this.cacheGet(this.temp, 'add')
@@ -269,9 +259,7 @@
           row.loading_handleUpdate = true
           this.resetTemp()
           get(row.id).then((data) => {
-            this.temp.id = data.vo.id
-            this.temp.name = data.vo.name
-            this.getTreeData(this.temp.id)
+            this.temp = Object.assign({}, data.vo)
             this.dialogType = 'update'
             this.dialogFormVisible = true
             this.dialogTitle = 'update'

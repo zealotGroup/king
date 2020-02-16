@@ -2,27 +2,27 @@
   <div class="tab-container">
     <el-tabs style='margin-top:15px;' v-model="viewName" type="border-card">
       <el-tab-pane v-for="item in tabMapOptions" :label="$t(item.label)" :key='item.key' :name="item.key">
-        <dataPermission v-show="viewName === 'dataPermission'"></dataPermission>
-        <routePermission v-show="viewName === 'routePermission'"></routePermission>
+        <permissionData v-show="viewName === 'permissionData'"></permissionData>
+        <permissionRoute v-show="viewName === 'permissionRoute'"></permissionRoute>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-  import dataPermission from './permission/dataPermission'
-  import routePermission from './permission/routePermission'
+  import permissionData from './permission/permissionData'
+  import permissionRoute from './permission/permissionRoute'
 
   export default {
     name: 'permission',
-    components: { 'dataPermission': dataPermission, 'routePermission': routePermission },
+    components: { 'permissionData': permissionData, 'permissionRoute': permissionRoute },
     data() {
       return {
         tabMapOptions: [
-          { label: 'dataPermission', key: 'dataPermission' },
-          { label: 'routePermission', key: 'routePermission' }
+          { label: 'permissionData', key: 'permissionData' },
+          { label: 'permissionRoute', key: 'permissionRoute' }
         ],
-        viewName: 'dataPermission'
+        viewName: 'permissionData'
       }
     }
   }

@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
-const url = 'admin/route'
+const url = '/jxc/cust'
+
 export function getList(query) {
   return request({
     url: url + '/list',
@@ -44,4 +45,3 @@ export function del(id) {
     }
   })
 }
-

@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
-const url = 'admin/roleRoute'
+const url = '/jxc/supplier'
+
 export function getList(query) {
   return request({
     url: url + '/list',
