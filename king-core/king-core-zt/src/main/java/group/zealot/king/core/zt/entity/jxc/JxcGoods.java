@@ -20,6 +20,10 @@ public class JxcGoods extends BaseEntity {
     private Long id;
     @Column(length = 200)
     private String name;
+    @Column(length = 20)
+    private Long price;
+    @Column(length = 20)
+    private Long unitId;
 
     @Transient
     private List<JxcLable> lableList;

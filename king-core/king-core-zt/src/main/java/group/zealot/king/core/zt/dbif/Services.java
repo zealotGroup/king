@@ -14,6 +14,7 @@ public class Services {
     public static SysDataService sysDataService;
     public static SysRoleDataService sysRoleDataService;
     public static SysRoleRouteService sysRoleRouteService;
+
     public static JxcCustService jxcCustService;
     public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsService jxcGoodsService;
@@ -21,6 +22,18 @@ public class Services {
     public static JxcPurchaseService jxcPurchaseService;
     public static JxcStockService jxcStockService;
     public static JxcPictureService jxcPictureService;
+    public static JxcUnitService jxcUnitService;
+    public static JxcSupplierService jxcSupplierService;
+
+    @Autowired(required = false)
+    public void setJxcSupplierService(JxcSupplierService jxcSupplierService) {
+        Services.jxcSupplierService = jxcSupplierService;
+    }
+
+    @Autowired(required = false)
+    public void setJxcUnitService(JxcUnitService jxcUnitService) {
+        Services.jxcUnitService = jxcUnitService;
+    }
 
     @Autowired(required = false)
     public void setJxcCustService(JxcCustService jxcCustService) {

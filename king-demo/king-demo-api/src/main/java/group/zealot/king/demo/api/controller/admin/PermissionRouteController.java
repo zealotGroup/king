@@ -13,8 +13,8 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/admin/route")
-public class RouteController extends BaseController<SysRoute, Long> {
+@RequestMapping("/admin/permission/route")
+public class PermissionRouteController extends BaseController<SysRoute, Long> {
 
     @RequestMapping("tree")
     public JSONObject tree(Long id) {
@@ -47,6 +47,8 @@ public class RouteController extends BaseController<SysRoute, Long> {
                 SysRoute vo = new SysRoute();
                 vo.setName(name);
                 vo.setFId(fId);
+                vo.setSeq(seq);
+                vo.setType(type);
                 vo = sysRouteService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -76,6 +78,8 @@ public class RouteController extends BaseController<SysRoute, Long> {
                 SysRoute vo = sysRouteService.getById(id);
                 vo.setName(name);
                 vo.setFId(fId);
+                vo.setSeq(seq);
+                vo.setType(type);
                 sysRouteService.update(vo);
             }
         }.result();

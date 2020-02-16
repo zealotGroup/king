@@ -14,11 +14,11 @@ public class Mappers {
     public static SysRoleRouteMapper sysRoleRouteMapper;
     public static SysRouteMapper sysRouteMapper;
     public static SysIdMapper sysIdMapper;
-    public static JxcChannelMapper jxcChannelMapper;
+    public static JxcCustMapper jxcCustMapper;
     public static JxcGoodsLableMapper jxcGoodsLableMapper;
     public static JxcGoodsMapper jxcGoodsMapper;
     public static JxcLableMapper jxcLableMapper;
-    public static JxcPurchaseSalesMapper jxcPurchaseSalesMapper;
+    public static JxcPurchaseMapper jxcPurchaseMapper;
     public static JxcStockMapper jxcStockMapper;
 
     @Autowired(required = false)
@@ -57,8 +57,8 @@ public class Mappers {
     }
 
     @Autowired(required = false)
-    public void setJxcChannelMapper(JxcChannelMapper jxcChannelMapper) {
-        Mappers.jxcChannelMapper = jxcChannelMapper;
+    public void setJxcChannelMapper(JxcCustMapper jxcCustMapper) {
+        Mappers.jxcCustMapper = jxcCustMapper;
     }
 
     @Autowired(required = false)
@@ -77,8 +77,8 @@ public class Mappers {
     }
 
     @Autowired(required = false)
-    public void setJxcPurchaseSalesMapper(JxcPurchaseSalesMapper jxcPurchaseSalesMapper) {
-        Mappers.jxcPurchaseSalesMapper = jxcPurchaseSalesMapper;
+    public void setJxcPurchaseSalesMapper(JxcPurchaseMapper jxcPurchaseMapper) {
+        Mappers.jxcPurchaseMapper = jxcPurchaseMapper;
     }
 
     @Autowired(required = false)

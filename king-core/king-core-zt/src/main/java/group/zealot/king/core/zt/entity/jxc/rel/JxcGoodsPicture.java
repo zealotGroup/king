@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"goodsId", "lableId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"goodsId", "pictureId"})})
 public class JxcGoodsPicture extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

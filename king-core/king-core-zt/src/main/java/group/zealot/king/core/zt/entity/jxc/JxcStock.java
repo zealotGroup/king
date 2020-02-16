@@ -25,8 +25,8 @@ public class JxcStock extends BaseEntity {
     private Long totalSales;//累计销售总数
     @Column(length = 20)
     private Long currentSize;//当前库存总数
-    @Column(length = 100)
-    private String unit;
+    @Column(length = 20)
+    private Long unitId;
 
     /**
      * 非数据库字段

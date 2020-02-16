@@ -15,7 +15,7 @@ import static group.zealot.king.core.zt.dbif.Services.sysRoleRouteService;
 
 
 @RestController
-@RequestMapping("/admin/roleRoute")
+@RequestMapping("/admin/role/route")
 public class RoleRouteController extends BaseController<SysRoleRoute, Long> {
 
     @RequestMapping("add")

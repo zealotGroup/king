@@ -16,7 +16,7 @@ import static group.zealot.king.core.zt.dbif.Services.jxcStockService;
 public class StockController extends BaseController<JxcStock, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, Long totalSize, Long totalSales, Long currentSize, String unit) {
+    public JSONObject add(Long goodsId, Long totalSize, Long totalSales, Long currentSize, Long unitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
@@ -24,7 +24,7 @@ public class StockController extends BaseController<JxcStock, Long> {
                 Funcation.AssertNotNull(totalSize, "totalSize 为空");
                 Funcation.AssertNotNull(totalSales, "totalSales 为空");
                 Funcation.AssertNotNull(currentSize, "currentSize 为空");
-                Funcation.AssertNotNull(unit, "unit 为空");
+                Funcation.AssertNotNull(unitId, "unitId 为空");
             }
 
             @Override
@@ -34,7 +34,7 @@ public class StockController extends BaseController<JxcStock, Long> {
                 vo.setTotalSize(totalSize);
                 vo.setTotalSales(totalSales);
                 vo.setCurrentSize(currentSize);
-                vo.setUnit(unit);
+                vo.setUnitId(unitId);
                 vo = jxcStockService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -45,7 +45,7 @@ public class StockController extends BaseController<JxcStock, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, Long totalSize, Long totalSales, Long currentSize, String unit) {
+    public JSONObject update(Long id, Long totalSize, Long totalSales, Long currentSize, Long unitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
@@ -53,7 +53,7 @@ public class StockController extends BaseController<JxcStock, Long> {
                 Funcation.AssertNotNull(totalSize, "totalSize 为空");
                 Funcation.AssertNotNull(totalSales, "totalSales 为空");
                 Funcation.AssertNotNull(currentSize, "currentSize 为空");
-                Funcation.AssertNotNull(unit, "unit 为空");
+                Funcation.AssertNotNull(unitId, "unitId 为空");
             }
 
             @Override
@@ -62,7 +62,7 @@ public class StockController extends BaseController<JxcStock, Long> {
                 vo.setTotalSize(totalSize);
                 vo.setTotalSales(totalSales);
                 vo.setCurrentSize(currentSize);
-                vo.setUnit(unit);
+                vo.setUnitId(unitId);
                 jxcStockService.update(vo);
             }
         }.result();

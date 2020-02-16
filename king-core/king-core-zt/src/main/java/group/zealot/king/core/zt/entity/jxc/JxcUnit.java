@@ -1,7 +1,6 @@
 package group.zealot.king.core.zt.entity.jxc;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
-import group.zealot.king.core.zt.entity.jxc.enums.PurchaseSalesTypeEnum;
 import group.zealot.king.core.zt.entity.jxc.enums.UnitTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +23,9 @@ public class JxcUnit extends BaseEntity {
     @Column(length = 20)
     private Long vsId;//比对单位ID
     @Column(length = 20)
-    private Integer size;//本单位 值
+    private Integer size;//本单位 值（分母）
     @Column(length = 20)
-    private Integer vsSize;//比对单位 值
+    private Integer vsSize;//比对单位 值（分子）
     @Column(length = 2)
     private UnitTypeEnum type;//类型（数量、价格、重量）
 

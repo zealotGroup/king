@@ -19,7 +19,7 @@ import java.util.Optional;
 public abstract class BaseServiceImpl<E, P extends Serializable> implements BaseService<E, P> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    @Autowired(required = false)
     public BaseMapper<E, P> baseMapper;
 
     @Autowired
