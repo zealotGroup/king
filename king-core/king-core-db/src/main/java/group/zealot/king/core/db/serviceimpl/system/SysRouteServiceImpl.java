@@ -3,7 +3,7 @@ package group.zealot.king.core.db.serviceimpl.system;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.util.NumberUtil;
-import group.zealot.king.core.db.BaseServiceImpl;
+import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.SysRoute;
 import group.zealot.king.core.zt.dbif.service.system.SysRouteService;
 import org.springframework.stereotype.Service;

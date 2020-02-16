@@ -1,6 +1,7 @@
 package group.zealot.king.core.zt.entity.jxc;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,5 +27,5 @@ public class JxcGoods extends BaseEntity {
     private Long unitId;
 
     @Transient
-    private List<JxcLable> lableList;
+    private List<AdminLable> lableList;
 }

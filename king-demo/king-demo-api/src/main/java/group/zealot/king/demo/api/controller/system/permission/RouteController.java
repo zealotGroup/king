@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api.controller.admin;
+package group.zealot.king.demo.api.controller.system.permission;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
@@ -13,8 +13,8 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/admin/permission/route")
-public class PermissionRouteController extends BaseController<SysRoute, Long> {
+@RequestMapping("/system/permission/route")
+public class RouteController extends BaseController<SysRoute, Long> {
 
     @RequestMapping("tree")
     public JSONObject tree(Long id) {

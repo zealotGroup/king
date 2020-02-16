@@ -4,7 +4,7 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
-import group.zealot.king.core.db.BaseServiceImpl;
+import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.SysAuth;
 import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;

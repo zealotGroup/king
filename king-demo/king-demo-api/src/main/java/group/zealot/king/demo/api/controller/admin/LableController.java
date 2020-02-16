@@ -1,19 +1,19 @@
-package group.zealot.king.demo.api.controller.jxc;
+package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.entity.jxc.JxcLable;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.jxcLableService;
+import static group.zealot.king.core.zt.dbif.Services.adminLableService;
 
 
 @RestController
-@RequestMapping("/jxc/lable")
-public class LableController extends BaseController<JxcLable, Long> {
+@RequestMapping("/admin/lable")
+public class LableController extends BaseController<AdminLable, Long> {
 
     @RequestMapping("add")
     public JSONObject add(String name) {
@@ -25,9 +25,9 @@ public class LableController extends BaseController<JxcLable, Long> {
 
             @Override
             protected void dosomething() {
-                JxcLable vo = new JxcLable();
+                AdminLable vo = new AdminLable();
                 vo.setName(name);
-                vo = jxcLableService.insert(vo);
+                vo = adminLableService.insert(vo);
 
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
@@ -47,9 +47,9 @@ public class LableController extends BaseController<JxcLable, Long> {
 
             @Override
             protected void dosomething() {
-                JxcLable vo = jxcLableService.getById(id);
+                AdminLable vo = adminLableService.getById(id);
                 vo.setName(name);
-                jxcLableService.update(vo);
+                adminLableService.update(vo);
             }
         }.result();
     }

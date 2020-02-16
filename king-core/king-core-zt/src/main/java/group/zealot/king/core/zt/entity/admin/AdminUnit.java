@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.entity.jxc;
+package group.zealot.king.core.zt.entity.admin;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
 import group.zealot.king.core.zt.entity.jxc.enums.UnitTypeEnum;
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
-public class JxcUnit extends BaseEntity {
+public class AdminUnit extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api.controller.admin;
+package group.zealot.king.demo.api.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
@@ -12,7 +12,7 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/admin/user")
+@RequestMapping("/system/user")
 public class UserController extends BaseController<SysUser, Long> {
     @RequestMapping("add")
     public JSONObject add(String username, byte[] password, String status, String level,

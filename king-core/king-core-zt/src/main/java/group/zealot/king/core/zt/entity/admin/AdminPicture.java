@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.entity.jxc;
+package group.zealot.king.core.zt.entity.admin;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
-public class JxcPicture extends BaseEntity {
+public class AdminPicture extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

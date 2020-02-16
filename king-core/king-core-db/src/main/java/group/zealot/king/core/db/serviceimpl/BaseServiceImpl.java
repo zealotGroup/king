@@ -1,4 +1,4 @@
-package group.zealot.king.core.db;
+package group.zealot.king.core.db.serviceimpl;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;

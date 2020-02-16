@@ -2,54 +2,54 @@ package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.entity.system.SysRoleData;
+import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.sysRoleDataService;
+import static group.zealot.king.core.zt.dbif.Services.adminPictureService;
 
 
 @RestController
-@RequestMapping("/admin/role/data")
-public class RoleDataController extends BaseController<SysRoleData, Long> {
+@RequestMapping("/admin/picture")
+public class PictureController extends BaseController<AdminPicture, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(String name) {
+    public JSONObject add(String name, Long phoneNumber, String address) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(name, "name 为空");
             }
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = new SysRoleData();
-                sysRoleData.setName(name);
-                sysRoleData = sysRoleDataService.insert(sysRoleData);
+                AdminPicture vo = new AdminPicture();
+                vo.setName(name);
+                vo = adminPictureService.insert(vo);
 
                 JSONObject data = new JSONObject();
-                data.put("vo", sysRoleData);
+                data.put("vo", vo);
                 resultJson.setData(data);
             }
         }.result();
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name) {
+    public JSONObject update(Long id, String name, Long phoneNumber, String address) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(id, "id 为空");
+                Funcation.AssertNotNull(name, "name 为空");
             }
 
             @Override
             protected void dosomething() {
-                SysRoleData sysRoleData = sysRoleDataService.getById(id);
-                sysRoleData.setName(name);
-                sysRoleDataService.update(sysRoleData);
+                AdminPicture vo = adminPictureService.getById(id);
+                vo.setName(name);
+                adminPictureService.update(vo);
             }
         }.result();
     }

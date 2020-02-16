@@ -1,10 +1,10 @@
 package group.zealot.king.core.db.serviceimpl.jxc;
 
-import group.zealot.king.core.db.BaseServiceImpl;
+import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
-import group.zealot.king.core.zt.entity.jxc.JxcLable;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,26 +16,26 @@ import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> implements JxcGoodsService {
     @Override
     public void formater(JxcGoods jxcGoods) {
-        List<JxcLable> list = jxcGoodsMapper.getLableList(jxcGoods.getId());
+        List<AdminLable> list = jxcGoodsMapper.getLableList(jxcGoods.getId());
         jxcGoods.setLableList(list);
     }
 
     @Override
-    public JxcLable addLable(Long goodsId, String lableName) {
-        JxcLable jxcLable = new JxcLable();
-        jxcLable.setName(lableName);
-        jxcLable = jxcLableServiceImpl.get(jxcLable);
+    public AdminLable addLable(Long goodsId, String lableName) {
+        AdminLable adminLable = new AdminLable();
+        adminLable.setName(lableName);
+        adminLable = adminLableServiceImpl.get(adminLable);
 
-        if (jxcLable == null) {
-            jxcLable = new JxcLable();
-            jxcLable.setName(lableName);
-            jxcLable = jxcLableServiceImpl.insert(jxcLable);
+        if (adminLable == null) {
+            adminLable = new AdminLable();
+            adminLable.setName(lableName);
+            adminLable = adminLableServiceImpl.insert(adminLable);
         }
 
         JxcGoodsLable jxcGoodsLable = new JxcGoodsLable();
         jxcGoodsLable.setGoodsId(goodsId);
-        jxcGoodsLable.setLableId(jxcLable.getId());
+        jxcGoodsLable.setLableId(adminLable.getId());
         jxcGoodsLableServiceImpl.insert(jxcGoodsLable);
-        return jxcLable;
+        return adminLable;
     }
 }

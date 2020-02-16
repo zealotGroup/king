@@ -2,8 +2,8 @@ package group.zealot.king.core.zt.dbif.service.jxc;
 
 import group.zealot.king.core.zt.dbif.service.BaseService;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
-import group.zealot.king.core.zt.entity.jxc.JxcLable;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 
 public interface JxcGoodsService extends BaseService<JxcGoods, Long> {
-    JxcLable addLable(Long goodsId, String lableName);
+    AdminLable addLable(Long goodsId, String lableName);
 }

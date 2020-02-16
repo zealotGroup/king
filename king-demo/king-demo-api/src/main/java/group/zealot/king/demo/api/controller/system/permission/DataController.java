@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api.controller.admin;
+package group.zealot.king.demo.api.controller.system.permission;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
@@ -12,8 +12,8 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 
 @RestController
-@RequestMapping("/admin/permission/data")
-public class PermissionDataController extends BaseController<SysData, Long> {
+@RequestMapping("/system/permission/data")
+public class DataController extends BaseController<SysData, Long> {
 
     @RequestMapping("add")
     public JSONObject add(String name) {

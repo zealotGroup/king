@@ -1,5 +1,8 @@
 package group.zealot.king.core.zt.dbif;
 
+import group.zealot.king.core.zt.dbif.service.admin.AdminLableService;
+import group.zealot.king.core.zt.dbif.service.admin.AdminPictureService;
+import group.zealot.king.core.zt.dbif.service.admin.AdminUnitService;
 import group.zealot.king.core.zt.dbif.service.jxc.*;
 import group.zealot.king.core.zt.dbif.service.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,11 @@ public class Services {
     public static JxcCustService jxcCustService;
     public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsService jxcGoodsService;
-    public static JxcLableService jxcLableService;
+    public static AdminLableService adminLableService;
     public static JxcPurchaseService jxcPurchaseService;
     public static JxcStockService jxcStockService;
-    public static JxcPictureService jxcPictureService;
-    public static JxcUnitService jxcUnitService;
+    public static AdminPictureService adminPictureService;
+    public static AdminUnitService adminUnitService;
     public static JxcSupplierService jxcSupplierService;
 
     @Autowired(required = false)
@@ -31,8 +34,8 @@ public class Services {
     }
 
     @Autowired(required = false)
-    public void setJxcUnitService(JxcUnitService jxcUnitService) {
-        Services.jxcUnitService = jxcUnitService;
+    public void setJxcUnitService(AdminUnitService adminUnitService) {
+        Services.adminUnitService = adminUnitService;
     }
 
     @Autowired(required = false)
@@ -46,8 +49,8 @@ public class Services {
     }
 
     @Autowired(required = false)
-    public void setJxcPictureService(JxcPictureService jxcPictureService) {
-        Services.jxcPictureService = jxcPictureService;
+    public void setJxcPictureService(AdminPictureService adminPictureService) {
+        Services.adminPictureService = adminPictureService;
     }
 
     @Autowired(required = false)
@@ -66,8 +69,8 @@ public class Services {
     }
 
     @Autowired(required = false)
-    public void setJxcLableService(JxcLableService jxcLableService) {
-        Services.jxcLableService = jxcLableService;
+    public void setJxcLableService(AdminLableService adminLableService) {
+        Services.adminLableService = adminLableService;
     }
 
     @Autowired(required = false)

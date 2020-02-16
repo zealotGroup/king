@@ -3,7 +3,7 @@ package group.zealot.king.demo.api.controller.jxc;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
-import group.zealot.king.core.zt.entity.jxc.JxcLable;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,9 +66,9 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
 
             @Override
             protected void dosomething() {
-                JxcLable jxcLable = jxcGoodsService.addLable(goodsId, lableName);
+                AdminLable adminLable = jxcGoodsService.addLable(goodsId, lableName);
                 JSONObject data = new JSONObject();
-                data.put("vo", jxcLable);
+                data.put("vo", adminLable);
                 resultJson.setData(data);
             }
         }.result();

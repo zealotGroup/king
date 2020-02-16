@@ -1,20 +1,20 @@
-package group.zealot.king.demo.api.controller.jxc;
+package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.entity.jxc.JxcUnit;
+import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.enums.UnitTypeEnum;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.jxcUnitService;
+import static group.zealot.king.core.zt.dbif.Services.adminUnitService;
 
 
 @RestController
-@RequestMapping("/jxc/unit")
-public class UnitController extends BaseController<JxcUnit, Long> {
+@RequestMapping("/admin/unit")
+public class UnitController extends BaseController<AdminUnit, Long> {
 
     @RequestMapping("add")
     public JSONObject add(String name, Long vsId, Integer size, Integer vsSize, UnitTypeEnum type) {
@@ -31,13 +31,13 @@ public class UnitController extends BaseController<JxcUnit, Long> {
 
             @Override
             protected void dosomething() {
-                JxcUnit vo = new JxcUnit();
+                AdminUnit vo = new AdminUnit();
                 vo.setName(name);
                 vo.setVsId(vsId);
                 vo.setSize(size);
                 vo.setVsSize(vsSize);
                 vo.setType(type);
-                vo = jxcUnitService.insert(vo);
+                vo = adminUnitService.insert(vo);
 
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
@@ -62,13 +62,13 @@ public class UnitController extends BaseController<JxcUnit, Long> {
 
             @Override
             protected void dosomething() {
-                JxcUnit vo = jxcUnitService.getById(id);
+                AdminUnit vo = adminUnitService.getById(id);
                 vo.setName(name);
                 vo.setVsId(vsId);
                 vo.setSize(size);
                 vo.setVsSize(vsSize);
                 vo.setType(type);
-                jxcUnitService.update(vo);
+                adminUnitService.update(vo);
             }
         }.result();
     }

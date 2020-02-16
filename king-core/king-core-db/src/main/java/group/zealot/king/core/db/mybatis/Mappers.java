@@ -1,5 +1,6 @@
 package group.zealot.king.core.db.mybatis;
 
+import group.zealot.king.core.db.mybatis.admin.AdminLableMapper;
 import group.zealot.king.core.db.mybatis.jxc.*;
 import group.zealot.king.core.db.mybatis.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,11 @@ public class Mappers {
     public static SysRoleRouteMapper sysRoleRouteMapper;
     public static SysRouteMapper sysRouteMapper;
     public static SysIdMapper sysIdMapper;
+
     public static JxcCustMapper jxcCustMapper;
     public static JxcGoodsLableMapper jxcGoodsLableMapper;
     public static JxcGoodsMapper jxcGoodsMapper;
-    public static JxcLableMapper jxcLableMapper;
+    public static AdminLableMapper adminLableMapper;
     public static JxcPurchaseMapper jxcPurchaseMapper;
     public static JxcStockMapper jxcStockMapper;
 
@@ -72,8 +74,8 @@ public class Mappers {
     }
 
     @Autowired(required = false)
-    public void setJxcLableMapper(JxcLableMapper jxcLableMapper) {
-        Mappers.jxcLableMapper = jxcLableMapper;
+    public void setJxcLableMapper(AdminLableMapper adminLableMapper) {
+        Mappers.adminLableMapper = adminLableMapper;
     }
 
     @Autowired(required = false)

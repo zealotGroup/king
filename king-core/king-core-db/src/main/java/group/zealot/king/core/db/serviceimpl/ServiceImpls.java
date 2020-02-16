@@ -1,5 +1,6 @@
 package group.zealot.king.core.db.serviceimpl;
 
+import group.zealot.king.core.db.serviceimpl.admin.*;
 import group.zealot.king.core.db.serviceimpl.jxc.*;
 import group.zealot.king.core.db.serviceimpl.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,72 +23,85 @@ public class ServiceImpls {
     public static JxcCustServiceImpl jxcChannelServiceImpl;
     public static JxcGoodsLableServiceImpl jxcGoodsLableServiceImpl;
     public static JxcGoodsServiceImpl jxcGoodsServiceImpl;
-    public static JxcLableServiceImpl jxcLableServiceImpl;
     public static JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl;
     public static JxcStockServiceImpl jxcStockServiceImpl;
 
-    @Autowired
+    public static AdminLableServiceImpl adminLableServiceImpl;
+    public static AdminPictureServiceImpl adminPictureServiceImpl;
+    public static AdminUnitServiceImpl adminUnitServiceImpl;
+
+    @Autowired(required = false)
     public void setSysAuthServiceImpl(SysAuthServiceImpl sysAuthServiceImpl) {
         ServiceImpls.sysAuthServiceImpl = sysAuthServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysDataServiceImpl(SysDataServiceImpl sysDataServiceImpl) {
         ServiceImpls.sysDataServiceImpl = sysDataServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysIdServiceImpl(SysIdServiceImpl sysIdServiceImpl) {
         ServiceImpls.sysIdServiceImpl = sysIdServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysRoleDataServiceImpl(SysRoleDataServiceImpl sysRoleDataServiceImpl) {
         ServiceImpls.sysRoleDataServiceImpl = sysRoleDataServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysRoleRouteServiceImpl(SysRoleRouteServiceImpl sysRoleRouteServiceImpl) {
         ServiceImpls.sysRoleRouteServiceImpl = sysRoleRouteServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysRouteServiceImpl(SysRouteServiceImpl sysRouteServiceImpl) {
         ServiceImpls.sysRouteServiceImpl = sysRouteServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setSysUserServiceImpl(SysUserServiceImpl sysUserServiceImpl) {
         ServiceImpls.sysUserServiceImpl = sysUserServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setJxcChannelServiceImpl(JxcCustServiceImpl jxcChannelServiceImpl) {
         ServiceImpls.jxcChannelServiceImpl = jxcChannelServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setJxcGoodsLableServiceImpl(JxcGoodsLableServiceImpl jxcGoodsLableServiceImpl) {
         ServiceImpls.jxcGoodsLableServiceImpl = jxcGoodsLableServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setJxcGoodsServiceImpl(JxcGoodsServiceImpl jxcGoodsServiceImpl) {
         ServiceImpls.jxcGoodsServiceImpl = jxcGoodsServiceImpl;
     }
 
-    @Autowired
-    public void setJxcLableServiceImpl(JxcLableServiceImpl jxcLableServiceImpl) {
-        ServiceImpls.jxcLableServiceImpl = jxcLableServiceImpl;
-    }
-
-    @Autowired
+    @Autowired(required = false)
     public void setJxcPurchaseSalesServiceImpl(JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl) {
         ServiceImpls.jxcPurchaseSalesServiceImpl = jxcPurchaseSalesServiceImpl;
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void setJxcStockServiceImpl(JxcStockServiceImpl jxcStockServiceImpl) {
         ServiceImpls.jxcStockServiceImpl = jxcStockServiceImpl;
+    }
+
+    @Autowired(required = false)
+    public void setAdminLableServiceImpl(AdminLableServiceImpl adminLableServiceImpl) {
+        ServiceImpls.adminLableServiceImpl = adminLableServiceImpl;
+    }
+
+    @Autowired(required = false)
+    public void setAdminPictureServiceImpl(AdminPictureServiceImpl adminPictureServiceImpl) {
+        ServiceImpls.adminPictureServiceImpl = adminPictureServiceImpl;
+    }
+
+    @Autowired(required = false)
+    public void setAdminUnitServiceImpl(AdminUnitServiceImpl adminUnitServiceImpl) {
+        ServiceImpls.adminUnitServiceImpl = adminUnitServiceImpl;
     }
 }
