@@ -215,6 +215,7 @@ export default {
   level: '等级',
   No: '序号',
   lastLoginTime: '最后登录时间',
+  waiting_for_flush: '待刷新',
   waitingForFlush: '待刷新',
   error: '错误',
   roleData: '数据角色',
@@ -288,5 +289,6 @@ export default {
   currentSize: '当前总数',
   unit: '单位',
   goodsName: '商品名称',
-  lable: '标签'
+  lable: '标签',
+  picture: '图片'
 }
