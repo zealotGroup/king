@@ -41,7 +41,7 @@ public abstract class ResultTemple {
         return resultJson.result();
     }
 
-    public JSONObject resultError() {
+    public JSONObject justResult() {
         dosomething();
         return resultJson.result();
     }

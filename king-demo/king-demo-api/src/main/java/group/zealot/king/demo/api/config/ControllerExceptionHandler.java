@@ -39,7 +39,7 @@ public class ControllerExceptionHandler {
                     resultJson.set(ServiceCode.EXCEPTION);
                 }
             }
-        }.resultError();
+        }.justResult();
     }
 
     /**
@@ -78,6 +78,6 @@ public class ControllerExceptionHandler {
                     resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);
                 }
             }
-        }.resultError();
+        }.justResult();
     }
 }

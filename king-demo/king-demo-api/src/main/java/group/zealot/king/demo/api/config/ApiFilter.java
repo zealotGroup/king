@@ -30,6 +30,7 @@ public class ApiFilter implements Filter {
         //白名单地址
         paths.add("/");
         paths.add("/login");
+        paths.add("/admin/picture/getPicture");
         //允许请求的方法
         methods.add("POST");
         methods.add("GET");
