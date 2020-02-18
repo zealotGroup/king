@@ -29,4 +29,6 @@ public class AdminUnit extends BaseEntity {
     @Column(length = 2)
     private UnitTypeEnum type;//类型（数量、价格、重量）
 
+    @Transient
+    private String vsName;//比对单位ID
 }
