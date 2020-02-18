@@ -3,6 +3,11 @@ import { parseTime } from '@/utils'
 import Vue from 'vue'
 const v = new Vue()
 
+export function flushList(list) {
+  list.push({ id: -1 })
+  list.pop()
+}
+
 export function notifyClicking(loading, callBack) {
   if (loading) {
     v.$notify({

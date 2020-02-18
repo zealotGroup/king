@@ -57,7 +57,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" min-width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waiting_for_flush">
@@ -128,7 +128,7 @@
 
 <script>
   import { getList, get, add, update, del } from '@/api/admin/unit'
-  import { notifyClicking, cacheGet } from '@/utils/myUtil'
+  import { notifyClicking, cacheGet, flushList } from '@/utils/myUtil'
 
   export default {
     name: 'unit',
@@ -179,6 +179,10 @@
             ]
           }
         }
+        getList({ page: 1, limit: -1 }).then((data) => {
+          this.vsList = data.list
+          this.formaterList(this.table.list)
+        })
       },
       resetTemp() {
         this.temp = {
@@ -280,10 +284,6 @@
       clickAdd() {
         notifyClicking(this.loading_add, () => {
           this.loading_add = true
-          getList({ page: 1, limit: -1 }).then((data) => {
-            this.vsList = data.list
-            this.formaterList(this.table.list)
-          })
           this.resetTemp()
           this.resetDialog()
           this.dialog.type = 'add'
@@ -299,19 +299,17 @@
       clickUpdate(row) {
         notifyClicking(row.loading_update, () => {
           row.loading_update = true
-          getList({ page: 1, limit: -1 }).then((data) => {
-            this.vsList = data.list
-            this.formaterList(this.table.list)
-          })
           this.resetTemp()
           this.resetDialog()
           this.dialog.type = 'update'
           this.dialog.title = 'update'
           this.dialog.rules.id[0].required = true
+          flushList(this.table.list)
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
             this.dialog.visible = true
             row.loading_update = false
+            flushList(this.table.list)
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
             })
@@ -338,7 +336,7 @@
           row.loading_del = true
           row.visible_del = false
           del(row.id).then(() => {
-            cacheGet(row, 'remove')
+            cacheGet(this.table.list, row, 'remove')
             this.$notify({
               title: '成功',
               message: '删除成功',
@@ -356,7 +354,7 @@
         for (const v of list) { // 响应
           v.No = i++
           v.waiting_for_flush = false
-          v.loading_update = false
+          // v.loading_update = false
           v.loading_del = false
           // v.visible_del = false //弹框不关闭异常
           v.type = this.$t(v.type)

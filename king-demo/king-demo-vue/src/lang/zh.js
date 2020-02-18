@@ -295,5 +295,6 @@ export default {
   vsName: '对比名称',
   NUMBER: '数量',
   PRICE: '价格',
-  WEIGHT: '重量'
+  WEIGHT: '重量',
+  price: '价格'
 }

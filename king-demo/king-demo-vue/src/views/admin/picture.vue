@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" :label="$t('actions')" min-width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" min-width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waiting_for_flush">
@@ -130,7 +130,7 @@
 <script>
   import { getList, get, del } from '@/api/admin/picture'
   import { getToken } from '@/utils/auth'
-  import { notifyClicking, cacheGet, getPictureUrl } from '@/utils/myUtil'
+  import { notifyClicking, cacheGet, getPictureUrl, flushList } from '@/utils/myUtil'
 
   export default {
     name: 'picture_',
@@ -299,22 +299,24 @@
           this.dialog.type = 'update'
           this.dialog.title = 'update'
           this.dialog.rules.id[0].required = true
+          flushList(this.table.list)
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
             this.upload.fileList.push({ name: this.temp.name, url: getPictureUrl(this.temp.id) })
             this.dialog.visible = true
             row.loading_update = false
+            flushList(this.table.list)
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
             })
           }).catch(() => {
+            row.loading_update = false
             this.$notify({
               title: '失败',
               message: '获取信息失败',
               type: 'error',
               duration: 2000
             })
-            row.loading_update = false
           })
         })
       },
@@ -330,7 +332,7 @@
           row.loading_del = true
           row.visible_del = false
           del(row.id).then(() => {
-            cacheGet(row, 'remove')
+            cacheGet(this.table.list, row, 'remove')
             this.$notify({
               title: '成功',
               message: '删除成功',
