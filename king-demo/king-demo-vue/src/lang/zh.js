@@ -290,5 +290,10 @@ export default {
   unit: '单位',
   goodsName: '商品名称',
   lable: '标签',
-  picture: '图片'
+  picture: '图片',
+  vs: '对比',
+  vsName: '对比名称',
+  NUMBER: '数量',
+  PRICE: '价格',
+  WEIGHT: '重量'
 }

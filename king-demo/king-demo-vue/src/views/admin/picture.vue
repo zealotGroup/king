@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleSearch" style="min-width: 200px;" class="filter-item" v-model="table.query.like" placeholder="输入关键词搜索">
+      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.name" :placeholder="$t('name')">
       </el-input>
     </div>
     <div class="filter-container">
@@ -147,8 +147,7 @@
           pagesizes: [10, 20, 30, 50],
           query: {
             page: 1,
-            limit: 10,
-            like: undefined
+            limit: 10
           }
         },
         dialog: {
