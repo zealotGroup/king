@@ -9,5 +9,6 @@
 	        LEFT JOIN admin_lable jl ON jgl.lable_id = jl.id
         WHERE
 	        jgl.goods_id = #{_parameter}
+	        and jl.id is not null
     </select>
 </mapper>

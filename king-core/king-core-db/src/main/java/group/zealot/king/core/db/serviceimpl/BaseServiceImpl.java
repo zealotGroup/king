@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -74,15 +75,19 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
         if (pageRequest.getLimit() == -1) {
             pageRequest.setLimit(Integer.MAX_VALUE);
         }
-        org.springframework.data.domain.PageRequest Pageable
+        org.springframework.data.domain.PageRequest pageable
                 = org.springframework.data.domain.PageRequest.of(pageRequest.getPage() - 1, pageRequest.getLimit());
-        org.springframework.data.domain.Page<E> page = jpaRepository.findAll(getExample(pageRequest.getFilters()), Pageable);
+        org.springframework.data.domain.Page<E> page = pageQuery(pageRequest.getFilters(), pageable);
         Page resultPage = new Page();
         ArrayList<E> list = new ArrayList<>();
         page.forEach(e -> list.add(e));
         resultPage.setList(list);
         resultPage.setCount(page.getTotalElements());
         return resultPage;
+    }
+
+    protected org.springframework.data.domain.Page<E> pageQuery(E e, org.springframework.data.domain.PageRequest pageable) {
+        return jpaRepository.findAll(getExample(e), pageable);
     }
 
     @Override
@@ -98,7 +103,7 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
     }
 
     protected Example<E> getExample(E e) {
-        return Example.of(e);
+        return Example.of(e, getMatcher());
     }
 
     protected Sort getSort() {
@@ -111,5 +116,16 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
         } else {
             return null;
         }
+    }
+
+    protected ExampleMatcher getMatcher() {
+        return ExampleMatcher.matchingAll();
+    }
+
+    protected ExampleMatcher addLike(ExampleMatcher matcher, String... strs) {
+        for (String str : strs) {
+            matcher = matcher.withMatcher(str, ExampleMatcher.GenericPropertyMatchers.contains());
+        }
+        return matcher;
     }
 }

@@ -10,6 +10,8 @@ import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.core.zt.dbif.service.system.SysUserService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
@@ -92,6 +94,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
         sysAuthServiceImpl.delete(sysAuth);
     }
 
+    @Override
+    protected org.springframework.data.domain.Page<SysUser> pageQuery(SysUser e, org.springframework.data.domain.PageRequest pageable) {
+        ExampleMatcher likeMatcher = addLike(getMatcher(), "username");
+        return jpaRepository.findAll(Example.of(e, likeMatcher), pageable);
+    }
 
     @Override
     public void formater(SysUser vo) {

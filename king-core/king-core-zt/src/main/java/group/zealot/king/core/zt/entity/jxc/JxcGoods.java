@@ -28,4 +28,6 @@ public class JxcGoods extends BaseEntity {
 
     @Transient
     private List<AdminLable> lableList;
+    @Transient
+    private String unitName;
 }
