@@ -58,7 +58,7 @@
                 <el-button round size="mini" type="text" @click="scope.row.visible_del = false">取消</el-button>
                 <el-button round type="primary" size="mini" @click="delData(scope.row)" >确定</el-button>
               </div>
-              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="clickDel(row)">{{$t('del')}}</el-button>
+              <el-button round slot="reference" type="info" size="small" :loading="scope.row.loading_del" @click="clickDel(scope.row)">{{$t('del')}}</el-button>
             </el-popover>
           </template>
           <!--固定操作功能 end-->
@@ -77,7 +77,7 @@
     </div>
 
     <!--固定弹出层 start-->
-    <el-dialog :title="$t(dialog.title)" :visible.sync="dialog.visible" :before-close='dialogCancel'>
+    <el-dialog :title="$t(dialog.title)" :visible.sync="dialog.visible">
       <el-form ref="form" :model="temp" :rules="dialog.rules" label-position="left" label-width="120px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id" ></el-input>
@@ -88,7 +88,7 @@
         <el-form-item>
           <el-upload v-if="dialog.title === 'add'"
             class="upload-demo"
-            ref="upload"
+            ref="upload_add"
             action="http://localhost:9528/api/admin/picture/add"
             list-type="picture"
             :data="temp"
@@ -103,7 +103,7 @@
           </el-upload>
           <el-upload v-if="dialog.title === 'update'"
                                  class="upload-demo"
-                                 ref="upload"
+                                 ref="upload_update"
                                  action="http://localhost:9528/api/admin/picture/update"
                                  list-type="picture"
                                  :data="temp"
@@ -133,7 +133,7 @@
   import { notifyClicking, cacheGet, getPictureUrl } from '@/utils/myUtil'
 
   export default {
-    name: 'picture',
+    name: 'picture_',
     data() {
       return {
         upload: undefined,
@@ -151,7 +151,20 @@
             like: undefined
           }
         },
-        dialog: undefined,
+        dialog: {
+          visible: false,
+          loading_confirm: false,
+          type: '',
+          title: '',
+          rules: {
+            id: [
+              { required: true, message: this.$t('required'), trigger: 'blur' }
+            ],
+            name: [
+              { required: true, message: this.$t('required'), trigger: 'blur' }
+            ]
+          }
+        },
         temp: undefined
         /* 固定功能字段 end */
       }
@@ -167,8 +180,11 @@
           this.dialog.loading_confirm = true
           this.$refs['form'].validate((valid) => {
             if (valid) {
-              this.upload.data = this.temp
-              this.$refs['upload'].submit()
+              if (this.dialog.type === 'add') {
+                this.$refs['upload_add'].submit()
+              } else {
+                this.$refs['upload_update'].submit()
+              }
             }
           })
         })
@@ -203,7 +219,7 @@
       /* 固定功能方法 start */
       resetDialog() {
         this.dialog = {
-          loading_curd: false,
+          visible: false,
           loading_confirm: false,
           type: '',
           title: '',
@@ -336,7 +352,7 @@
           v.waiting_for_flush = false
           v.loading_update = false
           v.loading_del = false
-          v.visible_del = false
+          // v.visible_del = false //弹框不关闭异常
         }
       }
       /* 固定功能方法 end */

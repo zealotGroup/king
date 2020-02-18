@@ -1,9 +1,11 @@
 import store from '@/store'
 import { parseTime } from '@/utils'
+import Vue from 'vue'
+const v = new Vue()
 
 export function notifyClicking(loading, callBack) {
   if (loading) {
-    this.$notify({
+    v.$notify({
       title: '警告',
       message: '重复操作了',
       type: 'warning',
