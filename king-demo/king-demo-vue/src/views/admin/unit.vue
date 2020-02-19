@@ -128,7 +128,7 @@
 
 <script>
   import { getList, get, add, update, del } from '@/api/admin/unit'
-  import { notifyClicking, cacheGet, flushList } from '@/utils/myUtil'
+  import { notifyClicking, cacheGet, copy } from '@/utils/myUtil'
 
   export default {
     name: 'unit',
@@ -236,20 +236,26 @@
             add(this.temp).then(() => {
               this.temp.waiting_for_flush = true
               cacheGet(this.table.list, this.temp, 'add')
-              this.$notify({
-                title: '成功',
-                message: '创建成功',
-                type: 'success',
-                duration: 2000
-              })
               this.resetDialog()
               this.resetTemp()
               this.dialog.visible = false
               this.$nextTick(() => {
                 this.$refs['form'].clearValidate()
               })
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
             }).catch(() => {
               this.dialog.loading_confirm = false
+              this.$notify({
+                title: '失败',
+                message: '创建失败',
+                type: 'error',
+                duration: 2000
+              })
             })
           } else {
             this.dialog.loading_confirm = false
@@ -262,19 +268,25 @@
             update(this.temp).then(() => {
               this.temp.waiting_for_flush = true
               cacheGet(this.table.list, this.temp, 'replace')
+              this.resetDialog()
+              this.resetTemp()
+              this.$nextTick(() => {
+                this.$refs['form'].clearValidate()
+              })
               this.$notify({
                 title: '成功',
                 message: '更新成功',
                 type: 'success',
                 duration: 2000
               })
-              this.resetDialog()
-              this.resetTemp()
-              this.$nextTick(() => {
-                this.$refs['form'].clearValidate()
-              })
             }).catch(() => {
               this.dialog.loading_confirm = false
+              this.$notify({
+                title: '失败',
+                message: '更新失败',
+                type: 'error',
+                duration: 2000
+              })
             })
           } else {
             this.dialog.loading_confirm = false
@@ -304,23 +316,24 @@
           this.dialog.type = 'update'
           this.dialog.title = 'update'
           this.dialog.rules.id[0].required = true
-          flushList(this.table.list)
+          cacheGet(this.table.list, copy(row), 'replace')
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
             this.dialog.visible = true
             row.loading_update = false
-            flushList(this.table.list)
+            cacheGet(this.table.list, copy(row), 'replace')
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
             })
           }).catch(() => {
+            row.loading_update = false
+            cacheGet(this.table.list, copy(row), 'replace')
             this.$notify({
               title: '失败',
               message: '获取信息失败',
               type: 'error',
               duration: 2000
             })
-            row.loading_update = false
           })
         })
       },
@@ -328,14 +341,18 @@
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = true
+          cacheGet(this.table.list, copy(row), 'replace')
           row.loading_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
         })
       },
       delData(row) {
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
           del(row.id).then(() => {
+            row.loading_del = false
             cacheGet(this.table.list, row, 'remove')
             this.$notify({
               title: '成功',
@@ -343,9 +360,15 @@
               type: 'success',
               duration: 2000
             })
-            row.loading_del = false
           }).catch(() => {
             row.loading_del = false
+            cacheGet(this.table.list, copy(row), 'replace')
+            this.$notify({
+              title: '失败',
+              message: '删除失败',
+              type: 'error',
+              duration: 2000
+            })
           })
         })
       },
@@ -354,9 +377,9 @@
         for (const v of list) { // 响应
           v.No = i++
           v.waiting_for_flush = false
-          // v.loading_update = false
+          v.loading_update = false
           v.loading_del = false
-          // v.visible_del = false //弹框不关闭异常
+          v.visible_del = false
           v.type = this.$t(v.type)
           if (v.size && v.vsSize) {
             v.vs = v.size + ' : ' + v.vsSize

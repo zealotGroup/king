@@ -130,7 +130,7 @@
 <script>
   import { getList, get, del } from '@/api/admin/picture'
   import { getToken } from '@/utils/auth'
-  import { notifyClicking, cacheGet, getPictureUrl, flushList } from '@/utils/myUtil'
+  import { notifyClicking, cacheGet, getPictureUrl, copy } from '@/utils/myUtil'
 
   export default {
     name: 'picture_',
@@ -198,22 +198,35 @@
           row = cacheGet(this.table.list, this.temp, 'replace')
           message = '更新成功'
         }
+        this.resetTemp()
+        this.resetDialog()
+        row.waiting_for_flush = true
+        cacheGet(this.table.list, copy(row), 'replace')
+        this.dialog.loading_confirm = false
+        this.$nextTick(() => {
+          this.$refs['form'].clearValidate()
+        })
         this.$notify({
           title: '成功',
           message: message,
           type: 'success',
           duration: 2000
         })
-        this.resetTemp()
-        this.resetDialog()
-        row.waiting_for_flush = true
-        this.dialog.loading_confirm = false
-        this.$nextTick(() => {
-          this.$refs['form'].clearValidate()
-        })
       },
       submitError() {
         this.dialog.loading_confirm = false
+        let message = ''
+        if (this.dialog.type === 'add') {
+          message = '创建失败'
+        } else {
+          message = '更新失败'
+        }
+        this.$notify({
+          title: '失败',
+          message: message,
+          type: 'error',
+          duration: 2000
+        })
       },
       /* 固定功能方法 start */
       resetDialog() {
@@ -299,18 +312,19 @@
           this.dialog.type = 'update'
           this.dialog.title = 'update'
           this.dialog.rules.id[0].required = true
-          flushList(this.table.list)
+          cacheGet(this.table.list, copy(row), 'replace')
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
             this.upload.fileList.push({ name: this.temp.name, url: getPictureUrl(this.temp.id) })
             this.dialog.visible = true
             row.loading_update = false
-            flushList(this.table.list)
+            cacheGet(this.table.list, copy(row), 'replace')
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
             })
           }).catch(() => {
             row.loading_update = false
+            cacheGet(this.table.list, copy(row), 'replace')
             this.$notify({
               title: '失败',
               message: '获取信息失败',
@@ -324,14 +338,18 @@
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = true
+          cacheGet(this.table.list, copy(row), 'replace')
           row.loading_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
         })
       },
       delData(row) {
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
           del(row.id).then(() => {
+            row.loading_del = false
             cacheGet(this.table.list, row, 'remove')
             this.$notify({
               title: '成功',
@@ -339,9 +357,15 @@
               type: 'success',
               duration: 2000
             })
-            row.loading_del = false
           }).catch(() => {
             row.loading_del = false
+            cacheGet(this.table.list, copy(row), 'replace')
+            this.$notify({
+              title: '失败',
+              message: '删除失败',
+              type: 'error',
+              duration: 2000
+            })
           })
         })
       },
@@ -353,7 +377,7 @@
           v.waiting_for_flush = false
           v.loading_update = false
           v.loading_del = false
-          // v.visible_del = false //弹框不关闭异常
+          v.visible_del = false
         }
       }
       /* 固定功能方法 end */

@@ -350,6 +350,12 @@
               })
             }).catch(() => {
               this.dialog.loading_confirm = false
+              this.$notify({
+                title: '失败',
+                message: '创建失败',
+                type: 'error',
+                duration: 2000
+              })
             })
           } else {
             this.dialog.loading_confirm = false
@@ -375,6 +381,12 @@
               })
             }).catch(() => {
               this.dialog.loading_confirm = false
+              this.$notify({
+                title: '失败',
+                message: '更新失败',
+                type: 'error',
+                duration: 2000
+              })
             })
           } else {
             this.dialog.loading_confirm = false
@@ -451,6 +463,12 @@
           }).catch(() => {
             row.loading_del = false
             cacheGet(this.table.list, copy(row), 'replace')
+            this.$notify({
+              title: '失败',
+              message: '删除失败',
+              type: 'error',
+              duration: 2000
+            })
           })
         })
       },
@@ -461,7 +479,7 @@
           v.waiting_for_flush = false
           v.loading_update = false
           v.loading_del = false
-          // v.visible_del = false //弹框不关闭异常
+          v.visible_del = false
         }
       }
       /* 固定功能方法 end */
