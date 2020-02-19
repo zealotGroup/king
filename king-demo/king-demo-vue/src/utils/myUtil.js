@@ -3,6 +3,10 @@ import { parseTime } from '@/utils'
 import Vue from 'vue'
 const v = new Vue()
 
+export function copy(old) {
+  return JSON.parse(JSON.stringify(old))
+}
+
 export function flushList(list) {
   list.push({ id: -1 })
   list.pop()
@@ -20,6 +24,7 @@ export function notifyClicking(loading, callBack) {
     callBack()
   }
 }
+
 export function cacheGet(list, row, action) {
   if (action === 'add') {
     list.unshift(row)

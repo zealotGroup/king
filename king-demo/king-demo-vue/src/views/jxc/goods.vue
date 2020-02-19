@@ -3,6 +3,10 @@
     <div class="filter-container">
       <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.name" :placeholder="$t('name')">
       </el-input>
+      <el-select @change="search" filterable multiple clearable class="filter-item" style="width: 300px" v-model="table.query.lableIds" :placeholder="$t('lable')">
+        <el-option v-for="item in lableList" :key="item.id" :label="item.name" :value="item.id">
+        </el-option>
+      </el-select>
     </div>
     <div class="filter-container">
       <el-button round class="filter-item" type="primary" icon="el-icon-search" @click="search">{{$t('search')}}</el-button>
@@ -16,27 +20,27 @@
           <span>{{scope.row.No}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="130px" align="center" :label="$t('id')">
+      <el-table-column min-width="70px" align="center" :label="$t('id')">
         <template slot-scope="scope">
           <span>{{scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('name')">
+      <el-table-column min-width="150px" :label="$t('name')">
         <template slot-scope="scope">
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('price')">
+      <el-table-column min-width="70px" :label="$t('price')">
         <template slot-scope="scope">
           <span>{{scope.row.price }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('unit')">
+      <el-table-column min-width="70px" :label="$t('unit')">
         <template slot-scope="scope">
           <span>{{scope.row.unitName }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="200px" class-name="status-col" :label="$t('lable')" >
+      <el-table-column min-width="300px" class-name="status-col" :label="$t('lable')" >
         <template slot-scope="scope">
           <el-tag
             v-for="tag in scope.row.lableList"
@@ -50,9 +54,9 @@
             class="input-new-tag"
             v-if="scope.row.inputTagVisible"
             v-model="scope.row.inputTagValue"
-            ref="saveTagInput"
             size="small"
             @keyup.enter.native="handleInputTagConfirm(scope.row)"
+            @blur="handleInputTagConfirm(scope.row)"
           >
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInputTag(scope.row)">+</el-button>
@@ -116,7 +120,7 @@
         </el-form-item>
         <el-form-item :label="$t('unit')" prop="unitId">
           <el-select class="filter-item" v-model="temp.unitId">
-            <el-option v-for="item in unitList" :key="item.id" :label="$t(item.name)" :value="item.id">
+            <el-option v-for="item in unitList" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -147,8 +151,8 @@
   }
 </style>
 <script>
-  import { getList, get, add, update, del, addLable } from '@/api/jxc/goods'
-  import { notifyClicking, cacheGet, flushList } from '@/utils/myUtil'
+  import { getList, get, add, update, del, addLable, delLable, getGoodsLableList } from '@/api/jxc/goods'
+  import { notifyClicking, cacheGet, copy } from '@/utils/myUtil'
   import { getList as getUnitList } from '@/api/admin/unit'
 
   export default {
@@ -156,6 +160,7 @@
     data() {
       return {
         unitList: undefined,
+        lableList: undefined,
         /* 固定功能字段 start */
         loading_add: false,
         table: {
@@ -178,18 +183,42 @@
       this.resetTemp()
       this.resetDialog()
       this.getList()
+      getGoodsLableList().then((data) => {
+        this.lableList = data.list
+      }).catch(() => {
+        this.lableList = []
+        this.$notify({
+          title: '失败',
+          message: '获取标签信息失败',
+          type: 'error',
+          duration: 2000
+        })
+      })
     },
     methods: {
       handleCloseTag(row, tag) {
         // 删除 请求后台
-        row.lableList.splice(row.lableList.indexOf(tag), 1)
+        delLable({ goodsId: row.id, lableId: tag.id }).then(() => {
+          row.lableList.splice(row.lableList.indexOf(tag), 1)
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+        }).catch(() => {
+          this.$notify({
+            title: '失败',
+            message: '删除失败',
+            type: 'error',
+            duration: 2000
+          })
+        })
       },
       showInputTag(row) {
         row.inputTagVisible = true
         row.inputTagValue = ''
-        this.$nextTick(() => {
-          this.$refs['saveTagInput'].$refs['input'].focus()
-        })
+        cacheGet(this.table.list, copy(row), 'replace')
       },
       handleInputTagConfirm(row) {
         // 新增 请求后台
@@ -199,16 +228,33 @@
             row.lableList.push(data.vo)
             row.inputTagVisible = false
             row.inputTagValue = ''
+            cacheGet(this.table.list, copy(row), 'replace')
+            this.formaterList(this.table.list)
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
           }).catch(() => {
             row.inputTagVisible = false
             row.inputTagValue = ''
+            cacheGet(this.table.list, copy(row), 'replace')
+            this.formaterList(this.table.list)
           })
+        } else {
+          row.inputTagVisible = false
+          row.inputTagValue = ''
+          cacheGet(this.table.list, copy(row), 'replace')
+          this.formaterList(this.table.list)
         }
       },
       /* 固定功能方法 start */
       resetDialog() {
         const validatePrice = (rule, value, callback) => {
-          if (value <= 0) {
+          if (!value) {
+            callback(new Error('必填'))
+          } else if (value <= 0) {
             callback(new Error('值必须大于0'))
           } else {
             callback()
@@ -227,7 +273,7 @@
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
             price: [
-              { required: true, message: this.$t('required'), trigger: 'blur', validator: validatePrice }
+              { required: true, trigger: 'blur', validator: validatePrice }
             ],
             unitId: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
@@ -358,12 +404,12 @@
           this.dialog.type = 'update'
           this.dialog.title = 'update'
           this.dialog.rules.id[0].required = true
-          flushList(this.table.list)
+          cacheGet(this.table.list, copy(row), 'replace')
           get(row.id).then((data) => {
             this.temp = Object.assign({}, data.vo)
             this.dialog.visible = true
             row.loading_update = false
-            flushList(this.table.list)
+            cacheGet(this.table.list, copy(row), 'replace')
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
             })
@@ -375,6 +421,7 @@
               duration: 2000
             })
             row.loading_update = false
+            cacheGet(this.table.list, copy(row), 'replace')
           })
         })
       },
@@ -382,14 +429,18 @@
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = true
+          cacheGet(this.table.list, copy(row), 'replace')
           row.loading_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
         })
       },
       delData(row) {
         notifyClicking(row.loading_del, () => {
           row.loading_del = true
           row.visible_del = false
+          cacheGet(this.table.list, copy(row), 'replace')
           del(row.id).then(() => {
+            row.loading_del = false
             cacheGet(this.table.list, row, 'remove')
             this.$notify({
               title: '成功',
@@ -397,9 +448,9 @@
               type: 'success',
               duration: 2000
             })
-            row.loading_del = false
           }).catch(() => {
             row.loading_del = false
+            cacheGet(this.table.list, copy(row), 'replace')
           })
         })
       },
