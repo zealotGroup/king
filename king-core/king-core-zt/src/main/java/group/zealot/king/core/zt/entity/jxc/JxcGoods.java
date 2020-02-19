@@ -30,4 +30,6 @@ public class JxcGoods extends BaseEntity {
     private List<AdminLable> lableList;
     @Transient
     private String unitName;
+    @Transient
+    private List<Long> lableIds;
 }

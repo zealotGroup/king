@@ -84,11 +84,6 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
 
     /**
      * rapid分页查询
-     *
-     * @param statementName
-     * @param countStatementName
-     * @param pageRequest
-     * @return
      */
     public Page<E> pageQuery(String statementName, String countStatementName, PageRequest<E> pageRequest) {
         int totalCount = selectOne(countStatementName, pageRequest.getFilters());

@@ -2,12 +2,21 @@ package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.base.page.Page;
+import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static group.zealot.king.core.zt.dbif.Services.*;
 
@@ -16,18 +25,56 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 @RequestMapping("/jxc/goods")
 public class GoodsController extends BaseController<JxcGoods, Long> {
 
-    @RequestMapping("add")
-    public JSONObject add(String name) {
+    @RequestMapping("likeList")
+    protected JSONObject likeList(Integer page, Integer limit, JxcGoods e, String lableId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(page, "page为空");
+                Funcation.AssertNotNull(limit, "limit为空");
+            }
+
+            @Override
+            protected void dosomething() {
+                PageRequest<JxcGoods> pageRequest = new PageRequest<>();
+                pageRequest.setPage(page);
+                pageRequest.setLimit(limit);
+                if (StringUtil.isNotEmpty(lableId)) {
+                    String[] lableIds = lableId.split(",");
+                    List<Long> lableIdList = new ArrayList<>();
+                    for (int i = 0; i < lableIds.length; i++) {
+                        lableIdList.add(Long.valueOf(lableIds[i]));
+                    }
+                    e.setLableIds(lableIdList);
+                }
+                pageRequest.setFilters(e);
+                Page<JxcGoods> page = baseService.pageQuery(pageRequest);
+                baseService.formater(page.getList());
+
+                JSONObject data = new JSONObject();
+                data.put("total", page.getCount());
+                data.put("list", page.toJSONArray());
+                resultJson.set(data);
+            }
+        }.result();
+    }
+
+    @RequestMapping("add")
+    public JSONObject add(String name, Long price, Long unitId) {
+        return new ResultTemple() {
+            @Override
+            protected void verification() {
+                Funcation.AssertNotNull(name, "name 为空");
+                Funcation.AssertNotNull(price, "price 为空");
+                Funcation.AssertNotNull(unitId, "unitId 为空");
             }
 
             @Override
             protected void dosomething() {
                 JxcGoods vo = new JxcGoods();
                 vo.setName(name);
+                vo.setPrice(price);
+                vo.setUnitId(unitId);
                 vo = jxcGoodsService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -38,18 +85,22 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name) {
+    public JSONObject update(Long id, String name, Long price, Long unitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(name, "name为空");
+                Funcation.AssertNotNull(id, "id 为空");
+                Funcation.AssertNotNull(name, "name 为空");
+                Funcation.AssertNotNull(price, "price 为空");
+                Funcation.AssertNotNull(unitId, "unitId 为空");
             }
 
             @Override
             protected void dosomething() {
                 JxcGoods vo = jxcGoodsService.getById(id);
                 vo.setName(name);
+                vo.setPrice(price);
+                vo.setUnitId(unitId);
                 jxcGoodsService.update(vo);
             }
         }.result();
@@ -70,6 +121,45 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
                 JSONObject data = new JSONObject();
                 data.put("vo", adminLable);
                 resultJson.setData(data);
+            }
+        }.result();
+    }
+
+    @RequestMapping("delLable")
+    public JSONObject delLable(Long goodsId, Long lableId) {
+        return new ResultTemple() {
+            @Override
+            protected void verification() {
+                Funcation.AssertNotNull(goodsId, "goodsId 为空");
+                Funcation.AssertNotNull(lableId, "lableId 为空");
+            }
+
+            @Override
+            protected void dosomething() {
+                JxcGoodsLable jxcGoodsLable = new JxcGoodsLable();
+                jxcGoodsLable.setGoodsId(goodsId);
+                jxcGoodsLable.setLableId(lableId);
+                jxcGoodsLable = jxcGoodsLableService.get(jxcGoodsLable);
+                if (jxcGoodsLable != null) {
+                    jxcGoodsLableService.delete(jxcGoodsLable);
+                }
+                JSONObject data = new JSONObject();
+                data.put("vo", jxcGoodsLable);
+                resultJson.setData(data);
+            }
+        }.result();
+    }
+
+    @RequestMapping("getGoodsLableList")
+    public JSONObject getGoodsLableList() {
+        return new ResultTemple() {
+
+            @Override
+            protected void dosomething() {
+                List<AdminLable> list = jxcGoodsLableService.getLableList();
+                JSONObject data = new JSONObject();
+                data.put("list", list);
+                resultJson.set(data);
             }
         }.result();
     }

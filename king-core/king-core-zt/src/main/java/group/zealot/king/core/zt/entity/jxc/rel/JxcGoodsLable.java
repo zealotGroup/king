@@ -21,4 +21,7 @@ public class JxcGoodsLable extends BaseEntity {
     private Long goodsId;
     @Column(length = 20)
     private Long lableId;
+
+    @Transient
+    private String lableName;
 }

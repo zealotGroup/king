@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://www.zealot.group:53306/king?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://www.zealot.group:3306/king?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: zealot
     password: zealot.group
   redis:
     host: www.zealot.group
-    port: 55379
+    port: 6379
     password: zealot.group
