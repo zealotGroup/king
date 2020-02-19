@@ -181,7 +181,7 @@
         }
         getList({ page: 1, limit: -1 }).then((data) => {
           this.vsList = data.list
-          this.formaterList(this.table.list)
+          this.formaterList(this.vsList)
         })
       },
       resetTemp() {
