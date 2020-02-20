@@ -298,5 +298,10 @@ export default {
   WEIGHT: '重量',
   price: '价格',
   address: '地址',
-  phoneNumber: '电话号码'
+  phoneNumber: '电话号码',
+  custName: '客户名称',
+  supplierName: '供应商名称',
+  priceUnitName: '价格单位',
+  sizeUnitName: '数量单位',
+  size: '数量'
 }

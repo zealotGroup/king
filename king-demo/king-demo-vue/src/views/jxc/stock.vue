@@ -160,6 +160,26 @@
     created() {
       this.resetTemp()
       this.resetDialog()
+      getUnitList({ page: 1, limit: -1 }).then((data) => {
+        this.unitList = data.list
+      }).catch(() => {
+        this.$notify({
+          title: '失败',
+          message: '获取单位信息失败',
+          type: 'error',
+          duration: 2000
+        })
+      })
+      getGoodsList({ page: 1, limit: -1 }).then(data => {
+        this.goodsList = data.list
+      }).catch(() => {
+        this.$notify({
+          title: '失败',
+          message: '获取商品信息失败',
+          type: 'error',
+          duration: 2000
+        })
+      })
       this.getList()
     },
     methods: {
@@ -188,26 +208,6 @@
             ]
           }
         }
-        getUnitList({ page: 1, limit: -1 }).then((data) => {
-          this.unitList = data.list
-        }).catch(() => {
-          this.$notify({
-            title: '失败',
-            message: '获取单位信息失败',
-            type: 'error',
-            duration: 2000
-          })
-        })
-        getGoodsList({ page: 1, limit: -1 }).then(data => {
-          this.goodsList = data.list
-        }).catch(() => {
-          this.$notify({
-            title: '失败',
-            message: '获取商品信息失败',
-            type: 'error',
-            duration: 2000
-          })
-        })
       },
       resetTemp() {
         this.temp = {
