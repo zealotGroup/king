@@ -19,8 +19,8 @@ public class JxcSupplier extends BaseEntity {
     private Long id;
     @Column(length = 200)
     private String name;
-    @Column(nullable = false, length = 20)
-    private Long phoneNumber;
+    @Column(length = 50)
+    private String phoneNumber;
     @Column(length = 200)
     private String address;
 }

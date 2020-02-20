@@ -16,7 +16,7 @@ import static group.zealot.king.core.zt.dbif.Services.jxcSupplierService;
 public class SupplierController extends BaseController<JxcSupplier, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(String name, Long phoneNumber, String address) {
+    public JSONObject add(String name, String phoneNumber, String address) {
         return new ResultTemple() {
             @Override
             protected void verification() {
@@ -39,7 +39,7 @@ public class SupplierController extends BaseController<JxcSupplier, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, Long phoneNumber, String address) {
+    public JSONObject update(Long id, String name, String phoneNumber, String address) {
         return new ResultTemple() {
             @Override
             protected void verification() {

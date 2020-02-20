@@ -29,4 +29,13 @@ public class JxcPurchase extends BaseEntity {
     private Long size;//数量
     @Column(length = 20)
     private Long sizeUnitId;//单位
+
+    @Transient
+    private String goodsName;
+    @Transient
+    private String supplierName;
+    @Transient
+    private String priceUnitName;
+    @Transient
+    private String sizeUnitName;
 }

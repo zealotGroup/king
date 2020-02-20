@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group.zealot.king.core.db.mybatis.jxc.JxcPurchaseMapper">
+    <sql id="where">
+        <if test="goodsName != null and goodsName.length() > 0">
+            and jg.NAME LIKE concat('%',#{name},'%')
+        </if>
+    </sql>
+
+    <select id="getList" parameterType="JxcGoods" resultType="JxcGoods">
+        SELECT
+        jp.id id,
+        jp.goods_id goodsId,
+        jg.NAME goodsName,
+        jp.supplier_id supplierId,
+        js.name supplierName,
+        jp.price price,
+        jp.price_unit_id priceUnitId,
+        au1.NAME priceUnitName,
+        jp.size size,
+        jp.size_unit_id sizeUnitId,
+        au2.NAME sizeUnitName
+        FROM
+        jxc_purchase jp
+        LEFT JOIN admin_unit au1 ON jp.price_unit_id = au1.id
+        LEFT JOIN admin_unit au2 ON jp.size_unit_id = au2.id
+        LEFT JOIN jxc_goods jg ON jp.goods_id = jg.id
+        LEFT JOIN jxc_supplier js ON jp.supplier_id = js.id
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="getListCount" parameterType="JxcGoods" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        jxc_purchase jp
+        LEFT JOIN admin_unit au1 ON jp.price_unit_id = au1.id
+        LEFT JOIN admin_unit au2 ON jp.size_unit_id = au2.id
+        LEFT JOIN jxc_goods jg ON jp.goods_id = jg.id
+        LEFT JOIN jxc_supplier js ON jp.supplier_id = js.id
+        <where>
+            <include refid="where"></include>
+        </where>
+    </select>
+</mapper>
