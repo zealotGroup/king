@@ -8,6 +8,7 @@ import Layout from '@/views/layout/Layout'
 import Blank from '@/views/Blank'
 /* views */
 import dashboard_index from '@/views/dashboard/index'
+
 import jxc_goods from '@/views/jxc/goods'
 import jxc_stock from '@/views/jxc/stock'
 import jxc_cust from '@/views/jxc/cust'
@@ -129,7 +130,7 @@ export const routerMap = [
       name: 'sales',
       meta: { title: 'sales', icon: 'sales', noCache: true }
     }, {
-      path: 'purchase',
+      path: 'supplier',
       component: jxc_supplier,
       name: 'supplier',
       meta: { title: 'supplier', icon: 'supplier', noCache: true }
