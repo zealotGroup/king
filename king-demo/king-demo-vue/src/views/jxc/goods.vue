@@ -182,7 +182,6 @@
     created() {
       this.resetTemp()
       this.resetDialog()
-      this.getList()
       getGoodsLableList().then((data) => {
         this.lableList = data.list
       }).catch(() => {
@@ -194,6 +193,10 @@
           duration: 2000
         })
       })
+      getUnitList({ page: 1, limit: -1, type: 'PRICE' }).then((data) => {
+        this.unitList = data.list
+      })
+      this.getList()
     },
     methods: {
       handleCloseTag(row, tag) {
@@ -280,9 +283,6 @@
             ]
           }
         }
-        getUnitList({ page: 1, limit: -1, type: 'PRICE' }).then((data) => {
-          this.unitList = data.list
-        })
       },
       resetTemp() {
         this.temp = {

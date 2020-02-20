@@ -296,5 +296,7 @@ export default {
   NUMBER: '数量',
   PRICE: '价格',
   WEIGHT: '重量',
-  price: '价格'
+  price: '价格',
+  address: '地址',
+  phoneNumber: '电话号码'
 }
