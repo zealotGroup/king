@@ -20,7 +20,7 @@
         <dubbo.version>2.7.1</dubbo.version>
 
         <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
-        <io.netty.version>4.1.38.Final</io.netty.version>
+        <io.netty.version>4.1.45.Final</io.netty.version>
 
         <mail.version>1.4.7</mail.version>
     </properties>
