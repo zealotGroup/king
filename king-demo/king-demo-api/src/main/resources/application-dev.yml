@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://www.zealot.group:3306/king?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://www.zealot.group:3306/king?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: zealot
     password: zealot.group
   redis:
