@@ -18,103 +18,100 @@ public class Services {
     public static SysRoleDataService sysRoleDataService;
     public static SysRoleRouteService sysRoleRouteService;
 
+    public static AdminPictureService adminPictureService;
+    public static AdminUnitService adminUnitService;
+    public static AdminLableService adminLableService;
+
     public static JxcCustService jxcCustService;
     public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsService jxcGoodsService;
-    public static AdminLableService adminLableService;
-    public static JxcPurchaseService jxcPurchaseService;
     public static JxcStockService jxcStockService;
-    public static AdminPictureService adminPictureService;
-    public static AdminUnitService adminUnitService;
     public static JxcSupplierService jxcSupplierService;
+    public static JxcSalesService jxcSalesService;
+    public static JxcPurchaseService jxcPurchaseService;
 
-    @Autowired(required = false)
-    public void setJxcSupplierService(JxcSupplierService jxcSupplierService) {
-        Services.jxcSupplierService = jxcSupplierService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcUnitService(AdminUnitService adminUnitService) {
-        Services.adminUnitService = adminUnitService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcCustService(JxcCustService jxcCustService) {
-        Services.jxcCustService = jxcCustService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcPurchaseService(JxcPurchaseService jxcPurchaseService) {
-        Services.jxcPurchaseService = jxcPurchaseService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcPictureService(AdminPictureService adminPictureService) {
-        Services.adminPictureService = adminPictureService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcChannelService(JxcCustService jxcCustService) {
-        Services.jxcCustService = jxcCustService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcGoodsLableService(JxcGoodsLableService jxcGoodsLableService) {
-        Services.jxcGoodsLableService = jxcGoodsLableService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcGoodsService(JxcGoodsService jxcGoodsService) {
-        Services.jxcGoodsService = jxcGoodsService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcLableService(AdminLableService adminLableService) {
-        Services.adminLableService = adminLableService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcPurchaseSalesService(JxcPurchaseService jxcPurchaseService) {
-        Services.jxcPurchaseService = jxcPurchaseService;
-    }
-
-    @Autowired(required = false)
-    public void setJxcStockService(JxcStockService jxcStockService) {
-        Services.jxcStockService = jxcStockService;
-    }
-
-    @Autowired(required = false)
+    @Autowired
     public void setSysIdService(SysIdService sysIdService) {
         Services.sysIdService = sysIdService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysUserService(SysUserService sysUserService) {
         Services.sysUserService = sysUserService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRouteService(SysRouteService sysRouteService) {
         Services.sysRouteService = sysRouteService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysAuthService(SysAuthService sysAuthService) {
         Services.sysAuthService = sysAuthService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysDataService(SysDataService sysDataService) {
         Services.sysDataService = sysDataService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRoleDataService(SysRoleDataService sysRoleDataService) {
         Services.sysRoleDataService = sysRoleDataService;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRoleRouteService(SysRoleRouteService sysRoleRouteService) {
         Services.sysRoleRouteService = sysRoleRouteService;
+    }
+
+    @Autowired
+    public void setAdminPictureService(AdminPictureService adminPictureService) {
+        Services.adminPictureService = adminPictureService;
+    }
+
+    @Autowired
+    public void setAdminUnitService(AdminUnitService adminUnitService) {
+        Services.adminUnitService = adminUnitService;
+    }
+
+    @Autowired
+    public void setAdminLableService(AdminLableService adminLableService) {
+        Services.adminLableService = adminLableService;
+    }
+
+    @Autowired
+    public void setJxcCustService(JxcCustService jxcCustService) {
+        Services.jxcCustService = jxcCustService;
+    }
+
+    @Autowired
+    public void setJxcGoodsLableService(JxcGoodsLableService jxcGoodsLableService) {
+        Services.jxcGoodsLableService = jxcGoodsLableService;
+    }
+
+    @Autowired
+    public void setJxcGoodsService(JxcGoodsService jxcGoodsService) {
+        Services.jxcGoodsService = jxcGoodsService;
+    }
+
+    @Autowired
+    public void setJxcStockService(JxcStockService jxcStockService) {
+        Services.jxcStockService = jxcStockService;
+    }
+
+    @Autowired
+    public void setJxcSupplierService(JxcSupplierService jxcSupplierService) {
+        Services.jxcSupplierService = jxcSupplierService;
+    }
+
+    @Autowired
+    public void setJxcSalesService(JxcSalesService jxcSalesService) {
+        Services.jxcSalesService = jxcSalesService;
+    }
+
+    @Autowired
+    public void setJxcPurchaseService(JxcPurchaseService jxcPurchaseService) {
+        Services.jxcPurchaseService = jxcPurchaseService;
     }
 }

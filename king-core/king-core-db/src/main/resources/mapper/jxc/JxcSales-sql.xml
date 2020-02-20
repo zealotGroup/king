@@ -3,7 +3,10 @@
 <mapper namespace="group.zealot.king.core.db.mybatis.jxc.JxcSalesMapper">
     <sql id="where">
         <if test="goodsName != null and goodsName.length() > 0">
-            and jg.NAME LIKE concat('%',#{name},'%')
+            and jg.NAME LIKE concat('%',#{goodsName},'%')
+        </if>
+        <if test="custName != null and custName.length() > 0">
+            and jc.NAME LIKE concat('%',#{custName},'%')
         </if>
     </sql>
 
@@ -19,7 +22,9 @@
         au1.NAME priceUnitName,
         js.size size,
         js.size_unit_id sizeUnitId,
-        au2.NAME sizeUnitName
+        au2.NAME sizeUnitName,
+        js.insert_time insertTime,
+        js.update_time updateTime
         FROM
         jxc_sales js
         LEFT JOIN admin_unit au1 ON js.price_unit_id = au1.id
