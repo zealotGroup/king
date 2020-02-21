@@ -3,7 +3,7 @@ package group.zealot.king.demo.api.controller.admin;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.core.zt.entity.admin.AdminUnit;
-import group.zealot.king.core.zt.entity.jxc.enums.UnitTypeEnum;
+import group.zealot.king.core.zt.entity.admin.enums.UnitTypeEnum;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;

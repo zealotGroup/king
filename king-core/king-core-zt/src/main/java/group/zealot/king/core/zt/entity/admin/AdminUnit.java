@@ -1,7 +1,7 @@
 package group.zealot.king.core.zt.entity.admin;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
-import group.zealot.king.core.zt.entity.jxc.enums.UnitTypeEnum;
+import group.zealot.king.core.zt.entity.admin.enums.UnitTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 

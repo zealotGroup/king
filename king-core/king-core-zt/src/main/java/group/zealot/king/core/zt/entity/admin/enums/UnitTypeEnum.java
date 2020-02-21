@@ -1,4 +1,4 @@
-package group.zealot.king.core.zt.entity.jxc.enums;
+package group.zealot.king.core.zt.entity.admin.enums;
 
 
 /**

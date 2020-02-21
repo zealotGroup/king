@@ -8,6 +8,15 @@
         <if test="custName != null and custName.length() > 0">
             and jc.NAME LIKE concat('%',#{custName},'%')
         </if>
+        <if test="startTime != null and startTime.length() > 0">
+            and (js.insert_time &gt;= #{startTime} or js.update_time &gt;= #{startTime})
+        </if>
+        <if test="endTime != null and endTime.length() > 0">
+            and (js.insert_time &lt;= #{endTime} or js.update_time &lt;= #{endTime})
+        </if>
+        <if test="type != null">
+            and js.type = #{type.ordinal}
+        </if>
     </sql>
 
     <select id="getList" parameterType="JxcSales" resultType="JxcSales">
@@ -24,7 +33,8 @@
         js.size_unit_id sizeUnitId,
         au2.NAME sizeUnitName,
         js.insert_time insertTime,
-        js.update_time updateTime
+        js.update_time updateTime,
+        case when js.type = 0 then 'AUTO' else case when js.type = 1 then 'MANUAL' else null end end type
         FROM
         jxc_sales js
         LEFT JOIN admin_unit au1 ON js.price_unit_id = au1.id

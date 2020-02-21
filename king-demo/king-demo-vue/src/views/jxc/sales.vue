@@ -1,18 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.custName" :placeholder="$t('custName')">
+      <el-input @keyup.enter.native="search" style="width: 200px;"  v-model="table.query.custName" :placeholder="$t('custName')">
       </el-input>
-      <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.goodsName" :placeholder="$t('goodsName')">
+      <el-input @keyup.enter.native="search" style="width: 200px;"  v-model="table.query.goodsName" :placeholder="$t('goodsName')">
       </el-input>
+      <el-select @change="search" clearable  style="width: 130px" v-model="table.query.type" :placeholder="$t('type')">
+        <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
+        </el-option>
+      </el-select>
       <el-date-picker
-        v-model="value2"
-        type="datetimerange"
-        :picker-options="pickerOptions"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        align="right">
+        v-model="table.query.startTime"
+        value-format="yyyy-MM-ddT00:00:00"
+        align="right"
+        type="date"
+        placeholder="选择开始日期"
+        :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-date-picker
+        v-model="table.query.endTime"
+        value-format="yyyy-MM-ddT23:59:59"
+        align="right"
+        type="date"
+        placeholder="选择结束日期"
+        :picker-options="pickerOptions">
       </el-date-picker>
     </div>
     <div class="filter-container">
@@ -49,7 +60,7 @@
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('priceUnitName')">
         <template slot-scope="scope">
-          <span>{{scope.row.priceUnitName }}</span>
+          <span>{{scope.row.priceUnitName}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('size')">
@@ -59,22 +70,27 @@
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('sizeUnitName')">
         <template slot-scope="scope">
-          <span>{{scope.row.sizeUnitName }}</span>
+          <span>{{scope.row.sizeUnitName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" :label="$t('type')">
+        <template slot-scope="scope">
+          <span>{{$t(scope.row.typeName)}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('insertTime')" >
+      <el-table-column min-width="110px" class-name="status-col" :label="$t('insertTime')" >
         <template slot-scope="scope">
           <span>{{scope.row.insertTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" class-name="status-col" :label="$t('updateTime')">
+      <el-table-column min-width="110px" class-name="status-col" :label="$t('updateTime')">
         <template slot-scope="scope">
           <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 end-->
-      <el-table-column align="center" :label="$t('actions')" min-width="200" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('actions')" min-width="100px" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <!--固定操作功能 start-->
           <template v-if="scope.row.waiting_for_flush">
@@ -125,7 +141,7 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('price')" prop="price">
-          <el-input v-model="temp.price"></el-input>
+          <el-input type="number" v-model="temp.price"></el-input>
         </el-form-item>
         <el-form-item :label="$t('priceUnitName')" prop="priceUnitId">
           <el-select class="filter-item" v-model="temp.priceUnitId">
@@ -134,11 +150,17 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('size')" prop="size">
-          <el-input v-model="temp.size"></el-input>
+          <el-input type="number" v-model="temp.size"></el-input>
         </el-form-item>
         <el-form-item :label="$t('sizeUnitName')" prop="sizeUnitId">
           <el-select class="filter-item" v-model="temp.sizeUnitId">
             <el-option v-for="item in unitList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('type')" prop="type">
+          <el-select class="filter-item" v-model="temp.type">
+            <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
@@ -163,34 +185,32 @@
     name: 'sales',
     data() {
       return {
-        value2: undefined,
         pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now()
+          },
           shortcuts: [{
-            text: '最近一周',
+            text: '今天',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
+              picker.$emit('pick', new Date())
             }
           }, {
-            text: '最近一个月',
+            text: '昨天',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
             }
           }, {
-            text: '最近三个月',
+            text: '一周前',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
             }
           }]
         },
+        typeList: ['AUTO', 'MANUAL'],
         unitList: [],
         custList: undefined,
         goodsList: undefined,
@@ -259,16 +279,25 @@
             id: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
+            custId: [
+              { required: true, message: this.$t('required'), trigger: 'blur' }
+            ],
             goodsId: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
-            totalSize: [
+            price: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
-            totalSales: [
+            priceUnitId: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
-            currentSize: [
+            size: [
+              { required: true, message: this.$t('required'), trigger: 'blur' }
+            ],
+            sizeUnitId: [
+              { required: true, message: this.$t('required'), trigger: 'blur' }
+            ],
+            type: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ]
           }
@@ -473,8 +502,10 @@
           for (const unit of this.unitList) {
             if (v.unitId === unit.id) {
               v.unitName = unit.name
+              break
             }
           }
+          v.typeName = this.$t(v.type)
         }
       }
       /* 固定功能方法 end */
