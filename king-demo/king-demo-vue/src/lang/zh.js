@@ -303,5 +303,7 @@ export default {
   supplierName: '供应商名称',
   priceUnitName: '价格单位',
   sizeUnitName: '数量单位',
-  size: '数量'
+  size: '数量',
+  AUTO: '自动',
+  MANUAL: '手动'
 }

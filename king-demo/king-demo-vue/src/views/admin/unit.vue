@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('type')">
         <template slot-scope="scope">
-          <span>{{scope.row.type}}</span>
+          <span>{{scope.row.typeName}}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -380,7 +380,7 @@
           v.loading_update = false
           v.loading_del = false
           v.visible_del = false
-          v.type = this.$t(v.type)
+          v.typeName = this.$t(v.type)
           if (v.size && v.vsSize) {
             v.vs = v.size + ' : ' + v.vsSize
           }
