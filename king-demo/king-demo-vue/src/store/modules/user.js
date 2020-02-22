@@ -5,8 +5,6 @@ import { routerMap } from '@/router'
 function dealRoutes(routes) {
   const auth = []
   const menu = dealRouter(routes, routerMap, auth)
-  console.info(menu)
-  console.info(auth)
   const route = { menu: menu, auth: auth }
   return route
 }

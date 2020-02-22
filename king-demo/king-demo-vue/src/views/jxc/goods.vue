@@ -3,10 +3,6 @@
     <div class="filter-container">
       <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.name" :placeholder="$t('name')">
       </el-input>
-      <el-select @change="search" clearable class="filter-item" style="width: 130px" v-model="table.query.sizeUnitId" :placeholder="$t('sizeUnitName')">
-        <el-option v-for="item in unitList.filter(item => { return item.type === 'SIZE' })" :key="item.id" :label="item.name" :value="item.id">
-        </el-option>
-      </el-select>
       <el-select @change="search" filterable multiple clearable class="filter-item" style="width: 300px" v-model="table.query.lableIds" :placeholder="$t('lable')">
         <el-option v-for="item in lableList" :key="item.id" :label="item.name" :value="item.id">
         </el-option>
@@ -32,21 +28,6 @@
       <el-table-column min-width="150px" :label="$t('name')">
         <template slot-scope="scope">
           <span>{{scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="70px" :label="$t('price')">
-        <template slot-scope="scope">
-          <span>{{scope.row.price }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="70px" :label="$t('priceUnitName')">
-        <template slot-scope="scope">
-          <span>{{scope.row.priceUnitName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="70px" :label="$t('sizeUnitName')">
-        <template slot-scope="scope">
-          <span>{{scope.row.sizeUnitName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="300px" class-name="status-col" :label="$t('lable')" >
@@ -124,21 +105,6 @@
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('price')" prop="price">
-          <el-input type="number" v-model="temp.price"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('priceUnitName')" prop="priceUnitId">
-          <el-select class="filter-item" v-model="temp.priceUnitId">
-            <el-option v-for="item in unitList.filter(item => { return item.type === 'PRICE' })" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('sizeUnitName')" prop="sizeUnitId">
-          <el-select class="filter-item" v-model="temp.sizeUnitId">
-            <el-option v-for="item in unitList.filter(item => { return item.type === 'SIZE' })" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button round type="primary" :loading="dialog.loading_confirm" @click="dialogConfirm">{{$t('confirm')}}</el-button>
@@ -148,6 +114,7 @@
     <!--固定弹出层 end-->
   </div>
 </template>
+
 <style>
   .el-tag + .el-tag {
     margin-left: 10px;
@@ -165,16 +132,15 @@
     vertical-align: bottom;
   }
 </style>
+
 <script>
   import { getList, get, add, update, del, addLable, delLable, getGoodsLableList } from '@/api/jxc/goods'
   import { notifyClicking, cacheGet, copy } from '@/utils/myUtil'
-  import { getList as getUnitList } from '@/api/admin/unit'
 
   export default {
     name: 'goods',
     data() {
       return {
-        unitList: [],
         lableList: [],
         /* 固定功能字段 start */
         loading_add: false,
@@ -197,6 +163,7 @@
     created() {
       this.resetTemp()
       this.resetDialog()
+      this.getList()
       getGoodsLableList().then((data) => {
         this.lableList = data.list
       }).catch(() => {
@@ -208,18 +175,6 @@
           duration: 2000
         })
       })
-      getUnitList({ page: 1, limit: -1 }).then((data) => {
-        this.unitList = data.list
-      }).catch(() => {
-        this.lableList = []
-        this.$notify({
-          title: '失败',
-          message: '获取单位信息失败',
-          type: 'error',
-          duration: 2000
-        })
-      })
-      this.getList()
     },
     methods: {
       handleCloseTag(row, tag) {
@@ -277,15 +232,6 @@
       },
       /* 固定功能方法 start */
       resetDialog() {
-        const validatePrice = (rule, value, callback) => {
-          if (!value) {
-            callback(new Error('必填'))
-          } else if (value <= 0) {
-            callback(new Error('值必须大于0'))
-          } else {
-            callback()
-          }
-        }
         this.dialog = {
           visible: false,
           loading_confirm: false,
@@ -296,12 +242,6 @@
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
             name: [
-              { required: true, message: this.$t('required'), trigger: 'blur' }
-            ],
-            price: [
-              { required: true, trigger: 'blur', validator: validatePrice }
-            ],
-            unitId: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ]
           }

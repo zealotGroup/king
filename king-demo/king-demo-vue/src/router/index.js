@@ -110,10 +110,10 @@ export const routerMap = [
       name: 'goods',
       meta: { title: 'goods', icon: 'goods', noCache: true }
     }, {
-      path: 'stock',
-      component: jxc_stock,
-      name: 'stock',
-      meta: { title: 'stock', icon: 'stock', noCache: true }
+      path: 'supplier',
+      component: jxc_supplier,
+      name: 'supplier',
+      meta: { title: 'supplier', icon: 'supplier', noCache: true }
     }, {
       path: 'cust',
       component: jxc_cust,
@@ -130,10 +130,10 @@ export const routerMap = [
       name: 'sales',
       meta: { title: 'sales', icon: 'sales', noCache: true }
     }, {
-      path: 'supplier',
-      component: jxc_supplier,
-      name: 'supplier',
-      meta: { title: 'supplier', icon: 'supplier', noCache: true }
+      path: 'stock',
+      component: jxc_stock,
+      name: 'stock',
+      meta: { title: 'stock', icon: 'stock', noCache: true }
     }]
   },
   {

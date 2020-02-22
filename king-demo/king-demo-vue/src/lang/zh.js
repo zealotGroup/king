@@ -1,5 +1,6 @@
 export default {
   route: {
+    basedata: '基础数据',
     purchaseSales: '进销记录',
     index: '首页',
     dashboard: '首页',
