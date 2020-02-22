@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "sizeUnitId"})})
 public class JxcGoods extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +23,19 @@ public class JxcGoods extends BaseEntity {
     private String name;
     @Column(length = 20)
     private Long price;
-    @Column(length = 20)
-    private Long unitId;
+    @Column(length = 2)
+    private Long priceUnitId;
+    @Column(length = 2)
+    private Long sizeUnitId;
 
     @Transient
     private List<AdminLable> lableList;
     @Transient
-    private String unitName;
+    private String priceUnitName;
+    @Transient
+    private String sizeUnitName;
     @Transient
     private List<Long> lableIds;
+    @Transient
+    private String lableId;//前端接受数组
 }

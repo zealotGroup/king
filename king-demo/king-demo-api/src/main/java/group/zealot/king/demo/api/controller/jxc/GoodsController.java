@@ -11,11 +11,9 @@ import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static group.zealot.king.core.zt.dbif.Services.*;
@@ -25,8 +23,9 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 @RequestMapping("/jxc/goods")
 public class GoodsController extends BaseController<JxcGoods, Long> {
 
-    @RequestMapping("likeList")
-    protected JSONObject likeList(Integer page, Integer limit, JxcGoods e, String lableId) {
+    @Override
+    @RequestMapping("list")
+    protected JSONObject list(Integer page, Integer limit, JxcGoods e) {
         return new ResultTemple() {
             @Override
             protected void verification() {
@@ -39,8 +38,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
                 PageRequest<JxcGoods> pageRequest = new PageRequest<>();
                 pageRequest.setPage(page);
                 pageRequest.setLimit(limit);
-                if (StringUtil.isNotEmpty(lableId)) {
-                    String[] lableIds = lableId.split(",");
+                if (StringUtil.isNotEmpty(e.getLableId())) {
+                    String[] lableIds = e.getLableId().split(",");
                     List<Long> lableIdList = new ArrayList<>();
                     for (int i = 0; i < lableIds.length; i++) {
                         lableIdList.add(Long.valueOf(lableIds[i]));
@@ -60,13 +59,14 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("add")
-    public JSONObject add(String name, Long price, Long unitId) {
+    public JSONObject add(String name, Long price, Long priceUnitId, Long sizeUnitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(name, "name 为空");
                 Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(unitId, "unitId 为空");
+                Funcation.AssertNotNull(priceUnitId, "priceUnitId 为空");
+                Funcation.AssertNotNull(sizeUnitId, "sizeUnitId 为空");
             }
 
             @Override
@@ -74,7 +74,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
                 JxcGoods vo = new JxcGoods();
                 vo.setName(name);
                 vo.setPrice(price);
-                vo.setUnitId(unitId);
+                vo.setPriceUnitId(priceUnitId);
+                vo.setSizeUnitId(sizeUnitId);
                 vo = jxcGoodsService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -85,14 +86,15 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, Long price, Long unitId) {
+    public JSONObject update(Long id, String name, Long price, Long priceUnitId, Long sizeUnitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(id, "id 为空");
                 Funcation.AssertNotNull(name, "name 为空");
                 Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(unitId, "unitId 为空");
+                Funcation.AssertNotNull(priceUnitId, "priceUnitId 为空");
+                Funcation.AssertNotNull(sizeUnitId, "sizeUnitId 为空");
             }
 
             @Override
@@ -100,7 +102,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
                 JxcGoods vo = jxcGoodsService.getById(id);
                 vo.setName(name);
                 vo.setPrice(price);
-                vo.setUnitId(unitId);
+                vo.setPriceUnitId(priceUnitId);
+                vo.setSizeUnitId(sizeUnitId);
                 jxcGoodsService.update(vo);
             }
         }.result();

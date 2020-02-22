@@ -6,7 +6,7 @@ package group.zealot.king.core.zt.entity.admin.enums;
  * @date 2020/2/12 12:28
  */
 public enum UnitTypeEnum {
-    NUMBER, PRICE, WEIGHT;
+    SIZE, PRICE;
 
     UnitTypeEnum() {
     }
