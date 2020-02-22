@@ -8,8 +8,10 @@ import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.entity.system.*;
 import group.zealot.king.core.zt.dbif.service.system.SysAuthService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.comparator.Comparators;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
@@ -105,6 +107,7 @@ public class SysAuthServiceImpl extends BaseServiceImpl<SysAuth, Long> implement
         SysRoleRoute sysRoleRoute = getSysRoleRoute(sysUserId);
         //获取当前用户 路由权限
         List<SysRoute> list = getSysRoute(sysRoleRoute.getId());
+        list.sort(Comparator.comparingInt(SysRoute::getSeq));
 
         list.forEach(sysRoute -> {
             if (sysRoute.getFId() == null) {
