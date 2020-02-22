@@ -293,7 +293,7 @@ export default {
   picture: '图片',
   vs: '对比',
   vsName: '对比名称',
-  NUMBER: '数量',
+  SIZE: '数量',
   PRICE: '价格',
   WEIGHT: '重量',
   price: '价格',

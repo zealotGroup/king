@@ -3,6 +3,10 @@
     <div class="filter-container">
       <el-input @keyup.enter.native="search" style="width: 200px;" class="filter-item" v-model="table.query.name" :placeholder="$t('name')">
       </el-input>
+      <el-select @change="search" clearable class="filter-item" style="width: 130px" v-model="table.query.sizeUnitId" :placeholder="$t('sizeUnitName')">
+        <el-option v-for="item in unitList.filter(item => { return item.type === 'SIZE' })" :key="item.id" :label="item.name" :value="item.id">
+        </el-option>
+      </el-select>
       <el-select @change="search" filterable multiple clearable class="filter-item" style="width: 300px" v-model="table.query.lableIds" :placeholder="$t('lable')">
         <el-option v-for="item in lableList" :key="item.id" :label="item.name" :value="item.id">
         </el-option>
@@ -35,9 +39,14 @@
           <span>{{scope.row.price }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="70px" :label="$t('unit')">
+      <el-table-column min-width="70px" :label="$t('priceUnitName')">
         <template slot-scope="scope">
-          <span>{{scope.row.unitName }}</span>
+          <span>{{scope.row.priceUnitName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="70px" :label="$t('sizeUnitName')">
+        <template slot-scope="scope">
+          <span>{{scope.row.sizeUnitName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="300px" class-name="status-col" :label="$t('lable')" >
@@ -118,9 +127,15 @@
         <el-form-item :label="$t('price')" prop="price">
           <el-input type="number" v-model="temp.price"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('unit')" prop="unitId">
-          <el-select class="filter-item" v-model="temp.unitId">
-            <el-option v-for="item in unitList" :key="item.id" :label="item.name" :value="item.id">
+        <el-form-item :label="$t('priceUnitName')" prop="priceUnitId">
+          <el-select class="filter-item" v-model="temp.priceUnitId">
+            <el-option v-for="item in unitList.filter(item => { return item.type === 'PRICE' })" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('sizeUnitName')" prop="sizeUnitId">
+          <el-select class="filter-item" v-model="temp.sizeUnitId">
+            <el-option v-for="item in unitList.filter(item => { return item.type === 'SIZE' })" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -159,8 +174,8 @@
     name: 'goods',
     data() {
       return {
-        unitList: undefined,
-        lableList: undefined,
+        unitList: [],
+        lableList: [],
         /* 固定功能字段 start */
         loading_add: false,
         table: {
@@ -193,8 +208,16 @@
           duration: 2000
         })
       })
-      getUnitList({ page: 1, limit: -1, type: 'PRICE' }).then((data) => {
+      getUnitList({ page: 1, limit: -1 }).then((data) => {
         this.unitList = data.list
+      }).catch(() => {
+        this.lableList = []
+        this.$notify({
+          title: '失败',
+          message: '获取单位信息失败',
+          type: 'error',
+          duration: 2000
+        })
       })
       this.getList()
     },

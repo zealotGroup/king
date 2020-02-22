@@ -17,7 +17,7 @@ export function getList(query) {
     }
   }
   return request({
-    url: url + '/likeList',
+    url: url + '/list',
     method: 'get',
     params: params
   })

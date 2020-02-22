@@ -135,7 +135,7 @@
     data() {
       return {
         vsList: [],
-        typeList: ['NUMBER', 'PRICE', 'WEIGHT'],
+        typeList: ['SIZE', 'PRICE'],
         /* 固定功能字段 start */
         loading_add: false,
         table: {
