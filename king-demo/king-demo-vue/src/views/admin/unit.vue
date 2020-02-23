@@ -30,19 +30,9 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('vsName')">
-        <template slot-scope="scope">
-          <span>{{scope.row.vsName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" :label="$t('vs')">
-        <template slot-scope="scope">
-          <span>{{scope.row.vs}}</span>
-        </template>
-      </el-table-column>
       <el-table-column min-width="100px" :label="$t('type')">
         <template slot-scope="scope">
-          <span>{{scope.row.typeName}}</span>
+          <span>{{scope.row.typeName }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -98,18 +88,6 @@
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('vsName')" prop="vsId">
-          <el-select class="filter-item" v-model="temp.vsId">
-            <el-option v-for="item in vsList" :key="item.id" :label="$t(item.name)" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('size')" prop="size">
-          <el-input v-model="temp.size"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('vsSize')" prop="vsSize">
-          <el-input v-model="temp.vsSize"></el-input>
-        </el-form-item>
         <el-form-item :label="$t('type')" prop="type">
           <el-select class="filter-item" v-model="temp.type">
             <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
@@ -134,7 +112,6 @@
     name: 'unit',
     data() {
       return {
-        vsList: [],
         typeList: ['SIZE', 'PRICE'],
         /* 固定功能字段 start */
         loading_add: false,
@@ -179,10 +156,6 @@
             ]
           }
         }
-        getList({ page: 1, limit: -1 }).then((data) => {
-          this.vsList = data.list
-          this.formaterList(this.vsList)
-        })
       },
       resetTemp() {
         this.temp = {
@@ -381,9 +354,6 @@
           v.loading_del = false
           v.visible_del = false
           v.typeName = this.$t(v.type)
-          if (v.size && v.vsSize) {
-            v.vs = v.size + ' : ' + v.vsSize
-          }
         }
       }
       /* 固定功能方法 end */

@@ -5,10 +5,6 @@
       </el-input>
       <el-input @keyup.enter.native="search" style="width: 200px;"  v-model="table.query.goodsName" :placeholder="$t('goodsName')">
       </el-input>
-      <el-select @change="search" clearable  style="width: 130px" v-model="table.query.type" :placeholder="$t('type')">
-        <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
-        </el-option>
-      </el-select>
       <el-date-picker
         v-model="table.query.startTime"
         value-format="yyyy-MM-ddT00:00:00"
@@ -53,14 +49,19 @@
           <span>{{scope.row.goodsName }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('price')">
+      <el-table-column min-width="100px" label="零售价">
+        <template slot-scope="scope">
+          <span>{{scope.row.goodsPrice }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" label="进价">
         <template slot-scope="scope">
           <span>{{scope.row.price }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('priceUnitName')">
         <template slot-scope="scope">
-          <span>{{scope.row.priceUnitName }}</span>
+          <span>{{scope.row.goodsPriceUnitName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('size')">
@@ -70,12 +71,7 @@
       </el-table-column>
       <el-table-column min-width="100px" :label="$t('sizeUnitName')">
         <template slot-scope="scope">
-          <span>{{scope.row.sizeUnitName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" :label="$t('type')">
-        <template slot-scope="scope">
-          <span>{{$t(scope.row.typeName)}}</span>
+          <span>{{scope.row.goodsSizeUnitName }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -128,41 +124,32 @@
         <el-form-item :label="$t('id')" prop="id" v-show="false">
           <el-input v-model="temp.id" ></el-input>
         </el-form-item>
+        <el-form-item :label="$t('goodsName')" prop="goodsId">
+          <el-select class="filter-item" v-model="temp.goodsId" @change="dialogChangeGoods">
+            <el-option v-for="item in goodsList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('supplierName')" prop="supplierId">
           <el-select class="filter-item" v-model="temp.supplierId">
             <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('goodsName')" prop="goodsId">
-          <el-select class="filter-item" v-model="temp.goodsId">
-            <el-option v-for="item in goodsList" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
+        <el-form-item label="零售价">
+          <el-input type="number" :disabled="true" v-model="temp.goodsPrice"></el-input>
         </el-form-item>
         <el-form-item :label="$t('price')" prop="price">
           <el-input type="number" v-model="temp.price"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('priceUnitName')" prop="priceUnitId">
-          <el-select class="filter-item" v-model="temp.priceUnitId">
-            <el-option v-for="item in unitList.filter(item => { return item.type === 'PRICE' })" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
+        <el-form-item :label="$t('priceUnitName')">
+          <el-input type="text" :disabled="true" v-model="temp.goodsPriceUnitName"></el-input>
         </el-form-item>
         <el-form-item :label="$t('size')" prop="size">
           <el-input type="number" v-model="temp.size"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('sizeUnitName')" prop="sizeUnitId">
-          <el-select class="filter-item" v-model="temp.sizeUnitId">
-            <el-option v-for="item in unitList" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('type')" prop="type">
-          <el-select class="filter-item" v-model="temp.type">
-            <el-option v-for="item in typeList" :key="item" :label="$t(item)" :value="item">
-            </el-option>
-          </el-select>
+        <el-form-item :label="$t('sizeUnitName')">
+          <el-input type="text" :disabled="true" v-model="temp.goodsSizeUnitName"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,7 +197,6 @@
             }
           }]
         },
-        typeList: ['AUTO', 'MANUAL'],
         unitList: [],
         supplierList: undefined,
         goodsList: undefined,
@@ -268,6 +254,16 @@
       this.getList()
     },
     methods: {
+      dialogChangeGoods: function(id) {
+        for (const item of this.goodsList) {
+          if (item.id === id) {
+            this.temp.goodsPriceUnitName = item.priceUnitName
+            this.temp.goodsSizeUnitName = item.sizeUnitName
+            this.temp.goodsPrice = item.price
+            break
+          }
+        }
+      },
       /* 固定功能方法 start */
       resetDialog() {
         this.dialog = {
@@ -288,16 +284,7 @@
             price: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ],
-            priceUnitId: [
-              { required: true, message: this.$t('required'), trigger: 'blur' }
-            ],
             size: [
-              { required: true, message: this.$t('required'), trigger: 'blur' }
-            ],
-            sizeUnitId: [
-              { required: true, message: this.$t('required'), trigger: 'blur' }
-            ],
-            type: [
               { required: true, message: this.$t('required'), trigger: 'blur' }
             ]
           }
@@ -504,7 +491,6 @@
               v.unitName = unit.name
             }
           }
-          v.typeName = this.$t(v.type)
         }
       }
       /* 固定功能方法 end */

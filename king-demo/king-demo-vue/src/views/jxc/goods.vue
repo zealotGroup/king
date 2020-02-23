@@ -30,6 +30,21 @@
           <span>{{scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="150px" :label="$t('price')">
+        <template slot-scope="scope">
+          <span>{{scope.row.price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="150px" :label="$t('priceUnitName')">
+        <template slot-scope="scope">
+          <span>{{scope.row.priceUnitName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="150px" :label="$t('sizeUnitName')">
+        <template slot-scope="scope">
+          <span>{{scope.row.sizeUnitName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column min-width="300px" class-name="status-col" :label="$t('lable')" >
         <template slot-scope="scope">
           <el-tag
@@ -105,6 +120,21 @@
         <el-form-item :label="$t('name')" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
+        <el-form-item :label="$t('price')" prop="price">
+          <el-input type="number" v-model="temp.price"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('priceUnitName')" prop="priceUnitId">
+          <el-select class="filter-item" style="width: 300px" v-model="temp.priceUnitId" >
+            <el-option v-for="item in unitList.filter(item =>item.type === 'PRICE')" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('sizeUnitName')" prop="sizeUnitId">
+          <el-select class="filter-item" style="width: 300px" v-model="temp.sizeUnitId" >
+            <el-option v-for="item in unitList.filter(item =>item.type === 'SIZE')" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button round type="primary" :loading="dialog.loading_confirm" @click="dialogConfirm">{{$t('confirm')}}</el-button>
@@ -136,11 +166,13 @@
 <script>
   import { getList, get, add, update, del, addLable, delLable, getGoodsLableList } from '@/api/jxc/goods'
   import { notifyClicking, cacheGet, copy } from '@/utils/myUtil'
+  import { getList as getUnitList } from '@/api/admin/unit'
 
   export default {
     name: 'goods',
     data() {
       return {
+        unitList: [],
         lableList: [],
         /* 固定功能字段 start */
         loading_add: false,
@@ -171,6 +203,17 @@
         this.$notify({
           title: '失败',
           message: '获取标签信息失败',
+          type: 'error',
+          duration: 2000
+        })
+      })
+
+      getUnitList({ page: 1, limit: -1 }).then((data) => {
+        this.unitList = data.list
+      }).catch(() => {
+        this.$notify({
+          title: '失败',
+          message: '获取单位信息失败',
           type: 'error',
           duration: 2000
         })
