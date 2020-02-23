@@ -14,31 +14,19 @@
         <if test="endTime != null and endTime.length() > 0">
             and (jp.insert_time &lt;= #{endTime} or jp.update_time &lt;= #{endTime})
         </if>
-        <if test="type != null">
-            and jp.type = #{type.ordinal}
-        </if>
     </sql>
 
     <select id="getList" parameterType="JxcPurchase" resultType="JxcPurchase">
         SELECT
         jp.id id,
         jp.goods_id goodsId,
-        jg.NAME goodsName,
         jp.supplier_id supplierId,
-        js.name supplierName,
         jp.price price,
-        jp.price_unit_id priceUnitId,
-        au1.NAME priceUnitName,
         jp.size size,
-        jp.size_unit_id sizeUnitId,
-        au2.NAME sizeUnitName,
         jp.insert_time insertTime,
-        jp.update_time updateTime,
-        case when jp.type = 0 then 'AUTO' else case when jp.type = 1 then 'MANUAL' else null end end type
+        jp.update_time updateTime
         FROM
         jxc_purchase jp
-        LEFT JOIN admin_unit au1 ON jp.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON jp.size_unit_id = au2.id
         LEFT JOIN jxc_goods jg ON jp.goods_id = jg.id
         LEFT JOIN jxc_supplier js ON jp.supplier_id = js.id
         <where>
@@ -51,8 +39,6 @@
         count(*)
         FROM
         jxc_purchase jp
-        LEFT JOIN admin_unit au1 ON jp.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON jp.size_unit_id = au2.id
         LEFT JOIN jxc_goods jg ON jp.goods_id = jg.id
         LEFT JOIN jxc_supplier js ON jp.supplier_id = js.id
         <where>

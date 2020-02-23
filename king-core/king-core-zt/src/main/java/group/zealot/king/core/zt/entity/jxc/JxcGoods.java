@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -14,28 +15,29 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "sizeUnitId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class JxcGoods extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 200)
     private String name;
+    @Column
+    private BigDecimal price;
     @Column(length = 20)
-    private Long price;
-    @Column(length = 2)
     private Long priceUnitId;
-    @Column(length = 2)
+    @Column(length = 20)
     private Long sizeUnitId;
 
     @Transient
-    private List<AdminLable> lableList;
+    private List<AdminLable> lableList;//页面展示字段
+    @Transient
+    private List<Long> lableIds;//mybatis筛选条件
+    @Transient
+    private String lableId;//前端接受数组
+
     @Transient
     private String priceUnitName;
     @Transient
     private String sizeUnitName;
-    @Transient
-    private List<Long> lableIds;
-    @Transient
-    private String lableId;//前端接受数组
 }

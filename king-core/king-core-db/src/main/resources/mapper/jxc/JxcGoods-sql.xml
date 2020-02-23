@@ -16,9 +16,6 @@
         <if test="name != null and name.length() > 0">
             and jg.NAME LIKE concat('%',#{name},'%')
         </if>
-        <if test="priceUnitId != null">
-            and jg.price_unit_id = #{priceUnitId}
-        </if>
         <if test="lableIds != null and lableIds.size() > 0">
             and jg.id IN ( SELECT goods_id FROM jxc_goods_lable jgl LEFT JOIN admin_lable al ON jgl.lable_id = al.id
             where jgl.lable_id in
@@ -37,13 +34,9 @@
         jg.price_unit_id priceUnitId,
         jg.size_unit_id sizeUnitId,
         jg.insert_time insertTime,
-        jg.update_time updateTime,
-        au1.NAME priceUnitName,
-        au2.NAME sizeUnitName
+        jg.update_time updateTime
         FROM
         jxc_goods jg
-        LEFT JOIN admin_unit au1 ON jg.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON jg.size_unit_id = au2.id
         <where>
             <include refid="where"></include>
         </where>
@@ -54,8 +47,6 @@
         count(*)
         FROM
         jxc_goods jg
-        LEFT JOIN admin_unit au1 ON jg.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON jg.size_unit_id = au2.id
         <where>
             <include refid="where"></include>
         </where>

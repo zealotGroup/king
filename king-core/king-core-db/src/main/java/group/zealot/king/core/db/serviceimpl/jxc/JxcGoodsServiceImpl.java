@@ -4,6 +4,7 @@ import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
+import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
@@ -25,6 +26,10 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
 
     @Override
     public void formater(JxcGoods jxcGoods) {
+        AdminUnit priceUnit = adminUnitServiceImpl.getById(jxcGoods.getPriceUnitId());
+        jxcGoods.setPriceUnitName(priceUnit.getName());
+        AdminUnit sizeUnit = adminUnitServiceImpl.getById(jxcGoods.getSizeUnitId());
+        jxcGoods.setSizeUnitName(sizeUnit.getName());
         List<AdminLable> list = jxcGoodsMapper.getLableListByGoodsId(jxcGoods.getId());
         jxcGoods.setLableList(list);
     }

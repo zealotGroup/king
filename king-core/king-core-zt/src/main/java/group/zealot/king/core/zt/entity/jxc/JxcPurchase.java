@@ -2,11 +2,11 @@ package group.zealot.king.core.zt.entity.jxc;
 
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.zt.entity.BaseEntity;
-import group.zealot.king.core.zt.entity.jxc.enums.RecordTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * 进销存--采购记录
@@ -24,24 +24,21 @@ public class JxcPurchase extends BaseEntity {
     @Column(length = 20)
     private Long supplierId;//供应商ID
     @Column(length = 20)
-    private Long price;//总价格
+    private BigDecimal price;//总价格
     @Column(length = 20)
-    private Long priceUnitId;//单位
-    @Column(length = 20)
-    private Long size;//数量
-    @Column(length = 20)
-    private Long sizeUnitId;//单位
-    @Column(length = 2)
-    private RecordTypeEnum type;
+    private BigDecimal size;//数量
 
-    @Transient
-    private String goodsName;
     @Transient
     private String supplierName;
     @Transient
-    private String priceUnitName;
+    private String goodsName;
     @Transient
-    private String sizeUnitName;
+    private BigDecimal goodsPrice;
+    @Transient
+    private String goodsPriceUnitName;
+    @Transient
+    private String goodsSizeUnitName;
+
     @Transient
     private String startTime;
     @Transient

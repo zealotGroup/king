@@ -17,25 +17,18 @@ import static group.zealot.king.core.zt.dbif.Services.adminUnitService;
 public class UnitController extends BaseController<AdminUnit, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(String name, Long vsId, Integer size, Integer vsSize, UnitTypeEnum type) {
+    public JSONObject add(String name, UnitTypeEnum type) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(name, "name 为空");
                 Funcation.AssertNotNull(type, "type 为空");
-                if (vsId != null) {
-                    Funcation.AssertNotNull(size, "size 为空");
-                    Funcation.AssertNotNull(vsSize, "vsSize 为空");
-                }
             }
 
             @Override
             protected void dosomething() {
                 AdminUnit vo = new AdminUnit();
                 vo.setName(name);
-                vo.setVsId(vsId);
-                vo.setSize(size);
-                vo.setVsSize(vsSize);
                 vo.setType(type);
                 vo = adminUnitService.insert(vo);
 
@@ -47,26 +40,19 @@ public class UnitController extends BaseController<AdminUnit, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, Long vsId, Integer size, Integer vsSize, UnitTypeEnum type) {
+    public JSONObject update(Long id, String name, UnitTypeEnum type) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
                 Funcation.AssertNotNull(name, "name 为空");
                 Funcation.AssertNotNull(type, "type 为空");
-                if (vsId != null) {
-                    Funcation.AssertNotNull(size, "size 为空");
-                    Funcation.AssertNotNull(vsSize, "vsSize 为空");
-                }
             }
 
             @Override
             protected void dosomething() {
                 AdminUnit vo = adminUnitService.getById(id);
                 vo.setName(name);
-                vo.setVsId(vsId);
-                vo.setSize(size);
-                vo.setVsSize(vsSize);
                 vo.setType(type);
                 adminUnitService.update(vo);
             }

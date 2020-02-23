@@ -6,7 +6,7 @@
             and jg.NAME LIKE concat('%',#{goodsName},'%')
         </if>
         <if test="custName != null and custName.length() > 0">
-            and jc.NAME LIKE concat('%',#{custName},'%')
+            and js.NAME LIKE concat('%',#{custName},'%')
         </if>
         <if test="startTime != null and startTime.length() > 0">
             and (js.insert_time &gt;= #{startTime} or js.update_time &gt;= #{startTime})
@@ -14,31 +14,19 @@
         <if test="endTime != null and endTime.length() > 0">
             and (js.insert_time &lt;= #{endTime} or js.update_time &lt;= #{endTime})
         </if>
-        <if test="type != null">
-            and js.type = #{type.ordinal}
-        </if>
     </sql>
 
     <select id="getList" parameterType="JxcSales" resultType="JxcSales">
         SELECT
         js.id id,
         js.goods_id goodsId,
-        jg.NAME goodsName,
         js.cust_id custId,
-        jc.name custName,
         js.price price,
-        js.price_unit_id priceUnitId,
-        au1.NAME priceUnitName,
         js.size size,
-        js.size_unit_id sizeUnitId,
-        au2.NAME sizeUnitName,
         js.insert_time insertTime,
-        js.update_time updateTime,
-        case when js.type = 0 then 'AUTO' else case when js.type = 1 then 'MANUAL' else null end end type
+        js.update_time updateTime
         FROM
         jxc_sales js
-        LEFT JOIN admin_unit au1 ON js.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON js.size_unit_id = au2.id
         LEFT JOIN jxc_goods jg ON js.goods_id = jg.id
         LEFT JOIN jxc_cust jc ON js.cust_id = jc.id
         <where>
@@ -51,8 +39,6 @@
         count(*)
         FROM
         jxc_sales js
-        LEFT JOIN admin_unit au1 ON js.price_unit_id = au1.id
-        LEFT JOIN admin_unit au2 ON js.size_unit_id = au2.id
         LEFT JOIN jxc_goods jg ON js.goods_id = jg.id
         LEFT JOIN jxc_cust jc ON js.cust_id = jc.id
         <where>

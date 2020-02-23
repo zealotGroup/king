@@ -8,6 +8,8 @@ import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 import static group.zealot.king.core.zt.dbif.Services.jxcStockService;
 
 
@@ -16,25 +18,19 @@ import static group.zealot.king.core.zt.dbif.Services.jxcStockService;
 public class StockController extends BaseController<JxcStock, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, Long totalSize, Long totalSales, Long currentSize, Long unitId) {
+    public JSONObject add(Long goodsId, BigDecimal size) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(totalSize, "totalSize 为空");
-                Funcation.AssertNotNull(totalSales, "totalSales 为空");
-                Funcation.AssertNotNull(currentSize, "currentSize 为空");
-                Funcation.AssertNotNull(unitId, "unitId 为空");
+                Funcation.AssertNotNull(size, "size 为空");
             }
 
             @Override
             protected void dosomething() {
                 JxcStock vo = new JxcStock();
                 vo.setGoodsId(goodsId);
-                vo.setTotalSize(totalSize);
-                vo.setTotalSales(totalSales);
-                vo.setCurrentSize(currentSize);
-                vo.setUnitId(unitId);
+                vo.setSize(size);
                 vo = jxcStockService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -45,24 +41,18 @@ public class StockController extends BaseController<JxcStock, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, Long totalSize, Long totalSales, Long currentSize, Long unitId) {
+    public JSONObject update(Long id, BigDecimal size) {
         return new ResultTemple() {
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(totalSize, "totalSize 为空");
-                Funcation.AssertNotNull(totalSales, "totalSales 为空");
-                Funcation.AssertNotNull(currentSize, "currentSize 为空");
-                Funcation.AssertNotNull(unitId, "unitId 为空");
+                Funcation.AssertNotNull(size, "size 为空");
             }
 
             @Override
             protected void dosomething() {
                 JxcStock vo = jxcStockService.getById(id);
-                vo.setTotalSize(totalSize);
-                vo.setTotalSales(totalSales);
-                vo.setCurrentSize(currentSize);
-                vo.setUnitId(unitId);
+                vo.setSize(size);
                 jxcStockService.update(vo);
             }
         }.result();

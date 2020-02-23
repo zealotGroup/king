@@ -2,15 +2,14 @@ package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
-import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.jxc.JxcPurchase;
-import group.zealot.king.core.zt.entity.jxc.enums.RecordTypeEnum;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
+import java.math.BigDecimal;
+
 import static group.zealot.king.core.zt.dbif.Services.jxcPurchaseService;
 
 
@@ -19,22 +18,15 @@ import static group.zealot.king.core.zt.dbif.Services.jxcPurchaseService;
 public class PurchaseController extends BaseController<JxcPurchase, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, Long supplierId, Long price, Long size, RecordTypeEnum type) {
+    public JSONObject add(Long goodsId, Long supplierId, BigDecimal price, BigDecimal size) {
         return new ResultTemple() {
-            Long priceUnitId;
-            Long sizeUnitId;
 
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                JxcGoods jxcGoods = jxcGoodsService.getById(goodsId);
-                Funcation.AssertNotNull(jxcGoods, "goodsId 不存在");
-                priceUnitId = jxcGoods.getPriceUnitId();
-                sizeUnitId = jxcGoods.getSizeUnitId();
                 Funcation.AssertNotNull(supplierId, "supplierId 为空");
                 Funcation.AssertNotNull(price, "price 为空");
                 Funcation.AssertNotNull(size, "size 为空");
-                Funcation.AssertNotNull(type, "type 为空");
             }
 
             @Override
@@ -43,10 +35,7 @@ public class PurchaseController extends BaseController<JxcPurchase, Long> {
                 vo.setGoodsId(goodsId);
                 vo.setSupplierId(supplierId);
                 vo.setPrice(price);
-                vo.setPriceUnitId(priceUnitId);
                 vo.setSize(size);
-                vo.setSizeUnitId(sizeUnitId);
-                vo.setType(type);
                 vo = jxcPurchaseService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -57,22 +46,15 @@ public class PurchaseController extends BaseController<JxcPurchase, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, Long goodsId, Long supplierId, Long price, Long size, RecordTypeEnum type) {
+    public JSONObject update(Long id, Long goodsId, Long supplierId, BigDecimal price, BigDecimal size) {
         return new ResultTemple() {
-            Long priceUnitId;
-            Long sizeUnitId;
 
             @Override
             protected void verification() {
                 Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                JxcGoods jxcGoods = jxcGoodsService.getById(goodsId);
-                Funcation.AssertNotNull(jxcGoods, "goodsId 不存在");
-                priceUnitId = jxcGoods.getPriceUnitId();
-                sizeUnitId = jxcGoods.getSizeUnitId();
                 Funcation.AssertNotNull(supplierId, "supplierId 为空");
                 Funcation.AssertNotNull(price, "price 为空");
                 Funcation.AssertNotNull(size, "size 为空");
-                Funcation.AssertNotNull(type, "type 为空");
             }
 
             @Override
@@ -81,10 +63,7 @@ public class PurchaseController extends BaseController<JxcPurchase, Long> {
                 vo.setGoodsId(goodsId);
                 vo.setSupplierId(supplierId);
                 vo.setPrice(price);
-                vo.setPriceUnitId(priceUnitId);
                 vo.setSize(size);
-                vo.setSizeUnitId(sizeUnitId);
-                vo.setType(type);
                 jxcPurchaseService.update(vo);
             }
         }.result();

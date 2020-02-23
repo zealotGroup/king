@@ -13,6 +13,7 @@ import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("add")
-    public JSONObject add(String name, Long price, Long priceUnitId, Long sizeUnitId) {
+    public JSONObject add(String name, BigDecimal price, Long priceUnitId, Long sizeUnitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
@@ -86,7 +87,7 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, Long price, Long priceUnitId, Long sizeUnitId) {
+    public JSONObject update(Long id, String name, BigDecimal price, Long priceUnitId, Long sizeUnitId) {
         return new ResultTemple() {
             @Override
             protected void verification() {
