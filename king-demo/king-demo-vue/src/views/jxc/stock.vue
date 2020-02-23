@@ -26,24 +26,14 @@
           <span>{{scope.row.goodsName }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('totalSize')">
+      <el-table-column min-width="100px" :label="$t('size')">
         <template slot-scope="scope">
-          <span>{{scope.row.totalSize }}</span>
+          <span>{{scope.row.size }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" :label="$t('totalSales')">
+      <el-table-column min-width="100px" label="数量单位">
         <template slot-scope="scope">
-          <span>{{scope.row.totalSales }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" :label="$t('currentSize')">
-        <template slot-scope="scope">
-          <span>{{scope.row.currentSize }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" :label="$t('unit')">
-        <template slot-scope="scope">
-          <span>{{scope.row.unitName }}</span>
+          <span>{{scope.row.goodsSizeUnitName }}</span>
         </template>
       </el-table-column>
       <!--表数据固定字段信息 start-->
@@ -97,25 +87,16 @@
           <el-input v-model="temp.id" ></el-input>
         </el-form-item>
         <el-form-item :label="$t('goodsName')" prop="goodsId">
-          <el-select class="filter-item" v-model="temp.goodsId">
+          <el-select class="filter-item" v-model="temp.goodsId" @change="dialogChangeGoods">
             <el-option v-for="item in goodsList" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('totalSize')" prop="totalSize">
-          <el-input v-model="temp.totalSize"></el-input>
+        <el-form-item :label="$t('size')" prop="size">
+          <el-input v-model="temp.size"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('totalSales')" prop="totalSales">
-          <el-input v-model="temp.totalSales"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('currentSize')" prop="currentSize">
-          <el-input v-model="temp.currentSize"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('unit')" prop="unit">
-          <el-select class="filter-item" v-model="temp.unitId">
-            <el-option v-for="item in unitList" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
+        <el-form-item :label="$t('sizeUnitName')">
+          <el-input type="text" :disabled="true" v-model="temp.goodsSizeUnitName"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -183,6 +164,14 @@
       this.getList()
     },
     methods: {
+      dialogChangeGoods: function(id) {
+        for (const item of this.goodsList) {
+          if (item.id === id) {
+            this.temp.goodsSizeUnitName = item.sizeUnitName
+            break
+          }
+        }
+      },
       /* 固定功能方法 start */
       resetDialog() {
         this.dialog = {
