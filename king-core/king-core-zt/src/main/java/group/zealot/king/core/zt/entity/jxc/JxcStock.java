@@ -28,4 +28,6 @@ public class JxcStock extends BaseEntity {
      */
     @Transient
     private String goodsName;
+    @Transient
+    private String goodsSizeUnitName;
 }

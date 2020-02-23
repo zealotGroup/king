@@ -23,7 +23,6 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         return baseMapper.pageQuery(pageRequest);
     }
 
-
     @Override
     public void formater(JxcGoods jxcGoods) {
         AdminUnit priceUnit = adminUnitServiceImpl.getById(jxcGoods.getPriceUnitId());
