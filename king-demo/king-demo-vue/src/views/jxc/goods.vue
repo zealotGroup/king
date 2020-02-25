@@ -45,7 +45,24 @@
           <span>{{scope.row.sizeUnitName }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="300px" class-name="status-col" :label="$t('lable')" >
+      <el-table-column min-width="200px" :label="$t('picture')">
+        <template slot-scope="scope">
+          <el-upload
+            action="http://localhost:9528/api/jxc/goods/addPicture"
+            :headers="upload.headers"
+            :data="{ goodsId: scope.row.id }"
+            list-type="picture-card"
+            :file-list="scope.row.pictureList"
+            :on-preview="handlePictureCardPreview"
+            :before-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="200px" class-name="status-col" :label="$t('lable')" >
         <template slot-scope="scope">
           <el-tag
             v-for="tag in scope.row.lableList"
@@ -146,32 +163,36 @@
 </template>
 
 <style>
-  .el-tag + .el-tag {
-    margin-left: 10px;
+  .el-upload--picture-card, .el-upload-list--picture-card .el-upload-list__item {
+    width: 50px;
+    height: 50px;
   }
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
+  .el-upload--picture-card{
+    line-height: 50px
   }
-  .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
+
+  .el-upload--picture-card i {
+    font-size: 18px;
+  }
+
+  .el-upload-list--picture-card .el-upload-list__item-actions {
+    font-size: 10px;
   }
 </style>
 
 <script>
-  import { getList, get, add, update, del, addLable, delLable, getGoodsLableList } from '@/api/jxc/goods'
-  import { notifyClicking, cacheGet, copy } from '@/utils/myUtil'
+  import { getList, get, add, update, del, addLable, delLable, getGoodsLableList, delPicture } from '@/api/jxc/goods'
+  import { notifyClicking, cacheGet, copy, getPictureUrl } from '@/utils/myUtil'
+  import { getToken } from '@/utils/auth'
   import { getList as getUnitList } from '@/api/admin/unit'
 
   export default {
     name: 'goods',
     data() {
       return {
+        dialogImageUrl: '',
+        dialogVisible: false,
+        upload: undefined,
         unitList: [],
         lableList: [],
         /* 固定功能字段 start */
@@ -218,8 +239,36 @@
           duration: 2000
         })
       })
+      this.upload = {
+        headers: { 'auth-token': getToken().token }
+      }
     },
     methods: {
+      handleRemove(file, fileList) {
+        const data = { goodsId: file.goodsId, pictureId: file.pictureId }
+        delPicture(data).then(() => {
+        }).catch(() => {
+          this.$notify({
+            title: '失败',
+            message: '删除失败',
+            type: 'error',
+            duration: 2000
+          })
+        })
+        return true
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url
+        this.dialogVisible = true
+      },
+      beforeUpload(file) {
+        console.info(file)
+        return false
+      },
+      submitSuccess(row) {
+        row.img = 123
+        cacheGet(this.table.list, copy(row), 'replace')
+      },
       handleCloseTag(row, tag) {
         // 删除 请求后台
         delLable({ goodsId: row.id, lableId: tag.id }).then(() => {
@@ -486,6 +535,11 @@
           v.loading_update = false
           v.loading_del = false
           v.visible_del = false
+          const pictureList = copy(v.pictureList)
+          v.pictureList = []
+          for (const picture of pictureList) {
+            v.pictureList.push({ goodsId: v.id, pictureId: picture.id, url: getPictureUrl(picture.id) })
+          }
         }
       }
       /* 固定功能方法 end */

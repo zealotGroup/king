@@ -79,3 +79,11 @@ export function getGoodsLableList() {
     method: 'get'
   })
 }
+export function delPicture(data) {
+  console.log(data)
+  return request({
+    url: url + '/delPicture',
+    method: 'post',
+    data
+  })
+}
