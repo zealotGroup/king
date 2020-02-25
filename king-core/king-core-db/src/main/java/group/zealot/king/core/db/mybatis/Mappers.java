@@ -22,69 +22,75 @@ public class Mappers {
     public static AdminLableMapper adminLableMapper;
     public static JxcPurchaseMapper jxcPurchaseMapper;
     public static JxcStockMapper jxcStockMapper;
+    public static JxcGoodsPictureMapper jxcGoodsPictureMapper;
 
-    @Autowired(required = false)
-    public static void setSysAuthMapper(SysAuthMapper sysAuthMapper) {
+    @Autowired
+    public void setSysAuthMapper(SysAuthMapper sysAuthMapper) {
         Mappers.sysAuthMapper = sysAuthMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysDataMapper(SysDataMapper sysDataMapper) {
         Mappers.sysDataMapper = sysDataMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysUserMapper(SysUserMapper sysUserMapper) {
         Mappers.sysUserMapper = sysUserMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRoleDataMapper(SysRoleDataMapper sysRoleDataMapper) {
         Mappers.sysRoleDataMapper = sysRoleDataMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRoleRouteMapper(SysRoleRouteMapper sysRoleRouteMapper) {
         Mappers.sysRoleRouteMapper = sysRoleRouteMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysRouteMapper(SysRouteMapper sysRouteMapper) {
         Mappers.sysRouteMapper = sysRouteMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setSysIdMapper(SysIdMapper sysIdMapper) {
         Mappers.sysIdMapper = sysIdMapper;
     }
 
-    @Autowired(required = false)
-    public void setJxcChannelMapper(JxcCustMapper jxcCustMapper) {
+    @Autowired
+    public void setJxcCustMapper(JxcCustMapper jxcCustMapper) {
         Mappers.jxcCustMapper = jxcCustMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setJxcGoodsLableMapper(JxcGoodsLableMapper jxcGoodsLableMapper) {
         Mappers.jxcGoodsLableMapper = jxcGoodsLableMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setJxcGoodsMapper(JxcGoodsMapper jxcGoodsMapper) {
         Mappers.jxcGoodsMapper = jxcGoodsMapper;
     }
 
-    @Autowired(required = false)
-    public void setJxcLableMapper(AdminLableMapper adminLableMapper) {
+    @Autowired
+    public void setAdminLableMapper(AdminLableMapper adminLableMapper) {
         Mappers.adminLableMapper = adminLableMapper;
     }
 
-    @Autowired(required = false)
-    public void setJxcPurchaseSalesMapper(JxcPurchaseMapper jxcPurchaseMapper) {
+    @Autowired
+    public void setJxcPurchaseMapper(JxcPurchaseMapper jxcPurchaseMapper) {
         Mappers.jxcPurchaseMapper = jxcPurchaseMapper;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setJxcStockMapper(JxcStockMapper jxcStockMapper) {
         Mappers.jxcStockMapper = jxcStockMapper;
+    }
+
+    @Autowired
+    public void setJxcGoodsPictureMapper(JxcGoodsPictureMapper jxcGoodsPictureMapper) {
+        Mappers.jxcGoodsPictureMapper = jxcGoodsPictureMapper;
     }
 }

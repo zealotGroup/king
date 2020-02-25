@@ -29,6 +29,12 @@ public class Services {
     public static JxcSupplierService jxcSupplierService;
     public static JxcSalesService jxcSalesService;
     public static JxcPurchaseService jxcPurchaseService;
+    public static JxcGoodsPictureService jxcGoodsPictureService;
+
+    @Autowired
+    public void setJxcGoodsPictureService(JxcGoodsPictureService jxcGoodsPictureService) {
+        Services.jxcGoodsPictureService = jxcGoodsPictureService;
+    }
 
     @Autowired
     public void setSysIdService(SysIdService sysIdService) {

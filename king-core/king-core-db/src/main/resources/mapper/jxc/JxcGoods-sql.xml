@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="group.zealot.king.core.db.mybatis.jxc.JxcGoodsMapper">
+    <select id="getPictureListByGoodsId" resultType="AdminPicture">
+        SELECT
+	        ap.id,ap.name,ap.path,ap.bytes,ap.insert_time insertTime,ap.update_time updateTime
+        FROM
+            admin_picture ap
+        WHERE
+	        ap.id in (select jgp.picture_id from jxc_goods_picture jgp where jgp.goods_id = #{_parameter})
+    </select>
+
     <select id="getLableListByGoodsId" parameterType="long" resultType="AdminLable">
         SELECT
 	        al.id,al.name,al.insert_time insertTime,al.update_time updateTime
         FROM
-	        jxc_goods_lable jgl
-	        LEFT JOIN admin_lable al ON jgl.lable_id = al.id
+            admin_lable al
         WHERE
-	        jgl.goods_id = #{_parameter}
-	        and al.id is not null
+	        al.id in (select jgl.lable_id from jxc_goods_lable jgl where jgl.goods_id = #{_parameter})
     </select>
 
     <sql id="where">

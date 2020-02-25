@@ -27,10 +27,16 @@ public class Repositorys {
     public static JxcStockRepository jxcStockRepository;
     public static JxcPurchaseRepository jxcPurchaseRepository;
     public static JxcSupplierRepository jxcSupplierRepository;
+    public static JxcGoodsPictureRepository jxcGoodsPictureRepository;
 
     public static AdminUnitRepository adminUnitRepository;
     public static AdminLableRepository adminLableRepository;
     public static AdminPictureRepository adminPictureRepository;
+
+    @Autowired(required = false)
+    public void setJxcGoodsPictureRepository(JxcGoodsPictureRepository jxcGoodsPictureRepository) {
+        Repositorys.jxcGoodsPictureRepository = jxcGoodsPictureRepository;
+    }
 
     @Autowired(required = false)
     public void setSysAuthRepository(SysAuthRepository sysAuthRepository) {

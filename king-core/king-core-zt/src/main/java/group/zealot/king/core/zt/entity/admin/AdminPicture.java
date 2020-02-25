@@ -23,6 +23,6 @@ public class AdminPicture extends BaseEntity {
     private String path;//图片服务器绝对位置
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(columnDefinition = "BLOB", nullable = false)
+    @Column(columnDefinition = "longblob", nullable = false)
     private byte[] bytes;//图片二进制数据
 }

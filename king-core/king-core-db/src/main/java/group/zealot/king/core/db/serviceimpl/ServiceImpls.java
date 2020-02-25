@@ -26,10 +26,16 @@ public class ServiceImpls {
     public static JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl;
     public static JxcStockServiceImpl jxcStockServiceImpl;
     public static JxcSupplierServiceImpl jxcSupplierServiceImpl;
+    public static JxcGoodsPictureServiceImpl jxcGoodsPictureServiceImpl;
 
     public static AdminLableServiceImpl adminLableServiceImpl;
     public static AdminPictureServiceImpl adminPictureServiceImpl;
     public static AdminUnitServiceImpl adminUnitServiceImpl;
+
+    @Autowired(required = false)
+    public void setJxcGoodsPictureServiceImpl(JxcGoodsPictureServiceImpl jxcGoodsPictureServiceImpl) {
+        ServiceImpls.jxcGoodsPictureServiceImpl = jxcGoodsPictureServiceImpl;
+    }
 
     @Autowired(required = false)
     public void setJxcSupplierServiceImpl(JxcSupplierServiceImpl jxcSupplierServiceImpl) {

@@ -1,13 +1,16 @@
 package group.zealot.king.core.db.serviceimpl.jxc;
 
+import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
+import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +32,10 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         jxcGoods.setPriceUnitName(priceUnit.getName());
         AdminUnit sizeUnit = adminUnitServiceImpl.getById(jxcGoods.getSizeUnitId());
         jxcGoods.setSizeUnitName(sizeUnit.getName());
-        List<AdminLable> list = jxcGoodsMapper.getLableListByGoodsId(jxcGoods.getId());
-        jxcGoods.setLableList(list);
+        List<AdminLable> lableList = jxcGoodsMapper.getLableListByGoodsId(jxcGoods.getId());
+        jxcGoods.setLableList(lableList);
+        List<AdminPicture> pictureList = jxcGoodsMapper.getPictureListByGoodsId(jxcGoods.getId());
+        jxcGoods.setPictureList(pictureList);
     }
 
     @Override
@@ -50,5 +55,19 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         jxcGoodsLable.setLableId(adminLable.getId());
         jxcGoodsLableServiceImpl.insert(jxcGoodsLable);
         return adminLable;
+    }
+
+    @Override
+    public AdminPicture addPicture(Long goodsId, byte[] bytes) {
+        AdminPicture adminPicture = new AdminPicture();
+        adminPicture.setName(Funcation.createTime() + "");
+        adminPicture.setBytes(bytes);
+        adminPicture = adminPictureServiceImpl.insert(adminPicture);
+
+        JxcGoodsPicture jxcGoodsPicture = new JxcGoodsPicture();
+        jxcGoodsPicture.setGoodsId(goodsId);
+        jxcGoodsPicture.setPictureId(adminPicture.getId());
+        jxcGoodsPictureServiceImpl.insert(jxcGoodsPicture);
+        return adminPicture;
     }
 }

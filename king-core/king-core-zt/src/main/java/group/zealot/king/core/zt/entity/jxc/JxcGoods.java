@@ -2,6 +2,7 @@ package group.zealot.king.core.zt.entity.jxc;
 
 import group.zealot.king.core.zt.entity.BaseEntity;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
+import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +36,8 @@ public class JxcGoods extends BaseEntity {
     private List<Long> lableIds;//mybatis筛选条件
     @Transient
     private String lableId;//前端接受数组
+    @Transient
+    private List<AdminPicture> pictureList;//页面展示字段
 
     @Transient
     private String priceUnitName;
