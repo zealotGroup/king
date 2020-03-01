@@ -145,6 +145,7 @@ Page({
     })
   },
   relogin: function() {
+    wx.removeStorageSync('token');
     wx.navigateTo({
       url: "/pages/authorize/index"
     })

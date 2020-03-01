@@ -38,45 +38,37 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {},
-  bindGetUserInfo: function(e) {
-    if (e.detail.userInfo) {
-      wx.setStorageSync('userInfo', e.detail.userInfo)
-      this.login();
-    }
-  },
+
   login: function() {
     let that = this;
     let token = wx.getStorageSync('token');
     if (token) {
-      api.check_token(token, function(data) {
-        if (data.code != 0) {
+      api.check_token(function(data) {
+        if (data.data.timeout) {
+          console.log("授权过期");
           wx.removeStorageSync('token')
           that.login();
-        } else {
-          console.log("授权未过期");
           wx.navigateBack();
         }
       });
     } else {
       wx.login({
         success: function(res) {
-          api.request_login(res.code, function(data) {
-            let code = data.code;
-            if (code == 10000) {
+          api.login(res.code, function(data) {
+            if (data.code == 201) {
               console.log("未注册，去注册");
               that.registerUser();
-            } else if (code != 0) {
-              console.log("登录失败" + code);
+            } else if (data.code != 200) {
+              console.log("登录失败");
               wx.hideLoading();
               wx.showModal({
                 title: '提示',
-                content: '无法登录，请重试',
+                content: '登录失败' + data.msg,
                 showCancel: false
               });
             } else {
               console.log("登录成功");
               wx.setStorageSync('token', data.data.token);
-              wx.setStorageSync('uid', data.data.uid);
               wx.navigateBack();
             }
           });
@@ -91,21 +83,13 @@ Page({
         let code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
         wx.getUserInfo({
           success: function(res) {
-            let iv = res.iv;
-            let encryptedData = res.encryptedData;
+            console.info(res)
+            let userInfo = res.userInfo;
             // 下面开始调用注册接口
-            api.request_register(code, encryptedData, iv, function(data) {
-              if (data) {
-                console.log("注册成功，开始登陆")
-                wx.hideLoading();
-                that.login();
-              } else {
-                wx.showModal({
-                  title: '提示',
-                  content: '无法注册，请重试',
-                  showCancel: false
-                });
-              }
+            api.register(code, res.encryptedData, res.iv, function(data) {
+              console.log("注册成功，开始登陆")
+              wx.hideLoading();
+              that.login();
             });
           }
         })

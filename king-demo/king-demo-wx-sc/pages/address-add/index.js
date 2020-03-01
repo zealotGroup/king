@@ -87,7 +87,7 @@ Page({
       apiAddid = 0;
     }
 
-    api.get_user_shipping_address(apiAddoRuPDATE, wx.getStorageSync('token'), apiAddid, ommonCityData.cityData[this.data.selProvinceIndex].id, cityId, districtId, linkMan, address, mobile, code, 'true', function(data) {
+    api.get_user_shipping_address(apiAddoRuPDATE, wx.getStorageSync('token'), apiAddid, commonCityData.cityData[this.data.selProvinceIndex].id, cityId, districtId, linkMan, address, mobile, code, 'true', function(data) {
       if (data.code != 0) {
         // 登录错误 
         wx.hideLoading();

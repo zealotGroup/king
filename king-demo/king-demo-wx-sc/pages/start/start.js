@@ -9,6 +9,11 @@ Page({
     userInfo: {}
   },
   goToIndex: function() {
+    api.check_token(wx.getStorageInfoSync("token"), function(data) {
+      if (data.code != 200) {
+        
+      }
+    })
     wx.switchTab({
       url: '/pages/index/index',
     });

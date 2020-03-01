@@ -1,14 +1,17 @@
 // utils/api.js
 var subDomain = "zealot";
+var baseUrl = "http://localhost:8080/api/wx";
+// baseUrl = 'https://api.it120.cc/' + subDomain;
+
 
 module.exports = {
   get_config_value: get_config_value,
   get_order_reputation_score: get_order_reputation_score,
   get_kanjiaList: get_kanjiaList,
   get_banner_list: get_banner_list,
-  get_goods_list: get_goods_list,
   get_discounts_coupons: get_discounts_coupons,
   get_discounts_fetch: get_discounts_fetch,
+  get_goods_list: get_goods_list,
   get_goods_category_all: get_goods_category_all,
   get_shop_goods_detail: get_shop_goods_detail,
   get_shop_goods_price: get_shop_goods_price,
@@ -19,9 +22,10 @@ module.exports = {
   get_user_shipping_address: get_user_shipping_address,
   get_user_shipping_address_detail: get_user_shipping_address_detail,
   get_user_shipping_address_delete: get_user_shipping_address_delete,
+
   check_token: check_token,
-  request_login: request_login,
-  request_register: request_register
+  login: login,
+  register: register
 };
 
 /**
@@ -29,7 +33,7 @@ module.exports = {
  **/
 function get_config_value(key, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/config/get-value',
+    url: baseUrl + '/config/get-value',
     data: {
       key: key
     },
@@ -43,7 +47,7 @@ function get_config_value(key, callBack) {
  **/
 function get_order_reputation_score(code, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/score/send/rule',
+    url: baseUrl + '/score/send/rule',
     data: {
       code: code
     },
@@ -59,7 +63,7 @@ function get_order_reputation_score(code, callBack) {
  **/
 function get_kanjiaList(callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/kanjia/list',
+    url: baseUrl + '/shop/goods/kanjia/list',
     data: {},
     success: function(res) {
       callBack(res.data);
@@ -72,7 +76,7 @@ function get_kanjiaList(callBack) {
  */
 function get_banner_list(key, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/banner/list',
+    url: baseUrl + '/banner/list',
     data: {
       type: key
     },
@@ -87,7 +91,7 @@ function get_banner_list(key, callBack) {
  */
 function get_goods_category_all(callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/category/all',
+    url: baseUrl + '/shop/goods/category/all',
     success: function(res) {
       callBack(res.data);
     }
@@ -99,7 +103,7 @@ function get_goods_category_all(callBack) {
  */
 function get_goods_list(categoryId, nameLike, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/list',
+    url: baseUrl + '/shop/goods/list',
     data: {
       categoryId: categoryId,
       nameLike: nameLike
@@ -112,7 +116,7 @@ function get_goods_list(categoryId, nameLike, callBack) {
 
 function get_discounts_coupons(type, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/discounts/coupons',
+    url: baseUrl + '/discounts/coupons',
     data: {
       type: type
     },
@@ -125,7 +129,7 @@ function get_discounts_coupons(type, callBack) {
 
 function get_discounts_fetch(id, token, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/discounts/fetch',
+    url: baseUrl + '/discounts/fetch',
     data: {
       id: id,
       token: token
@@ -138,7 +142,7 @@ function get_discounts_fetch(id, token, callBack) {
 
 function get_notice_list(pageSize, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/notice/list',
+    url: baseUrl + '/notice/list',
     data: {
       pageSize: pageSize
     },
@@ -150,7 +154,7 @@ function get_notice_list(pageSize, callBack) {
 
 function get_user_shipping_address(type, token, id, provinceId, cityId, districtId, linkMan, address, mobile, code, isDefault, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/shipping-address/' + type,
+    url: baseUrl + '/user/shipping-address/' + type,
     data: {
       token: token,
       id: id,
@@ -171,7 +175,7 @@ function get_user_shipping_address(type, token, id, provinceId, cityId, district
 
 function get_user_shipping_address_detail(token, id, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/shipping-address/detail',
+    url: baseUrl + '/user/shipping-address/detail',
     data: {
       token: token,
       id: id
@@ -184,7 +188,7 @@ function get_user_shipping_address_detail(token, id, callBack) {
 
 function get_user_shipping_address_delete(token, id, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/shipping-address/delete',
+    url: baseUrl + '/user/shipping-address/delete',
     data: {
       token: token,
       id: id
@@ -197,7 +201,7 @@ function get_user_shipping_address_delete(token, id, callBack) {
 
 function get_shop_goods_detail(id, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/detail',
+    url: baseUrl + '/shop/goods/detail',
     data: {
       id: id
     },
@@ -209,7 +213,7 @@ function get_shop_goods_detail(id, callBack) {
 
 function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/price',
+    url: baseUrl + '/shop/goods/price',
     data: {
       goodsId: goodsId,
       propertyChildIds: propertyChildIds
@@ -222,7 +226,7 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
 
 function get_shop_goods_reputation(goodsId, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/reputation',
+    url: baseUrl + '/shop/goods/reputation',
     data: {
       goodsId: goodsId
     },
@@ -234,7 +238,7 @@ function get_shop_goods_reputation(goodsId, callBack) {
 
 function get_media_video_detail(videoId, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/media/video/detail',
+    url: baseUrl + '/media/video/detail',
     data: {
       videoId: videoId
     },
@@ -246,7 +250,7 @@ function get_media_video_detail(videoId, callBack) {
 
 function get_shop_goods_kanjia_join(kjid, token, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/shop/goods/kanjia/join',
+    url: baseUrl + '/shop/goods/kanjia/join',
     data: {
       kjid: kjid,
       token: token
@@ -260,15 +264,29 @@ function get_shop_goods_kanjia_join(kjid, token, callBack) {
 /**
  * 判断后台是否登录
  **/
-function check_token(token, callBack) {
+function check_token(callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/check-token',
-    data: {
-      token: token
+    url: baseUrl + '/checkToken',
+    header: {
+      'auth-token': wx.getStorageInfoSync("token")
     },
     success: function(res) {
-      console.log("后台判断是否登录接口返回：【" + JSON.stringify(res.data) + "】"); //res.data.code == 0
-      callBack(res.data);
+      if (res.data.code != 200) {
+        wx.showModal({
+          title: '失败',
+          content: '后台处理失败：' + res.data.msg,
+          showCancel: false
+        })
+      } else {
+        callBack(res.data.data);
+      }
+    },
+    fail: function(res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
     }
   })
 }
@@ -276,15 +294,26 @@ function check_token(token, callBack) {
 /**
  * 后台登录
  **/
-function request_login(code, callBack) {
+function login(code, callBack) {
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/wxapp/login',
+    url: baseUrl + '/login',
+    method: "POST",
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
     data: {
       code: code
     },
     success: function(res) {
-      console.log("request_login返回【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      callBack(res.data.data);
+    },
+    fail: function(res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
     }
   })
 }
@@ -292,18 +321,37 @@ function request_login(code, callBack) {
 /**
  * 后台注册
  **/
-function request_register(code, encryptedData, iv, callBack) {
+function register(code, encryptedData, iv, callBack) {
   // 下面开始调用注册接口
   wx.request({
-    url: 'https://api.it120.cc/' + subDomain + '/user/wxapp/register/complex',
+    url: baseUrl + '/register',
+    method: "POST",
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
     data: {
       code: code,
       encryptedData: encryptedData,
       iv: iv
     }, // 设置请求的 参数
     success: (res) => {
-      console.log("request_register返回：【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      console.log("register返回：【" + JSON.stringify(res.data) + "】");
+      if (res.data.code != 200) {
+        wx.showModal({
+          title: '提示',
+          content: '注册失败' + res.data.msg,
+          showCancel: false
+        })
+      } else {
+        callBack(res.data.data);
+      }
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
     }
   })
 }

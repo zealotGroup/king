@@ -1,21 +1,9 @@
 <!--index.wxml-->
 <!--1px = 750/320 = 2.34rpx;-->
 <view class="container">
-   <view class="swiper-container">
-        <swiper class="swiper_box" 
-                    autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
-            <block wx:for="{{banners}}" wx:key="id">
-                <swiper-item>
-                    <image bindtap="tapBanner" data-id="{{item.businessId}}" src="{{item.picUrl}}_m" class="slide-image" width="750rpx" height="562.5rpx"/>
-                </swiper-item>
-            </block>
-        </swiper>
-        <view class="dots">  
-            <block wx:for="{{banners}}" wx:key="unique">  
-                <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>  
-            </block>  
-        </view>  
-   </view>
+    <view class="notice">
+      <view class="notice_iteml"></view>
+    </view>
     <view class="type-container">
         <scroll-view class="type-navbar" scroll-x="true">
             <view class="type-box" wx:for-items="{{categories}}" wx:key="id">
@@ -43,17 +31,6 @@
           </swiper-item>
         </navigator>
       </swiper>
-    </view>
-    <view class="coupons" hidden="{{hasNoCoupons}}">
-        <scroll-view class="coupons-scroll" scroll-x="true">
-            <view class="coupons-item" wx:for-items="{{coupons}}" wx:for-index="idx" wx:key="id"  bindtap="gitCoupon" data-id="{{item.id}}">
-               <view style="font-size: 35rpx"> ￥ {{item.moneyMax}}元 </view>
-               <view> {{item.name}} </view>
-               <view> 满 {{item.moneyHreshold}} 元使用 </view>
-               <view wx:if="{{item.dateEndType == 0}}"> {{item.dateEnd}} 前有效 </view>
-               <view wx:if="{{item.dateEndType == 1}}"> 领取 {{item.dateEndDays}} 天内有效 </view>
-            </view>
-        </scroll-view>
     </view>
     <view class="goods-container">
         <view class="goods-box" wx:for-items="{{goods}}" wx:key="{{index}}" bindtap="toDetailsTap" data-id="{{item.id}}">
