@@ -5,6 +5,7 @@ import group.zealot.king.core.zt.dbif.service.admin.AdminPictureService;
 import group.zealot.king.core.zt.dbif.service.admin.AdminUnitService;
 import group.zealot.king.core.zt.dbif.service.jxc.*;
 import group.zealot.king.core.zt.dbif.service.system.*;
+import group.zealot.king.core.zt.dbif.service.wx.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,13 @@ public class Services {
     public static JxcSalesService jxcSalesService;
     public static JxcPurchaseService jxcPurchaseService;
     public static JxcGoodsPictureService jxcGoodsPictureService;
+
+    public static WxUserService wxUserService;
+
+    @Autowired
+    public void setWxUserService(WxUserService wxUserService) {
+        Services.wxUserService = wxUserService;
+    }
 
     @Autowired
     public void setJxcGoodsPictureService(JxcGoodsPictureService jxcGoodsPictureService) {

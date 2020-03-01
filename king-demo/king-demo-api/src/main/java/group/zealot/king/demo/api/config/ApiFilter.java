@@ -39,6 +39,10 @@ public class ApiFilter implements Filter {
         blackStr.add("UPDATE");
         blackStr.add("DELETE");
         blackStr.add("");
+        // --微信--
+        paths.add("/wx/login");
+        paths.add("/wx/register");
+        paths.add("/checkToken");
 
     }
 

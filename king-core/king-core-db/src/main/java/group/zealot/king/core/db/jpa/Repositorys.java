@@ -3,6 +3,7 @@ package group.zealot.king.core.db.jpa;
 import group.zealot.king.core.db.jpa.admin.*;
 import group.zealot.king.core.db.jpa.jxc.*;
 import group.zealot.king.core.db.jpa.system.*;
+import group.zealot.king.core.db.jpa.wx.WxUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,14 @@ public class Repositorys {
     public static AdminUnitRepository adminUnitRepository;
     public static AdminLableRepository adminLableRepository;
     public static AdminPictureRepository adminPictureRepository;
+
+    public static WxUserRepository wxUserRepository;
+
+    @Autowired
+    public void setWxUserRepository(WxUserRepository wxUserRepository) {
+        Repositorys.wxUserRepository = wxUserRepository;
+    }
+
 
     @Autowired(required = false)
     public void setJxcGoodsPictureRepository(JxcGoodsPictureRepository jxcGoodsPictureRepository) {

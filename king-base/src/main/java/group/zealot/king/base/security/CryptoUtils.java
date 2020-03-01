@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * 支持HMAC-SHA1消息签名 及 DES/AES对称加密的工具类.
@@ -185,5 +186,19 @@ public class CryptoUtils {
         byte[] bytes = new byte[DEFAULT_IVSIZE];
         random.nextBytes(bytes);
         return bytes;
+    }
+
+    public static void main(String[] args) {
+        String sessionKey = "Hx9W9TLMs7HRVyuOTePeaw==";
+        String iv = "OeR37wcuKprsGnpr1h/wQg==";
+        String encryptedData = "1iRBRjp/b9+VCuExDUV9wPyP4xt53ADKZdAiHrQSpdsk1KcktA4WiM+PvfbYdOJQxN14CrWUgE0mmWWOKvf/TJ+tM1nZPl8xEtUG1fAK8ubt8KxHEh6mNHdwN1TaproT5noTN7c7oD0Q25Fh7JGTHefHiCsVJ2R+yihctFiiSdGUAZCH+ugSDK/ayPdvb3bf2xcjzP+3gg4MoRtLd7v6xxUcFEMotHZFK9Pr1CB4ne5axbS89HJQNAhrIyaIxFj4apT9T5lDTDmeIXJLnuJjlCGl2JuEss/Cs1AzpUYVhCqAdNhgCwAE4q9XYL0y3qznO8qcUERa5KUNDwicvlbR15v6RxASV6TUHOc2mIDczrWO8BzhKmYUrbrVUvsGHg4i5P4Ako7TT6aZkvxszForASvWMSmJyHOrN+DEQLa4khDLNBJpxdcourBjnOwt6JoQvgOB8FUz6xFieCvZV3AGLPFw9MumjqEIsWdSZf9ZGug=";
+
+        Base64.Decoder decoder = Base64.getDecoder();
+
+        String str = CryptoUtils.aesDecrypt(
+                decoder.decode(encryptedData.getBytes()),
+                decoder.decode(sessionKey.getBytes()),
+                decoder.decode(iv.getBytes()));
+        System.out.println(str);
     }
 }

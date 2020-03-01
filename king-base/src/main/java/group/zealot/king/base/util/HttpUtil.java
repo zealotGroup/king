@@ -1,95 +1,145 @@
 package group.zealot.king.base.util;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.http.*;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+import group.zealot.king.base.ServiceCode;
+import group.zealot.king.base.exception.BaseRuntimeException;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 public class HttpUtil {
-    private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static RequestConfig requestConfig = RequestConfig.custom()
+            .setConnectionRequestTimeout(30000)
+            .setSocketTimeout(30000)
+            .setConnectTimeout(30000)
+            .build();
 
-    private static final List<BasicHeader> basicHeaders = new LinkedList<>();
-
-    static {
-        basicHeaders.add(new BasicHeader("Content-Type", "text/xml"));
-        basicHeaders.add(new BasicHeader("Cache-Control", "no-cache"));
+    public static String get(String url) {
+        return get(url, null);
     }
 
-    public static String GET(String url) throws IOException {
-        return GET(url, getBasicHeader());
-    }
-
-    private static String GET(String url, List<BasicHeader> basicHeaders) throws IOException {
-        HttpPost httpPost = initHttpPost(url);
-        for (BasicHeader basicHeader : basicHeaders) {
-            httpPost.addHeader(basicHeader);
+    public static String get(String url, Map<String, String> header) {
+        HttpGet httpGet = new HttpGet(getURI(url));
+        if (header != null) {
+            for (String str : header.keySet()) {
+                httpGet.addHeader(str, header.get(str));
+            }
         }
-        return execute(httpPost);
+        httpGet.setConfig(requestConfig);
+        return sendHttp(httpGet);
     }
 
-    public static String POST(String url, String json) throws IOException {
-        return POST(url, json, getBasicHeader());
+
+    public static String post(String url, List<BasicNameValuePair> parameters) {
+        return post(url, parameters, null);
     }
 
-    private static String POST(String url, String json, List<BasicHeader> basicHeaders) throws IOException {
-        HttpPost httpPost = initHttpPost(url);
-        httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-        for (BasicHeader basicHeader : basicHeaders) {
-            httpPost.addHeader(basicHeader);
+    public static String post(String url, List<BasicNameValuePair> parameters, Map<String, String> header) {
+        HttpPost httpPost = new HttpPost(getURI(url));
+        HttpEntity entity = new UrlEncodedFormEntity(parameters, Charset.forName("UTF-8"));
+        httpPost.setEntity(entity);
+        if (header != null) {
+            for (String str : header.keySet()) {
+                httpPost.addHeader(str, header.get(str));
+            }
         }
-        return execute(httpPost);
+        httpPost.setConfig(requestConfig);
+        return sendHttp(httpPost);
     }
 
-    private static List<BasicHeader> getBasicHeader() {
-        return basicHeaders;
+    public static String post(String url, String json) {
+        return post(url, json, null);
     }
 
-    private static HttpGet initHttpGet(String url) {
-        return new HttpGet(url);
+    public static String post(String url, String json, Map<String, String> header) {
+        HttpPost httpPost = new HttpPost(getURI(url));
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        httpPost.setEntity(entity);
+        if (header != null) {
+            for (String str : header.keySet()) {
+                httpPost.addHeader(str, header.get(str));
+            }
+        }
+        httpPost.setConfig(requestConfig);
+        return sendHttp(httpPost);
     }
 
-    private static HttpPost initHttpPost(String url) {
-        return new HttpPost(url);
+    public static String put(String url) {
+        return put(url, null);
     }
 
-    private static String execute(HttpUriRequest request) throws IOException {
-        CloseableHttpResponse response = null;
-        String returnStr = null;
+    public static String put(String url, Map<String, String> header) {
+        HttpPut httpPut = new HttpPut(getURI(url));
+        if (header != null) {
+            for (String str : header.keySet()) {
+                httpPut.addHeader(str, header.get(str));
+            }
+        }
+        httpPut.setConfig(requestConfig);
+        return sendHttp(httpPut);
+    }
+
+    public static String delete(String url) {
+        return delete(url, null);
+    }
+
+    public static String delete(String url, Map<String, String> header) {
+        HttpDelete httpDelete = new HttpDelete(getURI(url));
+        if (header != null) {
+            for (String str : header.keySet()) {
+                httpDelete.addHeader(str, header.get(str));
+            }
+        }
+        httpDelete.setConfig(requestConfig);
+        return sendHttp(httpDelete);
+    }
+
+    public static String sendHttp(HttpUriRequest obj) {
+        CloseableHttpResponse response = sendHttpRequest(obj);
+        String res = null;
         try {
-            logger.debug("请求URI:" + request.getURI());
-            logger.debug("请求方法:" + request.getMethod());
-            logger.debug("请求头:" + JSONObject.toJSONString(request.getAllHeaders()));
-            if ("POST".equalsIgnoreCase(request.getMethod())) {
-                logger.debug("请求内容:" + JSONObject.toJSONString(((HttpPost) request).getEntity()));
-            }
-            response = HttpClients.createDefault().execute(request);
-            HttpEntity entity = response.getEntity();
-            returnStr = EntityUtils.toString(entity);
-            StatusLine statusLine = response.getStatusLine();
-            logger.debug("请求返回状态码:" + statusLine.getStatusCode());
-            logger.debug("请求返回Strnig:" + returnStr);
-        } finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    logger.error("response.close()", e);
-                }
-            }
+            res = EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            logger.error("EntityUtils.toString(response.getEntity()) 异常", e);
+            throw new BaseRuntimeException(ServiceCode.REQUEST_HTTP_ERROR);
         }
-        return returnStr;
+        return res;
+    }
+
+    public static CloseableHttpResponse sendHttpRequest(HttpUriRequest obj) {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(obj);
+        } catch (IOException e) {
+            logger.error("httpclient.execute(obj) 异常", e);
+            throw new BaseRuntimeException(ServiceCode.REQUEST_HTTP_ERROR);
+        }
+        return response;
+    }
+
+    private static String getURI(String url) {
+        if (url.startsWith("http")) {
+            return url;
+        } else {
+            return "http://" + url;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
     }
 }

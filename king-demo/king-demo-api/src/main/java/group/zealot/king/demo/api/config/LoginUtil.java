@@ -2,9 +2,11 @@ package group.zealot.king.demo.api.config;
 
 import group.zealot.king.base.Constants;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.util.NumberUtil;
 import group.zealot.king.core.zt.entity.system.SysUser;
+import group.zealot.king.core.zt.entity.wx.WxUser;
 import group.zealot.king.core.zt.redis.RedisUtil;
 import group.zealot.king.core.zt.spring.SpringUtil;
 import org.slf4j.Logger;
@@ -25,6 +27,16 @@ public class LoginUtil {
 
     protected static Logger logger = LoggerFactory.getLogger(LoginUtil.class);
 
+    public static String wxlogin(String openid) {
+        WxUser wxUser = new WxUser();
+        wxUser.setOpenid(openid);
+        wxUser = wxUserService.get(wxUser);
+        if (wxUser == null) {
+            throw new BaseRuntimeException(ServiceCode.NO_USER);
+        }
+        return createToken(wxUser);
+    }
+
     public static String login(String username, byte[] password) {
         String newPassword = sysUserService.getNewPassword(username, password);
         SysUser sysUser = new SysUser();
@@ -36,9 +48,12 @@ public class LoginUtil {
         if (!Constants.STATUS_ABLE.equals(sysUser.getStatus())) {
             throw new BaseRuntimeException("此用户已被禁用");
         }
+        return createToken(sysUser);
+    }
 
+    private static String createToken(Object obj) {
         String token = UUID.randomUUID().toString();
-        if (put(token, sysUser)) {
+        if (put(token, obj)) {
             return token;
         } else {
             throw new BaseRuntimeException("token创建异常，请稍后重试");

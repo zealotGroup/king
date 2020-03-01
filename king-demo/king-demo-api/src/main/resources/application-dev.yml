@@ -7,3 +7,6 @@ spring:
     host: www.zealot.group
     port: 6379
     password: zealot.group
+wx:
+  appid: wxe981b47b950fb43e
+  secret: 70c29be9d3182919ad59b8f870cef1d5
