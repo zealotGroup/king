@@ -1,6 +1,7 @@
 // utils/api.js
 var subDomain = "zealot";
-var baseUrl = "http://localhost:8080/api/wx";
+var baseUrl = "http://localhost:8080/api";
+var wxurl = "/wx";
 // baseUrl = 'https://api.it120.cc/' + subDomain;
 
 
@@ -33,7 +34,7 @@ module.exports = {
  **/
 function get_config_value(key, callBack) {
   wx.request({
-    url: baseUrl + '/config/get-value',
+    url: baseUrl + wxurl + '/config/get-value',
     data: {
       key: key
     },
@@ -47,7 +48,7 @@ function get_config_value(key, callBack) {
  **/
 function get_order_reputation_score(code, callBack) {
   wx.request({
-    url: baseUrl + '/score/send/rule',
+    url: baseUrl + wxurl + '/score/send/rule',
     data: {
       code: code
     },
@@ -63,7 +64,7 @@ function get_order_reputation_score(code, callBack) {
  **/
 function get_kanjiaList(callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/kanjia/list',
+    url: baseUrl + wxurl + '/shop/goods/kanjia/list',
     data: {},
     success: function(res) {
       callBack(res.data);
@@ -76,7 +77,7 @@ function get_kanjiaList(callBack) {
  */
 function get_banner_list(key, callBack) {
   wx.request({
-    url: baseUrl + '/banner/list',
+    url: baseUrl + wxurl + '/banner/list',
     data: {
       type: key
     },
@@ -91,7 +92,7 @@ function get_banner_list(key, callBack) {
  */
 function get_goods_category_all(callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/category/all',
+    url: baseUrl + wxurl + '/shop/goods/category/all',
     success: function(res) {
       callBack(res.data);
     }
@@ -103,7 +104,7 @@ function get_goods_category_all(callBack) {
  */
 function get_goods_list(categoryId, nameLike, callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/list',
+    url: baseUrl + wxurl + '/shop/goods/list',
     data: {
       categoryId: categoryId,
       nameLike: nameLike
@@ -116,7 +117,7 @@ function get_goods_list(categoryId, nameLike, callBack) {
 
 function get_discounts_coupons(type, callBack) {
   wx.request({
-    url: baseUrl + '/discounts/coupons',
+    url: baseUrl + wxurl + '/discounts/coupons',
     data: {
       type: type
     },
@@ -129,7 +130,7 @@ function get_discounts_coupons(type, callBack) {
 
 function get_discounts_fetch(id, token, callBack) {
   wx.request({
-    url: baseUrl + '/discounts/fetch',
+    url: baseUrl + wxurl + '/discounts/fetch',
     data: {
       id: id,
       token: token
@@ -142,7 +143,7 @@ function get_discounts_fetch(id, token, callBack) {
 
 function get_notice_list(pageSize, callBack) {
   wx.request({
-    url: baseUrl + '/notice/list',
+    url: baseUrl + wxurl + '/notice/list',
     data: {
       pageSize: pageSize
     },
@@ -154,7 +155,7 @@ function get_notice_list(pageSize, callBack) {
 
 function get_user_shipping_address(type, token, id, provinceId, cityId, districtId, linkMan, address, mobile, code, isDefault, callBack) {
   wx.request({
-    url: baseUrl + '/user/shipping-address/' + type,
+    url: baseUrl + wxurl + '/user/shipping-address/' + type,
     data: {
       token: token,
       id: id,
@@ -175,7 +176,7 @@ function get_user_shipping_address(type, token, id, provinceId, cityId, district
 
 function get_user_shipping_address_detail(token, id, callBack) {
   wx.request({
-    url: baseUrl + '/user/shipping-address/detail',
+    url: baseUrl + wxurl + '/user/shipping-address/detail',
     data: {
       token: token,
       id: id
@@ -188,7 +189,7 @@ function get_user_shipping_address_detail(token, id, callBack) {
 
 function get_user_shipping_address_delete(token, id, callBack) {
   wx.request({
-    url: baseUrl + '/user/shipping-address/delete',
+    url: baseUrl + wxurl + '/user/shipping-address/delete',
     data: {
       token: token,
       id: id
@@ -201,7 +202,7 @@ function get_user_shipping_address_delete(token, id, callBack) {
 
 function get_shop_goods_detail(id, callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/detail',
+    url: baseUrl + wxurl + '/shop/goods/detail',
     data: {
       id: id
     },
@@ -213,7 +214,7 @@ function get_shop_goods_detail(id, callBack) {
 
 function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/price',
+    url: baseUrl + wxurl + '/shop/goods/price',
     data: {
       goodsId: goodsId,
       propertyChildIds: propertyChildIds
@@ -226,7 +227,7 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
 
 function get_shop_goods_reputation(goodsId, callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/reputation',
+    url: baseUrl + wxurl + '/shop/goods/reputation',
     data: {
       goodsId: goodsId
     },
@@ -238,7 +239,7 @@ function get_shop_goods_reputation(goodsId, callBack) {
 
 function get_media_video_detail(videoId, callBack) {
   wx.request({
-    url: baseUrl + '/media/video/detail',
+    url: baseUrl + wxurl + '/media/video/detail',
     data: {
       videoId: videoId
     },
@@ -250,7 +251,7 @@ function get_media_video_detail(videoId, callBack) {
 
 function get_shop_goods_kanjia_join(kjid, token, callBack) {
   wx.request({
-    url: baseUrl + '/shop/goods/kanjia/join',
+    url: baseUrl + wxurl + '/shop/goods/kanjia/join',
     data: {
       kjid: kjid,
       token: token
@@ -271,6 +272,7 @@ function check_token(callBack) {
       'auth-token': wx.getStorageInfoSync("token")
     },
     success: function(res) {
+      console.log("check_token返回【" + JSON.stringify(res.data) + "】");
       if (res.data.code != 200) {
         wx.showModal({
           title: '失败',
@@ -296,7 +298,7 @@ function check_token(callBack) {
  **/
 function login(code, callBack) {
   wx.request({
-    url: baseUrl + '/login',
+    url: baseUrl + wxurl + '/login',
     method: "POST",
     header: {
       'content-type': 'application/x-www-form-urlencoded'
@@ -306,7 +308,7 @@ function login(code, callBack) {
     },
     success: function(res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      callBack(res.data.data);
+      callBack(res.data);
     },
     fail: function(res) {
       wx.showModal({
@@ -324,7 +326,7 @@ function login(code, callBack) {
 function register(code, encryptedData, iv, callBack) {
   // 下面开始调用注册接口
   wx.request({
-    url: baseUrl + '/register',
+    url: baseUrl + wxurl + '/register',
     method: "POST",
     header: {
       'content-type': 'application/x-www-form-urlencoded'
@@ -336,17 +338,9 @@ function register(code, encryptedData, iv, callBack) {
     }, // 设置请求的 参数
     success: (res) => {
       console.log("register返回：【" + JSON.stringify(res.data) + "】");
-      if (res.data.code != 200) {
-        wx.showModal({
-          title: '提示',
-          content: '注册失败' + res.data.msg,
-          showCancel: false
-        })
-      } else {
-        callBack(res.data.data);
-      }
+      callBack(res.data);
     },
-    fail: function (res) {
+    fail: function(res) {
       wx.showModal({
         title: '错误',
         content: '访问错误',

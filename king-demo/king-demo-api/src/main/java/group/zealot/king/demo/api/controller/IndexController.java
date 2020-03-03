@@ -5,6 +5,7 @@ import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,18 @@ public class IndexController {
                 data.put("status", "API服务状态正常");
                 resultJson.set(data);
                 resultJson.set(ServiceCode.SUCCESS);
+            }
+        }.result();
+    }
+
+    @RequestMapping("checkToken")
+    public JSONObject checkToken() {
+        return new ResultTemple() {
+            @Override
+            protected void dosomething() {
+                JSONObject data = new JSONObject();
+                data.put("timeout", !LoginUtil.isLogin());
+                resultJson.set(data);
             }
         }.result();
     }

@@ -43,18 +43,6 @@ public class WXLoginController {
     @Autowired
     private WXAPI wxapi;
 
-    @RequestMapping("checkToken")
-    @Validated
-    public JSONObject checkToken() {
-        return new ResultTemple() {
-            @Override
-            protected void dosomething() {
-                JSONObject data = new JSONObject();
-                data.put("timeout", !LoginUtil.isLogin());
-                resultJson.set(data);
-            }
-        }.result();
-    }
 
     @RequestMapping("login")
     @Validated
