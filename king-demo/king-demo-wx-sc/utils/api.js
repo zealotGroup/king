@@ -1,4 +1,5 @@
 // utils/api.js
+var app = getApp()
 var subDomain = "zealot";
 var baseUrl = "http://localhost:8080/api";
 var wxurl = "/wx";
@@ -263,27 +264,47 @@ function get_shop_goods_kanjia_join(kjid, token, callBack) {
 }
 
 /**
- * 判断后台是否登录
- **/
-function check_token(callBack) {
+ * 更新手机号
+ */
+function updaet_phone_number(encryptedData, iv, callBack) {
   wx.request({
-    url: baseUrl + '/checkToken',
+    url: baseUrl + wxurl + '/updatePhoneNumber',
     header: {
-      'auth-token': wx.getStorageInfoSync("token")
+      'auth-token': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      encryptedData: encryptedData,
+      iv: iv
     },
     success: function(res) {
-      console.log("check_token返回【" + JSON.stringify(res.data) + "】");
-      if (res.data.code != 200) {
-        wx.showModal({
-          title: '失败',
-          content: '后台处理失败：' + res.data.msg,
-          showCancel: false
-        })
-      } else {
-        callBack(res.data.data);
-      }
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      callBack(res.data);
     },
-    fail: function(res) {
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  })
+}
+/**
+ * token检测
+ **/
+function check_token() {
+  wx.request({
+    url: baseUrl + wxurl + '/login',
+    method: "POST",
+    header: {
+      'auth-token': app.globalData.token
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      callBack(res.data);
+    },
+    fail: function (res) {
       wx.showModal({
         title: '错误',
         content: '访问错误',

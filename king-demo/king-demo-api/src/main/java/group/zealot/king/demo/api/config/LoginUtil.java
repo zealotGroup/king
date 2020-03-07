@@ -21,7 +21,7 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 
 public class LoginUtil {
     private static final String prefix = "api:token:";
-    protected static final ThreadLocal<HttpServletRequest> threadLocalRequest = new ThreadLocal<>();
+    protected static final ThreadLocal<String> tokenLocal = new ThreadLocal<>();
 
     public static Duration timeout = Duration.ofMinutes(60);
 
@@ -54,6 +54,7 @@ public class LoginUtil {
     private static String createToken(Object obj) {
         String token = UUID.randomUUID().toString();
         if (put(token, obj)) {
+            tokenLocal.set(token);
             return token;
         } else {
             throw new BaseRuntimeException("token创建异常，请稍后重试");
@@ -70,6 +71,15 @@ public class LoginUtil {
         return get(getToken()) != null;
     }
 
+    public static WxUser getWXUser() {
+        Object value = get(getToken());
+        if (value instanceof WxUser) {
+            return (WxUser) value;
+        } else {
+            throw new BaseRuntimeException("token已失效或logout异常");
+        }
+    }
+
     public static SysUser getSysUser() {
         Object value = get(getToken());
         if (value instanceof SysUser) {
@@ -84,7 +94,7 @@ public class LoginUtil {
     }
 
     public static String getToken() {
-        return threadLocalRequest.get().getHeader(ApiFilter.token_header);
+        return tokenLocal.get();
     }
 
     public static boolean flushExp() {
@@ -102,7 +112,7 @@ public class LoginUtil {
         return redisUtil().setIfAbsent(key, value, timeout);
     }
 
-    private static Object get(String key) {
+    private static <T> T get(String key) {
         key = getKey(key);
         return redisUtil().get(key);
     }

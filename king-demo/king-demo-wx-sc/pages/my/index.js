@@ -3,35 +3,23 @@ var api = require('../../utils/api.js');
 
 Page({
   data: {
-    balance: 0,
-    freeze: 0,
-    score: 0,
-    score_sign_continuous: 0
   },
   onLoad() {
-
+    let that = this
+    that.setData({
+      nickName: app.globalData.nickName,
+      avatarUrl: app.globalData.avatarUrl,
+      phoneNumber: app.globalData.phoneNumber,
+      version: app.globalData.version
+    })
   },
   onShow() {
     let that = this;
-    let userInfo = wx.getStorageSync('userInfo')
-    if (!userInfo) {
-      wx.navigateTo({
-        url: "/pages/authorize/index"
-      })
-    } else {
-      that.setData({
-        userInfo: userInfo,
-        version: app.globalData.version
-      })
-    }
-    this.getUserApiInfo();
-    this.getUserAmount();
-    this.checkScoreSign();
   },
   aboutUs: function() {
     wx.showModal({
       title: '关于我们',
-      content: '本系统基于开源小程序商城系统 https://github.com/EastWorld/wechat-app-mall 搭建，祝大家使用愉快！',
+      content: '你们的支持，是我们努力的源泉',
       showCancel: false
     })
   },
@@ -45,109 +33,14 @@ Page({
       return;
     }
     var that = this;
-    wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/user/wxapp/bindMobile',
-      data: {
-        token: wx.getStorageSync('token'),
-        encryptedData: e.detail.encryptedData,
-        iv: e.detail.iv
-      },
-      success: function(res) {
-        if (res.data.code == 0) {
-          wx.showToast({
-            title: '绑定成功',
-            icon: 'success',
-            duration: 2000
-          })
-          that.getUserApiInfo();
-        } else {
-          wx.showModal({
-            title: '提示',
-            content: '绑定失败',
-            showCancel: false
-          })
-        }
-      }
-    })
-  },
-  getUserApiInfo: function() {
-    var that = this;
-    wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/user/detail',
-      data: {
-        token: wx.getStorageSync('token')
-      },
-      success: function(res) {
-        if (res.data.code == 0) {
-          that.setData({
-            apiUserInfoMap: res.data.data,
-            userMobile: res.data.data.base.mobile
-          });
-        }
-      }
-    })
+    api.update_phone_number(e.detail.encryptedData, e.detail.iv, function(res) {
 
-  },
-  getUserAmount: function() {
-    var that = this;
-    wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/user/amount',
-      data: {
-        token: wx.getStorageSync('token')
-      },
-      success: function(res) {
-        if (res.data.code == 0) {
-          that.setData({
-            balance: res.data.data.balance,
-            freeze: res.data.data.freeze,
-            score: res.data.data.score
-          });
-        }
-      }
-    })
-
-  },
-  checkScoreSign: function() {
-    var that = this;
-    wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/score/today-signed',
-      data: {
-        token: wx.getStorageSync('token')
-      },
-      success: function(res) {
-        if (res.data.code == 0) {
-          that.setData({
-            score_sign_continuous: res.data.data.continuous
-          });
-        }
-      }
     })
   },
-  scoresign: function() {
-    var that = this;
-    wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/score/sign',
-      data: {
-        token: wx.getStorageSync('token')
-      },
-      success: function(res) {
-        if (res.data.code == 0) {
-          that.getUserAmount();
-          that.checkScoreSign();
-        } else {
-          wx.showModal({
-            title: '错误',
-            content: res.data.msg,
-            showCancel: false
-          })
-        }
-      }
-    })
-  },
-  relogin: function() {
-    wx.removeStorageSync('token');
+  logout: function() {
+    app.globalData.token = null
     wx.navigateTo({
-      url: "/pages/authorize/index"
+      url: '/pages/start/start'
     })
   },
   recharge: function() {

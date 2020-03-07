@@ -15,19 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.validation.constraints.NotEmpty;
-import java.nio.charset.Charset;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.Arrays;
 import java.util.Base64;
 
 import static group.zealot.king.core.zt.dbif.Services.wxUserService;
@@ -43,18 +31,22 @@ public class WXLoginController {
     @Autowired
     private WXAPI wxapi;
 
-
     @RequestMapping("login")
     @Validated
     public JSONObject login(@NotEmpty String code) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                logger.info(code);
-                JSONObject jscode2session = wxapi.code2Session(code);
-                String token = LoginUtil.wxlogin(jscode2session.getString("openid"));
                 JSONObject data = new JSONObject();
-                data.put("token", token);
+                if (!LoginUtil.isLogin()) {
+                    logger.info(code);
+                    JSONObject jscode2session = wxapi.code2Session(code);
+                    LoginUtil.wxlogin(jscode2session.getString("openid"));
+                }
+                data.put("user", LoginUtil.getWXUser());
+                data.put("token", LoginUtil.getToken());
+                data.put("timeout", LoginUtil.timeout.getSeconds());
+                data.put("unit", "SECONDS");
                 resultJson.set(data);
             }
         }.result();
@@ -79,10 +71,15 @@ public class WXLoginController {
                 wxUser.setOpenid(userInfo.getString("openId"));
                 wxUser.setAvatarUrl(userInfo.getString("avatarUrl"));
                 wxUser.setNickName(userInfo.getString("nickName"));
-                wxUser = wxUserService.insert(wxUser);
+                wxUserService.insert(wxUser);
 
+                //自动登录
+                LoginUtil.wxlogin(userInfo.getString("openId"));
                 JSONObject data = new JSONObject();
-                data.put("vo", wxUser);
+                data.put("user", LoginUtil.getWXUser());
+                data.put("token", LoginUtil.getToken());
+                data.put("timeout", LoginUtil.timeout.getSeconds());
+                data.put("unit", "SECONDS");
                 resultJson.set(data);
             }
         }.result();

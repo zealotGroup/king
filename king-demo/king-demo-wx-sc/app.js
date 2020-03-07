@@ -1,20 +1,15 @@
 //app.js
 App({
-  onLaunch: function () {
-    let userInfo = wx.getStorageSync('userInfo');
-    if (!userInfo) {
-      wx.switchTab({
-        url: '/pages/authorize/index',
-      });
-    } else {
-      wx.switchTab({
-        url: '/pages/start/start',
-      });
-    }
+  onLaunch: function() {
   },
+  
   globalData: {
-    userInfo: null,
-    version: "1.0.0",
-    shareProfile: "百款精品商品，总有一款适合您", // 首页转发的时候话术
+    token: null,
+    nickName: null,
+    phoneNumber: null,
+    avatarUrl: null,
+    version: "1.0.1",
+    appName: '鑫磊五金',
+    shareProfile: "五金用品，来鑫磊五金小店", // 首页转发的时候话术
   }
 })

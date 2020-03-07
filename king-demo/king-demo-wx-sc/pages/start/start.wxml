@@ -7,13 +7,14 @@
     <image class="title" src="/images/more/title8.png"></image>
     <view class="content">
       <view class="hd" style="transform:rotateZ({{angle}}deg);">
-        <image class="logo" src="{{userInfo.avatarUrl}}"></image>
+        <image class="logo" src="{{avatarUrl}}"></image>
         <image class="wave" src="/images/more/wave.png" mode="aspectFill"></image>
         <image class="wave wave-bg" src="/images/more/wave.png" mode="aspectFill"></image>
       </view>
       <view class="bd">
         <view class="confirm-btn" bindtap='goToIndex'>
-          <text>{{userInfo.nickName}}</text>
+          <text wx:if="nickName">{{nickName}}</text>
+          <text wx:else>登录</text>
         </view>
         <text class="copyright">开发者 t953170224@163.com</text>
       </view>

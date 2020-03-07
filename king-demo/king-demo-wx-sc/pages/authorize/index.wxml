@@ -1,7 +1,8 @@
 <view class="container">
-    <form bindsubmit="bindSave">
-    <view style='width:100%;padding-left:30rpx;font-size: 28rpx;margin-top:30rpx;'>1、同意当前小程序获取我的微信头像；</view>
-    <view style='width:100%;padding-left:30rpx;font-size: 28rpx;margin-top:30rpx;'>2、同意当前小程序获取我的微信昵称等其他信息；</view>
-    <button open-type="getUserInfo" bindtap="getUserInfo" class="save-btn">授权登录</button>
-    </form>
+  <!-- 如果只是展示用户头像昵称，可以使用 <open-data /> 组件 -->
+  <open-data type="userAvatarUrl"></open-data>
+  <open-data type="userNickName"></open-data>
+  <!-- 需要使用 button 来授权登录 -->
+  <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="save-btn">授权登录</button>
+  <view wx:else>请升级微信版本</view>
 </view>

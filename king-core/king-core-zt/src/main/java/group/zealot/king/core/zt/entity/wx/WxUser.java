@@ -23,4 +23,6 @@ public class WxUser extends BaseEntity {
     private String nickName;
     @Column(length = 200)
     private String avatarUrl;
+    @Column(length = 200)
+    private String phoneNumber;
 }

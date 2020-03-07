@@ -79,7 +79,7 @@ public class ApiFilter implements Filter {
         String method = request.getMethod();
         String remoteHost = request.getRemoteHost();
         logger.debug("servletPath[" + servletPath + "] method[" + method + "] remoteHost[" + remoteHost + "]");
-        LoginUtil.threadLocalRequest.set(request);
+        LoginUtil.tokenLocal.set(request.getHeader(token_header));
 
         if (!methods.contains(method)) {
             doBaseRuntimeException(ServiceCode.REQUEST_METHOD_NOT_ALLOWED, "不允许的请求类型:" + method, response);
