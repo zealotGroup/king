@@ -7,15 +7,17 @@ public enum ServiceCode {
     NO_USER(201, "失败，用户不存在"),
     NEED_LOGIN(202, "失败，需要认证"),
     NEED_REQUEST_ID(203, "失败，需要授权的请求序号"),
-    PARAM_IS_EMPTY(205, "必传参数为空"),
     DO_ERROR(250, "失败，业务处理失败"),
     EXCEPTION(300, "失败"),
     EXCEPTION_RUNNTIME(301, "失败，运行时出现异常"),
     NOT_FOUND(404, "失败，服务不存在"),
-    REQUEST_HTTP_ERROR(999, "服务请求外部资源异常"),
+
+    PARAM_VALID_FAILD(700, "参数校验失败"),
 
     DECRYPT_ERROR(888, "解密算法异常"),
-    PARAM_IS_INVALID(887, "数据非法");
+    PARAM_IS_INVALID(887, "数据非法"),
+
+    REQUEST_HTTP_ERROR(999, "服务请求外部资源异常");
     private final int code;
     private final String msg;
 

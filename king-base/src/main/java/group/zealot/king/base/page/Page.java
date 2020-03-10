@@ -1,6 +1,7 @@
 package group.zealot.king.base.page;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,9 +33,13 @@ public class Page<E> {
      */
     private long count;
 
-    public JSONArray toJSONArray(){
+    public JSONArray toJSONArray() {
         JSONArray jsonArray = new JSONArray(list.size());
-        jsonArray.addAll(list);
+        list.forEach(item -> jsonArray.add(toJSONObject(item)));
         return jsonArray;
+    }
+
+    private JSONObject toJSONObject(E e) {
+        return JSONObject.parseObject(JSONObject.toJSONString(e));
     }
 }

@@ -92,7 +92,9 @@ public abstract class BaseServiceImpl<E, P extends Serializable> implements Base
 
     @Override
     public void formater(List<E> list) {
-        list.forEach(entity -> formater(entity));
+        if (list != null && !list.isEmpty()) {
+            list.forEach(entity -> formater(entity));
+        }
     }
 
     /**
