@@ -7,6 +7,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AdminPictureServiceImpl extends BaseServiceImpl<AdminPicture, Long> implements AdminPictureService {
 
@@ -14,5 +15,10 @@ public class AdminPictureServiceImpl extends BaseServiceImpl<AdminPicture, Long>
     protected org.springframework.data.domain.Page<AdminPicture> pageQuery(AdminPicture e, org.springframework.data.domain.PageRequest pageable) {
         ExampleMatcher likeMatcher = addLike(getMatcher(), "name");
         return jpaRepository.findAll(Example.of(e, likeMatcher), pageable);
+    }
+
+    @Override
+    public void formater(AdminPicture adminPicture) {
+        adminPicture.setBytes(null);
     }
 }

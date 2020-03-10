@@ -35,6 +35,7 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         List<AdminLable> lableList = jxcGoodsMapper.getLableListByGoodsId(jxcGoods.getId());
         jxcGoods.setLableList(lableList);
         List<AdminPicture> pictureList = jxcGoodsMapper.getPictureListByGoodsId(jxcGoods.getId());
+        adminPictureServiceImpl.formater(pictureList);
         jxcGoods.setPictureList(pictureList);
     }
 
