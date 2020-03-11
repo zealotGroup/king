@@ -65,7 +65,7 @@ Page({
                 app.globalData.phoneNumber = userInfo.phoneNumber
                 app.globalData.avatarUrl = userInfo.avatarUrl
                 wx.switchTab({
-                  url: '/pages/my/index',
+                  url: '/pages/index/index',
                 });
               }
             });

@@ -35,6 +35,5 @@
                 <view class="btn topay-btn" hidden="{{item.status==0? fslse : true}}" bindtap="toPayTap" data-id="{{item.id}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view>        
             </view>  
         </view>
-
     </view>
 </view>

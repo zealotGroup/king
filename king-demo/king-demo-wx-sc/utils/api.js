@@ -13,17 +13,16 @@ module.exports = {
   get_banner_list: get_banner_list,
   get_discounts_coupons: get_discounts_coupons,
   get_discounts_fetch: get_discounts_fetch,
-  get_goods_list: get_goods_list,
   get_goods_category_all: get_goods_category_all,
-  get_shop_goods_detail: get_shop_goods_detail,
   get_shop_goods_price: get_shop_goods_price,
-  get_shop_goods_reputation: get_shop_goods_reputation,
-  get_media_video_detail: get_media_video_detail,
-  get_shop_goods_kanjia_join: get_shop_goods_kanjia_join,
   get_notice_list: get_notice_list,
   get_user_shipping_address: get_user_shipping_address,
   get_user_shipping_address_detail: get_user_shipping_address_detail,
   get_user_shipping_address_delete: get_user_shipping_address_delete,
+
+  get_goods_detail: get_goods_detail,
+  get_goods_Lable_list: get_goods_Lable_list,
+  get_goods_list: get_goods_list,
 
   check_token: check_token,
   login: login,
@@ -39,7 +38,7 @@ function get_config_value(key, callBack) {
     data: {
       key: key
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -53,7 +52,7 @@ function get_order_reputation_score(code, callBack) {
     data: {
       code: code
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -67,7 +66,7 @@ function get_kanjiaList(callBack) {
   wx.request({
     url: baseUrl + wxurl + '/shop/goods/kanjia/list',
     data: {},
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -82,7 +81,7 @@ function get_banner_list(key, callBack) {
     data: {
       type: key
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -94,23 +93,7 @@ function get_banner_list(key, callBack) {
 function get_goods_category_all(callBack) {
   wx.request({
     url: baseUrl + wxurl + '/shop/goods/category/all',
-    success: function(res) {
-      callBack(res.data);
-    }
-  })
-}
-
-/**
- * 获取商品列表
- */
-function get_goods_list(categoryId, nameLike, callBack) {
-  wx.request({
-    url: baseUrl + wxurl + '/shop/goods/list',
-    data: {
-      categoryId: categoryId,
-      nameLike: nameLike
-    },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -122,7 +105,7 @@ function get_discounts_coupons(type, callBack) {
     data: {
       type: type
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
 
     }
@@ -136,7 +119,7 @@ function get_discounts_fetch(id, token, callBack) {
       id: id,
       token: token
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -148,7 +131,7 @@ function get_notice_list(pageSize, callBack) {
     data: {
       pageSize: pageSize
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -169,7 +152,7 @@ function get_user_shipping_address(type, token, id, provinceId, cityId, district
       code: code,
       isDefault: isDefault
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data)
     }
   })
@@ -182,7 +165,7 @@ function get_user_shipping_address_detail(token, id, callBack) {
       token: token,
       id: id
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   })
@@ -201,17 +184,6 @@ function get_user_shipping_address_delete(token, id, callBack) {
   })
 }
 
-function get_shop_goods_detail(id, callBack) {
-  wx.request({
-    url: baseUrl + wxurl + '/shop/goods/detail',
-    data: {
-      id: id
-    },
-    success: function(res) {
-      callBack(res.data);
-    }
-  });
-}
 
 function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   wx.request({
@@ -220,45 +192,110 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
       goodsId: goodsId,
       propertyChildIds: propertyChildIds
     },
-    success: function(res) {
+    success: function (res) {
       callBack(res.data);
     }
   });
 }
 
-function get_shop_goods_reputation(goodsId, callBack) {
+function get_goods_detail(id, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/shop/goods/reputation',
-    data: {
-      goodsId: goodsId
+    url: baseUrl + wxurl + '/goods/detail',
+    header: {
+      'auth-token': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
     },
-    success: function(res) {
-      callBack(res.data);
+    data: {
+      id: id
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      if (res.data.code == 200) {
+        callBack(res.data);
+      } else {
+        wx.showModal({
+          title: '失败',
+          content: '请求失败 ' + res.data.msg,
+          showCancel: false
+        })
+      }
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+
+/**
+ * 获取商品列表
+ */
+function get_goods_Lable_list(callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/index/goodsLable/list',
+    header: {
+      'auth-token': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      if (res.data.code == 200) {
+        callBack(res.data);
+      } else {
+        wx.showModal({
+          title: '失败',
+          content: '请求失败 ' + res.data.msg,
+          showCancel: false
+        })
+      }
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
     }
   })
 }
 
-function get_media_video_detail(videoId, callBack) {
+/**
+ * 获取商品列表
+ */
+function get_goods_list(goodsLableId, searchLike, pageInfo, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/media/video/detail',
-    data: {
-      videoId: videoId
+    url: baseUrl + wxurl + '/index/goods/list',
+    header: {
+      'auth-token': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
     },
-    success: function(res) {
-      callBack(res.data);
-    }
-  })
-}
-
-function get_shop_goods_kanjia_join(kjid, token, callBack) {
-  wx.request({
-    url: baseUrl + wxurl + '/shop/goods/kanjia/join',
     data: {
-      kjid: kjid,
-      token: token
+      goodsLableId: goodsLableId,
+      searchLike: searchLike,
+      page: pageInfo.page,
+      limit: pageInfo.limit
     },
-    success: function(res) {
-      callBack(res.data);
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      if (res.data.code == 200) {
+        callBack(res.data);
+      } else {
+        wx.showModal({
+          title: '失败',
+          content: '请求失败 ' + res.data.msg,
+          showCancel: false
+        })
+      }
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
     }
   })
 }
@@ -277,7 +314,7 @@ function updaet_phone_number(encryptedData, iv, callBack) {
       encryptedData: encryptedData,
       iv: iv
     },
-    success: function(res) {
+    success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
       callBack(res.data);
     },
@@ -327,11 +364,11 @@ function login(code, callBack) {
     data: {
       code: code
     },
-    success: function(res) {
+    success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
       callBack(res.data);
     },
-    fail: function(res) {
+    fail: function (res) {
       wx.showModal({
         title: '错误',
         content: '访问错误',
@@ -361,7 +398,7 @@ function register(code, encryptedData, iv, callBack) {
       console.log("register返回：【" + JSON.stringify(res.data) + "】");
       callBack(res.data);
     },
-    fail: function(res) {
+    fail: function (res) {
       wx.showModal({
         title: '错误',
         content: '访问错误',

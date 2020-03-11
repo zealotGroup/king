@@ -13,7 +13,7 @@
       </view>
       <view class="bd">
         <view class="confirm-btn" bindtap='goToIndex'>
-          <text wx:if="nickName">{{nickName}}</text>
+          <text wx:if="{{nickName}}">{{nickName}}</text>
           <text wx:else>登录</text>
         </view>
         <text class="copyright">开发者 t953170224@163.com</text>

@@ -7,13 +7,14 @@ Page({
   data: {
     remind: '加载中',
     angle: 0,
-    login_success: false
+    login_success: false,
+    nickName: null
   },
   goToIndex: function() {
     var that = this
     if (that.login_success) {
       wx.switchTab({
-        url: '/pages/my/index',
+        url: '/pages/index/index',
       });
     } else {
       wx.login({
@@ -41,7 +42,7 @@ Page({
               app.globalData.phoneNumber = userInfo.phoneNumber
               app.globalData.avatarUrl = userInfo.avatarUrl
               wx.switchTab({
-                url: '/pages/my/index',
+                url: '/pages/index/index',
               });
             }
           });

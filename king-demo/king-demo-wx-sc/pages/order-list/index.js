@@ -160,7 +160,7 @@ Page({
     postData.status = that.data.currentType;
     this.getOrderStatistics();
     wx.request({
-      url: 'https://api.it120.cc/' + app.globalData.subDomain + '/order/list',
+      url: 'https://api.it120.cc/zealot/order/list',
       data: postData,
       success: (res) => {
         wx.hideLoading();
