@@ -198,15 +198,15 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   });
 }
 
-function get_goods_detail(id, callBack) {
+function get_goods_detail(goodsId, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/goods/detail',
+    url: baseUrl + wxurl + '/shopcar/goods/detail',
     header: {
       'auth-token': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
     },
     data: {
-      id: id
+      goodsId: goodsId
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
@@ -356,7 +356,7 @@ function check_token() {
  **/
 function login(code, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/login',
+    url: baseUrl + '/oauth/wx/login',
     method: "POST",
     header: {
       'content-type': 'application/x-www-form-urlencoded'
@@ -384,7 +384,7 @@ function login(code, callBack) {
 function register(code, encryptedData, iv, callBack) {
   // 下面开始调用注册接口
   wx.request({
-    url: baseUrl + wxurl + '/register',
+    url: baseUrl + '/oauth/wx/register',
     method: "POST",
     header: {
       'content-type': 'application/x-www-form-urlencoded'

@@ -16,6 +16,8 @@ import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustShopcar;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static group.zealot.king.core.db.mybatis.Mappers.*;
@@ -79,13 +81,31 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
     @Override
     public JSONObject getGoodsJxcCustDetail(Long goodsId, Long custId) {
         JxcGoods goods = getById(goodsId);
+        formater(goods);
         JxcGoodsCustShopcar shopcar = jxcGoodsCustShopCarServiceImpl.getByGoodsIdCustId(goodsId, custId);
         JxcGoodsCustPrice price = jxcGoodsCustPriceServiceImpl.getByGoodsIdCustId(goodsId, custId);
 
         JSONObject vo = new JSONObject();
-        vo.put("goods", goods);
-        vo.put("shopcar", shopcar);
-        vo.put("price", price);
+        vo.put("name", goods.getName());
+        vo.put("price", goods.getPrice());
+        vo.put("priceUnitName", goods.getPriceUnitName());
+        vo.put("sizeUnitName", goods.getSizeUnitName());
+        vo.put("custPrice", price == null ? goods.getPrice() : price.getPrice());
+        vo.put("size", shopcar == null ? 0 : shopcar.getSize());
+        vo.put("shopcarGoodsSize", 3);
+
+        List<String> picList = new ArrayList<>();
+        if (goods.getPictureList() != null) {
+            goods.getPictureList().forEach(item -> {
+                picList.add("http://localhost:8080/api/admin/picture/getPicture?id=" + item.getId() + "&date=" + new Date());
+            });
+        }
+        vo.put("pic", picList.isEmpty() ? null : picList.get(0));
+
+        vo.put("goodsMaxSize", 99);//库存总数/单次可购买总数
+        vo.put("pics", picList);
+        vo.put("info", "商品详细介绍：123123阿斯顿发送到发送到");
+
         return vo;
     }
 }

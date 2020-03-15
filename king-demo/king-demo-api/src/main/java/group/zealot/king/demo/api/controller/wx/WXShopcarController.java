@@ -18,7 +18,7 @@ import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
  */
 @RestController
 @RequestMapping("/wx/shopcar")
-public class WXShopCarController {
+public class WXShopcarController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping("goods/detail")

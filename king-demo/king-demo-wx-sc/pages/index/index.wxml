@@ -39,9 +39,9 @@
       </view>
       <view class="goods-title">{{item.name}}</view>
       <view style='display:flex;'>
-        <view class="goods-price">{{item.minPrice}} {{item.priceUnitName}}/{{item.sizeUnitName}}</view>
-        <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>
-          {{item.originalPrice}} {{item.priceUnitName}}/{{item.sizeUnitName}}</view>
+        <view class="goods-price">{{item.price}} {{item.priceUnitName}}/{{item.sizeUnitName}}</view>
+        <!-- <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>
+          {{item.originalPrice}} {{item.priceUnitName}}/{{item.sizeUnitName}}</view> -->
       </view>
     </view>
   </view>

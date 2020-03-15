@@ -36,27 +36,16 @@ Page({
     })
   },
   onLoad: function (e) {
+    var that = this
     api.get_goods_detail(e.id, function (data) {
-      var selectSizeTemp = "";
-      if (data.data.properties) {
-        for (var i = 0; i < data.data.properties.length; i++) {
-          selectSizeTemp = selectSizeTemp + " " + data.data.properties[i].name;
-        }
-        that.setData({
-          hasMoreSelect: true,
-          selectSize: that.data.selectSize + selectSizeTemp,
-          selectSizePrice: data.data.minPrice,
-          totalScoreToPay: data.data.minScore
-        });
-      }      
+      var goodsDetail = data.data.vo
       that.setData({
-        goodsDetail: data.data,
-        selectSizePrice: data.data.minPrice,
-        totalScoreToPay: data.data.minScore,
-        buyNumMax: data.data.stores,
-        buyNumber: (data.data.stores > 0) ? 1 : 0
+        goodsDetail: goodsDetail,
+        buyNumber: goodsDetail.size,
+        buyNumMax: goodsDetail.goodsMaxSize,
+        buyNumber: (goodsDetail.goodsMaxSize > 0) ? 1 : 0
       });
-      WxParse.wxParse('article', 'html', data.data.content, that, 5);
+      WxParse.wxParse('article', 'html', goodsDetail.info, that, 5);
     });
   },
   goShopCar: function () {
