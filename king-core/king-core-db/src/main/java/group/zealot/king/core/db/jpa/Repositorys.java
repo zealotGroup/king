@@ -2,8 +2,11 @@ package group.zealot.king.core.db.jpa;
 
 import group.zealot.king.core.db.jpa.admin.*;
 import group.zealot.king.core.db.jpa.jxc.*;
+import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsCustPriceRepository;
+import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsLableRepository;
+import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsPictureRepository;
+import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsCustShopcarRepository;
 import group.zealot.king.core.db.jpa.system.*;
-import group.zealot.king.core.db.jpa.wx.WxUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,25 +25,30 @@ public class Repositorys {
     public static SysUserRepository sysUserRepository;
 
     public static JxcCustRepository jxcCustRepository;
-    public static JxcGoodsLableRepository jxcGoodsLableRepository;
     public static JxcGoodsRepository jxcGoodsRepository;
     public static JxcSalesRepository jxcSalesRepository;
     public static JxcStockRepository jxcStockRepository;
     public static JxcPurchaseRepository jxcPurchaseRepository;
     public static JxcSupplierRepository jxcSupplierRepository;
+
     public static JxcGoodsPictureRepository jxcGoodsPictureRepository;
+    public static JxcGoodsCustShopcarRepository jxcGoodsCustShopcarRepository;
+    public static JxcGoodsCustPriceRepository jxcGoodsCustPriceRepository;
+    public static JxcGoodsLableRepository jxcGoodsLableRepository;
 
     public static AdminUnitRepository adminUnitRepository;
     public static AdminLableRepository adminLableRepository;
     public static AdminPictureRepository adminPictureRepository;
 
-    public static WxUserRepository wxUserRepository;
-
     @Autowired
-    public void setWxUserRepository(WxUserRepository wxUserRepository) {
-        Repositorys.wxUserRepository = wxUserRepository;
+    public void setJxcGoodsCustPriceRepository(JxcGoodsCustPriceRepository jxcGoodsCustPriceRepository) {
+        Repositorys.jxcGoodsCustPriceRepository = jxcGoodsCustPriceRepository;
     }
 
+    @Autowired
+    public void setJxcGoodsCustShopcarRepository(JxcGoodsCustShopcarRepository jxcGoodsCustShopcarRepository) {
+        Repositorys.jxcGoodsCustShopcarRepository = jxcGoodsCustShopcarRepository;
+    }
 
     @Autowired(required = false)
     public void setJxcGoodsPictureRepository(JxcGoodsPictureRepository jxcGoodsPictureRepository) {

@@ -1,5 +1,6 @@
 package group.zealot.king.core.db.serviceimpl.jxc;
 
+import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
@@ -8,9 +9,11 @@ import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustPrice;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustShopcar;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +41,7 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         adminPictureServiceImpl.formater(pictureList);
         jxcGoods.setPictureList(pictureList);
     }
+
 
     @Override
     public AdminLable addLable(Long goodsId, String lableName) {
@@ -70,5 +74,18 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         jxcGoodsPicture.setPictureId(adminPicture.getId());
         jxcGoodsPictureServiceImpl.insert(jxcGoodsPicture);
         return adminPicture;
+    }
+
+    @Override
+    public JSONObject getGoodsJxcCustDetail(Long goodsId, Long custId) {
+        JxcGoods goods = getById(goodsId);
+        JxcGoodsCustShopcar shopcar = jxcGoodsCustShopCarServiceImpl.getByGoodsIdCustId(goodsId, custId);
+        JxcGoodsCustPrice price = jxcGoodsCustPriceServiceImpl.getByGoodsIdCustId(goodsId, custId);
+
+        JSONObject vo = new JSONObject();
+        vo.put("goods", goods);
+        vo.put("shopcar", shopcar);
+        vo.put("price", price);
+        return vo;
     }
 }

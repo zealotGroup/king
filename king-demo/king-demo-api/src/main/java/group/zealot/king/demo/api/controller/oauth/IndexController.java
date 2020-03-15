@@ -1,11 +1,11 @@
-package group.zealot.king.demo.api.controller;
+package group.zealot.king.demo.api.controller.oauth;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.ServiceCode;
+import group.zealot.king.core.zt.aop.ZTValid;
+import group.zealot.king.demo.api.config.BaseLoginUtil;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,20 +42,15 @@ public class IndexController {
     }
 
     @RequestMapping("login")
-    public JSONObject login(String username, byte[] password) {
+    public JSONObject login(@ZTValid(NotBlank = true) String username, @ZTValid(NotEmpty = true) byte[] password) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(username, "用户名为空");
-                Funcation.AssertNotNull(password, "密码为空");
-            }
 
             @Override
             protected void dosomething() {
                 String token = LoginUtil.login(username, password);
                 JSONObject data = new JSONObject();
                 data.put("token", token);
-                data.put("timeout", LoginUtil.timeout.getSeconds());
+                data.put("timeout", BaseLoginUtil.getTimeout().getSeconds());
                 data.put("unit", "SECONDS");
                 resultJson.set(data);
             }
@@ -79,7 +74,7 @@ public class IndexController {
             protected void dosomething() {
                 JSONObject data = new JSONObject();
                 data.put("level", LoginUtil.getSysUser().getLevel());
-                data.put("routes", sysAuthService.getRoute(LoginUtil.getSysUserId()));
+                data.put("routes", sysAuthService.getRoute(LoginUtil.getSysUser().getId()));
                 resultJson.set(data);
             }
         }.result();

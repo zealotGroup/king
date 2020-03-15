@@ -14,13 +14,15 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @WebFilter(urlPatterns = "/*", filterName = "apiFilter")
 public class ApiFilter implements Filter {
     public static final String token_header = "auth-token";
+    public static final ThreadLocal<String> tokenLocal = new ThreadLocal<>();
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    private List<String> paths = new ArrayList<>();
+    private List<String> whitePaths = new ArrayList<>();
     private List<String> methods = new ArrayList<>();
     private List<String> blackStr = new ArrayList<>();
 
@@ -28,21 +30,23 @@ public class ApiFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         logger.info("init apiFilter");
         //白名单地址
-        paths.add("/");
-        paths.add("/login");
-        paths.add("/admin/picture/getPicture");
+        whitePaths.add("/");
+        whitePaths.add("/login");
+        whitePaths.add("/admin/picture/getPicture");
+        // --微信--
+        whitePaths.add("^/oauth/.+");
+        whitePaths.add("/checkToken");
+
         //允许请求的方法
         methods.add("POST");
         methods.add("GET");
+
         //黑名单字符
         blackStr.add("INSERT");
         blackStr.add("UPDATE");
         blackStr.add("DELETE");
         blackStr.add("");
-        // --微信--
-        paths.add("/wx/login");
-        paths.add("/wx/register");
-        paths.add("/checkToken");
+
 
     }
 
@@ -79,7 +83,7 @@ public class ApiFilter implements Filter {
         String method = request.getMethod();
         String remoteHost = request.getRemoteHost();
         logger.debug("servletPath[" + servletPath + "] method[" + method + "] remoteHost[" + remoteHost + "]");
-        LoginUtil.tokenLocal.set(request.getHeader(token_header));
+        tokenLocal.set(request.getHeader(token_header));
 
         if (!methods.contains(method)) {
             doBaseRuntimeException(ServiceCode.REQUEST_METHOD_NOT_ALLOWED, "不允许的请求类型:" + method, response);
@@ -89,7 +93,7 @@ public class ApiFilter implements Filter {
                 LoginUtil.flushExp();
                 return true;
             } else {
-                if (!paths.contains(servletPath)) {
+                if (!match(whitePaths, servletPath)) {
                     doBaseRuntimeException(ServiceCode.NEED_LOGIN, "不允许访问此路径:" + servletPath, response);
                     return false;
                 } else {
@@ -109,5 +113,14 @@ public class ApiFilter implements Filter {
         jsonObject.put("msg", message);
         jsonObject.putIfAbsent("time", LocalDateTime.now().toString());
         writer.println(jsonObject.toJSONString());
+    }
+
+    private boolean match(List<String> regexList, String str) {
+        for (String regex : regexList) {
+            if (Pattern.matches(regex, str)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

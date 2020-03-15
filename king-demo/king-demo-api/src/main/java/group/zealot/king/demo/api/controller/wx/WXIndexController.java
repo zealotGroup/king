@@ -3,19 +3,17 @@ package group.zealot.king.demo.api.controller.wx;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +32,6 @@ public class WXIndexController {
 
 
     @RequestMapping("goodsLable/list")
-    @Validated
     public JSONObject goodsLableList() {
         return new ResultTemple() {
             @Override
@@ -48,15 +45,9 @@ public class WXIndexController {
     }
 
     @RequestMapping("goods/list")
-    @Validated
-    public JSONObject goodsList(Long goodsLableId, String searchLike, @NotNull Integer page, @NotNull Integer limit) {
+    public JSONObject goodsList(Long goodsLableId, String searchLike,
+                                @ZTValid(NotNull = true) Integer page, @ZTValid(NotNull = true) Integer limit) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(page, "page为空");
-                Funcation.AssertNotNull(limit, "limit为空");
-            }
-
             @Override
             protected void dosomething() {
                 PageRequest<JxcGoods> pageRequest = new PageRequest<>();
@@ -84,12 +75,6 @@ public class WXIndexController {
                     }
                     item.remove("pictureList");
                     item.remove("lableList");
-
-                    // cust 和商品的 定制化价格
-                    //minPrice originalPrice
-                    item.put("minPrice", item.getBigDecimal("price"));
-
-
                 });
 
                 JSONObject data = new JSONObject();
@@ -99,21 +84,4 @@ public class WXIndexController {
             }
         }.result();
     }
-
-    @RequestMapping("goods/detail")
-    @Validated
-    public JSONObject goodsDetail(@NotNull Long goodsId) {
-        return new ResultTemple() {
-
-            @Override
-            protected void dosomething() {
-                JxcGoods vo = jxcGoodsService.getById(goodsId);
-
-                JSONObject data = new JSONObject();
-                data.put("vo", vo);
-                resultJson.set(data);
-            }
-        }.result();
-    }
-
 }

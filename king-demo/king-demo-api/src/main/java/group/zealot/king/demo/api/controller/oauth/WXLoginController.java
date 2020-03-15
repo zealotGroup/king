@@ -1,13 +1,15 @@
-package group.zealot.king.demo.api.controller.wx;
+package group.zealot.king.demo.api.controller.oauth;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.security.CryptoUtils;
 import group.zealot.king.base.util.EnvironmentUtil;
-import group.zealot.king.core.zt.entity.wx.WxUser;
+import group.zealot.king.core.zt.entity.jxc.JxcCust;
 import group.zealot.king.demo.api.config.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
+import group.zealot.king.demo.api.config.WxLoginUtil;
+import group.zealot.king.demo.api.controller.wx.WXAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotEmpty;
 import java.util.Base64;
 
-import static group.zealot.king.core.zt.dbif.Services.wxUserService;
+import static group.zealot.king.core.zt.dbif.Services.jxcCustService;
 
 /**
  * @author zealot
  * @date 2020/2/29 17:28
  */
 @RestController
-@RequestMapping("/wx")
+@RequestMapping("/oauth/wx")
 public class WXLoginController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -38,14 +40,14 @@ public class WXLoginController {
             @Override
             protected void dosomething() {
                 JSONObject data = new JSONObject();
-                if (!LoginUtil.isLogin()) {
+                if (!WxLoginUtil.isLogin()) {
                     logger.info(code);
                     JSONObject jscode2session = wxapi.code2Session(code);
-                    LoginUtil.wxlogin(jscode2session.getString("openid"));
+                    WxLoginUtil.login(jscode2session.getString("openid"));
                 }
-                data.put("user", LoginUtil.getWXUser());
-                data.put("token", LoginUtil.getToken());
-                data.put("timeout", LoginUtil.timeout.getSeconds());
+                data.put("user", WxLoginUtil.getJxcCust());
+                data.put("token", WxLoginUtil.getToken());
+                data.put("timeout", WxLoginUtil.getTimeout().getSeconds());
                 data.put("unit", "SECONDS");
                 resultJson.set(data);
             }
@@ -67,18 +69,18 @@ public class WXLoginController {
                 ) {
                     throw new BaseRuntimeException(ServiceCode.PARAM_IS_INVALID, "数据校验失败");
                 }
-                WxUser wxUser = new WxUser();
-                wxUser.setOpenid(userInfo.getString("openId"));
-                wxUser.setAvatarUrl(userInfo.getString("avatarUrl"));
-                wxUser.setNickName(userInfo.getString("nickName"));
-                wxUserService.insert(wxUser);
+                JxcCust jxcCust = new JxcCust();
+                jxcCust.setOpenid(userInfo.getString("openId"));
+                jxcCust.setAvatarUrl(userInfo.getString("avatarUrl"));
+                jxcCust.setNickName(userInfo.getString("nickName"));
+                jxcCustService.insert(jxcCust);
 
                 //自动登录
-                LoginUtil.wxlogin(userInfo.getString("openId"));
+                WxLoginUtil.login(userInfo.getString("openId"));
                 JSONObject data = new JSONObject();
-                data.put("user", LoginUtil.getWXUser());
+                data.put("user", WxLoginUtil.getJxcCust());
                 data.put("token", LoginUtil.getToken());
-                data.put("timeout", LoginUtil.timeout.getSeconds());
+                data.put("timeout", LoginUtil.getTimeout().getSeconds());
                 data.put("unit", "SECONDS");
                 resultJson.set(data);
             }

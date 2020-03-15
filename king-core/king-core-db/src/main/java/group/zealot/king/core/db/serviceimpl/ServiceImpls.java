@@ -2,6 +2,10 @@ package group.zealot.king.core.db.serviceimpl;
 
 import group.zealot.king.core.db.serviceimpl.admin.*;
 import group.zealot.king.core.db.serviceimpl.jxc.*;
+import group.zealot.king.core.db.serviceimpl.jxc.rel.JxcGoodsCustPriceServiceImpl;
+import group.zealot.king.core.db.serviceimpl.jxc.rel.JxcGoodsLableServiceImpl;
+import group.zealot.king.core.db.serviceimpl.jxc.rel.JxcGoodsPictureServiceImpl;
+import group.zealot.king.core.db.serviceimpl.jxc.rel.JxcGoodsCustShopcarServiceImpl;
 import group.zealot.king.core.db.serviceimpl.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,11 +30,30 @@ public class ServiceImpls {
     public static JxcPurchaseServiceImpl jxcPurchaseSalesServiceImpl;
     public static JxcStockServiceImpl jxcStockServiceImpl;
     public static JxcSupplierServiceImpl jxcSupplierServiceImpl;
+
     public static JxcGoodsPictureServiceImpl jxcGoodsPictureServiceImpl;
+    public static JxcGoodsCustShopcarServiceImpl jxcGoodsCustShopCarServiceImpl;
+    public static JxcGoodsCustPriceServiceImpl jxcGoodsCustPriceServiceImpl;
+    public static JxcGoodsLableServiceImpl jxcGoodsLableService;
 
     public static AdminLableServiceImpl adminLableServiceImpl;
     public static AdminPictureServiceImpl adminPictureServiceImpl;
     public static AdminUnitServiceImpl adminUnitServiceImpl;
+
+    @Autowired(required = false)
+    public void setJxcGoodsLableService(JxcGoodsLableServiceImpl jxcGoodsLableService) {
+        ServiceImpls.jxcGoodsLableService = jxcGoodsLableService;
+    }
+
+    @Autowired(required = false)
+    public void setJxcGoodsCustShopCarServiceImpl(JxcGoodsCustShopcarServiceImpl jxcGoodsCustShopCarServiceImpl) {
+        ServiceImpls.jxcGoodsCustShopCarServiceImpl = jxcGoodsCustShopCarServiceImpl;
+    }
+
+    @Autowired(required = false)
+    public void setJxcGoodsCustPriceServiceImpl(JxcGoodsCustPriceServiceImpl jxcGoodsCustPriceServiceImpl) {
+        ServiceImpls.jxcGoodsCustPriceServiceImpl = jxcGoodsCustPriceServiceImpl;
+    }
 
     @Autowired(required = false)
     public void setJxcGoodsPictureServiceImpl(JxcGoodsPictureServiceImpl jxcGoodsPictureServiceImpl) {

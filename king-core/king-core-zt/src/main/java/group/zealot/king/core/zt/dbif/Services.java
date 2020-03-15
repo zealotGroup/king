@@ -4,8 +4,8 @@ import group.zealot.king.core.zt.dbif.service.admin.AdminLableService;
 import group.zealot.king.core.zt.dbif.service.admin.AdminPictureService;
 import group.zealot.king.core.zt.dbif.service.admin.AdminUnitService;
 import group.zealot.king.core.zt.dbif.service.jxc.*;
+import group.zealot.king.core.zt.dbif.service.jxc.rel.*;
 import group.zealot.king.core.zt.dbif.service.system.*;
-import group.zealot.king.core.zt.dbif.service.wx.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,19 +24,31 @@ public class Services {
     public static AdminLableService adminLableService;
 
     public static JxcCustService jxcCustService;
-    public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsService jxcGoodsService;
     public static JxcStockService jxcStockService;
     public static JxcSupplierService jxcSupplierService;
     public static JxcSalesService jxcSalesService;
     public static JxcPurchaseService jxcPurchaseService;
+
+    public static JxcGoodsCustPriceService jxcGoodsCustPriceService;
+    public static JxcGoodsCustShopcarService jxcGoodsCustShopcarService;
+    public static JxcGoodsLableService jxcGoodsLableService;
     public static JxcGoodsPictureService jxcGoodsPictureService;
 
-    public static WxUserService wxUserService;
 
     @Autowired
-    public void setWxUserService(WxUserService wxUserService) {
-        Services.wxUserService = wxUserService;
+    public void setJxcGoodsCustPriceService(JxcGoodsCustPriceService jxcGoodsCustPriceService) {
+        Services.jxcGoodsCustPriceService = jxcGoodsCustPriceService;
+    }
+
+    @Autowired
+    public void setJxcGoodsCustShopcarService(JxcGoodsCustShopcarService jxcGoodsCustShopcarService) {
+        Services.jxcGoodsCustShopcarService = jxcGoodsCustShopcarService;
+    }
+
+    @Autowired
+    public void setJxcGoodsLableService(JxcGoodsLableService jxcGoodsLableService) {
+        Services.jxcGoodsLableService = jxcGoodsLableService;
     }
 
     @Autowired
@@ -97,11 +109,6 @@ public class Services {
     @Autowired
     public void setJxcCustService(JxcCustService jxcCustService) {
         Services.jxcCustService = jxcCustService;
-    }
-
-    @Autowired
-    public void setJxcGoodsLableService(JxcGoodsLableService jxcGoodsLableService) {
-        Services.jxcGoodsLableService = jxcGoodsLableService;
     }
 
     @Autowired

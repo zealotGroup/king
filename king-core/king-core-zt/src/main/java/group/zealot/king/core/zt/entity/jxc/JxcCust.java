@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}), @UniqueConstraint(columnNames = {"openid"})})
 public class JxcCust extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,12 @@ public class JxcCust extends BaseEntity {
     private String phoneNumber;
     @Column(length = 200)
     private String address;
+
+    //微信数据
+    @Column(length = 200)
+    private String openid;
+    @Column(length = 50)
+    private String nickName;
+    @Column(length = 200)
+    private String avatarUrl;
 }
