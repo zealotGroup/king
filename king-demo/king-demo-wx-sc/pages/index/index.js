@@ -2,6 +2,7 @@
 //获取应用实例
 var app = getApp();
 var api = require('../../utils/api.js');
+var my = require('../../utils/my.js');
 Page({
   data: {
     goodsLableList: [],
@@ -96,6 +97,10 @@ Page({
       var list = data.data.list
       var total = data.data.total
       for (var item of list) {
+          for (let pic of item.pictureList) {
+              item.pic = my.getPictureUrl(pic.id)
+              break
+          }
         goodsList.push(item)
       }
       console.info(goodsList)

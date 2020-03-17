@@ -1,7 +1,8 @@
 var api = require('./api.js');
 var app = getApp();
 module.exports = {
-  check_timeout: check_timeout
+    check_timeout: check_timeout,
+    getPictureUrl: getPictureUrl
 }
 function check_timeout() {
   var that = this
@@ -20,4 +21,8 @@ function switchTab (url) {
   wx.navigateTo({
     url: url
   })
+}
+
+function getPictureUrl(id) {
+    return app.globalData.base_url + '/admin/picture/getPicture?id=' + id + '&date=' + new Date()
 }

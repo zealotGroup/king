@@ -4,6 +4,7 @@ App({
   },
   
   globalData: {
+      base_url: 'http://localhost:8080/api',
     token: null,
     nickName: null,
     phoneNumber: null,

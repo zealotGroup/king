@@ -62,6 +62,7 @@ public class ApiFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse) {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpServletResponse response = (HttpServletResponse) servletResponse;
+            response.setHeader("Access-Control-Allow-Origin", "*");
             try {
                 return verification(request, response);
             } catch (IOException e) {

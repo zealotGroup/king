@@ -1,7 +1,7 @@
 // utils/api.js
 var app = getApp()
 var subDomain = "zealot";
-var baseUrl = "http://localhost:8080/api";
+var baseUrl = app.globalData.base_url;
 var wxurl = "/wx";
 // baseUrl = 'https://api.it120.cc/' + subDomain;
 

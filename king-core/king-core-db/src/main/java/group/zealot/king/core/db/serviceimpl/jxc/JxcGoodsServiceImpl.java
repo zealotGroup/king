@@ -94,16 +94,8 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
         vo.put("size", shopcar == null ? 0 : shopcar.getSize());
         vo.put("shopcarGoodsSize", 3);
 
-        List<String> picList = new ArrayList<>();
-        if (goods.getPictureList() != null) {
-            goods.getPictureList().forEach(item -> {
-                picList.add("http://localhost:8080/api/admin/picture/getPicture?id=" + item.getId() + "&date=" + new Date());
-            });
-        }
-        vo.put("pic", picList.isEmpty() ? null : picList.get(0));
-
         vo.put("goodsMaxSize", 99);//库存总数/单次可购买总数
-        vo.put("pics", picList);
+        vo.put("pics", goods.getPictureList());
         vo.put("info", "商品详细介绍：123123阿斯顿发送到发送到");
 
         return vo;

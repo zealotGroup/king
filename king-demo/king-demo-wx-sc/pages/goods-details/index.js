@@ -3,6 +3,7 @@
 var app = getApp();
 var WxParse = require('../../wxParse/wxParse.js');
 var api = require('../../utils/api.js');
+var my = require('../../utils/my.js');
 
 Page({
   data: {
@@ -39,6 +40,14 @@ Page({
     var that = this
     api.get_goods_detail(e.id, function (data) {
       var goodsDetail = data.data.vo
+        let pics = []
+        for (let item of goodsDetail.pics) {
+            pics.push(my.getPictureUrl(item.id))
+        }
+        goodsDetail.pics = pics
+        if (pics.length > 0) {
+            goodsDetail.pic = pics[0]
+        }
       that.setData({
         goodsDetail: goodsDetail,
         buyNumber: goodsDetail.size,

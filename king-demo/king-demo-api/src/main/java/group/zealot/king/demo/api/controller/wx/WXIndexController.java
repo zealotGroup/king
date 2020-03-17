@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static group.zealot.king.core.zt.dbif.Services.jxcGoodsLableService;
@@ -67,15 +66,6 @@ public class WXIndexController {
                 jxcGoodsService.formater(page.getList());
 
                 JSONArray list = page.toJSONArray();
-                list.forEach(obj -> {
-                    JSONObject item = (JSONObject) obj;
-                    if (item.getJSONArray("pictureList") != null && item.getJSONArray("pictureList").size() > 0) {
-                        Integer pictureId = item.getJSONArray("pictureList").getJSONObject(0).getInteger("id");
-                        item.put("pic", "http://localhost:8080/api/admin/picture/getPicture?id=" + pictureId + "&date=" + new Date());
-                    }
-                    item.remove("pictureList");
-                    item.remove("lableList");
-                });
 
                 JSONObject data = new JSONObject();
                 data.put("total", page.getCount());
