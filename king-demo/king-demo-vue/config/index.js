@@ -74,17 +74,9 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: './', // If you are deployed on the root path, please use '/'
+    assetsPublicPath: '/', // If you are deployed on the root path, please use '/'
 
-    proxyTable: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/': ''
-        }
-      }
-    },
+    proxyTable: {},
     /**
      * Source Maps
      */

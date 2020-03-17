@@ -89,7 +89,7 @@
           <el-upload v-if="dialog.title === 'add'"
             class="upload-demo"
             ref="upload_add"
-            action="http://localhost:9528/api/admin/picture/add"
+            :action=upload_action_add
             list-type="picture"
             :data="temp"
             :on-success="submitSuccess"
@@ -102,17 +102,17 @@
             <div slot="tip" class="el-upload__tip">只能上传1张图片</div>
           </el-upload>
           <el-upload v-if="dialog.title === 'update'"
-                                 class="upload-demo"
-                                 ref="upload_update"
-                                 action="http://localhost:9528/api/admin/picture/update"
-                                 list-type="picture"
-                                 :data="temp"
-                                 :on-success="submitSuccess"
-                                 :on-error="submitError"
-                                 :limit="upload.limit"
-                                 :headers="upload.headers"
-                                 :file-list=upload.fileList
-                                 :auto-upload="false">
+                     class="upload-demo"
+                     ref="upload_update"
+                     :action=upload_action_update
+                     list-type="picture"
+                     :data="temp"
+                     :on-success="submitSuccess"
+                     :on-error="submitError"
+                     :limit="upload.limit"
+                     :headers="upload.headers"
+                     :file-list=upload.fileList
+                     :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <div slot="tip" class="el-upload__tip">只能上传1张图片</div>
         </el-upload>
@@ -136,6 +136,8 @@
     name: 'picture_',
     data() {
       return {
+        upload_action_add: process.env.BASE_API + '/admin/picture/add',
+        upload_action_update: process.env.BASE_API + '/admin/picture/update',
         upload: undefined,
         /* 固定功能字段 start */
         loading_add: false,

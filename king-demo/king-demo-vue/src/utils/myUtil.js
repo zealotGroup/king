@@ -59,5 +59,5 @@ export function checkLevel(level) {
 }
 
 export function getPictureUrl(id) {
-  return 'http://localhost:9528/api/admin/picture/getPicture?id=' + id + '&date=' + new Date()
+  return process.env.BASE_API + '/admin/picture/getPicture?id=' + id + '&date=' + new Date()
 }
