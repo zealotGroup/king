@@ -40,6 +40,16 @@
           <span>{{scope.row.address }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="100px" label="微信昵称">
+        <template slot-scope="scope">
+          <span>{{scope.row.nickName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" label="头像">
+        <template slot-scope="scope">
+          <img v-if="scope.row.avatarUrl" :src="scope.row.avatarUrl" width="40" height="40" class="head_pic"/>
+        </template>
+      </el-table-column>
       <!--表数据固定字段信息 start-->
       <el-table-column min-width="100px" class-name="status-col" :label="$t('insertTime')" >
         <template slot-scope="scope">
