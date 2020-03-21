@@ -21,7 +21,7 @@ public class StringUtil extends StringUtils {
      * @return
      */
     public static boolean startsWith(String[] strs, String str) {
-        if (strs == null || strs.length < 0 || str == null || "".equals(str)) {
+        if (strs == null || str == null || "".equals(str)) {
             return false;
         }
         for (String s : strs) {
@@ -40,7 +40,7 @@ public class StringUtil extends StringUtils {
      * @return
      */
     public static boolean contrian(String[] strs, String str) {
-        if (strs == null || strs.length < 0 || str == null || "".equals(str)) {
+        if (strs == null || str == null || "".equals(str)) {
             return false;
         }
         for (String s : strs) {

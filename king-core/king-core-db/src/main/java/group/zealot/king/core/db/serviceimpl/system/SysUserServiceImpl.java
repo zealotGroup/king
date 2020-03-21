@@ -5,6 +5,7 @@ import group.zealot.king.base.security.DigestUtils;
 import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.zt.Passwd;
 import group.zealot.king.core.zt.entity.system.SysAuth;
 import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
@@ -22,8 +23,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
     @Override
     public String getNewPassword(String username, byte[] password) {
         //加密密码
-        byte[] hashPassword = DigestUtils.sha1(password, username.getBytes(), 1024);
-        return EncodeUtil.encodeHex(hashPassword);
+        return Passwd.getNewPassword(password, username.getBytes());
     }
 
     @Override

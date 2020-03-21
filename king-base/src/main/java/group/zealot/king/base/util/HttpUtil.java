@@ -22,10 +22,13 @@ import java.util.Map;
 
 public class HttpUtil {
     private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static int connectionRequestTimeout = EnvironmentUtil.get("httpUtil.connectionRequestTimeout", int.class, 30000);
+    private static int socketTimeout = EnvironmentUtil.get("httpUtil.socketTimeout", int.class, 30000);
+    private static int connectTimeout = EnvironmentUtil.get("httpUtil.connectTimeout", int.class, 30000);
     private static RequestConfig requestConfig = RequestConfig.custom()
-            .setConnectionRequestTimeout(30000)
-            .setSocketTimeout(30000)
-            .setConnectTimeout(30000)
+            .setConnectionRequestTimeout(connectionRequestTimeout)
+            .setSocketTimeout(socketTimeout)
+            .setConnectTimeout(connectTimeout)
             .build();
 
     public static String get(String url) {
@@ -110,7 +113,7 @@ public class HttpUtil {
 
     public static String sendHttp(HttpUriRequest obj) {
         CloseableHttpResponse response = sendHttpRequest(obj);
-        String res = null;
+        String res;
         try {
             res = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
@@ -122,7 +125,7 @@ public class HttpUtil {
 
     public static CloseableHttpResponse sendHttpRequest(HttpUriRequest obj) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        CloseableHttpResponse response = null;
+        CloseableHttpResponse response;
         try {
             response = httpclient.execute(obj);
         } catch (IOException e) {
@@ -133,13 +136,10 @@ public class HttpUtil {
     }
 
     private static String getURI(String url) {
-        if (url.startsWith("http")) {
-            return url;
+        if (url.trim().startsWith("http")) {
+            return url.trim();
         } else {
-            return "http://" + url;
+            return "http://" + url.trim();
         }
-    }
-
-    public static void main(String[] args) throws Exception {
     }
 }

@@ -5,10 +5,10 @@ import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.security.CryptoUtils;
 import group.zealot.king.base.util.EnvironmentUtil;
+import group.zealot.king.core.shiro.realms.ShiroToken;
 import group.zealot.king.core.zt.entity.jxc.JxcCust;
-import group.zealot.king.demo.api.config.LoginUtil;
+import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
-import group.zealot.king.demo.api.config.WxLoginUtil;
 import group.zealot.king.demo.api.controller.wx.WXAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,17 +39,13 @@ public class WXLoginController {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
-                JSONObject data = new JSONObject();
-                if (!WxLoginUtil.isLogin()) {
+                if (!LoginUtil.isLogin()) {
                     logger.info(code);
                     JSONObject jscode2session = wxapi.code2Session(code);
-                    WxLoginUtil.login(jscode2session.getString("openid"));
+                    ShiroToken token = new ShiroToken(jscode2session.getString("openid"));
+                    LoginUtil.login(token);
                 }
-                data.put("user", WxLoginUtil.getJxcCust());
-                data.put("token", WxLoginUtil.getToken());
-                data.put("timeout", WxLoginUtil.getTimeout().getSeconds());
-                data.put("unit", "SECONDS");
-                resultJson.set(data);
+                resultJson.set(getToken());
             }
         }.result();
     }
@@ -76,15 +72,20 @@ public class WXLoginController {
                 jxcCustService.insert(jxcCust);
 
                 //自动登录
-                WxLoginUtil.login(userInfo.getString("openId"));
-                JSONObject data = new JSONObject();
-                data.put("user", WxLoginUtil.getJxcCust());
-                data.put("token", LoginUtil.getToken());
-                data.put("timeout", LoginUtil.getTimeout().getSeconds());
-                data.put("unit", "SECONDS");
-                resultJson.set(data);
+                ShiroToken token = new ShiroToken(jscode2session.getString("openid"));
+                LoginUtil.login(token);
+                resultJson.set(getToken());
             }
         }.result();
+    }
+
+    private JSONObject getToken() {
+        JSONObject data = new JSONObject();
+        data.put("user", LoginUtil.getUser());
+        data.put("token", LoginUtil.getSession().getId());
+        data.put("timeout", LoginUtil.getSession().getTimeout());
+        data.put("unit", "MILLISECONDS");
+        return data;
     }
 
     private JSONObject decrypt(String encryptedData, String sessionKey, String iv) {

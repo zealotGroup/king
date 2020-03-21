@@ -2,7 +2,7 @@ package group.zealot.king.base.threadpool;
 
 import java.util.concurrent.*;
 
-public interface MyThreadPoolManager {
+public interface ZTThreadPoolManager {
 
     void execute(Runnable r) throws RejectedExecutionException;
 

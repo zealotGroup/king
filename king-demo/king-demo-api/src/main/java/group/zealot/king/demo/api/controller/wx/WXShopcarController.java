@@ -2,9 +2,9 @@ package group.zealot.king.demo.api.controller.wx;
 
 
 import com.alibaba.fastjson.JSONObject;
+import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.demo.api.config.ResultTemple;
-import group.zealot.king.demo.api.config.WxLoginUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class WXShopcarController {
 
             @Override
             protected void dosomething() {
-                JSONObject vo = jxcGoodsService.getGoodsJxcCustDetail(goodsId, WxLoginUtil.getJxcCust().getId());
+                JSONObject vo = jxcGoodsService.getGoodsJxcCustDetail(goodsId, LoginUtil.getJxcCust().getId());
                 JSONObject data = new JSONObject();
                 data.put("vo", vo);
                 resultJson.set(data);

@@ -1,14 +1,18 @@
 package group.zealot.king.core.shiro;
 
 import group.zealot.king.core.shiro.cache.ShiroRedisCache;
-import group.zealot.king.core.shiro.realm.ShiroRealm;
+import group.zealot.king.core.shiro.realms.BaseShiroRealm;
 import group.zealot.king.core.shiro.sessionManager.ShiroSessionManager;
 import group.zealot.king.core.zt.redis.RedisUtil;
+import org.apache.shiro.authc.Authenticator;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.AbstractCacheManager;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.*;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -17,10 +21,12 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import javax.servlet.Filter;
 
@@ -46,13 +52,13 @@ public class ShiroConfig {
     public Cookie cookie() {
         SimpleCookie simpleCookie = new SimpleCookie(cookieName);
         simpleCookie.setMaxAge(cookieTimeout);
+        simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
 
     @Bean
     public SessionFactory sessionFactory() {
-        SessionFactory sessionFactory = new SimpleSessionFactory();
-        return sessionFactory;
+        return new SimpleSessionFactory();
     }
 
     @Bean
@@ -65,12 +71,22 @@ public class ShiroConfig {
 
     //配置核心安全事务管理器
     @Bean
-    public SecurityManager securityManager(ShiroRealm shiroRealm, ShiroSessionManager shiroSessionManager, CacheManager cacheManager) {
+    public SecurityManager securityManager(Authenticator authenticator, ShiroSessionManager shiroSessionManager, CacheManager cacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(shiroRealm);
+        defaultWebSecurityManager.setAuthenticator(authenticator);
         defaultWebSecurityManager.setSessionManager(shiroSessionManager);
         defaultWebSecurityManager.setCacheManager(cacheManager);
         return defaultWebSecurityManager;
+    }
+
+    @Bean
+    public Authenticator authenticator(ConfigurableApplicationContext context) {
+        ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
+        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        ArrayList<Realm> realms = new ArrayList<>();
+        context.getBeansOfType(BaseShiroRealm.class).forEach((key, baseShiroRealm) -> realms.add(baseShiroRealm));
+        authenticator.setRealms(realms);
+        return authenticator;
     }
 
     @Bean
@@ -106,7 +122,7 @@ public class ShiroConfig {
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/login", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/oauth/**", "anon"); //表示可以匿名访问
         filterChainDefinitionMap.put("/**", "authc");//表示认证
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;

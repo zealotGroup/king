@@ -62,3 +62,7 @@ mybatis:
   mapperLocations: classpath*:mapper/**/*.xml
   configuration:
     cache-enabled: false
+httpUtil:
+  connectionRequestTimeout: 30000
+  socketTimeout: 30000
+  connectTimeout: 30000
