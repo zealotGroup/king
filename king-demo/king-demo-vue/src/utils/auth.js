@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'TL-Token'
-const expiresBase = 24 * 60 * 60 // 1天的秒数量
+const expiresBase = 24 * 60 * 60 * 1000// 1天的耗秒数量
 
 export function getToken() {
   const token = Cookies.get(TokenKey)

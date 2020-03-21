@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = ''
+const url = '/oauth'
 export function login(username, password) {
   return request({
     url: url + '/login',
