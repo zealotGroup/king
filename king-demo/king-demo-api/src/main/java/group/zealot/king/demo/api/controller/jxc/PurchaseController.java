@@ -1,7 +1,7 @@
 package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcPurchase;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -18,17 +18,8 @@ import static group.zealot.king.core.zt.dbif.Services.jxcPurchaseService;
 public class PurchaseController extends BaseController<JxcPurchase, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, Long supplierId, BigDecimal price, BigDecimal size) {
+    public JSONObject add(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long supplierId, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(supplierId, "supplierId 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(size, "size 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcPurchase vo = new JxcPurchase();
@@ -46,17 +37,8 @@ public class PurchaseController extends BaseController<JxcPurchase, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, Long goodsId, Long supplierId, BigDecimal price, BigDecimal size) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long supplierId, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(supplierId, "supplierId 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(size, "size 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcPurchase vo = jxcPurchaseService.getById(id);

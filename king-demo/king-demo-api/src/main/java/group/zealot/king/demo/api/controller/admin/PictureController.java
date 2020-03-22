@@ -1,13 +1,11 @@
 package group.zealot.king.demo.api.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.exception.BaseRuntimeException;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +22,8 @@ import static group.zealot.king.core.zt.dbif.Services.adminPictureService;
 public class PictureController extends BaseController<AdminPicture, Long> {
 
     @RequestMapping(value = "getPicture")
-    public void getPicture(Long id, HttpServletResponse response) {
+    public void getPicture(@ZTValid(NotNull = true) Long id, HttpServletResponse response) {
         new ResultTemple(response) {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id 为空");
-            }
-
             @Override
             protected void dosomething() {
                 AdminPicture vo = adminPictureService.getById(id);
@@ -49,22 +42,24 @@ public class PictureController extends BaseController<AdminPicture, Long> {
     }
 
     @RequestMapping(value = "add")
-    public JSONObject add(String name, MultipartFile file) {
+    public JSONObject add(@ZTValid(NotBlank = true) String name, MultipartFile file) {
         return new ResultTemple() {
+            byte[] bytes;
+
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(name, "name 为空");
+                try {
+                    bytes = file.getBytes();
+                } catch (IOException e) {
+                    throw new BaseRuntimeException(e);
+                }
             }
 
             @Override
             protected void dosomething() {
                 AdminPicture vo = new AdminPicture();
                 vo.setName(name);
-                try {
-                    vo.setBytes(file.getBytes());
-                } catch (IOException e) {
-                    throw new BaseRuntimeException(e);
-                }
+                vo.setBytes(bytes);
                 vo = adminPictureService.insert(vo);
 
                 JSONObject data = new JSONObject();
@@ -75,23 +70,24 @@ public class PictureController extends BaseController<AdminPicture, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, MultipartFile file) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotBlank = true) String name, MultipartFile file) {
         return new ResultTemple() {
+            byte[] bytes;
+
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(id, "id 为空");
-                Funcation.AssertNotNull(name, "name 为空");
+                try {
+                    bytes = file.getBytes();
+                } catch (IOException e) {
+                    throw new BaseRuntimeException(e);
+                }
             }
 
             @Override
             protected void dosomething() {
                 AdminPicture vo = adminPictureService.getById(id);
                 vo.setName(name);
-                try {
-                    vo.setBytes(file.getBytes());
-                } catch (IOException e) {
-                    throw new BaseRuntimeException(e);
-                }
+                vo.setBytes(bytes);
                 adminPictureService.update(vo);
             }
         }.result();

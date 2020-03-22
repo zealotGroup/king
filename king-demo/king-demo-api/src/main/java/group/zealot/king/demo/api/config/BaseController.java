@@ -1,9 +1,9 @@
 package group.zealot.king.demo.api.config;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.dbif.service.BaseService;
 import group.zealot.king.core.zt.entity.BaseEntity;
 import org.slf4j.Logger;
@@ -19,13 +19,8 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     public BaseService<E, P> baseService;
 
     @RequestMapping("list")
-    protected JSONObject list(Integer page, Integer limit, E e) {
+    protected JSONObject list(@ZTValid(NotNull = true) Integer page, @ZTValid(NotNull = true) Integer limit, E e) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(page, "page为空");
-                Funcation.AssertNotNull(limit, "limit为空");
-            }
 
             @Override
             protected void dosomething() {
@@ -46,13 +41,8 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("get")
-    protected JSONObject get(P id) {
+    protected JSONObject get(@ZTValid(NotNull = true) P id) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-            }
-
             @Override
             protected void dosomething() {
                 E vo = baseService.getById(id);
@@ -65,13 +55,8 @@ public abstract class BaseController<E extends BaseEntity, P extends Serializabl
     }
 
     @RequestMapping("del")
-    protected JSONObject del(P id) {
+    protected JSONObject del(@ZTValid(NotNull = true) P id) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-            }
-
             @Override
             protected void dosomething() {
                 baseService.deleteById(id);

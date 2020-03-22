@@ -6,6 +6,7 @@ import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.security.CryptoUtils;
 import group.zealot.king.base.util.EnvironmentUtil;
 import group.zealot.king.core.shiro.realms.ShiroToken;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcCust;
 import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -17,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Base64;
 
 import static group.zealot.king.core.zt.dbif.Services.jxcCustService;
@@ -35,7 +35,7 @@ public class WXLoginController {
 
     @RequestMapping("login")
     @Validated
-    public JSONObject login(@NotEmpty String code) {
+    public JSONObject login(@ZTValid(NotBlank = true) String code) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {
@@ -52,7 +52,7 @@ public class WXLoginController {
 
     @RequestMapping("register")
     @Validated
-    public JSONObject register(@NotEmpty String code, @NotEmpty String encryptedData, @NotEmpty String iv) {
+    public JSONObject register(@ZTValid(NotBlank = true) String code, @ZTValid(NotBlank = true) String encryptedData, @ZTValid(NotBlank = true) String iv) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {

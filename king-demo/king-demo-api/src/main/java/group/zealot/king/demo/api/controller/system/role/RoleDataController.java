@@ -1,7 +1,7 @@
 package group.zealot.king.demo.api.controller.system.role;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -16,13 +16,8 @@ import static group.zealot.king.core.zt.dbif.Services.sysRoleDataService;
 public class RoleDataController extends BaseController<SysRoleData, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(String name) {
+    public JSONObject add(@ZTValid(NotBlank = true) String name) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(name, "name为空");
-            }
-
             @Override
             protected void dosomething() {
                 SysRoleData sysRoleData = new SysRoleData();
@@ -37,14 +32,8 @@ public class RoleDataController extends BaseController<SysRoleData, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotBlank = true) String name) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(name, "name为空");
-            }
-
             @Override
             protected void dosomething() {
                 SysRoleData sysRoleData = sysRoleDataService.getById(id);

@@ -1,11 +1,11 @@
 package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.base.util.StringUtil;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
@@ -31,28 +31,24 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
 
     @Override
     @RequestMapping("list")
-    protected JSONObject list(Integer page, Integer limit, JxcGoods e) {
+    protected JSONObject list(@ZTValid(NotNull = true) Integer page, @ZTValid(NotNull = true) Integer limit, JxcGoods e) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(page, "page为空");
-                Funcation.AssertNotNull(limit, "limit为空");
-            }
-
             @Override
             protected void dosomething() {
                 PageRequest<JxcGoods> pageRequest = new PageRequest<>();
                 pageRequest.setPage(page);
                 pageRequest.setLimit(limit);
+                JxcGoods filter = new JxcGoods();
+                filter.setName(e.getName());
                 if (StringUtil.isNotEmpty(e.getLableId())) {
                     String[] lableIds = e.getLableId().split(",");
                     List<Long> lableIdList = new ArrayList<>();
                     for (int i = 0; i < lableIds.length; i++) {
                         lableIdList.add(Long.valueOf(lableIds[i]));
                     }
-                    e.setLableIds(lableIdList);
+                    filter.setLableIds(lableIdList);
                 }
-                pageRequest.setFilters(e);
+                pageRequest.setFilters(filter);
                 Page<JxcGoods> page = baseService.pageQuery(pageRequest);
                 baseService.formater(page.getList());
 
@@ -65,16 +61,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("add")
-    public JSONObject add(String name, BigDecimal price, Long priceUnitId, Long sizeUnitId) {
+    public JSONObject add(@ZTValid(NotBlank = true) String name, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) Long priceUnitId, @ZTValid(NotNull = true) Long sizeUnitId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(name, "name 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(priceUnitId, "priceUnitId 为空");
-                Funcation.AssertNotNull(sizeUnitId, "sizeUnitId 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcGoods vo = new JxcGoods();
@@ -92,17 +80,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String name, BigDecimal price, Long priceUnitId, Long sizeUnitId) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotBlank = true) String name, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) Long priceUnitId, @ZTValid(NotNull = true) Long sizeUnitId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id 为空");
-                Funcation.AssertNotNull(name, "name 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(priceUnitId, "priceUnitId 为空");
-                Funcation.AssertNotNull(sizeUnitId, "sizeUnitId 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcGoods vo = jxcGoodsService.getById(id);
@@ -116,14 +95,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("addLable")
-    public JSONObject addLable(Long goodsId, String lableName) {
+    public JSONObject addLable(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotBlank = true) String lableName) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(lableName, "lableName 为空");
-            }
-
             @Override
             protected void dosomething() {
                 AdminLable adminLable = jxcGoodsService.addLable(goodsId, lableName);
@@ -135,14 +108,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("delLable")
-    public JSONObject delLable(Long goodsId, Long lableId) {
+    public JSONObject delLable(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long lableId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(lableId, "lableId 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcGoodsLable jxcGoodsLable = new JxcGoodsLable();
@@ -175,14 +142,12 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
 
 
     @RequestMapping("addPicture")
-    public JSONObject addPicture(Long goodsId, MultipartFile file) {
+    public JSONObject addPicture(@ZTValid(NotNull = true) Long goodsId, MultipartFile file) {
         return new ResultTemple() {
             byte[] bytes;
 
             @Override
             protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(file, "file 为空");
                 try {
                     bytes = file.getBytes();
                 } catch (IOException e) {
@@ -201,14 +166,8 @@ public class GoodsController extends BaseController<JxcGoods, Long> {
     }
 
     @RequestMapping("delPicture")
-    public JSONObject delPicture(Long goodsId, Long pictureId) {
+    public JSONObject delPicture(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long pictureId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(pictureId, "pictureId 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcGoodsPicture jxcGoodsPicture = new JxcGoodsPicture();

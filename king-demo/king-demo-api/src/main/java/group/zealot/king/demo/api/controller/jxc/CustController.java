@@ -1,7 +1,6 @@
 package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
 import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcCust;
 import group.zealot.king.demo.api.config.BaseController;

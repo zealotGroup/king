@@ -44,8 +44,8 @@ public class WXIndexController {
     }
 
     @RequestMapping("goods/list")
-    public JSONObject goodsList(Long goodsLableId, String searchLike,
-                                @ZTValid(NotNull = true) Integer page, @ZTValid(NotNull = true) Integer limit) {
+    public JSONObject goodsList(
+            @ZTValid(NotNull = true) Integer page, @ZTValid(NotNull = true) Integer limit, Long goodsLableId, String searchLike) {
         return new ResultTemple() {
             @Override
             protected void dosomething() {

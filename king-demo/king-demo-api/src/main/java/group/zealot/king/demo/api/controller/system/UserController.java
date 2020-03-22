@@ -2,6 +2,7 @@ package group.zealot.king.demo.api.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -15,19 +16,9 @@ import static group.zealot.king.core.zt.dbif.Services.*;
 @RequestMapping("/system/user")
 public class UserController extends BaseController<SysUser, Long> {
     @RequestMapping("add")
-    public JSONObject add(String username, byte[] password, String status, String level,
-                          Long roleDataId, Long roleRouteId) {
+    public JSONObject add(@ZTValid(NotBlank = true) String username, @ZTValid(NotEmpty = true) byte[] password, @ZTValid(NotBlank = true) String status, @ZTValid(NotBlank = true) String level,
+                          @ZTValid(NotBlank = true) Long roleDataId, @ZTValid(NotNull = true) Long roleRouteId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(username, "username为空");
-                Funcation.AssertNotNull(password, "password为空");
-                Funcation.AssertNotNull(status, "status为空");
-                Funcation.AssertNotNull(level, "level为空");
-                Funcation.AssertNotNull(roleDataId, "roleDataId为空");
-                Funcation.AssertNotNull(roleRouteId, "roleRouteId为空");
-            }
-
             @Override
             protected void dosomething() {
                 SysUser vo = sysUserService.insert(username, password, status, level, roleDataId, roleRouteId);
@@ -39,17 +30,8 @@ public class UserController extends BaseController<SysUser, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, String status, String level, Long roleDataId, Long roleRouteId) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotBlank = true) String status, @ZTValid(NotBlank = true) String level, @ZTValid(NotNull = true) Long roleDataId, @ZTValid(NotNull = true) Long roleRouteId) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(status, "status为空");
-                Funcation.AssertNotNull(level, "level为空");
-                Funcation.AssertNotNull(roleDataId, "roleDataId为空");
-                Funcation.AssertNotNull(roleRouteId, "roleRouteId为空");
-            }
-
             @Override
             protected void dosomething() {
                 sysUserService.update(id, status, level, roleDataId, roleRouteId);
@@ -58,14 +40,8 @@ public class UserController extends BaseController<SysUser, Long> {
     }
 
     @RequestMapping("updatePassword")
-    public JSONObject update(Long id, byte[] password) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotEmpty = true) byte[] password) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(password, "password为空");
-            }
-
             @Override
             protected void dosomething() {
                 SysUser sysUser = sysUserService.getById(id);
@@ -77,13 +53,8 @@ public class UserController extends BaseController<SysUser, Long> {
 
     @Override
     @RequestMapping("del")
-    public JSONObject del(Long id) {
+    public JSONObject del(@ZTValid(NotNull = true) Long id) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-            }
-
             @Override
             protected void dosomething() {
                 sysUserService.deleteSysUser(id);

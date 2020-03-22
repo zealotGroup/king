@@ -1,7 +1,7 @@
 package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcStock;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -18,14 +18,8 @@ import static group.zealot.king.core.zt.dbif.Services.jxcStockService;
 public class StockController extends BaseController<JxcStock, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, BigDecimal size) {
+    public JSONObject add(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(size, "size 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcStock vo = new JxcStock();
@@ -41,14 +35,8 @@ public class StockController extends BaseController<JxcStock, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, BigDecimal size) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(id, "id为空");
-                Funcation.AssertNotNull(size, "size 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcStock vo = jxcStockService.getById(id);

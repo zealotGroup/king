@@ -40,6 +40,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
     public void setDefault(Cookie cookie, SessionValidationScheduler sessionValidationScheduler,
                            SessionFactory sessionFactory, SessionDAO sessionDAO, ShiroSessionListener shiroSessionListener) {
         setSessionIdCookie(cookie);
+        setSessionIdCookieEnabled(false);//禁用cookie
         setGlobalSessionTimeout(sessionTimeout);//30min 过期
         setSessionValidationScheduler(sessionValidationScheduler);
         setSessionFactory(sessionFactory);

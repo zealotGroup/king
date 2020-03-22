@@ -1,7 +1,7 @@
 package group.zealot.king.demo.api.controller.jxc;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.base.Funcation;
+import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcSales;
 import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
@@ -18,18 +18,8 @@ import static group.zealot.king.core.zt.dbif.Services.jxcSalesService;
 public class SalesController extends BaseController<JxcSales, Long> {
 
     @RequestMapping("add")
-    public JSONObject add(Long goodsId, Long custId, BigDecimal price, BigDecimal size) {
+    public JSONObject add(@ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long custId, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(custId, "custId 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(size, "size 为空");
-
-            }
-
             @Override
             protected void dosomething() {
                 JxcSales vo = new JxcSales();
@@ -47,17 +37,8 @@ public class SalesController extends BaseController<JxcSales, Long> {
     }
 
     @RequestMapping("update")
-    public JSONObject update(Long id, Long goodsId, Long custId, BigDecimal price, BigDecimal size) {
+    public JSONObject update(@ZTValid(NotNull = true) Long id, @ZTValid(NotNull = true) Long goodsId, @ZTValid(NotNull = true) Long custId, @ZTValid(NotNull = true) BigDecimal price, @ZTValid(NotNull = true) BigDecimal size) {
         return new ResultTemple() {
-
-            @Override
-            protected void verification() {
-                Funcation.AssertNotNull(goodsId, "goodsId 为空");
-                Funcation.AssertNotNull(custId, "custId 为空");
-                Funcation.AssertNotNull(price, "price 为空");
-                Funcation.AssertNotNull(size, "size 为空");
-            }
-
             @Override
             protected void dosomething() {
                 JxcSales vo = jxcSalesService.getById(id);
