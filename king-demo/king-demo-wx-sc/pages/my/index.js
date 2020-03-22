@@ -5,16 +5,18 @@ Page({
   data: {
   },
   onLoad() {
-    let that = this
+    let that = this;
     that.setData({
-      nickName: app.globalData.nickName,
-      avatarUrl: app.globalData.avatarUrl,
-      phoneNumber: app.globalData.phoneNumber,
       version: app.globalData.version
     })
   },
   onShow() {
     let that = this;
+    that.setData({
+      nickName: app.globalData.nickName,
+      avatarUrl: app.globalData.avatarUrl,
+      phoneNumber: app.globalData.phoneNumber
+    })
   },
   aboutUs: function() {
     wx.showModal({
@@ -39,6 +41,9 @@ Page({
   },
   logout: function() {
     app.globalData.token = null
+    app.globalData.nickName= null
+    app.globalData.phoneNumber= null
+    app.globalData.avatarUrl= null
     wx.navigateTo({
       url: '/pages/start/start'
     })

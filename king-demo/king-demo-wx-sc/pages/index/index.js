@@ -5,6 +5,8 @@ var api = require('../../utils/api.js');
 var my = require('../../utils/my.js');
 Page({
   data: {
+    loadingGoodsList: true,
+
     goodsLableList: [],
     goodsLableId: 0,
     searchInput: '',
@@ -20,14 +22,14 @@ Page({
     autoplay: true,
     interval: 3000,
     scrollTop: 0, // 搜索框置顶
-    
+
     loadingMoreHidden: true,
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
     var that = this
     if (that.data.goodsList.length == that.data.total) {
       that.setData({
@@ -42,43 +44,33 @@ Page({
           limit: 10
         }
       })
-      this.getGoodsList(this.data.goodsLableId);
+      this.getGoodsList(this.data.goodsLableId, false);
     }
   },
-
-  tabClick: function(e) {
-    this.setData({
-      goodsLableId: e.currentTarget.id
-    });
-    this.toSearch();
-  },
-  toDetailsTap: function(e) {
-    wx.navigateTo({
-      url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
-    })
-  },
-  onLoad: function() {
+  onLoad: function () {
     var that = this
     wx.setNavigationBarTitle({
       title: '鑫磊五金'
     })
     // 获取商品 标签（主要）
-    api.get_goods_Lable_list(function(data) {
+    api.get_goods_Lable_list(function (data) {
       var goodsLableList = [{
-          id: 0,
-          name: '全部'
-        }]
-        for (var item of data.data.list) {
-          goodsLableList.push(item)
-        }
+        id: 0,
+        name: '全部'
+      }]
+      for (var item of data.data.list) {
+        goodsLableList.push(item)
+      }
       that.setData({
         goodsLableList: goodsLableList,
         goodsLableId: 0
       });
     })
-
-    that.getGoodsList(0);
+    that.getGoodsList(0, true);
     that.getNotice();
+  },
+  onShow: function () {
+    var that = this
   },
   onPageScroll(e) {
     let scrollTop = this.data.scrollTop
@@ -86,21 +78,50 @@ Page({
       scrollTop: e.scrollTop
     })
   },
-  getGoodsList: function(goodsLableId) {
+  onShareAppMessage: function () {
+    return {
+      title: app.globalData.appName + '——' + app.globalData.shareProfile,
+      path: '/pages/index/index',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
+  tabClick: function (e) {
+    this.setData({
+      goodsLableId: e.currentTarget.id
+    });
+    this.toSearch();
+  },
+  toDetailsTap: function (e) {
+    wx.navigateTo({
+      url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
+    })
+  },
+  getGoodsList: function (goodsLableId, clickSearch) {
     if (goodsLableId == 0) {
       goodsLableId = "";
     }
     console.log(goodsLableId)
     var that = this;
     var goodsList = that.data.goodsList
-    api.get_goods_list(goodsLableId, that.data.searchInput, that.data.pageInfo, function(data) {
+    if (clickSearch) {
+      goodsList = []
+      that.setData({
+        loadingGoodsList: true
+      });
+    }
+    api.get_goods_list(goodsLableId, that.data.searchInput, that.data.pageInfo, function (data) {
       var list = data.data.list
       var total = data.data.total
       for (var item of list) {
-          for (let pic of item.pictureList) {
-              item.pic = my.getPictureUrl(pic.id)
-              break
-          }
+        for (let pic of item.pictureList) {
+          item.pic = my.getPictureUrl(pic.id)
+          break
+        }
         goodsList.push(item)
       }
       console.info(goodsList)
@@ -108,24 +129,13 @@ Page({
         goodsList: goodsList,
         total: total,
         loadingMoreHidden: true,
+        loadingGoodsList: false
       });
     });
   },
-  onShareAppMessage: function() {
-    return {
-      title: app.globalData.appName + '——' + app.globalData.shareProfile,
-      path: '/pages/index/index',
-      success: function(res) {
-        // 转发成功
-      },
-      fail: function(res) {
-        // 转发失败
-      }
-    }
-  },
-  getNotice: function() {
+  getNotice: function () {
     let that = this;
-    api.get_notice_list(5, function(data) {
+    api.get_notice_list(5, function (data) {
       if (data.code == 0) {
         that.setData({
           noticeList: data.data
@@ -133,21 +143,20 @@ Page({
       }
     });
   },
-  listenerSearchInput: function(e) {
+  listenerSearchInput: function (e) {
     this.setData({
       searchInput: e.detail.value
     })
 
   },
-  toSearch: function() {
+  toSearch: function () {
     this.setData({
-      goodsList: [],
       total: 0,
       pageInfo: {
         page: 1,
         limit: 10
       }
     })
-    this.getGoodsList(this.data.goodsLableId);
+    this.getGoodsList(this.data.goodsLableId, true);
   }
 })
