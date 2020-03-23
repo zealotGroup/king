@@ -1,5 +1,6 @@
 package group.zealot.king.core.shiro.sessionDAO;
 
+import group.zealot.king.core.shiro.exception.ShiroException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SimpleSession;
@@ -37,7 +38,7 @@ public class ShiroSessionDAO extends CachingSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        return null;
+        throw new ShiroException("There is no session with id [" + sessionId + "]");
     }
 
     @Override

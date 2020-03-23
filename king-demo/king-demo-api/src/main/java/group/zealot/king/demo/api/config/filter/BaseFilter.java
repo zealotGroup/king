@@ -2,6 +2,7 @@ package group.zealot.king.demo.api.config.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
+import group.zealot.king.core.shiro.exception.ShiroException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,16 @@ public abstract class BaseFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         if (filter(servletRequest, servletResponse)) {
-            filterChain.doFilter(servletRequest, servletResponse);
+            try {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } catch (Exception e) {
+                logger.warn(e.getMessage(), e);
+                if (e.getCause() instanceof ShiroException) {
+                    throwException(ServiceCode.NEED_LOGIN, "请重新登录", (HttpServletResponse) servletResponse);
+                } else {
+                    throwException(ServiceCode.EXCEPTION_RUNNTIME, "运行时异常", (HttpServletResponse) servletResponse);
+                }
+            }
         }
     }
 

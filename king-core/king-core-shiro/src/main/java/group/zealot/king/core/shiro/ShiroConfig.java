@@ -32,7 +32,7 @@ import javax.servlet.Filter;
 
 @Configuration
 public class ShiroConfig {
-    public static final Duration timeout = Duration.ofMinutes(30L);//30min
+    public static final Duration timeout = Duration.ofMinutes(1L);//30min
     public static final Long sessionTimeout = timeout.getSeconds() * 1000;
     public static final Long sessionInterval = timeout.getSeconds() * 1000;//检查session过期的调度间隔
     public static final int cookieTimeout = (int) timeout.getSeconds();
@@ -109,7 +109,7 @@ public class ShiroConfig {
      * user:配置记住我或认证通过可以访问
      */
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         LinkedHashMap<String, Filter> filters = new LinkedHashMap<>();
         filters.put("authc", new FormAuthenticationFilter());
