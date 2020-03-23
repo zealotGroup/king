@@ -193,11 +193,13 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
       propertyChildIds: propertyChildIds
     },
     success: function (res) {
-      callBack(res.data);
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
     }
   });
 }
 
+// 获取商品详情
 function get_goods_detail(goodsId, callBack) {
   wx.request({
     url: baseUrl + wxurl + '/shopcar/goods/detail',
@@ -210,15 +212,7 @@ function get_goods_detail(goodsId, callBack) {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      if (res.data.code == 200) {
-        callBack(res.data);
-      } else {
-        wx.showModal({
-          title: '失败',
-          content: '请求失败 ' + res.data.msg,
-          showCancel: false
-        })
-      }
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -231,7 +225,7 @@ function get_goods_detail(goodsId, callBack) {
 }
 
 /**
- * 获取商品列表
+ * 获取商品标签列表
  */
 function get_goods_Lable_list(callBack) {
   wx.request({
@@ -242,15 +236,7 @@ function get_goods_Lable_list(callBack) {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      if (res.data.code == 200) {
-        callBack(res.data);
-      } else {
-        wx.showModal({
-          title: '失败',
-          content: '请求失败 ' + res.data.msg,
-          showCancel: false
-        })
-      }
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -280,15 +266,7 @@ function get_goods_list(goodsLableId, searchLike, pageInfo, callBack) {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      if (res.data.code == 200) {
-        callBack(res.data);
-      } else {
-        wx.showModal({
-          title: '失败',
-          content: '请求失败 ' + res.data.msg,
-          showCancel: false
-        })
-      }
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -316,7 +294,7 @@ function updaet_phone_number(encryptedData, iv, callBack) {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -339,7 +317,7 @@ function check_token() {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -366,7 +344,7 @@ function login(code, callBack) {
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -396,7 +374,7 @@ function register(code, encryptedData, iv, callBack) {
     }, // 设置请求的 参数
     success: (res) => {
       console.log("register返回：【" + JSON.stringify(res.data) + "】");
-      callBack(res.data);
+      filter(res.data, callBack);
     },
     fail: function (res) {
       wx.showModal({
@@ -406,4 +384,31 @@ function register(code, encryptedData, iv, callBack) {
       })
     }
   })
+}
+
+function filter(data, callBack) {
+  if (data.code == 200) {
+    callBack(data);
+  } else if (data.code == 201) {
+    console.warn("未注册，去授权注册");
+    wx.redirectTo({
+      url: '/pages/authorize/index',
+    });
+  } else if (data.code === 202) {
+    console.warn("登录超时")
+    wx.showModal({
+      title: '超时',
+      content: '登录超时',
+      showCancel: false
+    })
+    wx.navigateTo({
+      url: '/pages/start/start'
+    })
+  } else {
+    wx.showModal({
+      title: '失败',
+      content: '请求失败 ' + res.data.msg,
+      showCancel: false
+    })
+  }
 }

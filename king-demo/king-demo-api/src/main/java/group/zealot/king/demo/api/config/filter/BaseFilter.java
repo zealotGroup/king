@@ -18,15 +18,16 @@ public abstract class BaseFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+            throws IOException {
         if (filter(servletRequest, servletResponse)) {
             try {
                 filterChain.doFilter(servletRequest, servletResponse);
             } catch (Exception e) {
-                logger.warn(e.getMessage(), e);
                 if (e.getCause() instanceof ShiroException) {
+                    logger.warn(e.getMessage(), e);
                     throwException(ServiceCode.NEED_LOGIN, "请重新登录", (HttpServletResponse) servletResponse);
                 } else {
+                    logger.error(e.getMessage(), e);
                     throwException(ServiceCode.EXCEPTION_RUNNTIME, "运行时异常", (HttpServletResponse) servletResponse);
                 }
             }
