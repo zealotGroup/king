@@ -25,8 +25,14 @@
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading"
                  @click.native.prevent="handleLogin">{{$t('login.logIn')}}
       </el-button>
+      <el-footer>
+        <a target='_blank' href="http://www.miibeian.gov.cn">
+          <el-dropdown-item>
+            皖ICP备20004278号-1
+          </el-dropdown-item>
+        </a>
+      </el-footer>
     </el-form>
-
   </div>
 </template>
 
