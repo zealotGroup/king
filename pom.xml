@@ -27,7 +27,7 @@
 
     <groupId>group.zealot</groupId>
     <artifactId>king</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
 
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
