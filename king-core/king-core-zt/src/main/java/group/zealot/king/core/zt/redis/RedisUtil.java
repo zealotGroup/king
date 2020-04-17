@@ -1,11 +1,14 @@
 package group.zealot.king.core.zt.redis;
 
+import com.alibaba.nacos.api.config.ConfigType;
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.*;
@@ -18,6 +21,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Configuration
+@NacosPropertySource(dataId = "redis", autoRefreshed = true, type = ConfigType.YAML)
 public class RedisUtil {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     public static final String LOGIN_UTIL_PREFIX = "api:token:";
