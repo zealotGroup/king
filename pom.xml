@@ -19,6 +19,7 @@
         <mybatis-jsr310.version>1.0.2</mybatis-jsr310.version>
         <dubbo.version>2.7.1</dubbo.version>
         <nacos.version>0.2.7</nacos.version>
+        <rocketmq.version>4.4.0</rocketmq.version>
 
         <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
         <io.netty.version>4.1.38.Final</io.netty.version>
@@ -148,6 +149,18 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${io.netty.version}</version>
+            </dependency>
+
+            <!--rocketmq-->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-logappender</artifactId>
+                <version>${rocketmq.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

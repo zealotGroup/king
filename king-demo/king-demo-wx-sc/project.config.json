@@ -17,8 +17,8 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.94",
-	"appid": "wxe981b47b950fb43e",
+  "libVersion": "2.10.4",
+  "appid": "wx9bc9c5bfec0c3fe6",
 	"projectname": "king-demo-wx-sc",
 	"scripts": {},
 	"simulatorType": "wechat",

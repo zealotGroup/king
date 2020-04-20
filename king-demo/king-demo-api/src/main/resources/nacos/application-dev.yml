@@ -10,3 +10,6 @@ spring:
 wx:
   appid: wx9bc9c5bfec0c3fe6
   secret: e67187280bf1a59ed7eec00bbbae90fc
+rocketmq:
+  namesrv-addr: www.zealot.group:9876
+  group: default
