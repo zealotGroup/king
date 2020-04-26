@@ -1,26 +1,28 @@
 package group.zealot.king.test;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.core.zt.mq.MQUtil;
-import group.zealot.king.core.zt.mq.rocketmq.DefaultMQConsume;
+import group.zealot.king.core.zt.mq.rocketmq.RocketMQService;
+import group.zealot.king.core.zt.mq.rocketmq.RocketmqUtil;
 import group.zealot.king.demo.api.Run;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,45 +40,55 @@ public class MainTest {
     ApplicationContext context;
 
     @Autowired
-    MQUtil mqUtil;
-    @Autowired
-    DefaultMQConsume consume;
+    RocketMQService rocketMqService;
 
-    @Value("${rocketmq.namesrv-addr}")
-    public String namesrvAddr;
-    @Value("${rocketmq.group}")
-    public String group;
+    @Autowired
+    DefaultMQPushConsumer defaultMQPushConsumer;
+
+    @Autowired
+    RocketmqUtil rocketmqUtil;
 
     @Test
     public void sendJMS() {
-        JSONObject data = new JSONObject();
-        data.put("number", 1);
-        mqUtil.send("Test-1", data);
+        List<JSONObject> list = new ArrayList<>(1000);
+        for (int i = 1000; i < 2000; i++) {
+            JSONObject data = new JSONObject();
+            data.put("number", i);
+            list.add(data);
+            rocketMqService.send("Test-1", data);
+        }
+        rocketMqService.send("Test-1", list);
     }
 
     @Test
-    public void revoverJMS() throws MQClientException, InterruptedException {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer();
+    public void revoverJMS() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+        List<MessageExt> list = rocketmqUtil.getMessageExtList("Test-1", 1L);
+        for (MessageExt messageExt : list) {
+            logger.info("queueId:{} queueOffset:{} body:{}", messageExt.getQueueId(), messageExt.getQueueOffset(), JSONObject.parseObject(messageExt.getBody(), JSONObject.class));
+        }
+        logger.info("list size:{}", list.size());
+    }
 
-        // Specify name server addresses.
-        consumer.setNamesrvAddr(namesrvAddr);
-        consumer.setConsumerGroup(group);
-        // Subscribe one more more topics to consume.
-        consumer.subscribe("Test-1", "*");
-        // Register callback to execute on arrival of messages fetched from brokers.
-        consumer.registerMessageListener(new MessageListenerConcurrently() {
 
+    @Test
+    public void listenerJMS() throws MQClientException, InterruptedException {
+        defaultMQPushConsumer.subscribe("Test-1", "*");
+        defaultMQPushConsumer.setConsumeMessageBatchMaxSize(32);
+        defaultMQPushConsumer.setConsumeThreadMin(4);
+        defaultMQPushConsumer.setConsumeThreadMax(8);
+        defaultMQPushConsumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
-            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
-                                                            ConsumeConcurrentlyContext context) {
-                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext context) {
+                for (MessageExt messageExt : list) {
+                    logger.info("queueId:{} queueOffset:{} body:{}", messageExt.getQueueId(), messageExt.getQueueOffset(), JSONObject.parseObject(messageExt.getBody(), JSONObject.class));
+                }
+                logger.info("list size:{}", list.size());
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+//                throw new BaseRuntimeException();
             }
         });
-
-        //Launch the consumer instance.
-        consumer.start();
-
+        defaultMQPushConsumer.start();
+        defaultMQPushConsumer.shutdown();
         Thread.sleep(1000);
     }
 }

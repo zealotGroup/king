@@ -2,6 +2,8 @@ package group.zealot.king.core.zt.mq.rocketmq;
 
 import com.alibaba.nacos.api.config.ConfigType;
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
+import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,5 +27,27 @@ public class RocketmqConfig {
         producer.setVipChannelEnabled(false);
         producer.start();
         return producer;
+    }
+
+    @Bean
+    public DefaultMQPullConsumer defaultMQPullConsumer() throws MQClientException {
+        DefaultMQPullConsumer consumer = new DefaultMQPullConsumer();
+        consumer.setNamesrvAddr(namesrvAddr);
+        consumer.setConsumerGroup(group);
+        consumer.setVipChannelEnabled(false);
+        consumer.setInstanceName("DefaultMQPullConsumer");
+        consumer.start();
+        return consumer;
+    }
+
+    @Bean
+    public DefaultMQPushConsumer defaultMQPushConsumer() throws MQClientException {
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer();
+        consumer.setNamesrvAddr(namesrvAddr);
+        consumer.setConsumerGroup(group);
+        consumer.setVipChannelEnabled(false);
+        consumer.setInstanceName("DefaultMQPushConsumer");
+//        consumer.start();
+        return consumer;
     }
 }
