@@ -61,6 +61,12 @@ public class MainTest {
     }
 
     @Test
+    public void viewJMS() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+        MessageExt messageExt = rocketmqUtil.viewMessage("Test-1", "1123");
+        logger.info("queueId:{} queueOffset:{} msgId:{} body:{}", messageExt.getQueueId(), messageExt.getQueueOffset(), messageExt.getMsgId(), JSONObject.parseObject(messageExt.getBody(), JSONObject.class));
+    }
+
+    @Test
     public void revoverJMS() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
         List<MessageExt> list = rocketmqUtil.getMessageExtList("Test-1", 1L);
         for (MessageExt messageExt : list) {

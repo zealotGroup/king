@@ -110,6 +110,10 @@ public class RocketmqUtil {
         return messageExtList;
     }
 
+    public MessageExt viewMessage(String topic, String uniqKey) throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+        return consumer.viewMessage(topic, uniqKey);
+    }
+
     private Set<MessageQueue> getQueueSet(String topic) throws MQClientException {
         return consumer.fetchSubscribeMessageQueues(topic);
     }
