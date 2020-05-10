@@ -71,6 +71,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- 使用Maven插件直接将应用打包为一个Docker镜像 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <!-- 这里使用新版dockerfile-maven-plugin插件 -->
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <configuration>
+
+                    <repository>${project.parent.artifactId}/${project.artifactId}</repository>
+                    <!-- 生成镜像标签 如不指定 默认为latest -->
+                    <tag>${project.version}</tag>
+                    <username>admin</username>
+                    <password>Harbor12345</password>
+                    <buildArgs>
+                        <!-- 理论上这里定义的参数可以传递到Dockerfile文件中，目前未实现 -->
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

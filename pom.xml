@@ -25,6 +25,9 @@
         <io.netty.version>4.1.38.Final</io.netty.version>
 
         <mail.version>1.4.7</mail.version>
+
+        <dockerfile.version>1.4.13</dockerfile.version>
+        <docker.repostory.version>https://www.zealot.group:444</docker.repostory.version>
     </properties>
 
     <groupId>group.zealot</groupId>
@@ -200,6 +203,11 @@
                     <configuration>
                         <generateBackupPoms>false</generateBackupPoms>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
