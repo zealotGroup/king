@@ -11,12 +11,20 @@ import java.util.concurrent.RejectedExecutionException;
  * @author zealot
  * @date 2020/3/21 9:42
  */
-public abstract class BaseThreadPoolManager implements ZTThreadPoolManager {
+public class BaseThreadPoolManager implements ZTThreadPoolManager {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    private final ZTThreadPool ztThreadPool;
 
-    BaseThreadPoolManager() {
-        ztThreadPool = new ZTThreadPool(getCoreSize(), getQueueSize());
+    private static ZTThreadPool ztThreadPool;
+
+    private BaseThreadPoolManager() {
+        int core = getCoreSize();
+        int queue = getQueueSize();
+        logger.debug("create thread pool: core {} queue {}", core, queue);
+        ztThreadPool = new ZTThreadPool(core, queue);
+    }
+
+    public static BaseThreadPoolManager getInstance() {
+        return FG.manager;
     }
 
     public void execute(Runnable r) throws RejectedExecutionException {
@@ -34,5 +42,9 @@ public abstract class BaseThreadPoolManager implements ZTThreadPoolManager {
 
     protected int getQueueSize() {
         return 50;
+    }
+
+    private static class FG {
+        private final static BaseThreadPoolManager manager = new BaseThreadPoolManager();
     }
 }
