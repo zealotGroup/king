@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class RedisUtil {
     protected Logger logger = LoggerFactory.getLogger(getClass());
-    public static final String LOGIN_UTIL_PREFIX = "api:token:";
     @Autowired
     private LettuceConnectionFactory connectionFactory;
 
@@ -36,6 +35,8 @@ public class RedisUtil {
         RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(serializer);
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(serializer);
         template.setConnectionFactory(connectionFactory);
         template.afterPropertiesSet();
         return template;

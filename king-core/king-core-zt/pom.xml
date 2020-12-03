@@ -26,6 +26,11 @@
             <artifactId>king-base</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--nacos config-->
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>nacos-config-spring-boot-starter</artifactId>
+        </dependency>
         <!--jpa-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

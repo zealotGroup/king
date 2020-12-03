@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://www.zealot.group:13307/king?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+  redis:
+    host: www.zealot.group
+    port: 16379
+nacos:
+  config:
+    server-addr: www.zealot.group:18848
+wx:
+  appid: wx9bc9c5bfec0c3fe6
+  secret: e67187280bf1a59ed7eec00bbbae90fc
+

@@ -1,6 +1,7 @@
 package group.zealot.king.test;
 
 import group.zealot.king.demo.api.Run;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +19,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("dev")
 @SpringBootTest(classes = {Run.class})
-public class MainTest {
+public class TestMain {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     ApplicationContext context;
 
+    @Test
+    public void etw() {
 
+    }
 
 }

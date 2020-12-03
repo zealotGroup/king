@@ -1,4 +1,4 @@
-package group.zealot.king.demo.api.controller.oauth;
+package group.zealot.king.demo.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
