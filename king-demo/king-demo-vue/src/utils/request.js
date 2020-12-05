@@ -14,13 +14,13 @@ const service = axios.create({
   }],
   datatype: 'jsonp'
 })
-const sessionName = 'auth-token'
+const auth_session_id = 'auth_session_id'
 
 // request拦截器
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
-      config.headers[sessionName] = getToken().token // 让每个请求携带自定义token 请根据实际情况自行修改
+    if (getToken()) {
+      config.headers[auth_session_id] = getToken().auth_session_id // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     // config.headers['Access-Control-Allow-Origin'] = '*' // 跨域
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded' // 跨域
