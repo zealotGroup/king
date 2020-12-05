@@ -7,7 +7,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PropertiesUtil {
-    private static ConcurrentHashMap<String, Properties> cache = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, Properties> CACHE = new ConcurrentHashMap<>();
 
     public static Properties load(Class<?> clazz, String name) {
         Properties properties = new Properties();
@@ -20,7 +20,7 @@ public class PropertiesUtil {
     }
 
     public static void loadCache(Class<?> clazz, String name) {
-        cache.put(name, load(clazz, name));
+        CACHE.put(name, load(clazz, name));
     }
 
     public static <T> T getProperty(String name, Class<T> clazz, String cacheName) {
@@ -45,14 +45,14 @@ public class PropertiesUtil {
         } else if (clazz.equals(double.class) || clazz.equals(Double.class)) {
             return (T) new Double(str);
         } else if (clazz.equals(String.class)) {
-            return (T) new String(str);
+            return (T) str;
         } else {
             return null;
         }
     }
 
     public static Properties getCache(String name) {
-        return cache.get(name);
+        return CACHE.get(name);
     }
 
 }

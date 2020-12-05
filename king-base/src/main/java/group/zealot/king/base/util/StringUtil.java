@@ -15,10 +15,6 @@ public class StringUtil extends StringUtils {
 
     /**
      * 验证数据是否包含指定字符串
-     *
-     * @param strs
-     * @param str
-     * @return
      */
     public static boolean startsWith(String[] strs, String str) {
         if (strs == null || str == null || "".equals(str)) {
@@ -34,10 +30,6 @@ public class StringUtil extends StringUtils {
 
     /**
      * 验证数组是否包含指定字符串
-     *
-     * @param strs
-     * @param str
-     * @return
      */
     public static boolean contrian(String[] strs, String str) {
         if (strs == null || str == null || "".equals(str)) {

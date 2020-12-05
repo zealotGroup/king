@@ -1,5 +1,8 @@
 package group.zealot.king.base;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 public final class Constants {
     public static int ONE = 1;
     public static int TWO = 2;
@@ -20,4 +23,5 @@ public final class Constants {
 
 
     public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
+    public static final Charset UTF8 = StandardCharsets.UTF_8;
 }

@@ -21,7 +21,7 @@ public class RequestIdUtil {
     }
 
     public static String getRequestId() {
-        String requestId = Funcation.createTime() + "" + Funcation.createRandom(6);
+        String requestId = Funcation.nowTime() + "" + Funcation.createRandom(6);
         if (redisUtil().setIfAbsent(getKey(requestId), true, timeout)) {
             return requestId;
         } else {

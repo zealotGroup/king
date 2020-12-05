@@ -9,8 +9,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
-    private static final Set<String> SQL_NOT_ALLOWED_KEY = new HashSet<>(Arrays.asList(
-            "and|exec|insert|select|delete|update|count|*|%|chr|mid|master|truncate|char|declare|;|or|-|+".split("\\|")));
+    private static final Set<String> SQL_NOT_ALLOWED_KEY = new HashSet<>(
+            Arrays.asList("and|exec|insert|select|delete|update|count|*|%|chr|mid|master|truncate|char|declare|;|or|-|+".split("\\|")));
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 

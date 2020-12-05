@@ -28,7 +28,7 @@ public class LoginController {
                 }
 
                 JSONObject data = new JSONObject();
-                data.put("token", LoginUtil.getSession().getId());
+                data.put("auth_session_id", LoginUtil.getSession().getId());
                 data.put("timeout", LoginUtil.getSession().getTimeout());
                 data.put("unit", "MILLISECONDS");
                 resultJson.set(data);
@@ -49,8 +49,8 @@ public class LoginController {
         }.result();
     }
 
-    @RequestMapping("loginUserInfo")
-    public JSONObject loginUserInfo() {
+    @RequestMapping("userInfo")
+    public JSONObject userInfo() {
         return new ResultTemple() {
             @Override
             protected void dosomething() {

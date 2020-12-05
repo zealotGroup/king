@@ -1,6 +1,9 @@
 package group.zealot.king.core.shiro;
 
+import group.zealot.king.base.util.EnvironmentUtil;
+import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.cache.ShiroRedisCache;
+import group.zealot.king.core.shiro.filter.AuthFilter;
 import group.zealot.king.core.shiro.realms.BaseShiroRealm;
 import group.zealot.king.core.shiro.sessionManager.ShiroSessionManager;
 import group.zealot.king.core.zt.redis.RedisUtil;
@@ -24,10 +27,12 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.servlet.Filter;
 
 @Configuration
@@ -109,22 +114,28 @@ public class ShiroConfig {
      * user:配置记住我或认证通过可以访问
      */
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager, Environment environment) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         LinkedHashMap<String, Filter> filters = new LinkedHashMap<>();
-        filters.put("authc", new FormAuthenticationFilter());
+        filters.put("authc", new AuthFilter());
         bean.setFilters(filters);
         bean.setSecurityManager(securityManager);
-        bean.setLoginUrl("/login");
+        bean.setLoginUrl("/oauth/login");
         bean.setSuccessUrl("/");
 
-        //配置访问权限
+        //配置访问权限 anon匿名
+        int i = 0;
+        List<String> shiroList = new ArrayList<>();
+        while (!StringUtil.isEmpty(environment.getProperty("shiro.filter" + "[" + i + "]"))) {
+            shiroList.add(environment.getProperty("shiro.filter" + "[" + i + "]"));
+            i++;
+        }
+
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/login", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/oauth/**", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/admin/picture/getPicture", "anon"); //表示可以匿名访问
-        filterChainDefinitionMap.put("/**", "authc");//表示认证
+        for (String str : shiroList) {
+            String[] strs = str.split(",");
+            filterChainDefinitionMap.put(strs[0], strs[1]);
+        }
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }

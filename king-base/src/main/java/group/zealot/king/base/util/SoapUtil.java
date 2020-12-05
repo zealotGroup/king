@@ -1,5 +1,6 @@
 package group.zealot.king.base.util;
 
+import com.sun.xml.internal.messaging.saaj.client.p2p.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.OutputFormat;
@@ -17,18 +18,26 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 public class SoapUtil {
     protected static Logger logger = LoggerFactory.getLogger(SoapUtil.class);
+    private static HttpSOAPConnectionFactory httpSOAPConnectionFactory;
+
+    static {
+        try {
+            httpSOAPConnectionFactory = (HttpSOAPConnectionFactory) HttpSOAPConnectionFactory.newInstance();
+        } catch (SOAPException e) {
+            logger.error("异常", e);
+            System.exit(0);
+        }
+    }
 
     /**
      * 发送soap请求
-     *
-     * @param soapMessage
-     * @param url
-     * @return
-     * @throws IOException
-     * @throws SOAPException
      */
     public static String requestSOAP(SOAPMessage soapMessage, String url) throws IOException, SOAPException, DocumentException, TransformerException {
         //打印请求信息
@@ -37,7 +46,7 @@ public class SoapUtil {
         SOAPConnection soapConnection = null;
         try {
             soapConnection = getSoapConnection();
-            SOAPMessage soapResponse = soapConnection.call(soapMessage, url);
+            SOAPMessage soapResponse = soapConnection.call(soapMessage, createURL(url));
             //输出SOAP对象字符串格式
             String response = formartToString(soapResponse);
             //xml格式化
@@ -58,19 +67,13 @@ public class SoapUtil {
 
     /**
      * 生成soap connection
-     *
-     * @return
-     * @throws SOAPException
      */
     private static SOAPConnection getSoapConnection() throws SOAPException {
-        return SOAPConnectionFactory.newInstance().createConnection();
+        return httpSOAPConnectionFactory.createConnection();
     }
 
     /**
      * 打印请求信息
-     *
-     * @param soapMessage
-     * @throws IOException
      */
     private static void printSOAPMessage(SOAPMessage soapMessage) throws IOException, DocumentException, TransformerException, SOAPException {
         //输出SOAP对象字符串格式
@@ -78,14 +81,11 @@ public class SoapUtil {
         //xml格式化
         String requestXml = formatXml(request);
         //打印xml
-        logger.info(requestXml);
+        logger.debug(requestXml);
     }
 
     /**
      * 把soap对象格式化为字符串
-     *
-     * @param soapMessage
-     * @return
      */
     public static String formartToString(SOAPMessage soapMessage) throws IOException, TransformerException, SOAPException {
         String str = null;
@@ -123,5 +123,19 @@ public class SoapUtil {
             }
         }
         return out.toString();
+    }
+
+    private static URL createURL(String url) throws MalformedURLException {
+        return new URL(new URL(url), "", new URLStreamHandler() {
+            @Override
+            protected URLConnection openConnection(URL url) throws IOException {
+                URL target = new URL(url.toString());
+                URLConnection connection = target.openConnection();
+                // Connection settings
+                connection.setConnectTimeout(EnvironmentUtil.get("timeout.soap.connect", 10000)); // 10 sec
+                connection.setReadTimeout(EnvironmentUtil.get("timeout.soap.read", 60000)); // 1 min
+                return (connection);
+            }
+        });
     }
 }

@@ -16,8 +16,6 @@ import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustShopcar;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static group.zealot.king.core.db.mybatis.Mappers.*;
@@ -67,7 +65,7 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
     @Override
     public AdminPicture addPicture(Long goodsId, byte[] bytes) {
         AdminPicture adminPicture = new AdminPicture();
-        adminPicture.setName(Funcation.createTime() + "");
+        adminPicture.setName(Funcation.nowTime() + "");
         adminPicture.setBytes(bytes);
         adminPicture = adminPictureServiceImpl.insert(adminPicture);
 

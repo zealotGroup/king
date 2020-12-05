@@ -30,7 +30,7 @@ import static group.zealot.king.core.shiro.ShiroConfig.sessionTimeout;
 @Component
 public class ShiroSessionManager extends DefaultWebSessionManager {
     private final static Logger logger = LoggerFactory.getLogger(ShiroSessionManager.class);
-    public final static String SESSION_ID = "auth-token";
+    public final static String SESSION_ID = "auth_session_id";
     public static final String HEADER_SESSION_ID_SOURCE = "header";
 
     public ShiroSessionManager() {
@@ -64,7 +64,7 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
             HttpServletResponse response = WebUtils.getHttpResponse(context);
             Serializable sessionId = session.getId();
             String id = sessionId.toString();
-            response.setHeader(SESSION_ID, id);
+//            response.setHeader(SESSION_ID, id);
         }
     }
 

@@ -1,5 +1,6 @@
 package group.zealot.king.base.util;
 
+import group.zealot.king.base.Constants;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import org.apache.http.HttpEntity;
@@ -16,19 +17,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
 public class HttpUtil {
-    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
-    private static int connectionRequestTimeout = EnvironmentUtil.get("httpUtil.connectionRequestTimeout", int.class, 30000);
-    private static int socketTimeout = EnvironmentUtil.get("httpUtil.socketTimeout", int.class, 30000);
-    private static int connectTimeout = EnvironmentUtil.get("httpUtil.connectTimeout", int.class, 30000);
-    private static RequestConfig requestConfig = RequestConfig.custom()
-            .setConnectionRequestTimeout(connectionRequestTimeout)
-            .setSocketTimeout(socketTimeout)
-            .setConnectTimeout(connectTimeout)
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
+    private static final int CONNECTION_REQUEST_TIMEOUT = EnvironmentUtil.get("timeout.http.connect-request", 30000);
+    private static final int SOCKET_TIMEOUT = EnvironmentUtil.get("timeout.http.socket", 30000);
+    private static final int CONNECT_TIMEOUT = EnvironmentUtil.get("timeout.http.connect", 30000);
+    private static RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT)
+            .setSocketTimeout(SOCKET_TIMEOUT)
+            .setConnectTimeout(CONNECT_TIMEOUT)
             .build();
 
     public static String get(String url) {
@@ -42,7 +42,7 @@ public class HttpUtil {
                 httpGet.addHeader(str, header.get(str));
             }
         }
-        httpGet.setConfig(requestConfig);
+        httpGet.setConfig(REQUEST_CONFIG);
         return sendHttp(httpGet);
     }
 
@@ -53,14 +53,14 @@ public class HttpUtil {
 
     public static String post(String url, List<BasicNameValuePair> parameters, Map<String, String> header) {
         HttpPost httpPost = new HttpPost(getURI(url));
-        HttpEntity entity = new UrlEncodedFormEntity(parameters, Charset.forName("UTF-8"));
+        HttpEntity entity = new UrlEncodedFormEntity(parameters, Constants.UTF8);
         httpPost.setEntity(entity);
         if (header != null) {
             for (String str : header.keySet()) {
                 httpPost.addHeader(str, header.get(str));
             }
         }
-        httpPost.setConfig(requestConfig);
+        httpPost.setConfig(REQUEST_CONFIG);
         return sendHttp(httpPost);
     }
 
@@ -77,7 +77,7 @@ public class HttpUtil {
                 httpPost.addHeader(str, header.get(str));
             }
         }
-        httpPost.setConfig(requestConfig);
+        httpPost.setConfig(REQUEST_CONFIG);
         return sendHttp(httpPost);
     }
 
@@ -92,7 +92,7 @@ public class HttpUtil {
                 httpPut.addHeader(str, header.get(str));
             }
         }
-        httpPut.setConfig(requestConfig);
+        httpPut.setConfig(REQUEST_CONFIG);
         return sendHttp(httpPut);
     }
 
@@ -107,7 +107,7 @@ public class HttpUtil {
                 httpDelete.addHeader(str, header.get(str));
             }
         }
-        httpDelete.setConfig(requestConfig);
+        httpDelete.setConfig(REQUEST_CONFIG);
         return sendHttp(httpDelete);
     }
 
@@ -117,7 +117,7 @@ public class HttpUtil {
         try {
             res = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
-            logger.error("EntityUtils.toString(response.getEntity()) 异常", e);
+            LOGGER.error("EntityUtils.toString(response.getEntity()) 异常", e);
             throw new BaseRuntimeException(ServiceCode.REQUEST_HTTP_ERROR);
         }
         return res;
@@ -129,7 +129,7 @@ public class HttpUtil {
         try {
             response = httpclient.execute(obj);
         } catch (IOException e) {
-            logger.error("httpclient.execute(obj) 异常", e);
+            LOGGER.error("httpclient.execute(obj) 异常", e);
             throw new BaseRuntimeException(ServiceCode.REQUEST_HTTP_ERROR);
         }
         return response;

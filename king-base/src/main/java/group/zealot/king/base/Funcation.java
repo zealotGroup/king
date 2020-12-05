@@ -45,7 +45,7 @@ public class Funcation {
     /**
      * 毫秒级别
      */
-    public static long createTime() {
+    public static long nowTime() {
         return Instant.now().toEpochMilli();
     }
 
