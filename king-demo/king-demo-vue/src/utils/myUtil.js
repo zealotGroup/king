@@ -58,6 +58,6 @@ export function checkLevel(level) {
   return store.getters.level === level
 }
 
-export function getPictureUrl(id) {
-  return process.env.BASE_API + '/admin/picture/getPicture?id=' + id + '&date=' + new Date()
+export function getPictureUrl(id, name) {
+  return process.env.BASE_API + '/file/picture?id=' + id + '&name=' + name + '&date=' + new Date()
 }

@@ -17,6 +17,7 @@ public enum ServiceCode {
     DECRYPT_ERROR(888, "解密算法异常"),
     PARAM_IS_INVALID(887, "数据非法"),
 
+    FILE_ERROR(998, "请求资源不存在"),
     REQUEST_HTTP_ERROR(999, "服务请求外部资源异常");
     private final int code;
     private final String msg;

@@ -1,6 +1,6 @@
 package group.zealot.king.base.util;
 
-import com.sun.xml.internal.messaging.saaj.client.p2p.*;
+import com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnectionFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.OutputFormat;

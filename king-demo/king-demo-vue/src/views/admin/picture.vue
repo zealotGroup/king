@@ -247,7 +247,7 @@
           }
         }
         this.upload = {
-          headers: { 'auth-token': getToken().token },
+          headers: { 'auth_session_id': getToken().auth_session_id },
           limit: 1,
           fileList: []
         }
@@ -375,7 +375,7 @@
         let i = 1
         for (const v of list) { // 响应
           v.No = i++
-          v.img = getPictureUrl(v.id)
+          v.img = getPictureUrl(v.id, v.name)
           v.waiting_for_flush = false
           v.loading_update = false
           v.loading_del = false
