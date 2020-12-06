@@ -1,5 +1,6 @@
 package group.zealot.king.core.shiro.sessionManager;
 
+import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.core.shiro.sessionListener.ShiroSessionListener;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.InvalidSessionException;
@@ -140,8 +141,11 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
             return null;
         } else {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            // 在request 中 读取 auth-token 信息  作为 sessionId
-            return httpRequest.getHeader(SESSION_ID);
+            // 在request 中 读取 auth_session_id 信息  作为 sessionId
+            Serializable id = httpRequest.getHeader(SESSION_ID);
+            logger.debug("request:{}", JSONObject.toJSONString(((HttpServletRequest) request).getHeaderNames()));
+            logger.debug("header:{},session_id:{}", SESSION_ID, id);
+            return id;
         }
     }
 }
