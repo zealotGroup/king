@@ -31,4 +31,7 @@ public class JxcCust extends BaseEntity {
     private String nickName;
     @Column(length = 200)
     private String avatarUrl;
+
+    @Transient
+    private String sessionKey;
 }

@@ -132,8 +132,8 @@ public class SoapUtil {
                 URL target = new URL(url.toString());
                 URLConnection connection = target.openConnection();
                 // Connection settings
-                connection.setConnectTimeout(EnvironmentUtil.get("timeout.soap.connect", 10000)); // 10 sec
-                connection.setReadTimeout(EnvironmentUtil.get("timeout.soap.read", 60000)); // 1 min
+                connection.setConnectTimeout(EnvironmentUtil.getInt("timeout.soap.connect", 10000)); // 10 sec
+                connection.setReadTimeout(EnvironmentUtil.getInt("timeout.soap.read", 60000)); // 1 min
                 return (connection);
             }
         });

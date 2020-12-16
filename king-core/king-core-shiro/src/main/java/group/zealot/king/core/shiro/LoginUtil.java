@@ -32,10 +32,20 @@ public class LoginUtil {
         return (T) getSubject().getPrincipal();
     }
 
-    public static JxcCust getJxcCust() {
+    /**
+     * 微信专用
+     */
+    public static JxcCust getWxUser() {
         return getUser();
     }
 
+    public static String getWxSessionKey() {
+        return getWxUser().getSessionKey();
+    }
+
+    /**
+     * 后台
+     */
     public static SysUser getSysUser() {
         return getUser();
     }

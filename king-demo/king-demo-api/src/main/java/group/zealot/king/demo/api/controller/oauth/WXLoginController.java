@@ -42,7 +42,7 @@ public class WXLoginController {
                 if (!LoginUtil.isLogin()) {
                     logger.info(code);
                     JSONObject jscode2session = wxapi.code2Session(code);
-                    ShiroToken token = new ShiroToken(jscode2session.getString("openid"));
+                    ShiroToken token = new ShiroToken(jscode2session.getString("openid"), jscode2session.getString("session_key"));
                     LoginUtil.login(token);
                 }
                 resultJson.set(getToken());
@@ -58,7 +58,7 @@ public class WXLoginController {
             protected void dosomething() {
                 logger.info(code);
                 JSONObject jscode2session = wxapi.code2Session(code);
-                JSONObject userInfo = decrypt(encryptedData, jscode2session.getString("session_key"), iv);
+                JSONObject userInfo = wxapi.decrypt(encryptedData, jscode2session.getString("session_key"), iv);
 
                 if (!jscode2session.getString("openid").equals(userInfo.getString("openId")) ||
                         !EnvironmentUtil.get("wx.appid").equals(userInfo.getJSONObject("watermark").getString("appid"))
@@ -72,7 +72,7 @@ public class WXLoginController {
                 jxcCustService.insert(jxcCust);
 
                 //自动登录
-                ShiroToken token = new ShiroToken(jscode2session.getString("openid"));
+                ShiroToken token = new ShiroToken(jscode2session.getString("openid"), jscode2session.getString("session_key"));
                 LoginUtil.login(token);
                 resultJson.set(getToken());
             }
@@ -86,16 +86,5 @@ public class WXLoginController {
         data.put("timeout", LoginUtil.getSession().getTimeout());
         data.put("unit", "MILLISECONDS");
         return data;
-    }
-
-    private JSONObject decrypt(String encryptedData, String sessionKey, String iv) {
-        Base64.Decoder decoder = Base64.getDecoder();
-
-        String str = CryptoUtils.aesDecrypt(
-                decoder.decode(encryptedData.getBytes()),
-                decoder.decode(sessionKey.getBytes()),
-                decoder.decode(iv.getBytes()));
-        return JSONObject.parseObject(str);
-
     }
 }

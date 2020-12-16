@@ -7,6 +7,7 @@ public enum ServiceCode {
     NO_USER(201, "失败，用户不存在"),
     NEED_LOGIN(202, "失败，需要认证"),
     NEED_REQUEST_ID(203, "失败，需要授权的请求序号"),
+    LOGIN_ERROR(204, "认证失败"),
     DO_ERROR(250, "失败，业务处理失败"),
     EXCEPTION(300, "失败"),
     EXCEPTION_RUNNTIME(301, "失败，运行时出现异常"),

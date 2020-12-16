@@ -10,7 +10,12 @@ public class ShiroToken implements AuthenticationToken {
     private String captcha;
     private String username;
     private byte[] password;
+
+    /**
+     * 以下是微信登录凭证
+     */
     private String openid;
+    private String sessionKey;
 
     public ShiroToken(String username, byte[] password) {
         this(username, password, null);
@@ -22,8 +27,9 @@ public class ShiroToken implements AuthenticationToken {
         this.captcha = captcha;
     }
 
-    public ShiroToken(String openid) {
+    public ShiroToken(String openid, String sessionKey) {
         this.openid = openid;
+        this.sessionKey = sessionKey;
     }
 
     @Override
@@ -33,7 +39,6 @@ public class ShiroToken implements AuthenticationToken {
         } else {
             return this.username;
         }
-
     }
 
     @Override

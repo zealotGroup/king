@@ -22,10 +22,10 @@ import java.util.Map;
 
 public class HttpUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
-    private static final int CONNECTION_REQUEST_TIMEOUT = EnvironmentUtil.get("timeout.http.connect-request", 30000);
-    private static final int SOCKET_TIMEOUT = EnvironmentUtil.get("timeout.http.socket", 30000);
-    private static final int CONNECT_TIMEOUT = EnvironmentUtil.get("timeout.http.connect", 30000);
-    private static RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+    private static final int CONNECTION_REQUEST_TIMEOUT = EnvironmentUtil.getInt("timeout.http.connect-request", 30000);
+    private static final int SOCKET_TIMEOUT = EnvironmentUtil.getInt("timeout.http.socket", 30000);
+    private static final int CONNECT_TIMEOUT = EnvironmentUtil.getInt("timeout.http.connect", 30000);
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
             .setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT)
             .setSocketTimeout(SOCKET_TIMEOUT)
             .setConnectTimeout(CONNECT_TIMEOUT)

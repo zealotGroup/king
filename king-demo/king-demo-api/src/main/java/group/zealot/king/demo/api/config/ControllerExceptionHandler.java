@@ -4,6 +4,7 @@ package group.zealot.king.demo.api.config;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
+import org.apache.shiro.ShiroException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -69,10 +70,18 @@ public class ControllerExceptionHandler {
                     resultJson.setCode(ServiceCode.REQUEST_ERROR.code());
                     resultJson.setMsg("参数类型错误");
                 } else if (e instanceof DataIntegrityViolationException) {
-
                     logger.error("DataIntegrityViolationException", e);
                     resultJson.setCode(ServiceCode.REQUEST_ERROR.code());
                     resultJson.setMsg("数据完整性错误（主键冲突、必填项数据缺失等）");
+                } else if (e instanceof ShiroException) {
+                    logger.error("ShiroException", e);
+                    if (e.getMessage() != null && e.getMessage().contains("could not be authenticated by any configured realms")) {
+                        resultJson.setCode(ServiceCode.NO_USER.code());
+                        resultJson.setMsg("认证失败，用户不存在");
+                    } else {
+                        resultJson.setCode(ServiceCode.LOGIN_ERROR.code());
+                        resultJson.setMsg("认证失败，未知异常");
+                    }
                 } else {
                     logger.error("RuntimeException", e);
                     resultJson.set(ServiceCode.EXCEPTION_RUNNTIME);

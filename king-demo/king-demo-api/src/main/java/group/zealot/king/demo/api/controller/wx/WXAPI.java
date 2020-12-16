@@ -2,12 +2,15 @@ package group.zealot.king.demo.api.controller.wx;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.exception.BaseRuntimeException;
+import group.zealot.king.base.security.CryptoUtils;
 import group.zealot.king.base.util.EnvironmentUtil;
 import group.zealot.king.base.util.HttpUtil;
 import group.zealot.king.core.zt.aop.ZTValid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Base64;
 
 /**
  * @author zealot
@@ -27,6 +30,17 @@ public class WXAPI {
             throw new BaseRuntimeException(jscode2session.getString("errmsg"));
         }
         return jscode2session;
+    }
+
+    public JSONObject decrypt(String encryptedData, String sessionKey, String iv) {
+        Base64.Decoder decoder = Base64.getDecoder();
+
+        String str = CryptoUtils.aesDecrypt(
+                decoder.decode(encryptedData.getBytes()),
+                decoder.decode(sessionKey.getBytes()),
+                decoder.decode(iv.getBytes()));
+        return JSONObject.parseObject(str);
+
     }
 
 }

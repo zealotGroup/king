@@ -32,6 +32,7 @@ public class ShiroWXRealm extends BaseShiroRealm<JxcCust> {
         if (jxcCust == null) {
             throw new ShiroException();
         }
+        jxcCust.setSessionKey(token.getSessionKey());
         return jxcCust;
     }
 
@@ -39,4 +40,6 @@ public class ShiroWXRealm extends BaseShiroRealm<JxcCust> {
     protected SimpleAuthorizationInfo getSimpleAuthorizationInfo(JxcCust principal) {
         return new SimpleAuthorizationInfo();
     }
+
+
 }
