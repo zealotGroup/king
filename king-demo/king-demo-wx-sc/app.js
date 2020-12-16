@@ -4,9 +4,9 @@ App({
   },
   
   globalData: {
-    // base_url: 'http://localhost:8080/api',
-    base_url: 'https://www.zealot.group/api',
-    token: null,
+    base_url: 'http://localhost:8080/api',
+    // base_url: 'https://www.zealot.group/api',
+    auth_session_id: null,
     nickName: null,
     phoneNumber: null,
     avatarUrl: null,

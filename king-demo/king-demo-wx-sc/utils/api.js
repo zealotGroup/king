@@ -20,6 +20,8 @@ module.exports = {
   get_user_shipping_address_detail: get_user_shipping_address_detail,
   get_user_shipping_address_delete: get_user_shipping_address_delete,
 
+  update_phone_number: update_phone_number,
+
   get_goods_detail: get_goods_detail,
   get_goods_Lable_list: get_goods_Lable_list,
   get_goods_list: get_goods_list,
@@ -204,7 +206,7 @@ function get_goods_detail(goodsId, callBack) {
   wx.request({
     url: baseUrl + wxurl + '/shopcar/goods/detail',
     header: {
-      'auth-token': app.globalData.token,
+      'auth_session_id': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
     },
     data: {
@@ -231,7 +233,7 @@ function get_goods_Lable_list(callBack) {
   wx.request({
     url: baseUrl + wxurl + '/index/goodsLable/list',
     header: {
-      'auth-token': app.globalData.token,
+      'auth_session_id': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
     },
     success: function (res) {
@@ -255,7 +257,7 @@ function get_goods_list(goodsLableId, searchLike, pageInfo, callBack) {
   wx.request({
     url: baseUrl + wxurl + '/index/goods/list',
     header: {
-      'auth-token': app.globalData.token,
+      'auth_session_id': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
     },
     data: {
@@ -281,11 +283,11 @@ function get_goods_list(goodsLableId, searchLike, pageInfo, callBack) {
 /**
  * 更新手机号
  */
-function updaet_phone_number(encryptedData, iv, callBack) {
+function update_phone_number(encryptedData, iv, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/updatePhoneNumber',
+    url: baseUrl + wxurl + '/my/updatePhoneNumber',
     header: {
-      'auth-token': app.globalData.token,
+      'auth_session_id': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
     },
     data: {
@@ -313,7 +315,7 @@ function check_token() {
     url: baseUrl + wxurl + '/login',
     method: "POST",
     header: {
-      'auth-token': app.globalData.token
+      'auth_session_id': app.globalData.token
     },
     success: function (res) {
       console.log("login返回【" + JSON.stringify(res.data) + "】");

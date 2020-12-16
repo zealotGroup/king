@@ -37,7 +37,7 @@ Page({
             } else {
               console.log("登录成功");
               let userInfo = res.data.user
-              app.globalData.token = res.data.token
+              app.globalData.auth_session_id = res.data.auth_session_id
               app.globalData.nickName = userInfo.nickName
               app.globalData.phoneNumber = userInfo.phoneNumber
               app.globalData.avatarUrl = userInfo.avatarUrl

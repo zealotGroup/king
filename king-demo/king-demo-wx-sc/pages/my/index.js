@@ -36,7 +36,9 @@ Page({
     }
     var that = this;
     api.update_phone_number(e.detail.encryptedData, e.detail.iv, function(res) {
-
+      let data = res.data
+      app.globalData.phoneNumber = data.phoneNumber
+      that.onShow()
     })
   },
   logout: function() {
