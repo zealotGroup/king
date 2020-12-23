@@ -8,8 +8,6 @@ var wxurl = "/wx";
 
 module.exports = {
   get_config_value: get_config_value,
-  get_order_reputation_score: get_order_reputation_score,
-  get_kanjiaList: get_kanjiaList,
   get_banner_list: get_banner_list,
   get_discounts_coupons: get_discounts_coupons,
   get_discounts_fetch: get_discounts_fetch,
@@ -21,6 +19,11 @@ module.exports = {
   get_user_shipping_address_delete: get_user_shipping_address_delete,
 
   update_phone_number: update_phone_number,
+
+  add_goods_shopcar: add_goods_shopcar,
+  update_goods_shopcar: update_goods_shopcar,
+  del_goods_shopcar: del_goods_shopcar,
+  get_shopcar_list: get_shopcar_list,
 
   get_goods_detail: get_goods_detail,
   get_goods_Lable_list: get_goods_Lable_list,
@@ -40,34 +43,6 @@ function get_config_value(key, callBack) {
     data: {
       key: key
     },
-    success: function (res) {
-      callBack(res.data);
-    }
-  })
-}
-/**
- * 获取赠送积分规则 
- **/
-function get_order_reputation_score(code, callBack) {
-  wx.request({
-    url: baseUrl + wxurl + '/score/send/rule',
-    data: {
-      code: code
-    },
-    success: function (res) {
-      callBack(res.data);
-    }
-  })
-}
-
-
-/**
- * 获取砍价设置
- **/
-function get_kanjiaList(callBack) {
-  wx.request({
-    url: baseUrl + wxurl + '/shop/goods/kanjia/list',
-    data: {},
     success: function (res) {
       callBack(res.data);
     }
@@ -201,10 +176,109 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   });
 }
 
+// 修改购物车商品
+function del_goods_shopcar(goodsId, callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/shopcar/delGoods',
+    header: {
+      'auth_session_id': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      goodsId: goodsId
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+// 修改购物车商品
+function update_goods_shopcar(goodsId, size, callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/shopcar/updateGoods',
+    header: {
+      'auth_session_id': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      goodsId: goodsId,
+      size: size
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+
+// 添加商品进购物车
+function add_goods_shopcar(goodsId, size, callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/shopcar/addGoods',
+    header: {
+      'auth_session_id': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      goodsId: goodsId,
+      size: size
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+
+
+// 获取购物车列表
+function get_shopcar_list(callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/shopcar/list',
+    header: {
+      'auth_session_id': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    success: function (res) {
+      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+
 // 获取商品详情
 function get_goods_detail(goodsId, callBack) {
   wx.request({
-    url: baseUrl + wxurl + '/shopcar/goods/detail',
+    url: baseUrl + wxurl + '/index/goods/detail',
     header: {
       'auth_session_id': app.globalData.token,
       'content-type': 'application/x-www-form-urlencoded'
