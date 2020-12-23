@@ -6,19 +6,19 @@ import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
 import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
+import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;
 import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustPrice;
-import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
-import group.zealot.king.core.zt.entity.admin.AdminLable;
-import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustShopcar;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;
+import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsPicture;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static group.zealot.king.core.db.mybatis.Mappers.*;
+import static group.zealot.king.core.db.mybatis.Mappers.jxcGoodsMapper;
 import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 
 @Service
@@ -80,17 +80,17 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
     public JSONObject getGoodsJxcCustDetail(Long goodsId, Long custId) {
         JxcGoods goods = getById(goodsId);
         formater(goods);
-        JxcGoodsCustShopcar shopcar = jxcGoodsCustShopCarServiceImpl.getByGoodsIdCustId(goodsId, custId);
         JxcGoodsCustPrice price = jxcGoodsCustPriceServiceImpl.getByGoodsIdCustId(goodsId, custId);
+        JxcGoodsCustShopcar jxcGoodsCustShopcar = jxcGoodsCustShopCarServiceImpl.getByGoodsIdCustId(goodsId, custId);
 
         JSONObject vo = new JSONObject();
+        vo.put("goodsId", goods.getId());
         vo.put("name", goods.getName());
         vo.put("price", goods.getPrice());
         vo.put("priceUnitName", goods.getPriceUnitName());
         vo.put("sizeUnitName", goods.getSizeUnitName());
         vo.put("custPrice", price == null ? goods.getPrice() : price.getPrice());
-        vo.put("size", shopcar == null ? 0 : shopcar.getSize());
-        vo.put("shopcarGoodsSize", 3);
+        vo.put("size", jxcGoodsCustShopcar == null ? 0 : jxcGoodsCustShopcar.getSize());
 
         vo.put("goodsMaxSize", 99);//库存总数/单次可购买总数
         vo.put("pics", goods.getPictureList());

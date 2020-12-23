@@ -9,7 +9,7 @@ import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static group.zealot.king.core.zt.dbif.Services.*;
+import static group.zealot.king.core.zt.dbif.Services.jxcCustService;
 
 
 @Component
@@ -40,6 +40,4 @@ public class ShiroWXRealm extends BaseShiroRealm<JxcCust> {
     protected SimpleAuthorizationInfo getSimpleAuthorizationInfo(JxcCust principal) {
         return new SimpleAuthorizationInfo();
     }
-
-
 }

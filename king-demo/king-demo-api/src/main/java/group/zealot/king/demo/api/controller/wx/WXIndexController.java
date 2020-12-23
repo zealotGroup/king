@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
+import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.jxcGoodsCustShopCarServiceImpl;
 import static group.zealot.king.core.zt.dbif.Services.jxcGoodsLableService;
 import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
 
@@ -29,6 +31,22 @@ import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
 public class WXIndexController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
+    @RequestMapping("goods/detail")
+    public JSONObject goodsDetail(@ZTValid(NotNull = true) Long goodsId) {
+        return new ResultTemple() {
+
+            @Override
+            protected void dosomething() {
+                JSONObject vo = jxcGoodsService.getGoodsJxcCustDetail(goodsId, LoginUtil.getWxUser().getId());
+                List<JSONObject> shopcarList = jxcGoodsCustShopCarServiceImpl.getShopcarGoodsList(LoginUtil.getWxUser().getId());
+                vo.put("shopcarGoodsSize", shopcarList.size());
+
+                JSONObject data = new JSONObject();
+                data.put("vo", vo);
+                resultJson.set(data);
+            }
+        }.result();
+    }
 
     @RequestMapping("goodsLable/list")
     public JSONObject goodsLableList() {
