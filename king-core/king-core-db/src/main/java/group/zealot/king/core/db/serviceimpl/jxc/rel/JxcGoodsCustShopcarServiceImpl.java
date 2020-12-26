@@ -72,4 +72,11 @@ public class JxcGoodsCustShopcarServiceImpl extends BaseServiceImpl<JxcGoodsCust
             delete(vo);
         }
     }
+
+    @Override
+    public void delGoodsBatch(List<Long> goodsIdList, Long custId) {
+        for (Long goodsId : goodsIdList) {
+            delGoods(goodsId, custId);
+        }
+    }
 }

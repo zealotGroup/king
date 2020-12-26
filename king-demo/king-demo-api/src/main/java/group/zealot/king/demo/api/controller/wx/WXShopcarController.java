@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import static group.zealot.king.core.db.serviceimpl.ServiceImpls.jxcGoodsCustShopCarServiceImpl;
 import static group.zealot.king.core.zt.dbif.Services.jxcGoodsCustShopcarService;
 
 
@@ -46,10 +46,6 @@ public class WXShopcarController {
             @Override
             protected void dosomething() {
                 jxcGoodsCustShopcarService.addGoods(goodsId, LoginUtil.getWxUser().getId(), size);
-                List<JSONObject> shopcarList = jxcGoodsCustShopCarServiceImpl.getShopcarGoodsList(LoginUtil.getWxUser().getId());
-                JSONObject data = new JSONObject();
-                data.put("shopcarGoodsSize", shopcarList.size());
-                resultJson.set(data);
             }
         }.result();
     }
@@ -61,10 +57,6 @@ public class WXShopcarController {
             @Override
             protected void dosomething() {
                 jxcGoodsCustShopcarService.updateGoods(goodsId, LoginUtil.getWxUser().getId(), size);
-                List<JSONObject> shopcarList = jxcGoodsCustShopCarServiceImpl.getShopcarGoodsList(LoginUtil.getWxUser().getId());
-                JSONObject data = new JSONObject();
-                data.put("shopcarGoodsSize", shopcarList.size());
-                resultJson.set(data);
             }
         }.result();
     }
@@ -76,10 +68,23 @@ public class WXShopcarController {
             @Override
             protected void dosomething() {
                 jxcGoodsCustShopcarService.delGoods(goodsId, LoginUtil.getWxUser().getId());
-                List<JSONObject> shopcarList = jxcGoodsCustShopCarServiceImpl.getShopcarGoodsList(LoginUtil.getWxUser().getId());
-                JSONObject data = new JSONObject();
-                data.put("shopcarGoodsSize", shopcarList.size());
-                resultJson.set(data);
+            }
+        }.result();
+    }
+
+    @RequestMapping("delGoodsBatch")
+    public JSONObject delGoodsBatch(String goodsIds) {
+        return new ResultTemple() {
+
+            @Override
+            protected void dosomething() {
+                List<Long> goodsIdList = new ArrayList<>();
+                for (String goodsId : goodsIds.substring(1, goodsIds.length() - 1).split(",")) {
+                    goodsIdList.add(Long.parseLong(goodsId));
+                }
+                if (!goodsIdList.isEmpty()) {
+                    jxcGoodsCustShopcarService.delGoodsBatch(goodsIdList, LoginUtil.getWxUser().getId());
+                }
             }
         }.result();
     }
