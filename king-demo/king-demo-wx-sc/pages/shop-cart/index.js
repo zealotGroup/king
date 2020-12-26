@@ -15,7 +15,7 @@ Page({
   },
 
   //获取元素自适应后的实际宽度
-  getEleWidth: function(w) {
+  getEleWidth: function (w) {
     var real = 0;
     try {
       var res = wx.getSystemInfoSync().windowWidth;
@@ -28,40 +28,37 @@ Page({
       // Do something when catch error
     }
   },
-  initEleWidth: function() {
+  initEleWidth: function () {
     var delBtnWidth = this.getEleWidth(this.data.delBtnWidth);
     this.setData({
       delBtnWidth: delBtnWidth
     });
   },
-  onLoad: function() {
+  onLoad: function () {
     this.initEleWidth();
     this.onShow();
   },
-  onShow: function() {
-    var shopList = [];
-    // 获取购物车数据
-    var shopCarInfoMem = wx.getStorageSync('shopCarInfo');
-    if (shopCarInfoMem && shopCarInfoMem.shopList) {
-      shopList = shopCarInfoMem.shopList
-    }
-    this.data.goodsList.list = shopList;
-    this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), shopList);
+  onShow: function () {
+    let that = this;
+    api.get_shopcar_list(function (data) {
+      let shopList = data.data.list
+      that.setGoodsList(that.getSaveHide(), that.totalPrice(), that.allSelect(), that.noSelect(), shopList);
+    })
   },
-  toIndexPage: function() {
+  toIndexPage: function () {
     wx.switchTab({
       url: "/pages/index/index"
     });
   },
 
-  touchS: function(e) {
+  touchS: function (e) {
     if (e.touches.length == 1) {
       this.setData({
         startX: e.touches[0].clientX
       });
     }
   },
-  touchM: function(e) {
+  touchM: function (e) {
     var index = e.currentTarget.dataset.index;
 
     if (e.touches.length == 1) {
@@ -85,7 +82,7 @@ Page({
     }
   },
 
-  touchE: function(e) {
+  touchE: function (e) {
     var index = e.currentTarget.dataset.index;
     if (e.changedTouches.length == 1) {
       var endX = e.changedTouches[0].clientX;
@@ -101,13 +98,13 @@ Page({
       }
     }
   },
-  delItem: function(e) {
+  delItem: function (e) {
     var index = e.currentTarget.dataset.index;
     var list = this.data.goodsList.list;
     list.splice(index, 1);
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  selectTap: function(e) {
+  selectTap: function (e) {
     var index = e.currentTarget.dataset.index;
     var list = this.data.goodsList.list;
     if (index !== "" && index != null) {
@@ -115,7 +112,7 @@ Page({
       this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
     }
   },
-  totalPrice: function() {
+  totalPrice: function () {
     var list = this.data.goodsList.list;
     var total = 0;
     let totalScoreToPay = 0;
@@ -130,7 +127,7 @@ Page({
     total = parseFloat(total.toFixed(2)); //js浮点计算bug，取两位小数精度
     return total;
   },
-  allSelect: function() {
+  allSelect: function () {
     var list = this.data.goodsList.list;
     var allSelect = false;
     for (var i = 0; i < list.length; i++) {
@@ -144,7 +141,7 @@ Page({
     }
     return allSelect;
   },
-  noSelect: function() {
+  noSelect: function () {
     var list = this.data.goodsList.list;
     var noSelect = 0;
     for (var i = 0; i < list.length; i++) {
@@ -159,7 +156,7 @@ Page({
       return false;
     }
   },
-  setGoodsList: function(saveHidden, total, allSelect, noSelect, list) {
+  setGoodsList: function (saveHidden, total, allSelect, noSelect, list) {
     this.setData({
       goodsList: {
         saveHidden: saveHidden,
@@ -182,7 +179,7 @@ Page({
       data: shopCarInfo
     })
   },
-  bindAllSelect: function() {
+  bindAllSelect: function () {
     var currentAllSelect = this.data.goodsList.allSelect;
     var list = this.data.goodsList.list;
     if (currentAllSelect) {
@@ -196,47 +193,39 @@ Page({
         curItem.active = true;
       }
     }
-
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), !currentAllSelect, this.noSelect(), list);
   },
-  jiaBtnTap: function(e) {
+  jiaBtnTap: function (e) {
     var that = this
     var index = e.currentTarget.dataset.index;
     var list = that.data.goodsList.list;
     if (index !== "" && index != null) {
       // 添加判断当前商品购买数量是否超过当前商品可购买库存
-      var carShopBean = list[parseInt(index)];
-      var carShopBeanStores = 0;
-      wx.request({
-        url: 'https://api.it120.cc/' + app.globalData.subDomain + '/shop/goods/detail',
-        data: {
-          id: carShopBean.goodsId
-        },
-        success: function(res) {
-          carShopBeanStores = res.data.data.basicInfo.stores;
-          console.log(' currnet good id and stores is :', carShopBean.goodsId, carShopBeanStores)
-          if (list[parseInt(index)].number < carShopBeanStores) {
-            list[parseInt(index)].number++;
-            that.setGoodsList(that.getSaveHide(), that.totalPrice(), that.allSelect(), that.noSelect(), list);
-          }
-          that.setData({
-            curTouchGoodStore: carShopBeanStores
-          })
-        }
-      })
-    }
-  },
-  jianBtnTap: function(e) {
-    var index = e.currentTarget.dataset.index;
-    var list = this.data.goodsList.list;
-    if (index !== "" && index != null) {
-      if (list[parseInt(index)].number > 1) {
-        list[parseInt(index)].number--;
-        this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
+      if (list[parseInt(index)].size < list[parseInt(index)].goodsMaxSize) {
+        list[parseInt(index)].size++;
+        let goodsId = list[parseInt(index)].goodsId;
+        let size = list[parseInt(index)].size;
+        api.update_goods_shopcar(goodsId, size, function (data) {})
+        that.setGoodsList(that.getSaveHide(), that.totalPrice(), that.allSelect(), that.noSelect(), list);
       }
     }
   },
-  editTap: function() {
+  jianBtnTap: function (e) {
+    var index = e.currentTarget.dataset.index;
+    var list = this.data.goodsList.list;
+    if (index !== "" && index != null) {
+      if (list[parseInt(index)].size > 1) {
+        if (list[parseInt(index)].size < list[parseInt(index)].goodsMaxSize) {
+          list[parseInt(index)].size--;
+          let goodsId = list[parseInt(index)].goodsId;
+          let size = list[parseInt(index)].size;
+          api.update_goods_shopcar(goodsId, size, function (data) {})
+          that.setGoodsList(that.getSaveHide(), that.totalPrice(), that.allSelect(), that.noSelect(), list);
+        }
+      }
+    }
+  },
+  editTap: function () {
     var list = this.data.goodsList.list;
     for (var i = 0; i < list.length; i++) {
       var curItem = list[i];
@@ -244,7 +233,7 @@ Page({
     }
     this.setGoodsList(!this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  saveTap: function() {
+  saveTap: function () {
     var list = this.data.goodsList.list;
     for (var i = 0; i < list.length; i++) {
       var curItem = list[i];
@@ -252,27 +241,29 @@ Page({
     }
     this.setGoodsList(!this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  getSaveHide: function() {
+  getSaveHide: function () {
     var saveHidden = this.data.goodsList.saveHidden;
     return saveHidden;
   },
-  deleteSelected: function() {
+  deleteSelected: function () {
     var list = this.data.goodsList.list;
-    /*
-     for(let i = 0 ; i < list.length ; i++){
-           let curItem = list[i];
-           if(curItem.active){
-             list.splice(i,1);
-           }
-     }
-     */
-    // above codes that remove elements in a for statement may change the length of list dynamically
-    list = list.filter(function(curGoods) {
+    let activeList = list.filter(function (curGoods) {
       return !curGoods.active;
+    });
+    let delList = list.filter(function (curGoods) {
+      return curGoods.active;
+    });
+    var goodsIds = [];
+    delList.forEach(function (item) {
+      goodsIds.push(item.goodsId);
+    })
+
+    api.del_batch_goods_shopcar(goodsIds, function (data) {
+
     });
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  toPayOrder: function() {
+  toPayOrder: function () {
     wx.showLoading();
     var that = this;
     if (this.data.goodsList.noSelect) {
@@ -308,7 +299,7 @@ Page({
           data: {
             id: carShopBean.goodsId
           },
-          success: function(res) {
+          success: function (res) {
             doneNumber++;
             if (res.data.data.properties) {
               wx.showModal({
@@ -352,7 +343,7 @@ Page({
             goodsId: carShopBean.goodsId,
             propertyChildIds: carShopBean.propertyChildIds
           },
-          success: function(res) {
+          success: function (res) {
             doneNumber++;
             if (res.data.data.stores < carShopBean.number) {
               wx.showModal({
@@ -383,7 +374,7 @@ Page({
 
     }
   },
-  navigateToPayOrder: function() {
+  navigateToPayOrder: function () {
     wx.hideLoading();
     wx.navigateTo({
       url: "/pages/to-pay-order/index"

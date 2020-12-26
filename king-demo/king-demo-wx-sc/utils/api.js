@@ -20,6 +20,7 @@ module.exports = {
 
   update_phone_number: update_phone_number,
 
+  del_batch_goods_shopcar: del_batch_goods_shopcar,
   add_goods_shopcar: add_goods_shopcar,
   update_goods_shopcar: update_goods_shopcar,
   del_goods_shopcar: del_goods_shopcar,
@@ -176,7 +177,31 @@ function get_shop_goods_price(goodsId, propertyChildIds, callBack) {
   });
 }
 
-// 修改购物车商品
+// 批量删除购物车商品
+function del_batch_goods_shopcar(goodsIds, callBack) {
+  wx.request({
+    url: baseUrl + wxurl + '/shopcar/delGoodsBatch',
+    header: {
+      'auth_session_id': app.globalData.token,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      goodsIds: goodsIds
+    },
+    success: function (res) {
+      console.log("del_goods_shopcar返回【" + JSON.stringify(res.data) + "】");
+      filter(res.data, callBack);
+    },
+    fail: function (res) {
+      wx.showModal({
+        title: '错误',
+        content: '访问错误',
+        showCancel: false
+      })
+    }
+  });
+}
+// 删除购物车商品
 function del_goods_shopcar(goodsId, callBack) {
   wx.request({
     url: baseUrl + wxurl + '/shopcar/delGoods',
@@ -188,7 +213,7 @@ function del_goods_shopcar(goodsId, callBack) {
       goodsId: goodsId
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("del_goods_shopcar返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -213,7 +238,7 @@ function update_goods_shopcar(goodsId, size, callBack) {
       size: size
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("update_goods_shopcar返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -239,7 +264,7 @@ function add_goods_shopcar(goodsId, size, callBack) {
       size: size
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("add_goods_shopcar返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -262,7 +287,7 @@ function get_shopcar_list(callBack) {
       'content-type': 'application/x-www-form-urlencoded'
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("get_shopcar_list返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -287,7 +312,7 @@ function get_goods_detail(goodsId, callBack) {
       goodsId: goodsId
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("get_goods_detail返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -311,7 +336,7 @@ function get_goods_Lable_list(callBack) {
       'content-type': 'application/x-www-form-urlencoded'
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("get_goods_Lable_list返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -341,7 +366,7 @@ function get_goods_list(goodsLableId, searchLike, pageInfo, callBack) {
       limit: pageInfo.limit
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("get_goods_list返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -369,7 +394,7 @@ function update_phone_number(encryptedData, iv, callBack) {
       iv: iv
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("update_phone_number返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -392,7 +417,7 @@ function check_token() {
       'auth_session_id': app.globalData.token
     },
     success: function (res) {
-      console.log("login返回【" + JSON.stringify(res.data) + "】");
+      console.log("check_token返回【" + JSON.stringify(res.data) + "】");
       filter(res.data, callBack);
     },
     fail: function (res) {
@@ -483,7 +508,7 @@ function filter(data, callBack) {
   } else {
     wx.showModal({
       title: '失败',
-      content: '请求失败 ' + res.data.msg,
+      content: '请求失败 ' + data.msg,
       showCancel: false
     })
   }
