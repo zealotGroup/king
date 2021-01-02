@@ -1,20 +1,21 @@
 package group.zealot.king.core.db.jpa;
 
-import group.zealot.king.core.db.jpa.admin.*;
+import group.zealot.king.core.db.jpa.admin.AdminLableRepository;
+import group.zealot.king.core.db.jpa.admin.AdminPictureRepository;
+import group.zealot.king.core.db.jpa.admin.AdminUnitRepository;
 import group.zealot.king.core.db.jpa.jxc.*;
 import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsCustPriceRepository;
+import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsCustShopcarRepository;
 import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsLableRepository;
 import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsPictureRepository;
-import group.zealot.king.core.db.jpa.jxc.rel.JxcGoodsCustShopcarRepository;
 import group.zealot.king.core.db.jpa.system.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import group.zealot.king.core.zt.aop.ZTComponent;
 
 /**
  * @author zealot
  * @date 2020/2/9 12:41
  */
-@Component
+@ZTComponent
 public class Repositorys {
     public static SysAuthRepository sysAuthRepository;
     public static SysDataRepository sysDataRepository;
@@ -39,104 +40,4 @@ public class Repositorys {
     public static AdminUnitRepository adminUnitRepository;
     public static AdminLableRepository adminLableRepository;
     public static AdminPictureRepository adminPictureRepository;
-
-    @Autowired
-    public void setJxcGoodsCustPriceRepository(JxcGoodsCustPriceRepository jxcGoodsCustPriceRepository) {
-        Repositorys.jxcGoodsCustPriceRepository = jxcGoodsCustPriceRepository;
-    }
-
-    @Autowired
-    public void setJxcGoodsCustShopcarRepository(JxcGoodsCustShopcarRepository jxcGoodsCustShopcarRepository) {
-        Repositorys.jxcGoodsCustShopcarRepository = jxcGoodsCustShopcarRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcGoodsPictureRepository(JxcGoodsPictureRepository jxcGoodsPictureRepository) {
-        Repositorys.jxcGoodsPictureRepository = jxcGoodsPictureRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysAuthRepository(SysAuthRepository sysAuthRepository) {
-        Repositorys.sysAuthRepository = sysAuthRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysDataRepository(SysDataRepository sysDataRepository) {
-        Repositorys.sysDataRepository = sysDataRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysIdRepository(SysIdRepository sysIdRepository) {
-        Repositorys.sysIdRepository = sysIdRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysRoleDataRepository(SysRoleDataRepository sysRoleDataRepository) {
-        Repositorys.sysRoleDataRepository = sysRoleDataRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysRoleRouteRepository(SysRoleRouteRepository sysRoleRouteRepository) {
-        Repositorys.sysRoleRouteRepository = sysRoleRouteRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysRouteRepository(SysRouteRepository sysRouteRepository) {
-        Repositorys.sysRouteRepository = sysRouteRepository;
-    }
-
-    @Autowired(required = false)
-    public void setSysUserRepository(SysUserRepository sysUserRepository) {
-        Repositorys.sysUserRepository = sysUserRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcCustRepository(JxcCustRepository jxcCustRepository) {
-        Repositorys.jxcCustRepository = jxcCustRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcGoodsLableRepository(JxcGoodsLableRepository jxcGoodsLableRepository) {
-        Repositorys.jxcGoodsLableRepository = jxcGoodsLableRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcGoodsRepository(JxcGoodsRepository jxcGoodsRepository) {
-        Repositorys.jxcGoodsRepository = jxcGoodsRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcSalesRepository(JxcSalesRepository jxcSalesRepository) {
-        Repositorys.jxcSalesRepository = jxcSalesRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcStockRepository(JxcStockRepository jxcStockRepository) {
-        Repositorys.jxcStockRepository = jxcStockRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcPurchaseRepository(JxcPurchaseRepository jxcPurchaseRepository) {
-        Repositorys.jxcPurchaseRepository = jxcPurchaseRepository;
-    }
-
-    @Autowired(required = false)
-    public void setJxcSupplierRepository(JxcSupplierRepository jxcSupplierRepository) {
-        Repositorys.jxcSupplierRepository = jxcSupplierRepository;
-    }
-
-    @Autowired(required = false)
-    public void setAdminUnitRepository(AdminUnitRepository adminUnitRepository) {
-        Repositorys.adminUnitRepository = adminUnitRepository;
-    }
-
-    @Autowired(required = false)
-    public void setAdminLableRepository(AdminLableRepository adminLableRepository) {
-        Repositorys.adminLableRepository = adminLableRepository;
-    }
-
-    @Autowired(required = false)
-    public void setAdminPictureRepository(AdminPictureRepository adminPictureRepository) {
-        Repositorys.adminPictureRepository = adminPictureRepository;
-    }
 }

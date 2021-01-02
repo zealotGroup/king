@@ -73,7 +73,7 @@ public class WXShopcarController {
     }
 
     @RequestMapping("delGoodsBatch")
-    public JSONObject delGoodsBatch(String goodsIds) {
+    public JSONObject delGoodsBatch(@ZTValid(NotBlank = true) String goodsIds) {
         return new ResultTemple() {
 
             @Override
@@ -84,6 +84,23 @@ public class WXShopcarController {
                 }
                 if (!goodsIdList.isEmpty()) {
                     jxcGoodsCustShopcarService.delGoodsBatch(goodsIdList, LoginUtil.getWxUser().getId());
+                }
+            }
+        }.result();
+    }
+
+    @RequestMapping("buyGoods")
+    public JSONObject buyGoods(@ZTValid(NotBlank = true) String goodsIds) {
+        return new ResultTemple() {
+
+            @Override
+            protected void dosomething() {
+                List<Long> goodsIdList = new ArrayList<>();
+                for (String goodsId : goodsIds.substring(1, goodsIds.length() - 1).split(",")) {
+                    goodsIdList.add(Long.parseLong(goodsId));
+                }
+                if (!goodsIdList.isEmpty()) {
+                    jxcGoodsCustShopcarService.buyGoodsBatch(goodsIdList, LoginUtil.getWxUser().getId());
                 }
             }
         }.result();

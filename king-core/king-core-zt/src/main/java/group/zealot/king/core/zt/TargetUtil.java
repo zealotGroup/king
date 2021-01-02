@@ -13,7 +13,6 @@ public class TargetUtil {
      *
      * @param proxy 代理对象
      * @return 目标对象
-     * @throws Exception
      */
     public static Object getTarget(Object proxy) {
         if (!AopUtils.isAopProxy(proxy)) {

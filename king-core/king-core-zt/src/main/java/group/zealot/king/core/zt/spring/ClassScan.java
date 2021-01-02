@@ -28,8 +28,8 @@ public class ClassScan {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    private ResourcePatternResolver resourcePatternResolver;
-    private MetadataReaderFactory metadataReaderFactory;
+    private final ResourcePatternResolver resourcePatternResolver;
+    private final MetadataReaderFactory metadataReaderFactory;
 
     public ClassScan() {
         super();
@@ -42,7 +42,7 @@ public class ClassScan {
      *
      * @return className
      */
-    public Set<String> scanGetBeanNameSet(Class<? extends Annotation> annotationType) throws IOException {
+    public Set<String> scanGetBeanNameSet(Class<? extends Annotation> annotationType) {
         return scanGetBeanNameSet(annotationType, "classpath*:group/zealot/king/**/*.class");
     }
 
@@ -51,17 +51,21 @@ public class ClassScan {
      *
      * @return className
      */
-    public Set<String> scanGetBeanNameSet(Class<? extends Annotation> annotationType, String basePackages) throws IOException {
+    public Set<String> scanGetBeanNameSet(Class<? extends Annotation> annotationType, String basePackages) {
         logger.info("class scanGetBeanNameSet [" + annotationType.getName() + "],basePackages [" + basePackages + "]");
         AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(annotationType);
         Set<String> set = new HashSet<>();
-        Resource[] resources = resourcePatternResolver.getResources(basePackages);
-        for (Resource r : resources) {
-            MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(r);
-            if (annotationTypeFilter.match(metadataReader, metadataReaderFactory)) {
-                set.add(metadataReader.getClassMetadata().getClassName());
+        try {
+            Resource[] resources = resourcePatternResolver.getResources(basePackages);
+            for (Resource r : resources) {
+                MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(r);
+                if (annotationTypeFilter.match(metadataReader, metadataReaderFactory)) {
+                    set.add(metadataReader.getClassMetadata().getClassName());
+                }
             }
-
+        } catch (IOException e) {
+            logger.error("scanGetBeanNameSet 异常", e);
+            throw new BaseRuntimeException(e);
         }
         if (set.isEmpty()) {
             logger.warn("No class was found in '" + basePackages + "' package. ");
@@ -74,13 +78,18 @@ public class ClassScan {
      *
      * @return className
      */
-    public Set<String> scanGetBeanNameSet(String basePackages) throws IOException {
+    public Set<String> scanGetBeanNameSet(String basePackages) {
         logger.info("class scanGetBeanNameSet basePackages [" + basePackages + "]");
         Set<String> set = new HashSet<>();
-        Resource[] resources = resourcePatternResolver.getResources(basePackages);
-        for (Resource r : resources) {
-            MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(r);
-            set.add(metadataReader.getClassMetadata().getClassName());
+        try {
+            Resource[] resources = resourcePatternResolver.getResources(basePackages);
+            for (Resource r : resources) {
+                MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(r);
+                set.add(metadataReader.getClassMetadata().getClassName());
+            }
+        } catch (IOException e) {
+            logger.error("scanGetBeanNameSet 异常", e);
+            throw new BaseRuntimeException(e);
         }
         if (set.isEmpty()) {
             logger.warn("No class was found in '" + basePackages + "' package. ");
@@ -93,7 +102,7 @@ public class ClassScan {
      *
      * @return classBean
      */
-    public Set<Object> scanGetBeanSet(Class<? extends Annotation> annotationType) throws IOException {
+    public Set<Object> scanGetBeanSet(Class<? extends Annotation> annotationType) {
         return getBeanSet(scanGetBeanNameSet(annotationType));
     }
 
@@ -102,7 +111,7 @@ public class ClassScan {
      *
      * @return classBean
      */
-    public Set<Object> scanGetBeanSet(Class<? extends Annotation> annotationType, String basePackages) throws IOException {
+    public Set<Object> scanGetBeanSet(Class<? extends Annotation> annotationType, String basePackages) {
         return getBeanSet(scanGetBeanNameSet(annotationType, basePackages));
     }
 
@@ -111,7 +120,7 @@ public class ClassScan {
      *
      * @return className:classBean
      */
-    public Map<String, Object> scanGetBeanMap(Class<? extends Annotation> annotationType) throws IOException {
+    public Map<String, Object> scanGetBeanMap(Class<? extends Annotation> annotationType) {
         return getBeanMap(scanGetBeanNameSet(annotationType));
     }
 
@@ -120,7 +129,7 @@ public class ClassScan {
      *
      * @return className:classBean
      */
-    public Map<String, Object> scanGetBeanMap(String basePackages) throws IOException {
+    public Map<String, Object> scanGetBeanMap(String basePackages) {
         return getBeanMap(scanGetBeanNameSet(basePackages));
     }
 
@@ -129,7 +138,7 @@ public class ClassScan {
      *
      * @return className:classBean
      */
-    public Map<String, Object> scanGetBeanMap(Class<? extends Annotation> annotationType, String basePackages) throws IOException {
+    public Map<String, Object> scanGetBeanMap(Class<? extends Annotation> annotationType, String basePackages) {
         return getBeanMap(scanGetBeanNameSet(annotationType, basePackages));
     }
 

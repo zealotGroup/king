@@ -19,4 +19,6 @@ public interface JxcGoodsCustShopcarService extends BaseService<JxcGoodsCustShop
     void delGoods(Long goodsId, Long custId);
 
     void delGoodsBatch(List<Long> goodsIdList, Long custId);
+
+    void buyGoodsBatch(List<Long> goodsIdList, Long custId);
 }

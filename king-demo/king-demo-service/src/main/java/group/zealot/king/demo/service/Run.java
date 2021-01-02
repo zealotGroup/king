@@ -1,6 +1,5 @@
 package group.zealot.king.demo.service;
 
-import group.zealot.king.core.zt.spring.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +16,7 @@ public class Run {
 
     public static void main(String[] args) {
         logger.info("启动");
-        SpringUtil.setApplicationContext(SpringApplication.run(Run.class, args));
+        SpringApplication.run(Run.class, args);
         logger.info("启动结束");
     }
 }

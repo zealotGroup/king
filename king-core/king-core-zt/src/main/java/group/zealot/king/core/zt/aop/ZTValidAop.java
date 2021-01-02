@@ -1,5 +1,6 @@
 package group.zealot.king.core.zt.aop;
 
+
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import org.aspectj.lang.JoinPoint;
@@ -14,10 +15,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Collection;
 
-
 @Aspect
 @Component
-public class ZTAop {
+public class ZTValidAop {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Before("execution(* group.zealot..*(..))")

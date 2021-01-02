@@ -3,12 +3,11 @@ package group.zealot.king.demo.api.controller.oauth;
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
-import group.zealot.king.base.security.CryptoUtils;
 import group.zealot.king.base.util.EnvironmentUtil;
+import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.core.shiro.realms.ShiroToken;
 import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.jxc.JxcCust;
-import group.zealot.king.core.shiro.LoginUtil;
 import group.zealot.king.demo.api.config.ResultTemple;
 import group.zealot.king.demo.api.controller.wx.WXAPI;
 import org.slf4j.Logger;
@@ -17,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Base64;
 
 import static group.zealot.king.core.zt.dbif.Services.jxcCustService;
 
@@ -67,10 +64,19 @@ public class WXLoginController {
                 }
                 JxcCust jxcCust = new JxcCust();
                 jxcCust.setOpenid(userInfo.getString("openId"));
-                jxcCust.setAvatarUrl(userInfo.getString("avatarUrl"));
-                jxcCust.setNickName(userInfo.getString("nickName"));
-                jxcCustService.insert(jxcCust);
 
+                jxcCust = jxcCustService.get(jxcCust);
+                if (jxcCust == null) {
+                    jxcCust = new JxcCust();
+                    jxcCust.setOpenid(userInfo.getString("openId"));
+                    jxcCust.setAvatarUrl(userInfo.getString("avatarUrl"));
+                    jxcCust.setNickName(userInfo.getString("nickName"));
+                    jxcCustService.insert(jxcCust);
+                } else {
+                    jxcCust.setAvatarUrl(userInfo.getString("avatarUrl"));
+                    jxcCust.setNickName(userInfo.getString("nickName"));
+                    jxcCustService.update(jxcCust);
+                }
                 //自动登录
                 ShiroToken token = new ShiroToken(jscode2session.getString("openid"), jscode2session.getString("session_key"));
                 LoginUtil.login(token);

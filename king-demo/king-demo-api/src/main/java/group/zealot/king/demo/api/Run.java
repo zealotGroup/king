@@ -3,7 +3,6 @@ package group.zealot.king.demo.api;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import group.zealot.king.core.zt.spring.SpringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -39,6 +38,6 @@ public class Run {
      * java -jar api.jar --server.port=8080
      */
     public static void main(String[] args) {
-        SpringUtil.setApplicationContext(SpringApplication.run(Run.class, args));
+        SpringApplication.run(Run.class, args);
     }
 }

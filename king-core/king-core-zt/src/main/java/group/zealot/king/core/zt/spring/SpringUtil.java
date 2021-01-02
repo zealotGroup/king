@@ -1,39 +1,20 @@
 package group.zealot.king.core.zt.spring;
 
-import group.zealot.king.base.exception.BaseRuntimeException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpringUtil {
-    private static ApplicationContext applicationContext;
-    @Autowired
-    private AutowireCapableBeanFactory beanFactory;
-    @Autowired
-    private DefaultListableBeanFactory defaultListableBeanFactory;
+public class SpringUtil implements ApplicationContextAware {
+    private static ApplicationContext APPLICATION_CONTEXT;
 
-    public void regist(String beanName, Object bean) {
-        defaultListableBeanFactory.registerSingleton(beanName, bean);
-    }
-
-    public void autowireBean(Object bean){
-        //自动注入依赖
-        beanFactory.autowireBean(bean);
-    }
-
-    public synchronized static void setApplicationContext(ApplicationContext applicationContext) {
-        if (SpringUtil.applicationContext == null) {
-            SpringUtil.applicationContext = applicationContext;
-        } else {
-            throw new BaseRuntimeException("SpringUtil.applicationContext 不允许重复赋值");
-        }
-
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SpringUtil.APPLICATION_CONTEXT = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
-        return SpringUtil.applicationContext;
+        return SpringUtil.APPLICATION_CONTEXT;
     }
 }
