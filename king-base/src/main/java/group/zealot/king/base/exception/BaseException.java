@@ -1,7 +1,5 @@
 package group.zealot.king.base.exception;
 
-import group.zealot.king.base.ServiceCode;
-
 public class BaseException extends Exception {
 
 

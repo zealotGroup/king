@@ -1,8 +1,8 @@
 package group.zealot.king.core.zt.dbif.service.system;
 
 import com.alibaba.fastjson.JSONArray;
-import group.zealot.king.core.zt.entity.system.*;
 import group.zealot.king.core.zt.dbif.service.BaseService;
+import group.zealot.king.core.zt.entity.system.*;
 
 import java.util.List;
 

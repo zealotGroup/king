@@ -1,7 +1,6 @@
 package group.zealot.king.core.shiro.realms;
 
 import group.zealot.king.base.util.StringUtil;
-import lombok.Data;
 import lombok.Getter;
 import org.apache.shiro.authc.AuthenticationToken;
 

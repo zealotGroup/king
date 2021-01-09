@@ -26,40 +26,40 @@ public class BaseDao<E, P extends Serializable> extends ZtSqlSessionDao implemen
         super.setSqlSessionFactory(sqlSessionFactory);
     }
 
-    public E getById(P primaryKey) {
-        return selectOne("getById", primaryKey);
+    public E getById(P p) {
+        return selectOne("getById", p);
     }
 
-    public E get(E entity) {
-        return selectOne("get", entity);
+    public E get(E e) {
+        return selectOne("get", e);
     }
 
-    public int deleteById(P primaryKey) {
-        return delete("deleteById", primaryKey);
+    public void deleteById(P p) {
+        delete("deleteById", p);
     }
 
-    public int delete(E entity) {
-        return delete("delete", entity);
+    public void delete(E e) {
+        delete("delete", e);
     }
 
-    public int insert(E entity) {
-        return insert("insert", entity);
+    public E insert(E e) {
+        insert("insert", e);
+        return e;
     }
 
-    public int insertBatchInn(List<E> list) {
-        return insert("insertBatch", list);
+    public E update(E e) {
+        insert("update", e);
+        return e;
     }
 
-    public int insertBatch(List<E> list) {
-        int count = 0;
+    public void insertBatchInn(List<E> list) {
+        insert("insertBatch", list);
+    }
+
+    public void insertBatch(List<E> list) {
         for (E entity : list) {
-            count += insert(entity);
+            insert(entity);
         }
-        return count;
-    }
-
-    public int update(E entity) {
-        return insert("update", entity);
     }
 
     public List<E> getList() {

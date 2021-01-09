@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.Funcation;
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
-import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.db.base.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcGoodsService;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;

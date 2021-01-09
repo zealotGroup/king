@@ -4,7 +4,7 @@ import group.zealot.king.base.util.StringUtil;
 import group.zealot.king.core.shiro.exception.ShiroException;
 import group.zealot.king.core.zt.Passwd;
 import group.zealot.king.core.zt.entity.system.*;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;

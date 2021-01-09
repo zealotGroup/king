@@ -8,7 +8,6 @@ import group.zealot.king.demo.api.config.ResultTemple;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import static group.zealot.king.core.zt.dbif.Services.adminLableService;
 
 

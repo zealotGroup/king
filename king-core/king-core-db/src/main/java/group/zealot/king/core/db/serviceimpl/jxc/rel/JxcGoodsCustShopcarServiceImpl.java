@@ -2,8 +2,9 @@ package group.zealot.king.core.db.serviceimpl.jxc.rel;
 
 import com.alibaba.fastjson.JSONObject;
 import group.zealot.king.base.exception.BaseRuntimeException;
-import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.db.base.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.rel.JxcGoodsCustShopcarService;
+import group.zealot.king.core.zt.entity.jxc.JxcSales;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsCustShopcar;
 import org.springframework.stereotype.Service;
 
@@ -82,8 +83,15 @@ public class JxcGoodsCustShopcarServiceImpl extends BaseServiceImpl<JxcGoodsCust
 
     @Override
     public void buyGoodsBatch(List<Long> goodsIdList, Long custId) {
+        List<JxcGoodsCustShopcar> list = new ArrayList<>();
         for (Long goodsId : goodsIdList) {
-
+            JxcGoodsCustShopcar vo = getByGoodsIdCustId(goodsId, custId);
+            if (vo == null) {
+                throw new BaseRuntimeException("有商品被删除，请重新下单");
+            }
+            list.add(vo);
         }
+        JxcSales jxcSales = new JxcSales();
+
     }
 }

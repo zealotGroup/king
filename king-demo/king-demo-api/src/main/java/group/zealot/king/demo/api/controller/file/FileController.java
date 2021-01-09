@@ -4,7 +4,6 @@ import group.zealot.king.base.ServiceCode;
 import group.zealot.king.base.exception.BaseRuntimeException;
 import group.zealot.king.core.zt.aop.ZTValid;
 import group.zealot.king.core.zt.entity.admin.AdminPicture;
-import group.zealot.king.demo.api.config.BaseController;
 import group.zealot.king.demo.api.config.ResultTemple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

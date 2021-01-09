@@ -11,17 +11,17 @@ public interface BaseMapper<E, P extends Serializable> {
 
     E get(E e);
 
-    int deleteById(P primaryKey);
+    void deleteById(P primaryKey);
 
-    int delete(E entity);
+    void delete(E entity);
 
-    int insert(E entity);
+    E insert(E entity);
 
-    int insertBatchInn(List<E> list);
+    void insertBatchInn(List<E> list);
 
-    int insertBatch(List<E> list);
+    void insertBatch(List<E> list);
 
-    int update(E entity);
+    E update(E entity);
 
     List<E> getList();
 

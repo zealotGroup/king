@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static group.zealot.king.core.zt.dbif.Services.jxcCustService;
-import static group.zealot.king.core.zt.dbif.Services.jxcGoodsService;
 
 /**
  * @author zealot

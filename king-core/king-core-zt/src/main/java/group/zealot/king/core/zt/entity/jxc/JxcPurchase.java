@@ -24,6 +24,8 @@ public class JxcPurchase extends BaseEntity {
     @Column(length = 20)
     private Long supplierId;//供应商ID
     @Column(length = 20)
+    private Long orderId;//订单ID
+    @Column(length = 20)
     private BigDecimal price;//总价格
     @Column(length = 20)
     private BigDecimal size;//数量

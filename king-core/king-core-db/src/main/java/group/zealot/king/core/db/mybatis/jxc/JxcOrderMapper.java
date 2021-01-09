@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Repository
-public class JxcGoodsMapper extends BaseDao<JxcGoods, Long> {
+public class JxcOrderMapper extends BaseDao<JxcGoods, Long> {
     public List<AdminLable> getLableListByGoodsId(Long jxcGoodsId) {
         return selectList("getLableListByGoodsId", jxcGoodsId);
     }

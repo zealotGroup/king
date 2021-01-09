@@ -1,21 +1,18 @@
 package group.zealot.king.core.db.serviceimpl.system;
 
 import group.zealot.king.base.Funcation;
-import group.zealot.king.base.security.DigestUtils;
-import group.zealot.king.base.util.EncodeUtil;
 import group.zealot.king.base.util.StringUtil;
-import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.db.base.BaseServiceImpl;
 import group.zealot.king.core.zt.Passwd;
+import group.zealot.king.core.zt.dbif.service.system.SysUserService;
 import group.zealot.king.core.zt.entity.system.SysAuth;
 import group.zealot.king.core.zt.entity.system.SysRoleData;
 import group.zealot.king.core.zt.entity.system.SysRoleRoute;
 import group.zealot.king.core.zt.entity.system.SysUser;
-import group.zealot.king.core.zt.dbif.service.system.SysUserService;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
+import static group.zealot.king.core.db.serviceimpl.ServiceImpls.sysAuthServiceImpl;
 
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implements SysUserService {
@@ -95,9 +92,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
     }
 
     @Override
-    protected org.springframework.data.domain.Page<SysUser> pageQuery(SysUser e, org.springframework.data.domain.PageRequest pageable) {
-        ExampleMatcher likeMatcher = addLike(getMatcher(), "username");
-        return jpaRepository.findAll(Example.of(e, likeMatcher), pageable);
+    protected ExampleMatcher getMatcher() {
+        return addLike(super.getMatcher(), "username");
     }
 
     @Override

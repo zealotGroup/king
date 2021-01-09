@@ -1,7 +1,7 @@
 package group.zealot.king.core.zt.dbif.service.system;
 
-import group.zealot.king.core.zt.entity.system.SysUser;
 import group.zealot.king.core.zt.dbif.service.BaseService;
+import group.zealot.king.core.zt.entity.system.SysUser;
 
 
 public interface SysUserService extends BaseService<SysUser, Long> {

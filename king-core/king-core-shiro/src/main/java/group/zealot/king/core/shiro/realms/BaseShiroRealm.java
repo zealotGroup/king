@@ -1,7 +1,6 @@
 package group.zealot.king.core.shiro.realms;
 
 import com.alibaba.fastjson.JSONObject;
-import group.zealot.king.core.shiro.exception.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

@@ -2,7 +2,7 @@ package group.zealot.king.core.db.serviceimpl.jxc;
 
 import group.zealot.king.base.page.Page;
 import group.zealot.king.base.page.PageRequest;
-import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.db.base.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.JxcPurchaseService;
 import group.zealot.king.core.zt.entity.admin.AdminUnit;
 import group.zealot.king.core.zt.entity.jxc.JxcGoods;

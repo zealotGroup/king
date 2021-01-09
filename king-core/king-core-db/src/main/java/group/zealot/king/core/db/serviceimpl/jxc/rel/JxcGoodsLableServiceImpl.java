@@ -1,6 +1,6 @@
 package group.zealot.king.core.db.serviceimpl.jxc.rel;
 
-import group.zealot.king.core.db.serviceimpl.BaseServiceImpl;
+import group.zealot.king.core.db.base.BaseServiceImpl;
 import group.zealot.king.core.zt.dbif.service.jxc.rel.JxcGoodsLableService;
 import group.zealot.king.core.zt.entity.admin.AdminLable;
 import group.zealot.king.core.zt.entity.jxc.rel.JxcGoodsLable;

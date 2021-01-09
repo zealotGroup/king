@@ -2,7 +2,7 @@ package group.zealot.king.demo.api.config.filter;
 
 import group.zealot.king.base.ServiceCode;
 
-import javax.servlet.*;
+import javax.servlet.FilterConfig;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
