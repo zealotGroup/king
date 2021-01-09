@@ -26,7 +26,7 @@ public class JxcGoodsServiceImpl extends BaseServiceImpl<JxcGoods, Long> impleme
 
     @Override
     public Page<JxcGoods> pageQuery(PageRequest<JxcGoods> pageRequest) {
-        return baseMapper.pageQuery(pageRequest);
+        return dao.pageQuery(pageRequest);
     }
 
     @Override

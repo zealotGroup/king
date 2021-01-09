@@ -32,7 +32,7 @@
 
     <groupId>group.zealot</groupId>
     <artifactId>king</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>

@@ -16,7 +16,7 @@ import static group.zealot.king.core.db.serviceimpl.ServiceImpls.*;
 public class JxcSalesServiceImpl extends BaseServiceImpl<JxcSales, Long> implements JxcSalesService {
     @Override
     public Page<JxcSales> pageQuery(PageRequest<JxcSales> pageRequest) {
-        return baseMapper.pageQuery(pageRequest);
+        return dao.pageQuery(pageRequest);
     }
 
     @Override
